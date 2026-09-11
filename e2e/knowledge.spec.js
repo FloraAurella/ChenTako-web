@@ -20,6 +20,50 @@ async function load(page, { files = [file], messages = [], config = {}, scheme =
 async function send(page, text) { await page.locator('#composerInput').fill(text); await page.locator('#sendBtn').click(); }
 async function library(page) { await page.locator('.knowledge-status a').click(); await expect(page.locator('.knowledge-pane')).toBeVisible(); }
 
+test('大资料用量刷新不重复编码全文或复制请求，输入保持可用', async ({ page }) => {
+  await page.addInitScript(() => {
+    window.knowledgeWork = { encodes: 0, clones: 0 };
+    const encode = TextEncoder.prototype.encode;
+    TextEncoder.prototype.encode = function (text) {
+      if (typeof text === 'string' && text.startsWith('large-knowledge-')) window.knowledgeWork.encodes++;
+      return encode.call(this, text);
+    };
+    const clone = window.structuredClone;
+    window.structuredClone = function (value, options) {
+      if (value?.fixedContext?.length > 100000) window.knowledgeWork.clones++;
+      return clone(value, options);
+    };
+  });
+  const text = 'large-knowledge-' + 'x'.repeat(1024 * 1024 - 16);
+  await load(page, { files: [{ ...file, id: 'large-a', text }, { ...file, id: 'large-b', text }] });
+  await expect(page.locator('.knowledge-status')).toContainText('2 份');
+  const before = await page.evaluate(() => ({ ...window.knowledgeWork }));
+  for (let index = 0; index < 20; index++) await page.locator('#composerInput').fill(`快速编辑 ${index}`);
+  await page.locator('#usageBtn').focus();
+  await expect(page.locator('#contextTooltip')).toContainText('固定项目资料');
+  expect(await page.evaluate(() => window.knowledgeWork)).toEqual(before);
+  await expect(page.locator('#composerInput')).toHaveValue('快速编辑 19');
+});
+
+test('资料备份可恢复；取消恢复不改变项目资料', async ({ page }) => {
+  await load(page); await library(page);
+  const downloadPromise = page.waitForEvent('download');
+  await page.getByRole('button', { name: '导出资料备份', exact: true }).click();
+  const path = await (await downloadPromise).path();
+  await page.getByLabel('替换项目资料', { exact: true }).setInputFiles({ name: '新资料.txt', mimeType: 'text/plain', buffer: Buffer.from('修改后的内容') });
+  await expect(page.locator('.knowledge-feedback')).toContainText('已保存到本地');
+  await page.getByLabel('恢复项目资料备份', { exact: true }).setInputFiles(path);
+  await page.getByRole('dialog').getByRole('button', { name: '取消', exact: true }).click();
+  await expect(page.locator('.knowledge-feedback')).toContainText('已取消');
+  await expect(page.locator('.knowledge-preview pre')).toHaveText('修改后的内容');
+  await page.getByLabel('恢复项目资料备份', { exact: true }).setInputFiles(path);
+  await page.getByRole('dialog').getByRole('button', { name: '替换资料', exact: true }).click();
+  await expect(page.locator('.knowledge-feedback')).toContainText('已保存到本地');
+  await expect(page.locator('.knowledge-preview pre')).toHaveText(material);
+  await page.reload();
+  await expect(page.locator('.knowledge-preview pre')).toHaveText(material);
+});
+
 test('全文预览安全，项目隔离，上传替换删除和刷新恢复', async ({ page }) => {
   await load(page);
   await library(page);

@@ -1,0 +1,41 @@
+
+> ai-chatbox-structure-v2.0@1.1.5 test:e2e
+> playwright test e2e/app.spec.js --grep 聊天模型选择器隐藏|设置内部编辑页|会话 ⋮ 菜单：重命名|新建对话守卫|主题 JSON
+
+[WebServer] (node:39655) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 5 tests using 1 worker
+
+(node:39658) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 [chromium] › e2e/app.spec.js:1341:1 › 主题 JSON：更新默认主题、重启恢复并删除自定义变体 (786ms)
+(node:39698) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  2 [chromium] › e2e/app.spec.js:1557:1 › 聊天模型选择器隐藏禁用供应商，但设置中仍显示其状态 (1.1s)
+  ✓  3 [chromium] › e2e/app.spec.js:1773:1 › 设置内部编辑页：离开设置后重新打开供应商时不恢复过期编辑层 (1.0s)
+  ✓  4 [chromium] › e2e/app.spec.js:2117:1 › 会话 ⋮ 菜单：重命名对话框可交互（二级界面修复） (1.4s)
+  ✓  5 [chromium] › e2e/app.spec.js:2145:1 › 新建对话守卫：全新对话上不重复新建 (851ms)
+
+
+  1) [chromium] › e2e/app.spec.js:1341:1 › 主题 JSON：更新默认主题、重启恢复并删除自定义变体 ─────────────────────────────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "#93B259"
+    Received: "#617D43"
+
+      1373 |     icon: getComputedStyle(document.documentElement).getPropertyValue("--icon-btn-ink").trim()
+      1374 |   }));
+    > 1375 |   expect(buttonTokens.send).toBe("#93B259");
+           |                             ^
+      1376 |   expect(buttonTokens.primary).toBe("#93B259");
+      1377 |   expect(buttonTokens.logo).toBe("#93B259");
+      1378 |   expect(buttonTokens.icon).toBe("#73848A");
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/app.spec.js:1375:29
+
+    Error Context: test-results/app-主题-JSON：更新默认主题、重启恢复并删除自定义变体-chromium/error-context.md
+
+  1 failed
+    [chromium] › e2e/app.spec.js:1341:1 › 主题 JSON：更新默认主题、重启恢复并删除自定义变体 ──────────────────────────────
+  4 passed (7.3s)

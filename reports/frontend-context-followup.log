@@ -1,0 +1,23 @@
+
+> ai-chatbox-structure-v2.0@1.1.5 test:e2e
+> playwright test e2e/settings-context.spec.js --grep-invert 视觉
+
+[WebServer] (node:39455) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 10 tests using 1 worker
+
+(node:39458) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [chromium] › e2e/settings-context.spec.js:22:1 › 聊天配置保存、项目空提示词覆盖与继承、重启 (1.3s)
+  ✓   2 [chromium] › e2e/settings-context.spec.js:44:1 › 未保存的跨项目导航会询问，取消保留草稿 (1.2s)
+  ✓   3 [chromium] › e2e/settings-context.spec.js:58:1 › 新请求使用项目配置而非供应商提示词 (545ms)
+  ✓   4 [chromium] › e2e/settings-context.spec.js:72:1 › 达到预算阈值压缩全部已完成历史，保留待发送消息 (625ms)
+  ✓   5 [chromium] › e2e/settings-context.spec.js:86:1 › 压缩失败保留草稿，不发送、不无限重试 (515ms)
+  ✓   6 [chromium] › e2e/settings-context.spec.js:99:1 › 升级默认重置与无密钥备份；模型编辑仅有额度 (788ms)
+  ✓   7 [chromium] › e2e/settings-context.spec.js:115:1 › 设置搜索定位与所有分类无横向溢出 (943ms)
+  ✓   8 [chromium] › e2e/settings-context.spec.js:140:1 › 离开聊天后重新打开上下文页面，项目菜单与能力覆盖可用 (1.1s)
+  ✓   9 [chromium] › e2e/settings-context.spec.js:156:1 › 自动压缩关闭时超预算保留输入，工具栏思考强度可恢复继承 (887ms)
+  ✓  10 [chromium] › e2e/settings-context.spec.js:174:1 › 低于阈值保留全部历史，不因轮数触发压缩 (550ms)
+
+  10 passed (10.1s)

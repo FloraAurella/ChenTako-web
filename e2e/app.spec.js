@@ -58,17 +58,27 @@ test("首次启动引导：展示全新开始、迁移导入与 128 位封套说
   await expect(page.locator("#onboardingStatus")).toContainText("首次启动时使用");
 });
 
+const testSeedRevisions = new WeakMap();
 async function seedAndLoad(page, { state = SEED_STATE, hash = "#/chat", themeId = "" } = {}) {
-  await page.addInitScript(([seedState, seedHash, selectedThemeId]) => {
-    localStorage.setItem("tribblebook-v6-state", JSON.stringify(seedState));
-    if (selectedThemeId) {
+  const revision = (testSeedRevisions.get(page) || 0) + 1;
+  testSeedRevisions.set(page, revision);
+  await page.addInitScript(([seedState, seedHash, selectedThemeId, seedRevision]) => {
+    // Multiple init scripts have unspecified execution order. New fixtures win, while
+    // reload keeps the application's saved state instead of reseeding old settings.
+    if ((window.__appTestSeedRevision || 0) >= seedRevision) return;
+    window.__appTestSeedRevision = seedRevision;
+    if (Number(localStorage.getItem("app-test-seed-revision") || 0) < seedRevision) {
+      localStorage.setItem("app-test-seed-revision", String(seedRevision));
+      localStorage.setItem("tribblebook-v6-state", JSON.stringify({ ...seedState, savedAt: Date.now() }));
+      if (selectedThemeId) {
       localStorage.setItem("tribblebook-ui-preferences-v1", JSON.stringify({
         themeId: selectedThemeId,
         appearanceMode: "light"
       }));
     }
+    }
     location.hash = seedHash;
-  }, [state, hash, themeId]);
+  }, [state, hash, themeId, revision]);
 }
 
 async function mockBackend(page) {
@@ -1562,7 +1572,7 @@ test("聊天模型选择器隐藏禁用供应商，但设置中仍显示其状�
   await expect(page.locator(".runtime-popover .popover-scroll")).not.toContainText("已禁用供应商");
   await page.keyboard.press("Escape");
 
-  await page.locator('.mode-rail [data-nav="settings"]').click();
+  await page.locator('.sidebar-settings').click();
   await page.locator('[data-section="providers"]').click();
   await expect(page.locator('[data-edit-provider="p-disabled"]')).toContainText("已禁用");
 });
@@ -1767,9 +1777,9 @@ test("设置内部编辑页：离开设置后重新打开供应商时不恢复�
   await page.locator(".provider-item").first().click();
   await expect(page.locator("#pf-name")).toBeVisible();
 
-  await page.locator('.mode-rail [data-nav="chat"]').click();
+  await page.locator('.stage-header [data-nav="chat"]').click();
   await expect(page.locator("#page-chat")).toHaveClass(/page-active/);
-  await page.locator('.mode-rail [data-nav="settings"]').click();
+  await page.locator('.sidebar-settings').click();
   await page.locator('[data-section="providers"]').click();
 
   await expect(page.locator(".provider-item")).toHaveCount(1);
@@ -1780,8 +1790,8 @@ test("设置内部编辑页：离开设置后重新打开供应商时不恢复�
   await page.locator('[data-section="tools"]').click();
   await page.locator('[data-extension-new="tool"]').click();
   await expect(page.locator("#extensionSaveBtn")).toBeVisible();
-  await page.locator('.mode-rail [data-nav="chat"]').click();
-  await page.locator('.mode-rail [data-nav="settings"]').click();
+  await page.locator('.stage-header [data-nav="chat"]').click();
+  await page.locator('.sidebar-settings').click();
   await page.locator('[data-section="tools"]').click();
   await expect(page.locator("#extensionSaveBtn")).toHaveCount(0);
   await expect(page.locator("[data-extension-card='tool']")).toBeVisible();
@@ -2109,7 +2119,8 @@ test("会话 ⋮ 菜单：重命名对话框可交互（二级界面修复）", 
   await page.goto("/");
   await page.hover(".conversation-item");
   await page.click('[data-conv-action="menu"]');
-  await expect(page.locator(".menu-popover [data-menu-action]")).toHaveCount(4);
+  await expect(page.getByRole("menuitem", { name: "重命名", exact: true })).toBeVisible();
+  await expect(page.getByRole("menuitem", { name: "移至项目", exact: true })).toBeVisible();
   await page.click('[data-menu-action="rename"]');
   await expect(page.locator(".dialog-backdrop")).toBeVisible();
   // 对话框内可点击、可输入、可确认（pointer-events 修复的直接验证）

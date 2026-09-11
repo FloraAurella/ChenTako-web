@@ -73,6 +73,7 @@ test("项目管理：创建、移动、重命名、删除及刷新保留", async
   await expect(page.locator("#composerInput")).toHaveValue("尚未发送的草稿");
   await expect(page.locator("#composerInput")).toBeFocused();
   await expect(page.locator("#messageList")).toContainText("内容 u");
+  await project(page, "b").locator(".project-row").hover();
   await project(page, "b").locator('[data-project-action="menu"]').click();
   await page.getByRole("menuitem", { name: "重命名项目" }).click();
   await saveName(page, "产品设计新版");
@@ -84,6 +85,7 @@ test("项目管理：创建、移动、重命名、删除及刷新保留", async
   await expect(page.locator("#projectSelectorBtn")).toContainText("选择器新项目");
   await expect(page.locator("#messageList")).toContainText("内容 u");
   const currentProject = page.locator('.sidebar-project').filter({ has: page.locator('.project-toggle', { hasText: "选择器新项目" }) });
+  await currentProject.locator(".project-row").hover();
   await currentProject.locator('[data-project-action="menu"]').click();
   await page.getByRole("menuitem", { name: "删除项目" }).click();
   await expect(page.locator(".dialog-message")).toContainText("全部聊天会保留");
@@ -111,6 +113,7 @@ test("新建继承当前项目、显式跨项目及无项目；草稿和附件�
   await page.locator("#composerInput").fill("项目 A 草稿");
   await page.locator("#attachmentInput").setInputFiles({ name: "note.txt", mimeType: "text/plain", buffer: Buffer.from("待发送附件") });
   await expect(page.locator("#composerChips")).toContainText("note.txt");
+  await project(page, "b").locator(".project-row").hover();
   await project(page, "b").locator('[data-project-action="new-chat"]').click();
   await expect(page.locator("#projectSelectorBtn")).toContainText("产品设计");
   await expect(page.locator("#composerInput")).toHaveValue("");

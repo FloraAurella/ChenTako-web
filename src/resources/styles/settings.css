@@ -184,3 +184,6 @@
   .appearance-mode-option { flex: 1; padding: 9px 6px; }
   .settings-pane .provider-savebar { padding: 16px; }
 }
+
+.settings-group-head { margin:24px 0 16px; }
+.settings-group-head .settings-card-desc { margin:6px 0 0; }

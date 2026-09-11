@@ -1323,7 +1323,7 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
 
   /** 常驻圆环：只改弧线偏移与可访问名称，不重建 SVG。 */
   function composerContextUsage(conversation) {
-    const request = captureRequest(conversation);
+    const request = resolveRequestParts(conversation);
     const { text, pending } = composerPayload();
     const parsed = parseCommandInput(text);
     const draft = (text || pending.length) && parsed.kind !== 'command' ? { role: 'user', content: parsed.text,
@@ -1444,19 +1444,22 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
   }
 
   function captureRequest(conversation, config = resolveChatConfig(state(), conversation)) {
+    return structuredClone(resolveRequestParts(conversation, config));
+  }
+  function resolveRequestParts(conversation, config = resolveChatConfig(state(), conversation)) {
     const provider = conversationProvider(conversation);
     const contexts = (requestContexts?.list() || []).map(entry => {
       try { return entry.capture({ state: state(), conversation }); }
       catch { return { text: '', error: '固定上下文读取失败，请检查项目资料后重试。' }; }
     });
     const fixedContext = contexts.map(entry => entry.text).join('');
-    return structuredClone({
+    return {
       fixedContext, contextErrors: contexts.map(entry => entry.error).filter(Boolean),
       baseSystemPrompt: config.systemPrompt,
       provider, header: providerHeader(conversation), model: conversation.model,
       config: { ...config, systemPrompt: (config.systemPrompt || "") + fixedContext }, projectId: conversation.projectId, extensions: enabledExtensions(state().extensions),
       imageOutput: capabilityOf(conversation, "imageOutput") === true
-    });
+    };
   }
 
   const preparingIds = new Set();

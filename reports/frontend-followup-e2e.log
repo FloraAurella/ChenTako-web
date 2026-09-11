@@ -1,0 +1,54 @@
+
+> ai-chatbox-structure-v2.0@1.1.5 test:e2e
+> playwright test e2e/knowledge.spec.js e2e/commands.spec.js
+
+[WebServer] (node:38988) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 39 tests using 1 worker
+
+(node:38990) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [chromium] › e2e/commands.spec.js:34:1 › 无模型也能使用帮助，未知指令不会发送，附件保留 (666ms)
+  ✓   2 [chromium] › e2e/commands.spec.js:50:1 › 补全、中文搜索、参数选择、恢复跟随配置 (887ms)
+  ✓   3 [chromium] › e2e/commands.spec.js:63:1 › 模型重名要求选择供应商，禁用模型隐藏，快捷参数与按钮一致 (1.4s)
+  ✓   4 [chromium] › e2e/commands.spec.js:81:1 › 部分模型名不会自动执行，无效参数保持输入 (538ms)
+  ✓   5 [chromium] › e2e/commands.spec.js:92:1 › 压缩首次补全不执行，重复请求受阻，新草稿不会被清除 (861ms)
+  ✓   6 [chromium] › e2e/commands.spec.js:108:1 › 空历史保留指令 (442ms)
+  ✓   7 [chromium] › e2e/commands.spec.js:114:1 › 字面量、多行和正文斜杠进入普通消息，指令不进入 Prompt 或标题 (1.0s)
+  ✓   8 [chromium] › e2e/commands.spec.js:130:1 › 生成期间配置修改只影响下一次请求，停止按钮保持原行为 (606ms)
+  ✓   9 [chromium] › e2e/commands.spec.js:148:1 › 输入法确认不会执行指令，关闭和会话切换保留草稿 (547ms)
+  ✓  10 [chromium] › e2e/commands.spec.js:162:3 › 指令面板 light 1280 无溢出且 panel 悬停稳定 (547ms)
+  ✓  11 [chromium] › e2e/commands.spec.js:162:3 › 指令面板 light 1024 无溢出且 panel 悬停稳定 (598ms)
+  ✓  12 [chromium] › e2e/commands.spec.js:162:3 › 指令面板 light 390 无溢出且 panel 悬停稳定 (555ms)
+  ✓  13 [chromium] › e2e/commands.spec.js:162:3 › 指令面板 dark 1280 无溢出且 panel 悬停稳定 (562ms)
+  ✓  14 [chromium] › e2e/commands.spec.js:162:3 › 指令面板 dark 1024 无溢出且 panel 悬停稳定 (583ms)
+  ✓  15 [chromium] › e2e/commands.spec.js:162:3 › 指令面板 dark 390 无溢出且 panel 悬停稳定 (536ms)
+  ✓  16 [chromium] › e2e/commands.spec.js:176:1 › 发送准备时切换按钮模型，自动压缩和随后发送仍使用原请求快照 (1.0s)
+  ✓  17 [chromium] › e2e/commands.spec.js:197:1 › 压缩失败保留指令和附件且不创建普通指令消息 (537ms)
+  ✓  18 [chromium] › e2e/commands.spec.js:208:1 › 异步压缩完成后不修改其他会话草稿 (891ms)
+  ✓  19 [chromium] › e2e/commands.spec.js:220:1 › 参数 Tab 只补全，方向键 Enter 选择，点击外部保留输入 (485ms)
+  ✓  20 [chromium] › e2e/commands.spec.js:236:3 › 空状态 offline 准确引导 (429ms)
+  ✓  21 [chromium] › e2e/commands.spec.js:236:3 › 空状态 unconfigured 准确引导 (405ms)
+  ✓  22 [chromium] › e2e/commands.spec.js:236:3 › 空状态 ready 准确引导 (428ms)
+  ✓  23 [chromium] › e2e/commands.spec.js:244:1 › 重名模型的显式选择列表可按 Enter 确认 (436ms)
+  ✓  24 [chromium] › e2e/commands.spec.js:252:1 › 帮助支持键盘滚动并在 Escape 后恢复输入焦点 (525ms)
+  ✓  25 [chromium] › e2e/commands.spec.js:260:1 › 输入指令时点击停止按钮只停止回复，不执行指令 (562ms)
+{"scheme":"light","minimumContrast":6.367243052544299,"samples":[{"element":"empty-lede","ratio":7.7121110950021645,"size":16},{"element":"composer-hint","ratio":7.381139129902347,"size":12},{"element":"command-option-detail","ratio":6.367243052544299,"size":12},{"element":"command-option-detail","ratio":7.7121110950021645,"size":12},{"element":"command-option-detail","ratio":7.7121110950021645,"size":12},{"element":"command-option-detail","ratio":7.7121110950021645,"size":12},{"element":"command-panel-hint","ratio":7.7121110950021645,"size":12}]}
+  ✓  26 [chromium] › e2e/commands.spec.js:272:3 › 默认 light 辅助文字与选择项对比度至少 4.5 (427ms)
+{"scheme":"dark","minimumContrast":6.096882344009098,"samples":[{"element":"empty-lede","ratio":7.584950914841423,"size":16},{"element":"composer-hint","ratio":8.617882355640903,"size":12},{"element":"command-option-detail","ratio":6.096882344009098,"size":12},{"element":"command-option-detail","ratio":7.584950914841423,"size":12},{"element":"command-option-detail","ratio":7.584950914841423,"size":12},{"element":"command-option-detail","ratio":7.584950914841423,"size":12},{"element":"command-panel-hint","ratio":7.584950914841423,"size":12}]}
+  ✓  27 [chromium] › e2e/commands.spec.js:272:3 › 默认 dark 辅助文字与选择项对比度至少 4.5 (432ms)
+  ✓  28 [chromium] › e2e/knowledge.spec.js:23:1 › 大资料用量刷新不重复编码全文或复制请求，输入保持可用 (573ms)
+  ✓  29 [chromium] › e2e/knowledge.spec.js:48:1 › 资料备份可恢复；取消恢复不改变项目资料 (1.8s)
+  ✓  30 [chromium] › e2e/knowledge.spec.js:67:1 › 全文预览安全，项目隔离，上传替换删除和刷新恢复 (1.2s)
+  ✓  31 [chromium] › e2e/knowledge.spec.js:88:1 › 每次正式请求完整注入，历史压缩请求不含项目资料 (698ms)
+  ✓  32 [chromium] › e2e/knowledge.spec.js:110:38 › 缺失资料阻止发送且草稿保留 (482ms)
+  ✓  33 [chromium] › e2e/knowledge.spec.js:110:38 › 固定资料超预算不发起自动压缩，附件和草稿保留 (514ms)
+  ✓  34 [chromium] › e2e/knowledge.spec.js:122:80 › 资料界面 light 1280 无横向溢出 (591ms)
+  ✓  35 [chromium] › e2e/knowledge.spec.js:122:80 › 资料界面 light 1024 无横向溢出 (781ms)
+  ✓  36 [chromium] › e2e/knowledge.spec.js:122:80 › 资料界面 light 390 无横向溢出 (553ms)
+  ✓  37 [chromium] › e2e/knowledge.spec.js:122:80 › 资料界面 dark 1280 无横向溢出 (577ms)
+  ✓  38 [chromium] › e2e/knowledge.spec.js:122:80 › 资料界面 dark 1024 无横向溢出 (759ms)
+  ✓  39 [chromium] › e2e/knowledge.spec.js:122:80 › 资料界面 dark 390 无横向溢出 (571ms)
+
+  39 passed (27.9s)

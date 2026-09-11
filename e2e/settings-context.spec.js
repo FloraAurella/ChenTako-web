@@ -21,6 +21,8 @@ const save = async (page) => { await page.locator(".context-savebar").getByRole(
 
 test("聊天配置保存、项目空提示词覆盖与继承、重启", async ({ page }) => {
   await load(page, { config: { keepRecentTurns: 6 }, project: { keepRecentTurns: 2 } });
+  await expect(page.getByRole("region", { name: "常用配置", exact: true }).getByLabel("提示词内容", { exact: true })).toBeVisible();
+  await expect(page.getByRole("region", { name: "高级配置", exact: true }).getByLabel("Temperature", { exact: true })).toBeVisible();
   await expect(page.getByText("保留最近轮数", { exact: true })).toHaveCount(0);
   await page.getByLabel("提示词内容", { exact: true }).fill("统一的新提示词");
   await page.getByLabel("Temperature", { exact: true }).fill("0");
@@ -98,7 +100,7 @@ test("升级默认重置与无密钥备份；模型编辑仅有额度", async ({
   await load(page, { legacy: true });
   await expect(page.locator("#cc-systemPrompt")).toHaveValue("");
   await page.locator('[data-section="data"]').click();
-  await page.getByText("查看旧配置", { exact: true }).click();
+  await page.locator(".settings-legacy-details > summary").click();
   await expect(page.locator(".settings-backup")).toContainText("obsolete-provider-prompt");
   await expect(page.locator(".settings-backup")).not.toContainText('"apiKey"');
   await page.locator('[data-section="providers"]').click();
@@ -141,6 +143,7 @@ test("离开聊天后重新打开上下文页面，项目菜单与能力覆盖�
   await save(page);
   await page.evaluate(() => { location.hash = "#/chat"; });
   await expect(page.locator("#composerInput")).toBeVisible();
+  await page.locator('[data-project-id="p"] .project-row').hover();
   await page.locator('[data-project-id="p"] [data-project-action="menu"]').click();
   await page.getByRole("menuitem", { name: "上下文与提示词" }).click();
   await expect(page.locator("#context-scope")).toHaveValue("p");

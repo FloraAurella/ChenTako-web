@@ -1,3 +1,4 @@
+import type { RequestContextContribution } from './request-context';
 import type { CommandContribution } from './commands';
 import type { ComponentType } from 'react';
 import type { SettingsDependencies, SettingsStateBridge } from './settings';
@@ -32,6 +33,7 @@ export interface SlotContribution {
   component: ComponentType<{ store: any }>;
 }
 export interface FrontendContributions {
+  requestContexts: Registry<RequestContextContribution>;
   commands: Registry<CommandContribution>;
   settings: Registry<SettingsContribution>;
   domains: Registry<SettingsDomain>;

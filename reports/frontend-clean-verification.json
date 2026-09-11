@@ -1,0 +1,16 @@
+{
+  "date": "2026-09-12",
+  "environment": "macOS, Node 26.5.0",
+  "isolation": "Fresh temporary directory containing project sources and manifests; no copied node_modules",
+  "installation": "npm ci --ignore-scripts --no-audit --no-fund",
+  "installExitCode": 0,
+  "checks": {
+    "architecture": "passed",
+    "typecheck": "passed",
+    "unitFiles": 41,
+    "unitPassed": 345,
+    "unitFailed": 0,
+    "build": "passed"
+  },
+  "scope": "Frontend only. Electron install scripts, packaging and real backend integration were not executed."
+}

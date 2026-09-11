@@ -47,7 +47,7 @@ export function createApp({
   const closeDrawerIfOverlay = () => {
     if (sidebarQuery.matches && sidebar.drawerOpen) closeDrawer();
   };
-  const chat = contributions.controllers.get("chat").create({ store, theme, dialogs, shell, toast, backendStatusHtml, closeDrawerIfOverlay, commandRegistry: contributions.commands });
+  const chat = contributions.controllers.get("chat").create({ store, theme, dialogs, shell, toast, backendStatusHtml, closeDrawerIfOverlay, commandRegistry: contributions.commands, requestContexts: contributions.requestContexts });
 
   const appEl = root;
   function syncSettingsDetail(route) {

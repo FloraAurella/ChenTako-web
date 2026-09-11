@@ -47,11 +47,22 @@ export function computeContextUsage(conversation, contextWindow, options = null)
     const compression = getValidContextCompression(conversation);
     const messages = getMessagesAfterCompression(conversation).filter((m) => !m.noticeKind);
     const summaryTokens = estimateContextTokens(compression?.compression.summary || "");
-    const inputTokens = estimateContextTokens({ systemPrompt: options.config.systemPrompt, messages, extensions: options.extensions });
+    const fixedContext = options.fixedContext || '';
+    const systemPrompt = options.config.systemPrompt || '';
+    const draft = options.draft || null;
+    const inputTokens = estimateContextTokens({ systemPrompt: systemPrompt + fixedContext, messages: [...messages, ...(draft ? [draft] : [])], extensions: options.extensions });
+    const breakdown = {
+      system: estimateContextTokens(systemPrompt),
+      fixed: estimateContextTokens(fixedContext),
+      history: estimateContextTokens(messages) + summaryTokens,
+      draft: estimateContextTokens(draft),
+      extensions: estimateContextTokens(options.extensions),
+      reserved: options.maxTokens || 0
+    };
     let window = contextWindow;
     try { window = resolveInputBudget({ contextWindow, maxTokens: options.maxTokens }, options.config); } catch { /* Show exhausted budget; preflight supplies the actionable error. */ }
     const used = inputTokens + summaryTokens;
-    return { window, used, remaining: Math.max(0, window - used), percent: Math.min(1, used / window), inputTokens, outputTokens: 0, summaryTokens,
+    return { breakdown, contextErrors: options.contextErrors || [], window, used, remaining: Math.max(0, window - used), percent: Math.min(1, used / window), inputTokens, outputTokens: 0, summaryTokens,
       approximate: true, approximateInput: true, approximateSummary: true, approximateOutput: true,
       compressed: Boolean(compression), compressedCount: compression?.compression.sourceMessageCount || 0 };
   }

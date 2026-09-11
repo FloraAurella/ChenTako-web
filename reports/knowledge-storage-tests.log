@@ -1,0 +1,23 @@
+
+> ai-chatbox-structure-v2.0@1.1.5 test
+> vitest run test/storage.test.js test/knowledge.test.ts
+
+
+ RUN  v3.2.7 /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0
+
+(node:36402) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:36403) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+stderr | test/storage.test.js > createStateArchive > IndexedDB 失败时 store 仍先写入可恢复的轻量设置备份
+[Clawbox] 本地归档写入失败（配置依赖轻量备份恢复） Error: database unavailable
+    at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/test/storage.test.js:121:60
+
+ ✓ test/storage.test.js (24 tests) 32ms
+ ✓ test/knowledge.test.ts (7 tests) 7ms
+
+ Test Files  2 passed (2)
+      Tests  31 passed (31)
+   Start at  06:26:16
+   Duration  1.16s (transform 384ms, setup 10ms, collect 684ms, tests 39ms, environment 704ms, prepare 110ms)
+

@@ -40,6 +40,7 @@ export function createStore() {
     appMode: "chat",
     conversations: [],
     projects: [],
+    projectKnowledge: {},
     chatConfig: { ...CHAT_CONFIG_DEFAULTS },
     modelCompatibility: {},
     settingsSchemaVersion: SETTINGS_SCHEMA_VERSION,
@@ -128,8 +129,11 @@ export function createStore() {
     // 轻量备份不依赖 IndexedDB。先写它，确保 IndexedDB 打开失败或被阻塞时，
     // 设置页的供应商、Tool、Skill 仍能在刷新/重启后恢复。
     // safeStringify 保证循环引用/BigInt 不会让备份通道静默消失。
+    let fullBackupSaved = false;
     try {
       safeStorage.setItem(STORAGE_KEYS.state, safeStringify(buildLightweightPayload(payload)));
+      fullBackupSaved = !safeStorage.isDegraded();
+      if (!fullBackupSaved) throw new Error("轻量备份写入失败");
     } catch {
       // localStorage 写满：降级为空会话骨架，保证基本配置仍可恢复。
       try {
@@ -137,6 +141,7 @@ export function createStore() {
           ...payload,
           lightweight: true,
           degraded: true,
+          projectKnowledge: Object.fromEntries(Object.entries(payload.projectKnowledge || {}).map(([id, files]) => [id, files.map(file => ({ ...file, text: null }))])),
           conversations: []
         }));
       } catch { /* 彻底不可写：IndexedDB 归档仍在下方兜底 */ }
@@ -156,7 +161,7 @@ export function createStore() {
       console.error("[Clawbox] 本地归档写入失败（配置依赖轻量备份恢复）", error);
       notify("archive-error");
     }
-    return !archiveFailed || !safeStorage.isDegraded();
+    return !archiveFailed || fullBackupSaved;
   }
 
   function persistSoon() {
@@ -244,6 +249,7 @@ export function createStore() {
     if (persisted) {
       state.conversations = sortConversations(persisted.conversations);
       state.projects = persisted.projects;
+      state.projectKnowledge = persisted.projectKnowledge;
       state.chatConfig = persisted.chatConfig;
       state.modelCompatibility = persisted.modelCompatibility;
       state.legacySettingsBackup = persisted.legacySettingsBackup;

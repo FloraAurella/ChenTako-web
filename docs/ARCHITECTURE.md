@@ -4,7 +4,7 @@
 
 这是 Clawbox 前端的源码重构，保留现有业务行为及兼容格式。`package.json` 使用项目名称 `ai-chatbox-structure-v2.0`；界面品牌、归档格式、浏览器存储键、Electron `window.clawbox` 桥与 HTTP 协议仍保持兼容。原 Clawbox 目录没有改动。
 
-本阶段没有接入新的项目知识库、四协议后端、SQLite 或 Agent 权限系统。知识库全文注入与历史压缩隔离应作为后续模块实施，不能把目录拆分误认为这些功能已经实现。
+已接入前端项目知识库，经请求上下文贡献组合到现有 chatConfig.systemPrompt；历史压缩请求不携带项目资料。四协议后端、SQLite 和 Agent 权限系统不在本轮范围。模拟 HTTP 验证不等于真实后端联调。
 
 ## 目录职责
 
@@ -15,6 +15,7 @@
 | `src/contracts` | 既有序列化模型、规范化规则、设置和贡献类型 |
 | `src/modules/commands` | 独立指令解析、补全、执行协调与帮助；业务能力由注册贡献和注入上下文提供 |
 | `src/modules/chat` | 聊天页面、消息与分支、流处理、消息状态操作、查询和呈现 |
+| `src/modules/knowledge` | UTF-8 文件、项目资料保存、预览与备份，注册全文请求上下文贡献 |
 | `src/modules/projects` | 项目模型、项目状态操作、菜单动作、项目选择器 |
 | `src/modules/connections` | 供应商与模型、API 适配、连接设置、后端状态同步 |
 | `src/modules/context` | 提示词、上下文预算、压缩策略和配置编辑 |
@@ -81,3 +82,9 @@ npm run test:e2e
 ## 指令系统扩展
 
 `FrontendContributions.commands` 注册指令。commands 模块负责解析、键盘及面板，chat 模块声明模型、强度和压缩操作，App 注入注册表。`contracts/commands.ts` 定义可用性检查、参数选项、执行结果和业务上下文。聊天按钮与指令共用运行配置服务；请求级快照隔离发送准备、自动压缩和配置变更。详见 [指令说明](COMMANDS.md)。
+
+## 固定请求上下文
+
+`FrontendContributions.requestContexts` 由 App 注入聊天控制器。每个贡献以同步 `capture` 返回完整文本或可处理错误；捕获发生在发送准备之前。聊天业务只消费通用贡献，不导入知识库私有文件。配置快照固定系统提示词与资料，最终聊天通过既有 `chatConfig.systemPrompt` 传递；压缩仍只接收历史、摘要、供应商及模型。固定部分超预算时不尝试压缩。
+
+`projectKnowledge` 是 App 持久化组合中的新增可选字段，内容规范化归知识库模块所有，按项目 ID 隔离。完整 IndexedDB 和 localStorage 备份均保留正文；空间不足的降级骨架仅保留明确的缺失标记，读取时不得用旧正文冒充新资料。关闭源码装配中的 knowledge 模块仅移除其贡献，不删除持久化资料。

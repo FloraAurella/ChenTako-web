@@ -4,7 +4,7 @@
 
 使用 React、Vite 和 TypeScript，同时保留部分 JavaScript 实现。本目录只包含前端，不包含原后端和 Electron 主进程。界面品牌、浏览器存储键、归档格式、HTTP 协议及 `window.clawbox` 桌面桥仍保留兼容约定。
 
-项目知识库的“每次请求全文携带、不参与历史压缩”、新的 Agent 权限系统及新的业务数据库尚未实现。下文的 `resources/` 是界面资源库，不是用户上传资料的项目知识库。
+项目知识库已实现前端上传、全文携带、压缩隔离和本地备份；真实后端联调、新的 Agent 权限系统及新的业务数据库尚未实施。下文的 `resources/` 是界面资源库，不是用户上传资料的项目知识库。
 
 ## 本地启动
 
@@ -25,6 +25,12 @@ npm run preview -- --host 127.0.0.1 --port 5188
 ```
 
 构建结果写入 `dist/`，包含主页面和引导页面。预览前需停止占用同一端口的开发服务。生产静态服务器需要自行配置 `/api` 反向代理；当前 Vite 配置只在开发服务器中声明了该代理。
+
+## 项目资料入口
+
+聊天输入区上方的“项目知识库”，或设置中的“项目知识库”，可管理项目资料。UTF-8 文本、Markdown 和代码保留全文；单文件 1 MiB、每项目 8 MiB / 64 份。支持预览、替换、删除、独立资料备份和恢复。详情见 [项目知识库](docs/KNOWLEDGE.md)。
+
+安装使用锁文件，前端开发可加 `--ignore-scripts` 避免执行未使用的桌面安装脚本；本轮不提供 Electron 打包。独立安装验证结果见 [前端阶段验证](docs/FRONTEND_VALIDATION.md)。
 
 ## 指令入口
 
@@ -99,7 +105,7 @@ v2.0/
 
 ### `src/contracts/`：公共契约与兼容数据
 
-`constants.js` 保存兼容常量，`normalize.js` 规范化旧数据，`settings.ts` 定义设置相关类型，`contributions.ts` 定义模块注册的页面、设置、服务等贡献接口。
+`constants.js` 保存兼容常量，`normalize.js` 规范化旧数据，`settings.ts` 定义设置相关类型，`contributions.ts` 定义模块注册的页面、设置、服务等贡献接口，`request-context.ts` 定义请求准备阶段捕获固定全文的契约。
 
 `normalize.js` 会通过公开接口调用业务模块的规范化函数，因此这一层是兼容契约层，不能等同于完全不依赖业务的 `core/`。
 
@@ -120,6 +126,7 @@ v2.0/
 
 | 模块 | 功能范围 | 当前子目录如何分工 |
 |---|---|---|
+| [knowledge/](src/modules/knowledge/) | 项目资料全文上下文及本地管理 | `domain/`：文件读取、校验、完整文本捕获和备份；`services/`：唯一资料保存操作；`ui/`：资料详情与聊天状态；`public/`：持久化规范化与模块入口；`module.tsx`：注册设置、插槽和请求上下文 |
 | [commands/](src/modules/commands/) | 独立斜杠指令系统：补全、参数选择、执行协调和帮助 | `domain/`：输入解析；`services/`：键盘、面板、执行与草稿隔离；`ui/`：共享模板组成的指令面板；`public/`：公开接口；`module.ts`：注册帮助指令 |
 | [chat/](src/modules/chat/) | 聊天页面、历史会话、消息分支、发送与流式展示 | `domain/`：会话树与查询；`services/`：会话操作、消息渲染、流图片和运行事件；`state/`：消息与流状态操作；`stream/`：流协议、SSE 传输、会话、调度与注册；`ui/`：聊天区、历史和消息列表；`public/`：公开接口 |
 | [projects/](src/modules/projects/) | 项目创建、重命名、删除与选择 | `domain/`：项目模型；`services/`：项目操作；`state/`：项目状态变更；`ui/`：项目选择器；`public/`：公开接口 |
@@ -138,7 +145,7 @@ v2.0/
 
 跨模块调用必须经过对方的 `public/` 或注入的契约，不能直接引用对方的 `services/`、`ui/` 等私有文件。模块也不能反向导入 `app/`。
 
-当前必要模块为 `commands`、`chat`、`settings`、`appearance`、`connections`、`context`、`projects`。可选模块 `extensions`、`data` 可以在启动前关闭：
+当前必要模块为 `commands`、`chat`、`settings`、`appearance`、`connections`、`context`、`projects`。可选模块 `extensions`、`data`、`knowledge` 可以在启动前关闭：
 
 ```bash
 VITE_DISABLED_MODULES=extensions,data npm run dev -- --port 5188 --strictPort
@@ -180,6 +187,8 @@ VITE_DISABLED_MODULES=extensions,data npm run dev -- --port 5188 --strictPort
 样式入口是 `styles/index.css`，主应用经 `app/styles/main.css` 导入；引导入口另外加载 `styles/onboarding.css`。调整颜色、间距、圆角等先查看 `styles/tokens.css`，共享控件规则查看 `styles/primitives.css`。主题编辑、校验和持久化属于 `modules/appearance/`，界面资源定义属于这里。
 
 ## 文档、示例、脚本和测试目录
+
+当前开发约束见 [AGENTS.md](AGENTS.md)；本轮工作清单见 [前端完成计划](docs/FRONTEND_COMPLETION_PLAN.md)。项目资料的使用与限制见 [知识库说明](docs/KNOWLEDGE.md)，本次测试结果见 [前端阶段验证](docs/FRONTEND_VALIDATION.md)。
 
 ### `docs/`：设计与实施记录
 
@@ -254,7 +263,7 @@ VITE_DISABLED_MODULES=extensions,data npm run dev -- --port 5188 --strictPort
 | 全局颜色、字体、间距与主题 | `src/resources/`、`src/modules/appearance/` |
 | 新增设置分类或功能页面 | 对应模块的 `module.tsx` 与 `public/`，以及 `src/app/composition.ts` |
 | 数据保存、导入导出兼容 | `src/app/state/`、`src/contracts/`、`src/modules/data/` |
-| 新增项目知识库 | 先定义独立模块、公开契约和请求集成方式；当前没有该功能目录 |
+| 项目知识库 | `src/modules/knowledge/`；经 `requestContexts` 注册贡献，App 连接持久化和聊天控制器 |
 
 修改前阅读 [AGENTS.md](AGENTS.md) 和 [架构约定](docs/ARCHITECTURE.md)。保持原有存储键、DOM 契约和外部接口兼容；新增模块按归属注册功能，复用共享组件，并根据改动范围选择验证。
 

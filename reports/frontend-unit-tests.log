@@ -1,0 +1,345 @@
+
+> ai-chatbox-structure-v2.0@1.1.5 test
+> vitest run
+
+
+ RUN  v3.2.7 /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0
+
+(node:35744) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:35747) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:35749) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:35748) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:35746) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:35750) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:35745) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+stderr | test/command-composer.test.ts > generic command composer coordination > uses registered actions without feature-specific routing
+An update to Root inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | test/command-composer.test.ts > generic command composer coordination > uses registered actions without feature-specific routing
+An update to Root inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | test/command-composer.test.ts > generic command composer coordination > does not clear a newer input even if the original text is typed again
+An update to Root inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to Root inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | test/command-composer.test.ts > generic command composer coordination > does not clear a newer input even if the original text is typed again
+An update to Root inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | test/command-composer.test.ts > generic command composer coordination > does not display or clear results in another conversation
+An update to Root inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | test/command-composer.test.ts > generic command composer coordination > does not display or clear results in another conversation
+An update to Root inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ test/normalize.test.js (36 tests) 79ms
+stderr | test/command-composer.test.ts > generic command composer coordination > handles exceptions without leaking text into ordinary submission
+An update to Root inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | test/command-composer.test.ts > generic command composer coordination > handles exceptions without leaking text into ordinary submission
+An update to Root inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | test/command-composer.test.ts > generic command composer coordination > marks unavailable commands without invoking their action
+An update to Root inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | test/command-composer.test.ts > generic command composer coordination > marks unavailable commands without invoking their action
+An update to Root inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ test/stream-engine.test.ts (13 tests) 64ms
+ ✓ test/toast-system.test.tsx (3 tests) 42ms
+stderr | test/command-composer.test.ts > generic command composer coordination > preserves explicit selection identity and rejects it after navigation
+An update to Root inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | test/command-composer.test.ts > generic command composer coordination > preserves explicit selection identity and rejects it after navigation
+An update to Root inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | test/command-composer.test.ts > generic command composer coordination > preserves explicit selection identity and rejects it after navigation
+An update to Root inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | test/command-composer.test.ts > does not clear a restored command after switching away and back during execution
+An update to Root inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | test/command-composer.test.ts > ignores late results and removes listeners and panel on dispose
+An update to Root inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+stderr | test/command-composer.test.ts > ignores late results and removes listeners and panel on dispose
+An update to Root inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ ✓ test/command-composer.test.ts (8 tests) 62ms
+ ✓ test/dialogs.test.tsx (4 tests) 113ms
+stderr | test/storage.test.js > createStateArchive > IndexedDB 失败时 store 仍先写入可恢复的轻量设置备份
+[Clawbox] 本地归档写入失败（配置依赖轻量备份恢复） Error: database unavailable
+    at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/test/storage.test.js:121:60
+
+ ✓ test/storage.test.js (23 tests) 74ms
+(node:35766) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:35763) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:35764) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:35765) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+stderr | test/user-theme.test.js > 用户主题本机持久化 > 启动恢复注册有效条目，损坏条目被跳过
+[Clawbox Theme] 无法恢复自定义主题 broken：format 必须是 "clawbox-theme"；version 必须是 1 或 2；name（主题名字）必填；colors（各模块颜色）必填
+
+ ✓ test/user-theme.test.js (31 tests) 10ms
+ ✓ test/skill-package.test.js (4 tests) 18ms
+(node:35771) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ test/stream-images.test.ts (3 tests) 23ms
+ ✓ test/chat-config.test.js (12 tests) 24ms
+ ✓ test/tokens-consistency.test.js (6 tests) 17ms
+(node:35773) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ test/projects.test.js (5 tests) 32ms
+(node:35775) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:35777) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:35776) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ test/seed.test.js (14 tests) 5ms
+ ✓ test/archive.test.js (9 tests) 11ms
+(node:35780) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:35778) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ test/provider-key-vault.test.ts (2 tests) 9ms
+ ✓ test/context-service.test.ts (3 tests) 5ms
+ ✓ test/react-shell.test.tsx (2 tests) 139ms
+(node:35785) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ test/commands.test.ts (23 tests) 9ms
+ ✓ test/adapters.test.js (12 tests) 17ms
+(node:35787) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:35788) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:35789) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:35790) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ test/markdown.test.js (16 tests) 8ms
+ ✓ test/message-rendering.test.js (7 tests) 7ms
+ ✓ test/runtime-events.test.js (7 tests) 8ms
+(node:35795) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ test/knowledge.test.ts (7 tests) 9ms
+(node:35798) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:35797) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ test/extensions.test.js (5 tests) 19ms
+ ✓ test/theme-archive.test.js (6 tests) 9ms
+ ✓ test/module-runtime.test.ts (7 tests) 7ms
+(node:35801) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:35802) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:35803) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ test/surface-appearance.test.js (4 tests) 5ms
+ ✓ test/conversation-tree.test.js (8 tests) 6ms
+ ✓ test/theme.test.js (16 tests) 11ms
+(node:35807) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ test/store-subscriptions.test.ts (3 tests) 5ms
+(node:35809) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ test/theme-package.test.js (7 tests) 9ms
+(node:35810) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:35813) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ test/logo-shapes.test.js (6 tests) 3ms
+ ✓ test/chat-attachments.test.js (4 tests) 3ms
+(node:35815) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ test/context-usage.test.js (8 tests) 3ms
+(node:35816) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ test/theme-loading.test.js (2 tests) 3ms
+(node:35817) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ test/provider-models.test.js (5 tests) 3ms
+(node:35821) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ test/changelog.test.js (4 tests) 9ms
+(node:35822) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:35824) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ test/project-actions.test.js (1 test) 3ms
+(node:35826) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ test/popover-markup.test.js (3 tests) 4ms
+ ✓ test/relative-days.test.js (2 tests) 2ms
+(node:35829) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ test/theme-card.test.tsx (3 tests) 2ms
+
+ Test Files  41 passed (41)
+      Tests  344 passed (344)
+   Start at  06:22:20
+   Duration  4.21s (transform 1.33s, setup 151ms, collect 4.47s, tests 888ms, environment 13.48s, prepare 2.12s)
+

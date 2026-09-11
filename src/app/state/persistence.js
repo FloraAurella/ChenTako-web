@@ -1,3 +1,4 @@
+import { normalizeLibraries } from '../../modules/knowledge/public/library';
 import { createSafeStorage } from "../../shared/storage/safe-storage.js";
 "use strict";
 
@@ -191,6 +192,7 @@ function normalizePayloadShape(payload) {
     version: APP_VERSION,
     ...settings,
     projects,
+    projectKnowledge: normalizeLibraries(source.projectKnowledge, projects),
     projectSidebar: normalizeProjectSidebar(source.projectSidebar),
     conversations,
     providers,
@@ -238,7 +240,8 @@ export async function loadPersistedState() {
 
   // 双通道都有数据：savedAt 较新者胜出（并列时 IDB 优先，其记录更完整）。
   if (idbPayload && (!lsPayload || idbTime >= lsTime)) {
-    try { return normalize(idbPayload); } catch { /* IDB 记录损坏：尝试本地备份 */ }
+    try { return normalize(lsPayload?.degraded && Number(lsPayload.savedAt) > idbTime
+      ? { ...idbPayload, projects: lsPayload.projects, projectKnowledge: lsPayload.projectKnowledge } : idbPayload); } catch { /* IDB 记录损坏：尝试本地备份 */ }
   }
   if (lsPayload) {
     try { return normalize(lsPayload); } catch { /* 本地备份损坏 */ }
@@ -289,6 +292,7 @@ export function buildPersistentPayload(state) {
     modelCompatibility: normalizeCompatibility(state.modelCompatibility),
     legacySettingsBackup: state.legacySettingsBackup || null,
     projects: normalizeProjects(state.projects),
+    projectKnowledge: normalizeLibraries(state.projectKnowledge, state.projects),
     projectSidebar: normalizeProjectSidebar(state.sidebar),
     conversations,
     providers: state.providers.map((provider) => ({ ...provider })),

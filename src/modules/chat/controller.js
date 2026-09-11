@@ -113,7 +113,7 @@ function streamMetric(name, amount = 1) {
   if (metrics) metrics[name] = Number(metrics[name] || 0) + amount;
 }
 
-export function createChatController({ store, theme, dialogs, shell, toast, backendStatusHtml, closeDrawerIfOverlay, commandRegistry }) {
+export function createChatController({ store, theme, dialogs, shell, toast, backendStatusHtml, closeDrawerIfOverlay, commandRegistry, requestContexts }) {
   const scope = new Scope();
   const page = shell.pageChat;
   let els = null;
@@ -1322,10 +1322,22 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
   }
 
   /** 常驻圆环：只改弧线偏移与可访问名称，不重建 SVG。 */
+  function composerContextUsage(conversation) {
+    const request = captureRequest(conversation);
+    const { text, pending } = composerPayload();
+    const parsed = parseCommandInput(text);
+    const draft = (text || pending.length) && parsed.kind !== 'command' ? { role: 'user', content: parsed.text,
+      files: pending.filter(item => item.kind === 'file').map(item => ({ name: item.name, text: item.text })),
+      parts: pending.filter(item => item.kind !== 'file').map(item => ({ type: item.kind === 'image' ? 'image' : 'file', source: item.source, size: item.size })) } : null;
+    return computeContextUsage(conversation, contextWindowOf(conversation), { config: { ...request.config, systemPrompt: request.baseSystemPrompt },
+      fixedContext: request.fixedContext, contextErrors: request.contextErrors, draft,
+      maxTokens: resolveEffectiveModelConfig(request.provider, request.model).maxTokens, extensions: request.extensions });
+  }
+
   function refreshContextRing() {
     if (!els || !els.usageRing) return;
     const conversation = activeConversation();
-    const usage = conversation ? computeContextUsage(conversation, contextWindowOf(conversation), { config: resolveChatConfig(state(), conversation), maxTokens: resolveEffectiveModelConfig(conversationProvider(conversation), conversation.model).maxTokens, extensions: enabledExtensions(state().extensions) }) : null;
+    const usage = conversation ? composerContextUsage(conversation) : null;
     const percent = usage ? usage.percent : 0;
     els.usageRing.style.strokeDashoffset = String(100 - percent * 100);
     const percentText = Math.round(percent * 100);
@@ -1335,6 +1347,7 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
     els.usageBtn.setAttribute("aria-busy", isCompressing ? "true" : "false");
     els.usageBtn.classList.toggle("is-compressing", isCompressing);
     if (contextTooltipEl && contextTooltipEl.classList.contains("is-open") && usage) {
+      contextTooltipEl.innerHTML = contextTooltipLinesMarkup(usage);
       const percentLine = contextTooltipEl.querySelector("[data-tooltip-percent]");
       const windowLine = contextTooltipEl.querySelector("[data-tooltip-window]");
       if (percentLine) percentLine.textContent = `${percentText}% 已用`;
@@ -1432,16 +1445,23 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
 
   function captureRequest(conversation, config = resolveChatConfig(state(), conversation)) {
     const provider = conversationProvider(conversation);
+    const contexts = (requestContexts?.list() || []).map(entry => {
+      try { return entry.capture({ state: state(), conversation }); }
+      catch { return { text: '', error: '固定上下文读取失败，请检查项目资料后重试。' }; }
+    });
+    const fixedContext = contexts.map(entry => entry.text).join('');
     return structuredClone({
+      fixedContext, contextErrors: contexts.map(entry => entry.error).filter(Boolean),
+      baseSystemPrompt: config.systemPrompt,
       provider, header: providerHeader(conversation), model: conversation.model,
-      config, projectId: conversation.projectId, extensions: enabledExtensions(state().extensions),
+      config: { ...config, systemPrompt: (config.systemPrompt || "") + fixedContext }, projectId: conversation.projectId, extensions: enabledExtensions(state().extensions),
       imageOutput: capabilityOf(conversation, "imageOutput") === true
     });
   }
 
   const preparingIds = new Set();
   function contextEstimate(conversation, config, extra = null, request = captureRequest(conversation, config)) {
-    return estimateContextTokens({ systemPrompt: config.systemPrompt,
+    return estimateContextTokens({ systemPrompt: request.config.systemPrompt,
       contextSummary: getValidContextCompression(conversation)?.compression.summary || "",
       messages: [...requestMessages(conversation), ...(extra ? [extra] : [])],
       extensions: request.extensions });
@@ -1455,6 +1475,10 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
       const provider = request.provider;
       if (!provider || provider.enabled === false || !provider.models.includes(request.model)) throw new Error("请选择可用模型后重试。");
       const budget = resolveInputBudget(resolveEffectiveModelConfig(provider, request.model), config);
+      if (request.contextErrors.length) throw new Error(request.contextErrors.join(' '));
+      const pending = extra || requestMessages(conversation).filter(message => message.role === 'user').at(-1);
+      const fixed = estimateContextTokens({ systemPrompt: request.config.systemPrompt, messages: pending ? [pending] : [], extensions: request.extensions });
+      if (fixed > budget) throw new Error('固定资料、系统提示词与本次输入已超过输入预算；请精简资料或调整预算。资料不会被压缩或截断。');
       const used = contextEstimate(conversation, config, extra, request);
       if (config.autoCompress && used >= budget * config.compressionThreshold / 100) {
         const prefix = compressionPrefix(getMessagesAfterCompression(conversation), !extra);
@@ -2201,7 +2225,7 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
     if (!els || popovers.current) return; // 任何浮层打开期间不叠加 tooltip
     const conversation = activeConversation();
     if (!conversation || !els.usageBtn || !els.usageBtn.isConnected) return;
-    const usage = computeContextUsage(conversation, contextWindowOf(conversation), { config: resolveChatConfig(state(), conversation), maxTokens: resolveEffectiveModelConfig(conversationProvider(conversation), conversation.model).maxTokens, extensions: enabledExtensions(state().extensions) });
+    const usage = composerContextUsage(conversation);
     if (!contextTooltipEl || !contextTooltipEl.isConnected) {
       contextTooltipEl = document.createElement("div");
       contextTooltipEl.id = "contextTooltip";

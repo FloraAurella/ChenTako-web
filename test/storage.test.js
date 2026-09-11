@@ -409,6 +409,19 @@ describe("loadPersistedState", () => {
     localStorage.clear();
   });
 
+  it("较新资料备份缺失正文时不得偷偷恢复旧正文", async () => {
+    vi.stubGlobal("IDBKeyRange", {});
+    vi.stubGlobal("indexedDB", new IDBFactory());
+    const archive = createStateArchive();
+    const projects = [{ id: "p", name: "项目" }];
+    await archive.save({ savedAt: 100, projects, projectKnowledge: { p: [{ id: "f", name: "旧资料", text: "已过期正文" }] }, conversations: [], providers: [] });
+    localStorage.setItem(STORAGE_KEYS.state, JSON.stringify({ savedAt: 200, degraded: true, projects, projectKnowledge: { p: [{ id: "f", name: "新资料", text: null }] }, conversations: [] }));
+    const loaded = await loadPersistedState();
+    expect(loaded.projectKnowledge.p[0].name).toBe("新资料");
+    expect(loaded.projectKnowledge.p[0].text).toBeNull();
+    localStorage.clear();
+  });
+
   it("localStorage 降级骨架较新时仍让位于完整 IDB 归档", async () => {
     vi.stubGlobal("IDBKeyRange", {});
     vi.stubGlobal("indexedDB", new IDBFactory());

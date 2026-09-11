@@ -1,0 +1,448 @@
+/* ============================================================
+   Clawbox · 壳层 —— 单侧栏与阅读工作区
+   archive 288 / settingsIndex 264 / toolbar 64
+   工具栏和侧栏沿用主题的表面层次，正文保持开放式阅读面。
+   ============================================================ */
+
+.app-shell {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: var(--archive-w) minmax(0, 1fr);
+  overflow: hidden;
+  transition: grid-template-columns var(--motion-sidebar) var(--ease-out);
+  height: 100vh;
+  height: 100dvh;
+}
+
+/* Electron 拖动带：悬于顶部，不拦截点击（app 区域自身可拖动） */
+.window-drag-band {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 34px;
+  z-index: 60;
+  -webkit-app-region: drag;
+  pointer-events: none;
+  display: none;
+}
+
+body.desktop-embed .window-drag-band {
+  display: block;
+}
+
+/* 单一侧栏承载品牌、对话和设置，桌面交通灯单独留出拖动空间。 */
+body.desktop-embed .drawer-head {
+  padding-top: 44px;
+}
+body.desktop-embed .stage-header {
+  padding-top: 30px;
+  min-height: 86px;
+}
+body.desktop-embed .stage {
+  --stage-top: 86px;
+}
+
+.drawer-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+.rail-brand {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  color: var(--brand-logo);
+  flex: none;
+}
+.sidebar-footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-top: 1px solid var(--separator);
+}
+.sidebar-settings {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  color: var(--label-secondary);
+}
+.stage-trailing {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.stage-trailing .focus-settings {
+  display: none;
+}
+.app-shell[data-archives="collapsed"] .focus-settings,
+.app-shell[data-archives="rail"] .focus-settings {
+  display: inline-flex;
+}
+
+/* ---------------- 归档抽屉（侧栏 = 目录页） ---------------- */
+
+.archive-drawer {
+  width: var(--archive-w);
+  min-width: 0;
+  overflow: hidden;
+  visibility: visible;
+  transition: transform var(--motion-sidebar) var(--ease-out), opacity var(--motion-sidebar) var(--ease-out), visibility 0s;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border-right: 1px solid var(--separator);
+  background: color-mix(in srgb, var(--paper-subtle) 55%, var(--canvas-mid));
+}
+
+.drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 18px 16px 10px;
+}
+
+.drawer-title {
+  font-family: var(--font-ui);
+  font-size: var(--size-title-sm);
+  line-height: var(--lh-title-sm);
+  letter-spacing: var(--ls-title-sm);
+  font-weight: 600;
+}
+
+.drawer-tools {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.drawer-search {
+  padding: 4px 16px 8px;
+}
+
+.drawer-filter {
+  display: flex;
+  gap: 4px;
+  padding: 2px 16px 10px;
+  border-bottom: 1px solid var(--separator);
+}
+
+.filter-chip {
+  flex: 1;
+  padding: 5px 10px;
+  border-radius: var(--radius-capsule);
+  font-size: var(--size-caption);
+  line-height: var(--lh-caption);
+  letter-spacing: var(--ls-caption);
+  font-weight: 500;
+  color: var(--label-secondary);
+  transition: background var(--motion-quick) var(--ease-out), color var(--motion-quick) var(--ease-out);
+}
+
+.filter-chip:hover {
+  background: var(--context-soft);
+  color: var(--label);
+}
+
+.filter-chip[aria-pressed="true"] {
+  background: var(--fill-selected);
+  color: var(--context);
+}
+
+.conversation-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 10px 10px 16px;
+}
+
+/* 会话分组标签（熟叶绿 mono 分组：今天 / 昨天 / 更早） */
+.list-group {
+  margin-bottom: 8px;
+}
+
+.group-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 8px 6px;
+  font-family: var(--font-mono);
+  font-size: var(--size-eyebrow);
+  line-height: var(--lh-eyebrow);
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--label-secondary);
+  user-select: none;
+}
+
+.group-label::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--separator);
+}
+
+.group-count {
+  font-variant-numeric: tabular-nums;
+  color: var(--label-tertiary);
+}
+
+/* ---------------- 舞台 ---------------- */
+
+.stage {
+  grid-column: 2;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  --stage-top: var(--toolbar-h);
+}
+
+/* 工具栏与其它表面共用对比度/透景材质。 */
+.stage-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: var(--stage-top);
+  padding: 0 20px;
+  border-bottom: 1px solid var(--separator);
+  background: var(--appearance-panel-bg, var(--surface-content));
+  backdrop-filter: var(--appearance-backdrop-filter, none);
+  -webkit-backdrop-filter: var(--appearance-backdrop-filter, none);
+  flex: none;
+}
+
+.stage-leading {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+/* 抽屉开关：折叠断点以下、或桌面收回态时出现 */
+#drawerToggleBtn {
+  display: none;
+}
+
+@media (max-width: 1040px) {
+  #drawerToggleBtn {
+    display: inline-flex;
+  }
+}
+
+.app-shell[data-archives="collapsed"] #drawerToggleBtn {
+  display: inline-flex;
+}
+
+/* 桌面收回态：抽屉完全隐藏，舞台占满 */
+.app-shell[data-archives="collapsed"] {
+  grid-template-columns: 0px minmax(0, 1fr);
+}
+
+.app-shell[data-archives="collapsed"] .archive-drawer {
+  transform: translateX(-100%);
+  opacity: 0;
+  visibility: hidden;
+  transition-delay: 0s, 0s, var(--motion-sidebar);
+}
+
+.stage-heading {
+  min-width: 0;
+}
+
+.stage-title {
+  font-family: var(--font-ui);
+  font-size: var(--size-title-sm);
+  line-height: 1.25;
+  letter-spacing: var(--ls-title-sm);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stage-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+}
+
+/* 舞台主体让位给悬浮工具栏（内容滚过磨砂层之下） */
+.stage-body {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  padding-top: var(--stage-top);
+}
+
+.page {
+  display: none;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+}
+
+.page.page-active {
+  display: flex;
+}
+
+/* ---------------- 移动端底部导航 ---------------- */
+
+.mobile-nav {
+  display: none;
+}
+
+/* ---------------- 浮层宿主 ---------------- */
+
+#popoverHost {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+}
+
+.popover-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.popover-layer .popover-card {
+  pointer-events: auto;
+}
+
+.popover-scrim {
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  pointer-events: auto;
+}
+
+.popover-layer[data-scrim="off"] .popover-scrim {
+  pointer-events: none;
+}
+
+/* 归档抽屉遮罩：> 1040 的三栏布局下隐藏（不参与网格），
+   断点内由 responsive.css 打开 */
+.drawer-scrim {
+  display: none;
+}
+
+#modalHost {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  pointer-events: none;
+}
+
+#lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  display: none;
+}
+
+#lightbox.lightbox-open {
+  display: grid;
+  place-items: center;
+}
+
+/* 折叠改变实际可用宽度，因此只在这个布局边界上过渡网格轨道；文本不缩放。 */
+@media (prefers-reduced-motion: reduce) {
+  .app-shell { transition: none; }
+  .archive-drawer, .drawer-scrim { transition: opacity 100ms var(--ease-out); }
+}
+body.prefers-reduced-motion .app-shell,
+body.prefers-reduced-motion .archive-drawer,
+body.prefers-reduced-motion .drawer-scrim { transition: none; }
+
+.app-shell[data-show-archives="false"] .stage { grid-column: 1; }
+
+/* Expanded directory and compact shortcuts share the same left-hand surface. */
+:root { --compact-rail-w: 56px; }
+.compact-rail {
+  position: absolute;
+  inset: 0 auto 0 0;
+  z-index: 4;
+  width: var(--compact-rail-w);
+  padding: 18px 8px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  background: var(--paper-subtle);
+  border-right: 1px solid var(--separator);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--motion-sidebar) var(--ease-out), visibility 0s var(--motion-sidebar);
+}
+.rail-spacer { flex: 1; }
+.app-shell[data-archives="collapsed"] { grid-template-columns: var(--compact-rail-w) minmax(0, 1fr); }
+.app-shell[data-archives="collapsed"] .compact-rail,
+.app-shell[data-archives="rail"] .compact-rail {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
+}
+.compact-rail[inert] { opacity: 0; visibility: hidden; pointer-events: none; }
+.app-shell[data-show-archives="false"] .compact-rail { display: none; }
+.archive-drawer { background: var(--paper-subtle); }
+.sidebar-new {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  margin: 14px 16px 18px;
+  border: 1px solid var(--separator);
+  border-radius: var(--radius-md);
+  background: var(--surface-content);
+  color: var(--label);
+}
+.sidebar-list-heading { display: flex; align-items: center; padding: 0 16px 6px; color: var(--label-secondary); font-size: 13px; }
+.sidebar-list-heading > span { flex: 1; }
+.sidebar-list-heading .icon-btn { width: 30px; height: 30px; }
+.sidebar-footer { padding: 10px; border-top: 0; gap: 4px; }
+.sidebar-settings { flex: 1; padding: 12px; border-radius: var(--radius-sm); color: var(--label); transition: background var(--motion-quick) var(--ease-out); }
+.drawer-filter { border: 0; }
+.filter-chip { border-radius: var(--radius-sm); }
+.filter-chip[aria-pressed="true"] { color: var(--label); }
+.group-label { font-family: var(--font-ui); letter-spacing: 0; }
+.group-label::after { display: none; }
+body.desktop-embed .compact-rail { padding-top: 44px; }
+@media (hover: hover) and (pointer: fine) {
+  .sidebar-settings:hover, .sidebar-new:hover { background: var(--control-hover); }
+}
+@media (min-width: 721px) {
+  .app-shell[data-archives] #drawerToggleBtn { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .compact-rail { transition: none; }
+}
+
+.rail-expand { position: relative; }
+.rail-brand-mark, .rail-expand-mark { position: absolute; display: grid; place-items: center; }
+.rail-brand-mark { color: var(--brand-logo); }
+.rail-expand-mark { opacity: 0; }
+.rail-expand:focus-visible .rail-brand-mark { opacity: 0; }
+.rail-expand:focus-visible .rail-expand-mark { opacity: 1; }
+@media (hover: hover) and (pointer: fine) {
+  .rail-expand:hover .rail-brand-mark { opacity: 0; }
+  .rail-expand:hover .rail-expand-mark { opacity: 1; }
+}

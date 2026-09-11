@@ -1,0 +1,2248 @@
+
+> ai-chatbox-structure-v2.0@1.1.5 test:e2e
+> playwright test --reporter=list,json
+
+[WebServer] (node:30560) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 167 tests using 1 worker
+
+(node:30562) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓    1 [chromium] › e2e/app.spec.js:50:1 › 首次启动引导：展示全新开始、迁移导入与 128 位封套说明 (310ms)
+  ✓    2 [chromium] › e2e/app.spec.js:173:1 › 外壳与空状态扉页 (433ms)
+  ✓    3 [chromium] › e2e/app.spec.js:185:1 › 主题切换不产生全局通知 (345ms)
+  ✓    4 [chromium] › e2e/app.spec.js:195:1 › 侧栏移除外观切换与版本号，保留设置入口 (318ms)
+  ✓    5 [chromium] › e2e/app.spec.js:203:1 › 空状态灵感卡之间无游离逗号 (407ms)
+  ✓    6 [chromium] › e2e/app.spec.js:213:1 › 流式对话：思考面板 + Markdown 正文 + 元数据 (448ms)
+  ✓    7 [chromium] › e2e/app.spec.js:227:1 › 多轮工具 SSE：中间完成事件不截断，思考与正文按真实字节分片持续回传 (1.6s)
+  ✓    8 [chromium] › e2e/app.spec.js:306:1 › think 标签跨 SSE delta：思考进入折叠面板，闭合后的正文继续流式显示 (723ms)
+  ✘    9 [chromium] › e2e/app.spec.js:353:1 › 思考阶段隐藏正文气泡并显示思考时长 (5.4s)
+(node:30608) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   10 [chromium] › e2e/app.spec.js:385:1 › 回答摘要（responses）在思考阶段展开，正文开始后自动收起 (2.1s)
+  ✓   11 [chromium] › e2e/app.spec.js:456:1 › 思维链：正文开始后状态稳定，手动重新展开不被后续正文覆盖 (1.9s)
+  ✓   12 [chromium] › e2e/app.spec.js:526:1 › 停止生成后：提示与五个操作按钮并排 (549ms)
+  ✓   13 [chromium] › e2e/app.spec.js:581:1 › 代码块按暖调主题配色渲染 (862ms)
+  ✓   14 [chromium] › e2e/app.spec.js:611:1 › HTML 代码块以无权限 iframe 安全预览，关闭按钮和 Esc 均恢复焦点 (1.2s)
+  ✓   15 [chromium] › e2e/app.spec.js:662:1 › 代码解释器 HTML / SVG 产物在流完成前原位出现并可安全运行 (1.7s)
+  ✓   16 [chromium] › e2e/app.spec.js:742:1 › 消息原位编辑：用户消息取消/重发分支、助手消息仍可保存 (987ms)
+  ✓   17 [chromium] › e2e/app.spec.js:789:1 › 消息编辑：保存并重新发送创建会话内分支 (1.3s)
+  ✓   18 [chromium] › e2e/app.spec.js:813:1 › 响应进行时可以查看其他消息分支，原流继续接收并可切回 (2.6s)
+  ✓   19 [chromium] › e2e/app.spec.js:909:1 › Chat 浮层统一一次空白点击关闭 (396ms)
+  ✓   20 [chromium] › e2e/app.spec.js:915:1 › 运行配置浮层：根目录可进入思考强度面板 (448ms)
+  ✓   21 [chromium] › e2e/app.spec.js:938:1 › 思考强度重新打开时首帧直接显示已保存档位 (522ms)
+  ✓   22 [chromium] › e2e/app.spec.js:968:1 › 思考强度单轨五档交互 (863ms)
+  ✘   23 [chromium] › e2e/app.spec.js:995:1 › Everforest：主题包令牌与纯色外观完整生效 (338ms)
+(node:30668) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   24 [chromium] › e2e/app.spec.js:1018:1 › 后台流式：切换会话不打断生成，切回原会话进度不丢 (2.4s)
+  ✓   25 [chromium] › e2e/app.spec.js:1059:1 › 响应中切换对话再切回：思维链展开态与阅读位置保留 (1.2s)
+  ✓   26 [chromium] › e2e/app.spec.js:1129:1 › 额度提示原位更新（tooltip 活更新，不重建） (1.3s)
+  ✘   27 [chromium] › e2e/app.spec.js:1156:1 › 额度提示：悬停显示 3+1 行且单行不折行 (5.7s)
+(node:30692) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   28 [chromium] › e2e/app.spec.js:1180:1 › 压缩上下文：点击直接压缩，按会话锁定发送，进度提示可回看 (1.8s)
+  ✓   29 [chromium] › e2e/app.spec.js:1214:1 › 主题明暗切换自动换色 (395ms)
+  ✘   30 [chromium] › e2e/app.spec.js:1233:1 › 设置：外观主题卡与自定义导入入口 (5.3s)
+(node:30711) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   31 [chromium] › e2e/app.spec.js:1260:1 › 主题背景动效已停用 (451ms)
+  ✓   32 [chromium] › e2e/app.spec.js:1271:1 › Everforest 在减少动态模式下完全不创建动效层 (320ms)
+  ✓   33 [chromium] › e2e/app.spec.js:1279:1 › Everforest 窄屏安全回退：无横向溢出或素材遮挡 (368ms)
+  ✓   34 [chromium] › e2e/app.spec.js:1303:1 › JSON 主题文件：导出当前主题并重新导入应用 (470ms)
+  ✘   35 [chromium] › e2e/app.spec.js:1331:1 › 主题 JSON：更新默认主题、重启恢复并删除自定义变体 (459ms)
+(node:30736) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   36 [chromium] › e2e/app.spec.js:1398:1 › 主题界面字体：导入 typefaces 主题后字体令牌生效，删除后恢复默认 (560ms)
+  ✓   37 [chromium] › e2e/app.spec.js:1437:1 › 外观：纯色背景、对比度与透景模式 (643ms)
+  ✓   38 [chromium] › e2e/app.spec.js:1472:1 › 设置：供应商表单与 Key 加密提示 (880ms)
+  ✓   39 [chromium] › e2e/app.spec.js:1484:1 › 设置：仅保存模型额度，模型改名迁移默认项 (1.0s)
+  ✘   40 [chromium] › e2e/app.spec.js:1547:1 › 聊天模型选择器隐藏禁用供应商，但设置中仍显示其状态 (30.0s)
+(node:30774) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   41 [chromium] › e2e/app.spec.js:1570:1 › 历史会话绑定的供应商已删除时保持只读，重新选择模型后才能发送 (922ms)
+  ✓   42 [chromium] › e2e/app.spec.js:1600:1 › 设置：新 Key 继续按原请求同步后端，并只留下前端密文 (1.0s)
+  ✓   43 [chromium] › e2e/app.spec.js:1648:1 › 设置：Key 在防抖窗口内离开页面仍会先完成自动同步 (458ms)
+  ✓   44 [chromium] › e2e/app.spec.js:1669:1 › 设置：Key 强制同步失败时保留当前页面与未同步输入 (427ms)
+  ✓   45 [chromium] › e2e/app.spec.js:1689:1 › 设置：已保存 Key 进入即显示等长密文，变更自动同步且不再提供清除按钮 (1.3s)
+  ✘   46 [chromium] › e2e/app.spec.js:1763:1 › 设置内部编辑页：离开设置后重新打开供应商时不恢复过期编辑层 (30.0s)
+(node:30840) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   47 [chromium] › e2e/app.spec.js:1790:1 › 设置内切换边栏条目：清理旧的二级编辑状态 (664ms)
+  ✓   48 [chromium] › e2e/app.spec.js:1808:1 › 移动端供应商导航：返回设置后停留在供应商一级列表 (529ms)
+  ✓   49 [chromium] › e2e/app.spec.js:1823:1 › 浏览器旧状态：清除历史 demo 供应商并保留会话快照 (359ms)
+  ✘   50 [chromium] › e2e/app.spec.js:1871:1 › 数据迁移：浏览器环境显示明确的不可用状态 (5.3s)
+(node:30865) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   51 [chromium] › e2e/app.spec.js:1882:1 › 数据迁移：桌面普通版创建前警告敏感数据并允许取消保存 (924ms)
+  ✘   52 [chromium] › e2e/app.spec.js:1920:1 › 更新日志时间线 (5.3s)
+(node:30885) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   53 [chromium] › e2e/app.spec.js:1939:1 › 快捷键：⌘K 聚焦搜索、⌘N 新建、Esc 关闭浮层 (497ms)
+  ✓   54 [chromium] › e2e/app.spec.js:1956:1 › 移动端 720px：底部导航与触控热区 (456ms)
+  ✘   55 [chromium] › e2e/app.spec.js:1968:1 › 移动端设置：离开二级页面后重新进入显示设置目录 (5.5s)
+(node:30909) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   56 [chromium] › e2e/app.spec.js:2005:1 › 滚动所有权：上滑后出现「有新回复」 (1.4s)
+  ✓   57 [chromium] › e2e/app.spec.js:2062:1 › 折叠断点 1040：抽屉转为覆盖层，开关可用 (427ms)
+  ✓   58 [chromium] › e2e/app.spec.js:2074:1 › 旧主题偏好迁移：cream-night → 深色 (311ms)
+  ✘   59 [chromium] › e2e/app.spec.js:2107:1 › 会话 ⋮ 菜单：重命名对话框可交互（二级界面修复） (5.5s)
+(node:30931) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   60 [chromium] › e2e/app.spec.js:2124:1 › 会话 ⋮ 菜单：置顶与删除入口存在 (579ms)
+  ✘   61 [chromium] › e2e/app.spec.js:2134:1 › 新建对话守卫：全新对话上不重复新建 (5.7s)
+(node:30949) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   62 [chromium] › e2e/app.spec.js:2149:1 › 归档栏收回/展开（桌面） (800ms)
+  ✓   63 [chromium] › e2e/app.spec.js:2162:1 › 设置页隐藏「目录」归档边栏 (489ms)
+  ✘   64 [chromium] › e2e/app.spec.js:2173:1 › 设置：工具与 Skill 独立入口，启用后全局持续生效 (5.4s)
+(node:30973) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   65 [chromium] › e2e/app.spec.js:2213:1 › 模型返回裸 base64 图片时会渲染为可预览图片 (494ms)
+  ✘   66 [chromium] › e2e/app.spec.js:2233:1 › 图像模型立即显示 1:1 等待槽，并在流完成前原位展示无边框图片 (6.3s)
+(node:30989) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   67 [chromium] › e2e/app.spec.js:2301:1 › 统一运行时事件展示 Skill、沙箱结构化结果和结果图片 (927ms)
+  ✓   68 [chromium] › e2e/app.spec.js:2346:1 › 未知旧路由安全回退 Chat (354ms)
+  ✓   69 [chromium] › e2e/commands.spec.js:34:1 › 无模型也能使用帮助，未知指令不会发送，附件保留 (464ms)
+  ✓   70 [chromium] › e2e/commands.spec.js:50:1 › 补全、中文搜索、参数选择、恢复跟随配置 (813ms)
+  ✓   71 [chromium] › e2e/commands.spec.js:63:1 › 模型重名要求选择供应商，禁用模型隐藏，快捷参数与按钮一致 (1.4s)
+  ✓   72 [chromium] › e2e/commands.spec.js:81:1 › 部分模型名不会自动执行，无效参数保持输入 (513ms)
+  ✓   73 [chromium] › e2e/commands.spec.js:92:1 › 压缩首次补全不执行，重复请求受阻，新草稿不会被清除 (810ms)
+  ✓   74 [chromium] › e2e/commands.spec.js:108:1 › 空历史保留指令 (401ms)
+  ✓   75 [chromium] › e2e/commands.spec.js:114:1 › 字面量、多行和正文斜杠进入普通消息，指令不进入 Prompt 或标题 (934ms)
+  ✓   76 [chromium] › e2e/commands.spec.js:130:1 › 生成期间配置修改只影响下一次请求，停止按钮保持原行为 (485ms)
+  ✓   77 [chromium] › e2e/commands.spec.js:148:1 › 输入法确认不会执行指令，关闭和会话切换保留草稿 (481ms)
+  ✓   78 [chromium] › e2e/commands.spec.js:162:3 › 指令面板 light 1280 无溢出且 panel 悬停稳定 (469ms)
+  ✓   79 [chromium] › e2e/commands.spec.js:162:3 › 指令面板 light 1024 无溢出且 panel 悬停稳定 (516ms)
+  ✓   80 [chromium] › e2e/commands.spec.js:162:3 › 指令面板 light 390 无溢出且 panel 悬停稳定 (481ms)
+  ✓   81 [chromium] › e2e/commands.spec.js:162:3 › 指令面板 dark 1280 无溢出且 panel 悬停稳定 (483ms)
+  ✓   82 [chromium] › e2e/commands.spec.js:162:3 › 指令面板 dark 1024 无溢出且 panel 悬停稳定 (535ms)
+  ✓   83 [chromium] › e2e/commands.spec.js:162:3 › 指令面板 dark 390 无溢出且 panel 悬停稳定 (465ms)
+  ✓   84 [chromium] › e2e/commands.spec.js:176:1 › 发送准备时切换按钮模型，自动压缩和随后发送仍使用原请求快照 (948ms)
+  ✓   85 [chromium] › e2e/commands.spec.js:197:1 › 压缩失败保留指令和附件且不创建普通指令消息 (458ms)
+  ✓   86 [chromium] › e2e/commands.spec.js:208:1 › 异步压缩完成后不修改其他会话草稿 (834ms)
+  ✓   87 [chromium] › e2e/commands.spec.js:220:1 › 参数 Tab 只补全，方向键 Enter 选择，点击外部保留输入 (422ms)
+  ✓   88 [chromium] › e2e/commands.spec.js:236:3 › 空状态 offline 准确引导 (444ms)
+  ✓   89 [chromium] › e2e/commands.spec.js:236:3 › 空状态 unconfigured 准确引导 (402ms)
+  ✓   90 [chromium] › e2e/commands.spec.js:236:3 › 空状态 ready 准确引导 (349ms)
+SHORT left= 759  LONG left= 759  SHORT right= 1079  LONG right= 1079  width= 320
+  ✓   91 [chromium] › e2e/edge_shot.spec.js:15:1 › runtime panel fixed across model-name lengths (1.6s)
+label→value gap= 4  value→chevron gap= 4  truncated= true
+  ✓   92 [chromium] › e2e/edge_shot.spec.js:48:1 › runtime rows keep aligned values and truncate long model ids (1.2s)
+  ✓   93 [chromium] › e2e/modular-refactor.spec.js:9:1 › 注册的七个设置页面均可访问且共用字段模板 (785ms)
+  ✓   94 [chromium] › e2e/modular-refactor.spec.js:23:1 › 共享历史表面与项目状态操作：创建、重命名、删除保留聊天 (804ms)
+  ✓   95 [chromium] › e2e/projects.spec.js:43:1 › 项目分类：分区、五条限制、搜索与折叠恢复 (1.1s)
+  ✘   96 [chromium] › e2e/projects.spec.js:68:1 › 项目管理：创建、移动、重命名、删除及刷新保留 (30.0s)
+(node:31144) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   97 [chromium] › e2e/projects.spec.js:103:1 › 新建继承当前项目、显式跨项目及无项目；草稿和附件留在原聊天 (30.0s)
+(node:31171) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   98 [chromium] › e2e/projects.spec.js:128:1 › 项目选择器键盘、长名称和移动端不溢出 (651ms)
+  ✓   99 [chromium] › e2e/projects.spec.js:153:1 › 项目移动期间保留输入节点、附件、消息节点与正在生成的回复 (1.7s)
+  ✓  100 [chromium] › e2e/projects.spec.js:200:1 › 聊天菜单移动、项目内置顶与活动聊天超过五条时可见 (525ms)
+  ✓  101 [chromium] › e2e/projects.spec.js:217:1 › 空白聊天带附件时不得复用，桌面和移动端项目列表布局 (600ms)
+  ✓  102 [chromium] › e2e/settings-context.spec.js:22:1 › 聊天配置保存、项目空提示词覆盖与继承、重启 (855ms)
+  ✓  103 [chromium] › e2e/settings-context.spec.js:42:1 › 未保存的跨项目导航会询问，取消保留草稿 (1.2s)
+  ✓  104 [chromium] › e2e/settings-context.spec.js:56:1 › 新请求使用项目配置而非供应商提示词 (481ms)
+  ✓  105 [chromium] › e2e/settings-context.spec.js:70:1 › 达到预算阈值压缩全部已完成历史，保留待发送消息 (507ms)
+  ✓  106 [chromium] › e2e/settings-context.spec.js:84:1 › 压缩失败保留草稿，不发送、不无限重试 (502ms)
+  ✘  107 [chromium] › e2e/settings-context.spec.js:97:1 › 升级默认重置与无密钥备份；模型编辑仅有额度 (30.0s)
+(node:31294) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  108 [chromium] › e2e/settings-context.spec.js:113:1 › 设置搜索定位与所有分类无横向溢出 (876ms)
+  ✘  109 [chromium] › e2e/settings-context.spec.js:126:3 › 上下文设置视觉 1280 light (860ms)
+(node:31314) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  110 [chromium] › e2e/settings-context.spec.js:126:3 › 上下文设置视觉 1024 dark (917ms)
+(node:31328) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  111 [chromium] › e2e/settings-context.spec.js:126:3 › 上下文设置视觉 390 light (811ms)
+(node:31342) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  112 [chromium] › e2e/settings-context.spec.js:138:1 › 离开聊天后重新打开上下文页面，项目菜单与能力覆盖可用 (30.0s)
+(node:31366) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  113 [chromium] › e2e/settings-context.spec.js:153:1 › 自动压缩关闭时超预算保留输入，工具栏思考强度可恢复继承 (959ms)
+  ✓  114 [chromium] › e2e/settings-context.spec.js:171:1 › 低于阈值保留全部历史，不因轮数触发压缩 (447ms)
+  ✓  115 [chromium] › e2e/sidebar-focus.spec.js:20:1 › desktop sidebar interpolates, reverses and preserves focus and preference (1.5s)
+  ✓  116 [chromium] › e2e/sidebar-focus.spec.js:54:1 › settings remains reachable without footer appearance and version controls (596ms)
+  ✓  117 [chromium] › e2e/sidebar-focus.spec.js:66:1 › tablet and mobile drawers close without hidden keyboard targets or overflow (4.2s)
+  ✓  118 [chromium] › e2e/sidebar-focus.spec.js:88:1 › reduced motion and focus shortcut settle immediately (415ms)
+  ✘  119 [chromium] › e2e/sidebar-focus.spec.js:97:1 › compact shortcuts search, create and import; settings hover is flat (541ms)
+(node:31401) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  120 [chromium] › e2e/sidebar-focus.spec.js:117:1 › relative age yields to a flat menu on hover and keyboard focus (661ms)
+  ✓  121 [chromium] › e2e/sidebar-focus.spec.js:144:1 › soft surfaces remain coherent in dark mode and settings (536ms)
+  ✓  122 [chromium] › e2e/sidebar-focus.spec.js:155:1 › archived palette cannot restore black hover, heavy shadows or sharp corners (1.3s)
+{"fixture":"50KB Markdown","report":{"networkEvents":329,"storePublishes":0,"markdownRenders":0,"domCommits":0,"reactCommits":4,"persistenceWrites":2,"longTasks":1,"longestLongTask":55,"elapsedMs":528.1999999992549}}
+  ✓  123 [chromium] › e2e/stream-performance.spec.js:118:3 › 50KB Markdown 合帧与持久化预算 (881ms)
+{"fixture":"100KB 代码","report":{"networkEvents":1029,"storePublishes":0,"markdownRenders":0,"domCommits":0,"reactCommits":4,"persistenceWrites":2,"longTasks":1,"longestLongTask":70,"elapsedMs":572.6999999992549}}
+  ✓  124 [chromium] › e2e/stream-performance.spec.js:118:3 › 100KB 代码 合帧与持久化预算 (947ms)
+  ✓  125 [chromium] › e2e/stream-performance.spec.js:146:1 › 持续流式输出时优先处理用户上滚，停止手势后补绘最新内容 (1.1s)
+  ✓  126 [chromium] › e2e/stream-performance.spec.js:190:1 › 滚动手势覆盖流结束时，终态会在手势停止后完整提交 (1.4s)
+  ✘  127 [chromium] › e2e/visual.spec.js:243:1 › onboarding 初始浅色 (598ms)
+(node:31439) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  128 [chromium] › e2e/visual.spec.js:251:1 › onboarding 初始深色 (679ms)
+(node:31453) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  129 [chromium] › e2e/visual.spec.js:260:3 › 空会话 light (930ms)
+(node:31466) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  130 [chromium] › e2e/visual.spec.js:270:3 › Everforest 空会话 light (945ms)
+(node:31485) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  131 [chromium] › e2e/visual.spec.js:282:3 › Everforest 真实消息 light (941ms)
+(node:31498) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  132 [chromium] › e2e/visual.spec.js:294:3 › 思考轨迹 light (1.0s)
+(node:31511) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  133 [chromium] › e2e/visual.spec.js:260:3 › 空会话 dark (921ms)
+(node:31524) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  134 [chromium] › e2e/visual.spec.js:270:3 › Everforest 空会话 dark (917ms)
+(node:31537) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  135 [chromium] › e2e/visual.spec.js:282:3 › Everforest 真实消息 dark (890ms)
+(node:31550) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  136 [chromium] › e2e/visual.spec.js:294:3 › 思考轨迹 dark (985ms)
+(node:31563) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  137 [chromium] › e2e/visual.spec.js:308:1 › Everforest 外观主题卡 (891ms)
+(node:31576) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  138 [chromium] › e2e/visual.spec.js:319:1 › Everforest 思考强度控件 (902ms)
+(node:31590) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  139 [chromium] › e2e/visual.spec.js:337:1 › Everforest 运行配置与模型选择器 (780ms)
+  ✓  140 [chromium] › e2e/visual.spec.js:355:1 › 未知旧路由回退到 Chat (419ms)
+  ✘  141 [chromium] › e2e/visual.spec.js:362:1 › Provider 设置页面 (872ms)
+(node:31610) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  142 [chromium] › e2e/visual.spec.js:370:1 › Provider 模型编辑基础弹层 (1.1s)
+(node:31629) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  143 [chromium] › e2e/visual.spec.js:381:1 › Provider 模型额度弹层深色 (1.1s)
+(node:31645) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  144 [chromium] › e2e/visual.spec.js:393:1 › 上下文与提示词集中配置 (1.0s)
+(node:31658) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  145 [chromium] › e2e/visual.spec.js:402:1 › Provider 中等宽度顶部切换器 (840ms)
+(node:31671) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  146 [chromium] › e2e/visual.spec.js:411:1 › Provider 移动端列表与详情 (719ms)
+(node:31686) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  147 [chromium] › e2e/visual.spec.js:425:1 › 移动端空会话 (746ms)
+(node:31699) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  148 [chromium] › e2e/visual.spec.js:434:1 › 移动端思考轨迹 (1.2s)
+(node:31712) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  149 [chromium] › e2e/visual.spec.js:446:1 › 工具轻量时间线深色 (943ms)
+(node:31725) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  150 [chromium] › e2e/visual.spec.js:457:1 › 工具轻量时间线移动端 (790ms)
+(node:31738) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  151 [chromium] › e2e/visual.spec.js:467:1 › HTML 与 SVG 产物工具栏深色 (950ms)
+(node:31751) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  152 [chromium] › e2e/visual.spec.js:478:1 › HTML 与 SVG 产物工具栏移动端 (753ms)
+(node:31764) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  153 [chromium] › e2e/visual.spec.js:488:1 › 图像生成等待态深色 (1.8s)
+(node:31779) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  154 [chromium] › e2e/visual.spec.js:501:1 › 图像生成等待态移动端 (1.9s)
+(node:31800) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  155 [chromium] › e2e/visual.spec.js:514:1 › 主题变更不产生多余通知 (466ms)
+(node:31815) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  156 [chromium] › e2e/runtime-refinement.spec.js:34:1 › root geometry and compact model list (1.3s)
+  ✘  157 [chromium] › e2e/runtime-refinement.spec.js:61:4 › reset inherited (5.9s)
+(node:31837) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  158 [chromium] › e2e/runtime-refinement.spec.js:61:4 › reset override (6.0s)
+(node:31853) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  159 [chromium] › e2e/runtime-refinement.spec.js:61:4 › reset fallback (6.0s)
+(node:31868) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  160 [chromium] › e2e/runtime-refinement.spec.js:74:1 › pointer stops and rapid reversal (2.4s)
+  ✓  161 [chromium] › e2e/runtime-refinement.spec.js:95:41 › appearance light (1.4s)
+  ✓  162 [chromium] › e2e/runtime-refinement.spec.js:95:41 › appearance dark (1.4s)
+  ✓  163 [chromium] › e2e/runtime-refinement.spec.js:120:1 › long names and scroll (619ms)
+  ✘  164 [chromium] › e2e/runtime-refinement.spec.js:130:3 › motion demonstration › particles clicks drag reset (13.1s)
+(node:31903) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  165 [chromium] › e2e/runtime-refinement.spec.js:145:1 › touch cancellation and visibility cleanup (228ms)
+(node:31918) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  166 [chromium] › e2e/runtime-refinement.spec.js:176:1 › thumb hover and nearest-stop settling (1.8s)
+  ✓  167 [chromium] › e2e/runtime-refinement.spec.js:201:1 › max color wipes right to left and reverses without restarting (3.1s)
+
+
+  1) [chromium] › e2e/app.spec.js:353:1 › 思考阶段隐藏正文气泡并显示思考时长 ────────────────────────────────────────
+
+    Error: expect(locator).toHaveClass(expected) failed
+
+    Locator: locator('.message-entry.assistant')
+    Expected pattern: /is-thinking/
+    Received string:  "message-entry assistant"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toHaveClass" with timeout 5000ms
+      - waiting for locator('.message-entry.assistant')
+        5 × locator resolved to <div class="message-entry assistant" data-message-id="msg-mtxbdhre-s5cu">…</div>
+          - unexpected value "message-entry assistant"
+        2 × locator resolved to <div data-message-id="msg-mtxbdhre-s5cu" class="message-entry assistant is-response-pending">…</div>
+          - unexpected value "message-entry assistant is-response-pending"
+        7 × locator resolved to <div class="message-entry assistant" data-message-id="msg-mtxbdhre-s5cu">…</div>
+          - unexpected value "message-entry assistant"
+
+
+      372 |   const entry = page.locator(".message-entry.assistant");
+      373 |   // 思考阶段：无正文时隐藏正式发言气泡，计时从请求发出开始跳动
+    > 374 |   await expect(entry).toHaveClass(/is-thinking/);
+          |                       ^
+      375 |   await expect(entry.locator(".message-body")).toBeHidden();
+      376 |   await expect(entry.locator(".reasoning-label")).toHaveText("正在思考…");
+      377 |   await expect(entry.locator(".reasoning-duration")).not.toHaveText("0s");
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/app.spec.js:374:23
+
+    Error Context: test-results/app-思考阶段隐藏正文气泡并显示思考时长-chromium/error-context.md
+
+  2) [chromium] › e2e/app.spec.js:995:1 › Everforest：主题包令牌与纯色外观完整生效 ────────────────────────────────
+
+    Error: expect(received).toMatchObject(expected)
+
+    - Expected  - 4
+    + Received  + 4
+
+      Object {
+        "--accent": "#93B259",
+    -   "--canvas-mid": "#FDF6E3",
+    -   "--label": "#5C6A72",
+    -   "--send-btn": "#93B259",
+    -   "--surface-content": "#FFF9E8",
+    +   "--canvas-mid": "#F7F5EC",
+    +   "--label": "#46534D",
+    +   "--send-btn": "#617D43",
+    +   "--surface-content": "#FCFBF6",
+      }
+
+      1006 |     ].map((token) => [token, style.getPropertyValue(token).trim()]));
+      1007 |   });
+    > 1008 |   expect(tokens).toMatchObject({
+           |                  ^
+      1009 |     "--canvas-mid": "#FDF6E3",
+      1010 |     "--surface-content": "#FFF9E8",
+      1011 |     "--label": "#5C6A72",
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/app.spec.js:1008:18
+
+    Error Context: test-results/app-Everforest：主题包令牌与纯色外观完整生效-chromium/error-context.md
+
+  3) [chromium] › e2e/app.spec.js:1156:1 › 额度提示：悬停显示 3+1 行且单行不折行 ───────────────────────────────────
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator:  locator('#contextTooltip').locator('[data-tooltip-title]')
+    Expected: "背景信息窗口："
+    Received: "上下文用量"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveText" with timeout 5000ms
+      - waiting for locator('#contextTooltip').locator('[data-tooltip-title]')
+        14 × locator resolved to <span data-tooltip-title="" class="context-tooltip-title">上下文用量</span>
+           - unexpected value "上下文用量"
+
+
+      1165 |   const tooltip = page.locator("#contextTooltip");
+      1166 |   await expect(tooltip).toHaveClass(/is-open/);
+    > 1167 |   await expect(tooltip.locator("[data-tooltip-title]")).toHaveText("背景信息窗口：");
+           |                                                         ^
+      1168 |   await expect(tooltip.locator("[data-tooltip-percent]")).toContainText("已用");
+      1169 |   await expect(tooltip.locator("[data-tooltip-window]")).toContainText("标记");
+      1170 |   await expect(tooltip.locator("[data-tooltip-hint]")).toHaveText("点击直接压缩");
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/app.spec.js:1167:57
+
+    Error Context: test-results/app-额度提示：悬停显示-3-1-行且单行不折行-chromium/error-context.md
+
+  4) [chromium] › e2e/app.spec.js:1233:1 › 设置：外观主题卡与自定义导入入口 ────────────────────────────────────────
+
+    Error: expect(locator).toHaveCSS(expected) failed
+
+    Locator: locator('[data-theme-id="everforest"] .theme-name-label')
+    Expected: "nowrap"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toHaveCSS" with timeout 5000ms
+      - waiting for locator('[data-theme-id="everforest"] .theme-name-label')
+
+
+      1239 |   await expect(page.locator(".theme-card").nth(0)).toHaveAttribute("data-theme-id", "everforest");
+      1240 |   await expect(page.locator('[data-theme-id="everforest"] .theme-name-label'))
+    > 1241 |     .toHaveCSS("white-space", "nowrap");
+           |      ^
+      1242 |   await expect(page.locator("#themePackageImportBtn")).toHaveText(/导入主题/);
+      1243 |   await expect(page.locator("#themePackageExportBtn")).toHaveText(/导出当前主题/);
+      1244 |   // 明暗模式切换不改变当前主题 ID。
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/app.spec.js:1241:6
+
+    Error Context: test-results/app-设置：外观主题卡与自定义导入入口-chromium/error-context.md
+
+  5) [chromium] › e2e/app.spec.js:1331:1 › 主题 JSON：更新默认主题、重启恢复并删除自定义变体 ─────────────────────────────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "#93B259"
+    Received: "#617D43"
+
+      1363 |     icon: getComputedStyle(document.documentElement).getPropertyValue("--icon-btn-ink").trim()
+      1364 |   }));
+    > 1365 |   expect(buttonTokens.send).toBe("#93B259");
+           |                             ^
+      1366 |   expect(buttonTokens.primary).toBe("#93B259");
+      1367 |   expect(buttonTokens.logo).toBe("#93B259");
+      1368 |   expect(buttonTokens.icon).toBe("#73848A");
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/app.spec.js:1365:29
+
+    Error Context: test-results/app-主题-JSON：更新默认主题、重启恢复并删除自定义变体-chromium/error-context.md
+
+  6) [chromium] › e2e/app.spec.js:1547:1 › 聊天模型选择器隐藏禁用供应商，但设置中仍显示其状态 ───────────────────────────────
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for locator('.mode-rail [data-nav="settings"]')
+
+
+      1563 |   await page.keyboard.press("Escape");
+      1564 |
+    > 1565 |   await page.locator('.mode-rail [data-nav="settings"]').click();
+           |                                                          ^
+      1566 |   await page.locator('[data-section="providers"]').click();
+      1567 |   await expect(page.locator('[data-edit-provider="p-disabled"]')).toContainText("已禁用");
+      1568 | });
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/app.spec.js:1565:58
+
+    Error Context: test-results/app-聊天模型选择器隐藏禁用供应商，但设置中仍显示其状态-chromium/error-context.md
+
+  7) [chromium] › e2e/app.spec.js:1763:1 › 设置内部编辑页：离开设置后重新打开供应商时不恢复过期编辑层 ───────────────────────────
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for locator('.mode-rail [data-nav="chat"]')
+
+
+      1768 |   await expect(page.locator("#pf-name")).toBeVisible();
+      1769 |
+    > 1770 |   await page.locator('.mode-rail [data-nav="chat"]').click();
+           |                                                      ^
+      1771 |   await expect(page.locator("#page-chat")).toHaveClass(/page-active/);
+      1772 |   await page.locator('.mode-rail [data-nav="settings"]').click();
+      1773 |   await page.locator('[data-section="providers"]').click();
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/app.spec.js:1770:54
+
+    Error Context: test-results/app-设置内部编辑页：离开设置后重新打开供应商时不恢复过期编辑层-chromium/error-context.md
+
+  8) [chromium] › e2e/app.spec.js:1871:1 › 数据迁移：浏览器环境显示明确的不可用状态 ────────────────────────────────────
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('.usage-stat').filter({ hasText: '版本' })
+    Expected substring: "v1.1.5"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toContainText" with timeout 5000ms
+      - waiting for locator('.usage-stat').filter({ hasText: '版本' })
+
+
+      1872 |   await seedAndLoad(page, { hash: "#/settings/data" });
+      1873 |   await page.goto("/");
+    > 1874 |   await expect(page.locator(".usage-stat").filter({ hasText: "版本" })).toContainText(`v${APP_SETTINGS_VERSION}`);
+           |                                                                       ^
+      1875 |   await expect(page.locator(".usage-stat").filter({ hasText: "版本" })).not.toContainText("补丁包");
+      1876 |   await expect(page.locator(".migration-card")).toBeVisible();
+      1877 |   await expect(page.locator(".migration-status-badge")).toHaveText("不可用");
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/app.spec.js:1874:71
+
+    Error Context: test-results/app-数据迁移：浏览器环境显示明确的不可用状态-chromium/error-context.md
+
+  9) [chromium] › e2e/app.spec.js:1920:1 › 更新日志时间线 ─────────────────────────────────────────────────
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator: locator('.sidebar-version')
+    Expected: "Clawbox v1.1.5"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toHaveAttribute" with timeout 5000ms
+      - waiting for locator('.sidebar-version')
+
+
+      1922 |   await page.goto("/");
+      1923 |   const cards = page.locator(".release-card");
+    > 1924 |   await expect(page.locator(".sidebar-version")).toHaveAttribute("title", `Clawbox v${APP_VERSION}`);
+           |                                                  ^
+      1925 |   await expect(page.locator(".sidebar-version")).toHaveText(`v${APP_VERSION}`);
+      1926 |   await expect(cards.first()).toContainText("当前版本");
+      1927 |   await expect(cards.first()).toContainText(`v${CURRENT_RELEASE.displayVersion}`);
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/app.spec.js:1924:50
+
+    Error Context: test-results/app-更新日志时间线-chromium/error-context.md
+
+  10) [chromium] › e2e/app.spec.js:1968:1 › 移动端设置：离开二级页面后重新进入显示设置目录 ────────────────────────────────
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('[data-section=\'appearance\']')
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" with timeout 5000ms
+      - waiting for locator('[data-section=\'appearance\']')
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+      1978 |   await expect(settingsDetail).not.toHaveAttribute("data-settings-detail", "open");
+      1979 |   await expect(page.locator("#settingsIndex")).toBeVisible();
+    > 1980 |   await expect(page.locator("[data-section='appearance']")).toHaveCount(0);
+           |                                                             ^
+      1981 |   await expect(page.locator("[data-section='providers']")).toHaveClass(/is-active/);
+      1982 |   expect(await page.evaluate(() => location.hash)).toBe("#/settings");
+      1983 |
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/app.spec.js:1980:61
+
+    Error Context: test-results/app-移动端设置：离开二级页面后重新进入显示设置目录-chromium/error-context.md
+
+  11) [chromium] › e2e/app.spec.js:2107:1 › 会话 ⋮ 菜单：重命名对话框可交互（二级界面修复） ──────────────────────────────
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('.menu-popover [data-menu-action]')
+    Expected: 4
+    Received: 5
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" with timeout 5000ms
+      - waiting for locator('.menu-popover [data-menu-action]')
+        14 × locator resolved to 5 elements
+           - unexpected value "5"
+
+
+      2110 |   await page.hover(".conversation-item");
+      2111 |   await page.click('[data-conv-action="menu"]');
+    > 2112 |   await expect(page.locator(".menu-popover [data-menu-action]")).toHaveCount(4);
+           |                                                                  ^
+      2113 |   await page.click('[data-menu-action="rename"]');
+      2114 |   await expect(page.locator(".dialog-backdrop")).toBeVisible();
+      2115 |   // 对话框内可点击、可输入、可确认（pointer-events 修复的直接验证）
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/app.spec.js:2112:66
+
+    Error Context: test-results/app-会话-⋮-菜单：重命名对话框可交互（二级界面修复）-chromium/error-context.md
+
+  12) [chromium] › e2e/app.spec.js:2134:1 › 新建对话守卫：全新对话上不重复新建 ──────────────────────────────────────
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('.conversation-item')
+    Expected: 2
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" with timeout 5000ms
+      - waiting for locator('.conversation-item')
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+      2144 |   await expect(page.locator(".conversation-item")).toHaveCount(1);
+      2145 |   await page.click("#newConversationBtn");
+    > 2146 |   await expect(page.locator(".conversation-item")).toHaveCount(2);
+           |                                                    ^
+      2147 | });
+      2148 |
+      2149 | test("归档栏收回/展开（桌面）", async ({ page }) => {
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/app.spec.js:2146:52
+
+    Error Context: test-results/app-新建对话守卫：全新对话上不重复新建-chromium/error-context.md
+
+  13) [chromium] › e2e/app.spec.js:2173:1 › 设置：工具与 Skill 独立入口，启用后全局持续生效 ────────────────────────────
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('[data-extension-card=\'tool\']')
+    Expected substring: "Tools"
+    Received string:    "自定义工具已启用 0 项，共 2 项 新增工具设置工具地址、输入 Schema 和启用状态。运行时沙箱（macOS）在无网络临时工作目录运行受控命令，并用于后续对话。Linux Python 代码解释器（内置 VM）在无网络 Linux 虚拟机中运行 Python，并用于后续对话。还没有工具。"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toContainText" with timeout 5000ms
+      - waiting for locator('[data-extension-card=\'tool\']')
+        14 × locator resolved to <section data-extension-card="tool" data-extension-config="tools" aria-labelledby="extension-card-tool-title" class="paper-panel settings-card extension-management-card">…</section>
+           - unexpected value "自定义工具已启用 0 项，共 2 项 新增工具设置工具地址、输入 Schema 和启用状态。运行时沙箱（macOS）在无网络临时工作目录运行受控命令，并用于后续对话。Linux Python 代码解释器（内置 VM）在无网络 Linux 虚拟机中运行 Python，并用于后续对话。还没有工具。"
+
+
+      2177 |   await expect(page.locator("[data-section='tools']")).toHaveClass(/is-active/);
+      2178 |   await expect(page.locator("[data-extension-card]")).toHaveCount(1);
+    > 2179 |   await expect(page.locator("[data-extension-card='tool']")).toContainText("Tools");
+           |                                                              ^
+      2180 |   await expect(page.locator("[data-extension-card='tool']")).toContainText("运行时沙箱（macOS）");
+      2181 |   await page.click("[data-sandbox-toggle]");
+      2182 |   await expect(page.locator("[data-sandbox-toggle]")).toHaveAttribute("aria-checked", "true");
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/app.spec.js:2179:62
+
+    Error Context: test-results/app-设置：工具与-Skill-独立入口，启用后全局持续生效-chromium/error-context.md
+
+  14) [chromium] › e2e/app.spec.js:2233:1 › 图像模型立即显示 1:1 等待槽，并在流完成前原位展示无边框图片 ───────────────────────
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator: locator('.stream-image-slot')
+    Expected: "图片生成中"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toHaveAttribute" with timeout 5000ms
+      - waiting for locator('.stream-image-slot')
+        6 × locator resolved to <button type="button" aria-label="放大图片" data-image-index="0" data-message-id="msg-mtxbgwga-y0so" class="message-image stream-image-slot is-ready">…</button>
+          - unexpected value "放大图片"
+
+
+      2273 |   const slot = page.locator(".stream-image-slot");
+      2274 |   await expect(slot).toBeVisible();
+    > 2275 |   await expect(slot).toHaveAttribute("aria-label", "图片生成中");
+           |                      ^
+      2276 |   const pendingBox = await slot.boundingBox();
+      2277 |   expect(pendingBox).not.toBeNull();
+      2278 |   expect(Math.abs(pendingBox.width - pendingBox.height)).toBeLessThanOrEqual(1);
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/app.spec.js:2275:22
+
+    Error Context: test-results/app-图像模型立即显示-1-1-等待槽，并在流完成前原位展示无边框图片-chromium/error-context.md
+
+  15) [chromium] › e2e/projects.spec.js:68:1 › 项目管理：创建、移动、重命名、删除及刷新保留 ──────────────────────────────
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for locator('[data-project-id="b"]').locator('[data-project-action="menu"]')
+        - locator resolved to <button title="项目操作" type="button" aria-haspopup="menu" aria-label="产品设计：更多操作" data-project-action="menu" class="ui-button icon-btn small">…</button>
+      - attempting click action
+        2 × waiting for element to be visible, enabled and stable
+          - element is visible, enabled and stable
+          - scrolling into view if needed
+          - done scrolling
+          - <div class="project-row is-active">…</div> intercepts pointer events
+        - retrying click action
+        - waiting 20ms
+        2 × waiting for element to be visible, enabled and stable
+          - element is visible, enabled and stable
+          - scrolling into view if needed
+          - done scrolling
+          - <div class="project-row is-active">…</div> intercepts pointer events
+        - retrying click action
+          - waiting 100ms
+        56 × waiting for element to be visible, enabled and stable
+           - element is visible, enabled and stable
+           - scrolling into view if needed
+           - done scrolling
+           - <div class="project-row is-active">…</div> intercepts pointer events
+         - retrying click action
+           - waiting 500ms
+
+
+      74 |   await expect(page.locator("#composerInput")).toBeFocused();
+      75 |   await expect(page.locator("#messageList")).toContainText("内容 u");
+    > 76 |   await project(page, "b").locator('[data-project-action="menu"]').click();
+         |                                                                    ^
+      77 |   await page.getByRole("menuitem", { name: "重命名项目" }).click();
+      78 |   await saveName(page, "产品设计新版");
+      79 |   await expect(page.locator("#projectSelectorBtn")).toContainText("产品设计新版");
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/projects.spec.js:76:68
+
+    Error Context: test-results/projects-项目管理：创建、移动、重命名、删除及刷新保留-chromium/error-context.md
+
+  16) [chromium] › e2e/projects.spec.js:103:1 › 新建继承当前项目、显式跨项目及无项目；草稿和附件留在原聊天 ──────────────────────
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for locator('[data-project-id="b"]').locator('[data-project-action="new-chat"]')
+        - locator resolved to <button type="button" title="在项目内新建聊天" aria-label="产品设计：新建聊天" data-project-action="new-chat" class="ui-button icon-btn small">…</button>
+      - attempting click action
+        2 × waiting for element to be visible, enabled and stable
+          - element is visible, enabled and stable
+          - scrolling into view if needed
+          - done scrolling
+          - <div class="project-row">…</div> intercepts pointer events
+        - retrying click action
+        - waiting 20ms
+        2 × waiting for element to be visible, enabled and stable
+          - element is visible, enabled and stable
+          - scrolling into view if needed
+          - done scrolling
+          - <div class="project-row">…</div> intercepts pointer events
+        - retrying click action
+          - waiting 100ms
+        56 × waiting for element to be visible, enabled and stable
+           - element is visible, enabled and stable
+           - scrolling into view if needed
+           - done scrolling
+           - <div class="project-row">…</div> intercepts pointer events
+         - retrying click action
+           - waiting 500ms
+
+
+      112 |   await page.locator("#attachmentInput").setInputFiles({ name: "note.txt", mimeType: "text/plain", buffer: Buffer.from("待发送附件") });
+      113 |   await expect(page.locator("#composerChips")).toContainText("note.txt");
+    > 114 |   await project(page, "b").locator('[data-project-action="new-chat"]').click();
+          |                                                                        ^
+      115 |   await expect(page.locator("#projectSelectorBtn")).toContainText("产品设计");
+      116 |   await expect(page.locator("#composerInput")).toHaveValue("");
+      117 |   await expect(page.locator("#composerChips")).toBeHidden();
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/projects.spec.js:114:72
+
+    Error Context: test-results/projects-新建继承当前项目、显式跨项目及无项目；草稿和附件留在原聊天-chromium/error-context.md
+
+  17) [chromium] › e2e/runtime-refinement.spec.js:61:4 › reset inherited ───────────────────────────
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  locator('.effort-rail')
+    Expected: "2"
+    Received: "1"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveAttribute" with timeout 5000ms
+      - waiting for locator('.effort-rail')
+        14 × locator resolved to <div tabindex="0" role="slider" aria-label="思考强度" aria-valuemin="0" aria-valuemax="4" aria-valuenow="1" class="effort-rail" aria-valuetext="中等" data-effort-index="1">…</div>
+           - unexpected value "1"
+
+
+      64 |   await rail.press("End");
+      65 |   await page.locator("[data-effort-reset]").click();
+    > 66 |   await expect(rail).toHaveAttribute("aria-valuenow", expected);
+         |                      ^
+      67 |   await rail.press("Home"); await rail.press("ArrowRight");
+      68 |   await expect(rail).toHaveAttribute("aria-valuetext", "中等");
+      69 |   await page.keyboard.press("Escape");
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/runtime-refinement.spec.js:66:22
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/runtime-refinement-reset-inherited-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/runtime-refinement-reset-inherited-chromium/error-context.md
+
+  18) [chromium] › e2e/runtime-refinement.spec.js:61:4 › reset override ────────────────────────────
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  locator('.effort-rail')
+    Expected: "2"
+    Received: "1"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveAttribute" with timeout 5000ms
+      - waiting for locator('.effort-rail')
+        14 × locator resolved to <div tabindex="0" role="slider" aria-label="思考强度" aria-valuemin="0" aria-valuemax="4" aria-valuenow="1" class="effort-rail" aria-valuetext="中等" data-effort-index="1">…</div>
+           - unexpected value "1"
+
+
+      64 |   await rail.press("End");
+      65 |   await page.locator("[data-effort-reset]").click();
+    > 66 |   await expect(rail).toHaveAttribute("aria-valuenow", expected);
+         |                      ^
+      67 |   await rail.press("Home"); await rail.press("ArrowRight");
+      68 |   await expect(rail).toHaveAttribute("aria-valuetext", "中等");
+      69 |   await page.keyboard.press("Escape");
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/runtime-refinement.spec.js:66:22
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/runtime-refinement-reset-override-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/runtime-refinement-reset-override-chromium/error-context.md
+
+  19) [chromium] › e2e/runtime-refinement.spec.js:61:4 › reset fallback ────────────────────────────
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  locator('.effort-rail')
+    Expected: "2"
+    Received: "1"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveAttribute" with timeout 5000ms
+      - waiting for locator('.effort-rail')
+        14 × locator resolved to <div tabindex="0" role="slider" aria-label="思考强度" aria-valuemin="0" aria-valuemax="4" aria-valuenow="1" class="effort-rail" aria-valuetext="中等" data-effort-index="1">…</div>
+           - unexpected value "1"
+
+
+      64 |   await rail.press("End");
+      65 |   await page.locator("[data-effort-reset]").click();
+    > 66 |   await expect(rail).toHaveAttribute("aria-valuenow", expected);
+         |                      ^
+      67 |   await rail.press("Home"); await rail.press("ArrowRight");
+      68 |   await expect(rail).toHaveAttribute("aria-valuetext", "中等");
+      69 |   await page.keyboard.press("Escape");
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/runtime-refinement.spec.js:66:22
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/runtime-refinement-reset-fallback-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/runtime-refinement-reset-fallback-chromium/error-context.md
+
+  20) [chromium] › e2e/runtime-refinement.spec.js:130:3 › motion demonstration › particles clicks drag reset 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  locator('.effort-rail')
+    Expected: "高"
+    Received: "中等"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveAttribute" with timeout 5000ms
+      - waiting for locator('.effort-rail')
+        14 × locator resolved to <div tabindex="0" role="slider" aria-label="思考强度" aria-valuemin="0" aria-valuemax="4" aria-valuenow="1" class="effort-rail" aria-valuetext="中等" data-effort-index="1">…</div>
+           - unexpected value "中等"
+
+
+      140 |     await page.mouse.move(box.x + box.width - 14, box.y + 22, { steps: 45 }); await page.mouse.up();
+      141 |     await page.locator("[data-effort-reset]").click(); await page.waitForTimeout(1600);
+    > 142 |     await expect(rail).toHaveAttribute("aria-valuetext", "高");
+          |                        ^
+      143 |   });
+      144 | });
+      145 | test("touch cancellation and visibility cleanup", async ({ browser }) => {
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/runtime-refinement.spec.js:142:24
+
+    attachment #1: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/runtime-refinement-motion--f8c2c-particles-clicks-drag-reset-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/runtime-refinement-motion--f8c2c-particles-clicks-drag-reset-chromium/error-context.md
+
+  21) [chromium] › e2e/runtime-refinement.spec.js:145:1 › touch cancellation and visibility cleanup 
+
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5173/
+    Call log:
+      - navigating to "http://127.0.0.1:5173/", waiting until "load"
+
+
+      17 |   }, { model, scheme, reset, override, models });
+      18 |   await page.route("**/api/**", route => route.fulfill({ contentType: "application/json", body: JSON.stringify({ ok: true, providers: [] }) }));
+    > 19 |   await page.goto("/");
+         |              ^
+      20 |   await expect(page.locator("#runtimeBtn")).toBeVisible();
+      21 |   if (legacy) await page.evaluate(() => {
+      22 |     Object.entries({ "--canvas": "#FDF6E3", "--surface-content": "#FFF9E8", "--accent": "#93B259",
+        at seed (/Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/runtime-refinement.spec.js:19:14)
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/runtime-refinement.spec.js:149:5
+
+    Error Context: test-results/runtime-refinement-touch-cancellation-and-visibility-cleanup-chromium/error-context.md
+
+  22) [chromium] › e2e/settings-context.spec.js:97:1 › 升级默认重置与无密钥备份；模型编辑仅有额度 ───────────────────────
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByText('查看旧配置', { exact: true })
+
+
+       99 |   await expect(page.locator("#cc-systemPrompt")).toHaveValue("");
+      100 |   await page.locator('[data-section="data"]').click();
+    > 101 |   await page.getByText("查看旧配置", { exact: true }).click();
+          |                                                  ^
+      102 |   await expect(page.locator(".settings-backup")).toContainText("obsolete-provider-prompt");
+      103 |   await expect(page.locator(".settings-backup")).not.toContainText('"apiKey"');
+      104 |   await page.locator('[data-section="providers"]').click();
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/settings-context.spec.js:101:50
+
+    Error Context: test-results/settings-context-升级默认重置与无密钥备份；模型编辑仅有额度-chromium/error-context.md
+
+  23) [chromium] › e2e/settings-context.spec.js:126:3 › 上下文设置视觉 1280 light ─────────────────────────
+
+    Error: expect(page).toHaveScreenshot(expected) failed
+
+      23677 pixels (ratio 0.03 of all image pixels) are different.
+
+      Snapshot: context-1280-light.png
+
+    Call log:
+      - Expect "toHaveScreenshot(context-1280-light.png)" with timeout 5000ms
+        - verifying given screenshot expectation
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - 23677 pixels (ratio 0.03 of all image pixels) are different.
+      - waiting 100ms before taking screenshot
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - captured a stable screenshot
+      - 23677 pixels (ratio 0.03 of all image pixels) are different.
+
+
+      129 |     await expect(page.locator("#cc-systemPrompt")).toBeVisible();
+      130 |     await page.evaluate(() => document.fonts.ready);
+    > 131 |     await expect(page).toHaveScreenshot(`context-${width}-${scheme}.png`, { animations: "disabled", caret: "hide" });
+          |                        ^
+      132 |     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+      133 |     await page.locator("#context-budget").scrollIntoViewIfNeeded();
+      134 |     await expect(page.locator("#context-budget")).toHaveScreenshot(`context-budget-${width}-${scheme}.png`, { animations: "disabled", caret: "hide" });
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/settings-context.spec.js:131:24
+
+    attachment #1: context-1280-light (image/png) ──────────────────────────────────────────────────
+    Expected: e2e/settings-context.spec.js-snapshots/context-1280-light-chromium-darwin.png
+    Received: test-results/settings-context-上下文设置视觉-1280-light-chromium/context-1280-light-actual.png
+    Diff:     test-results/settings-context-上下文设置视觉-1280-light-chromium/context-1280-light-diff.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/settings-context-上下文设置视觉-1280-light-chromium/error-context.md
+
+  24) [chromium] › e2e/settings-context.spec.js:126:3 › 上下文设置视觉 1024 dark ──────────────────────────
+
+    Error: expect(page).toHaveScreenshot(expected) failed
+
+      6736 pixels (ratio 0.01 of all image pixels) are different.
+
+      Snapshot: context-1024-dark.png
+
+    Call log:
+      - Expect "toHaveScreenshot(context-1024-dark.png)" with timeout 5000ms
+        - verifying given screenshot expectation
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - 6736 pixels (ratio 0.01 of all image pixels) are different.
+      - waiting 100ms before taking screenshot
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - captured a stable screenshot
+      - 6736 pixels (ratio 0.01 of all image pixels) are different.
+
+
+      129 |     await expect(page.locator("#cc-systemPrompt")).toBeVisible();
+      130 |     await page.evaluate(() => document.fonts.ready);
+    > 131 |     await expect(page).toHaveScreenshot(`context-${width}-${scheme}.png`, { animations: "disabled", caret: "hide" });
+          |                        ^
+      132 |     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+      133 |     await page.locator("#context-budget").scrollIntoViewIfNeeded();
+      134 |     await expect(page.locator("#context-budget")).toHaveScreenshot(`context-budget-${width}-${scheme}.png`, { animations: "disabled", caret: "hide" });
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/settings-context.spec.js:131:24
+
+    attachment #1: context-1024-dark (image/png) ───────────────────────────────────────────────────
+    Expected: e2e/settings-context.spec.js-snapshots/context-1024-dark-chromium-darwin.png
+    Received: test-results/settings-context-上下文设置视觉-1024-dark-chromium/context-1024-dark-actual.png
+    Diff:     test-results/settings-context-上下文设置视觉-1024-dark-chromium/context-1024-dark-diff.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/settings-context-上下文设置视觉-1024-dark-chromium/error-context.md
+
+  25) [chromium] › e2e/settings-context.spec.js:126:3 › 上下文设置视觉 390 light ──────────────────────────
+
+    Error: expect(page).toHaveScreenshot(expected) failed
+
+      572 pixels (ratio 0.01 of all image pixels) are different.
+
+      Snapshot: context-390-light.png
+
+    Call log:
+      - Expect "toHaveScreenshot(context-390-light.png)" with timeout 5000ms
+        - verifying given screenshot expectation
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - 572 pixels (ratio 0.01 of all image pixels) are different.
+      - waiting 100ms before taking screenshot
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - captured a stable screenshot
+      - 572 pixels (ratio 0.01 of all image pixels) are different.
+
+
+      129 |     await expect(page.locator("#cc-systemPrompt")).toBeVisible();
+      130 |     await page.evaluate(() => document.fonts.ready);
+    > 131 |     await expect(page).toHaveScreenshot(`context-${width}-${scheme}.png`, { animations: "disabled", caret: "hide" });
+          |                        ^
+      132 |     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+      133 |     await page.locator("#context-budget").scrollIntoViewIfNeeded();
+      134 |     await expect(page.locator("#context-budget")).toHaveScreenshot(`context-budget-${width}-${scheme}.png`, { animations: "disabled", caret: "hide" });
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/settings-context.spec.js:131:24
+
+    attachment #1: context-390-light (image/png) ───────────────────────────────────────────────────
+    Expected: e2e/settings-context.spec.js-snapshots/context-390-light-chromium-darwin.png
+    Received: test-results/settings-context-上下文设置视觉-390-light-chromium/context-390-light-actual.png
+    Diff:     test-results/settings-context-上下文设置视觉-390-light-chromium/context-390-light-diff.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/settings-context-上下文设置视觉-390-light-chromium/error-context.md
+
+  26) [chromium] › e2e/settings-context.spec.js:138:1 › 离开聊天后重新打开上下文页面，项目菜单与能力覆盖可用 ─────────────────
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for locator('[data-project-id="p"] [data-project-action="menu"]')
+        - locator resolved to <button title="项目操作" type="button" aria-haspopup="menu" aria-label="写作项目：更多操作" data-project-action="menu" class="ui-button icon-btn small">…</button>
+      - attempting click action
+        2 × waiting for element to be visible, enabled and stable
+          - element is visible, enabled and stable
+          - scrolling into view if needed
+          - done scrolling
+          - <div class="project-row">…</div> intercepts pointer events
+        - retrying click action
+        - waiting 20ms
+        2 × waiting for element to be visible, enabled and stable
+          - element is visible, enabled and stable
+          - scrolling into view if needed
+          - done scrolling
+          - <div class="project-row">…</div> intercepts pointer events
+        - retrying click action
+          - waiting 100ms
+        57 × waiting for element to be visible, enabled and stable
+           - element is visible, enabled and stable
+           - scrolling into view if needed
+           - done scrolling
+           - <div class="project-row">…</div> intercepts pointer events
+         - retrying click action
+           - waiting 500ms
+
+
+      142 |   await page.evaluate(() => { location.hash = "#/chat"; });
+      143 |   await expect(page.locator("#composerInput")).toBeVisible();
+    > 144 |   await page.locator('[data-project-id="p"] [data-project-action="menu"]').click();
+          |                                                                            ^
+      145 |   await page.getByRole("menuitem", { name: "上下文与提示词" }).click();
+      146 |   await expect(page.locator("#context-scope")).toHaveValue("p");
+      147 |   await expect(page.locator("#cc-visionInput")).toHaveValue("false");
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/settings-context.spec.js:144:76
+
+    Error Context: test-results/settings-context-离开聊天后重新打开上下文页面，项目菜单与能力覆盖可用-chromium/error-context.md
+
+  27) [chromium] › e2e/sidebar-focus.spec.js:97:1 › compact shortcuts search, create and import; settings hover is flat 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('.empty-list-note')
+    Expected substring: "没有匹配"
+    Error: strict mode violation: locator('.empty-list-note') resolved to 2 elements:
+        1) <div class="empty-list-note">没有匹配的项目</div> aka getByText('没有匹配的项目')
+        2) <div class="empty-list-note">没有匹配的聊天</div> aka getByText('没有匹配的聊天')
+
+    Call log:
+      - Expect "toContainText" with timeout 5000ms
+      - waiting for locator('.empty-list-note')
+
+
+      104 |   await expect(page.locator("#searchInput")).toBeFocused();
+      105 |   await page.locator("#searchInput").fill("找不到的对话");
+    > 106 |   await expect(page.locator(".empty-list-note")).toContainText("没有匹配");
+          |                                                  ^
+      107 |   await page.locator("#searchInput").fill("");
+      108 |   await page.locator("#archivesCollapseBtn").click();
+      109 |   const chooser = page.waitForEvent("filechooser");
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/sidebar-focus.spec.js:106:50
+
+    Error Context: test-results/sidebar-focus-compact-shor-a7ef3-port-settings-hover-is-flat-chromium/error-context.md
+
+  28) [chromium] › e2e/visual.spec.js:243:1 › onboarding 初始浅色 ──────────────────────────────────────
+
+    Error: expect(page).toHaveScreenshot(expected) failed
+
+      8671 pixels (ratio 0.02 of all image pixels) are different.
+
+      Snapshot: onboarding-initial-light.png
+
+    Call log:
+      - Expect "toHaveScreenshot(onboarding-initial-light.png)" with timeout 5000ms
+        - verifying given screenshot expectation
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - 8671 pixels (ratio 0.02 of all image pixels) are different.
+      - waiting 100ms before taking screenshot
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - captured a stable screenshot
+      - 8671 pixels (ratio 0.02 of all image pixels) are different.
+
+
+      246 |   await page.goto("/onboarding.html");
+      247 |   await freezePage(page);
+    > 248 |   await expect(page).toHaveScreenshot("onboarding-initial-light.png", { animations: "disabled", caret: "hide", maxDiffPixels: 0 });
+          |                      ^
+      249 | });
+      250 |
+      251 | test("onboarding 初始深色", async ({ page }) => {
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/visual.spec.js:248:22
+
+    attachment #1: onboarding-initial-light (image/png) ────────────────────────────────────────────
+    Expected: e2e/visual.spec.js-snapshots/onboarding-initial-light-chromium-darwin.png
+    Received: test-results/visual-onboarding-初始浅色-chromium/onboarding-initial-light-actual.png
+    Diff:     test-results/visual-onboarding-初始浅色-chromium/onboarding-initial-light-diff.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/visual-onboarding-初始浅色-chromium/error-context.md
+
+  29) [chromium] › e2e/visual.spec.js:251:1 › onboarding 初始深色 ──────────────────────────────────────
+
+    Error: expect(page).toHaveScreenshot(expected) failed
+
+      5184 pixels (ratio 0.01 of all image pixels) are different.
+
+      Snapshot: onboarding-initial-dark.png
+
+    Call log:
+      - Expect "toHaveScreenshot(onboarding-initial-dark.png)" with timeout 5000ms
+        - verifying given screenshot expectation
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - 5184 pixels (ratio 0.01 of all image pixels) are different.
+      - waiting 100ms before taking screenshot
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - captured a stable screenshot
+      - 5184 pixels (ratio 0.01 of all image pixels) are different.
+
+
+      254 |   await page.goto("/onboarding.html");
+      255 |   await freezePage(page);
+    > 256 |   await expect(page).toHaveScreenshot("onboarding-initial-dark.png", { animations: "disabled", caret: "hide", maxDiffPixels: 0 });
+          |                      ^
+      257 | });
+      258 |
+      259 | for (const scheme of ["light", "dark"]) {
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/visual.spec.js:256:22
+
+    attachment #1: onboarding-initial-dark (image/png) ─────────────────────────────────────────────
+    Expected: e2e/visual.spec.js-snapshots/onboarding-initial-dark-chromium-darwin.png
+    Received: test-results/visual-onboarding-初始深色-chromium/onboarding-initial-dark-actual.png
+    Diff:     test-results/visual-onboarding-初始深色-chromium/onboarding-initial-dark-diff.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/visual-onboarding-初始深色-chromium/error-context.md
+
+  30) [chromium] › e2e/visual.spec.js:260:3 › 空会话 light ────────────────────────────────────────────
+
+    Error: expect(page).toHaveScreenshot(expected) failed
+
+      22776 pixels (ratio 0.03 of all image pixels) are different.
+
+      Snapshot: empty-chat-light.png
+
+    Call log:
+      - Expect "toHaveScreenshot(empty-chat-light.png)" with timeout 5000ms
+        - verifying given screenshot expectation
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - 22776 pixels (ratio 0.03 of all image pixels) are different.
+      - waiting 100ms before taking screenshot
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - captured a stable screenshot
+      - 22776 pixels (ratio 0.03 of all image pixels) are different.
+
+
+      265 |     await expect(page.locator(".empty-stage")).toBeVisible();
+      266 |     await freezePage(page);
+    > 267 |     await expect(page).toHaveScreenshot(`empty-chat-${scheme}.png`, { animations: "disabled", caret: "hide", maxDiffPixels: 0 });
+          |                        ^
+      268 |   });
+      269 |
+      270 |   test(`Everforest 空会话 ${scheme}`, async ({ page }) => {
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/visual.spec.js:267:24
+
+    attachment #1: empty-chat-light (image/png) ────────────────────────────────────────────────────
+    Expected: e2e/visual.spec.js-snapshots/empty-chat-light-chromium-darwin.png
+    Received: test-results/visual-空会话-light-chromium/empty-chat-light-actual.png
+    Diff:     test-results/visual-空会话-light-chromium/empty-chat-light-diff.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/visual-空会话-light-chromium/error-context.md
+
+  31) [chromium] › e2e/visual.spec.js:270:3 › Everforest 空会话 light ─────────────────────────────────
+
+    Error: expect(page).toHaveScreenshot(expected) failed
+
+      24548 pixels (ratio 0.03 of all image pixels) are different.
+
+      Snapshot: everforest-empty-light.png
+
+    Call log:
+      - Expect "toHaveScreenshot(everforest-empty-light.png)" with timeout 5000ms
+        - verifying given screenshot expectation
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - 24548 pixels (ratio 0.03 of all image pixels) are different.
+      - waiting 100ms before taking screenshot
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - captured a stable screenshot
+      - 24548 pixels (ratio 0.03 of all image pixels) are different.
+
+
+      277 |     await expect(page.locator(".empty-stage")).toBeVisible();
+      278 |     await freezePage(page);
+    > 279 |     await expect(page).toHaveScreenshot(`everforest-empty-${scheme}.png`, { animations: "disabled", caret: "hide", maxDiffPixels: 0 });
+          |                        ^
+      280 |   });
+      281 |
+      282 |   test(`Everforest 真实消息 ${scheme}`, async ({ page }) => {
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/visual.spec.js:279:24
+
+    attachment #1: everforest-empty-light (image/png) ──────────────────────────────────────────────
+    Expected: e2e/visual.spec.js-snapshots/everforest-empty-light-chromium-darwin.png
+    Received: test-results/visual-Everforest-空会话-light-chromium/everforest-empty-light-actual.png
+    Diff:     test-results/visual-Everforest-空会话-light-chromium/everforest-empty-light-diff.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/visual-Everforest-空会话-light-chromium/error-context.md
+
+  32) [chromium] › e2e/visual.spec.js:282:3 › Everforest 真实消息 light ────────────────────────────────
+
+    Error: expect(page).toHaveScreenshot(expected) failed
+
+      20656 pixels (ratio 0.03 of all image pixels) are different.
+
+      Snapshot: everforest-messages-light.png
+
+    Call log:
+      - Expect "toHaveScreenshot(everforest-messages-light.png)" with timeout 5000ms
+        - verifying given screenshot expectation
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - 20656 pixels (ratio 0.03 of all image pixels) are different.
+      - waiting 100ms before taking screenshot
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - captured a stable screenshot
+      - 20656 pixels (ratio 0.03 of all image pixels) are different.
+
+
+      289 |     await expect(page.locator(".empty-card")).toHaveCount(0);
+      290 |     await freezePage(page);
+    > 291 |     await expect(page).toHaveScreenshot(`everforest-messages-${scheme}.png`, { animations: "disabled", caret: "hide", maxDiffPixels: 0 });
+          |                        ^
+      292 |   });
+      293 |
+      294 |   test(`思考轨迹 ${scheme}`, async ({ page }) => {
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/visual.spec.js:291:24
+
+    attachment #1: everforest-messages-light (image/png) ───────────────────────────────────────────
+    Expected: e2e/visual.spec.js-snapshots/everforest-messages-light-chromium-darwin.png
+    Received: test-results/visual-Everforest-真实消息-light-chromium/everforest-messages-light-actual.png
+    Diff:     test-results/visual-Everforest-真实消息-light-chromium/everforest-messages-light-diff.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/visual-Everforest-真实消息-light-chromium/error-context.md
+
+  33) [chromium] › e2e/visual.spec.js:294:3 › 思考轨迹 light ───────────────────────────────────────────
+
+    Error: expect(page).toHaveScreenshot(expected) failed
+
+      28556 pixels (ratio 0.03 of all image pixels) are different.
+
+      Snapshot: reasoning-trail-light.png
+
+    Call log:
+      - Expect "toHaveScreenshot(reasoning-trail-light.png)" with timeout 5000ms
+        - verifying given screenshot expectation
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - 28556 pixels (ratio 0.03 of all image pixels) are different.
+      - waiting 100ms before taking screenshot
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - captured a stable screenshot
+      - 28556 pixels (ratio 0.03 of all image pixels) are different.
+
+
+      302 |     await expect(sheet).toHaveAttribute("data-open", "true");
+      303 |     await freezePage(page);
+    > 304 |     await expect(page).toHaveScreenshot(`reasoning-trail-${scheme}.png`, { animations: "disabled", caret: "hide", maxDiffPixels: 0 });
+          |                        ^
+      305 |   });
+      306 | }
+      307 |
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/visual.spec.js:304:24
+
+    attachment #1: reasoning-trail-light (image/png) ───────────────────────────────────────────────
+    Expected: e2e/visual.spec.js-snapshots/reasoning-trail-light-chromium-darwin.png
+    Received: test-results/visual-思考轨迹-light-chromium/reasoning-trail-light-actual.png
+    Diff:     test-results/visual-思考轨迹-light-chromium/reasoning-trail-light-diff.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/visual-思考轨迹-light-chromium/error-context.md
+
+  34) [chromium] › e2e/visual.spec.js:260:3 › 空会话 dark ─────────────────────────────────────────────
+
+    Error: expect(page).toHaveScreenshot(expected) failed
+
+      16821 pixels (ratio 0.02 of all image pixels) are different.
+
+      Snapshot: empty-chat-dark.png
+
+    Call log:
+      - Expect "toHaveScreenshot(empty-chat-dark.png)" with timeout 5000ms
+        - verifying given screenshot expectation
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - 16821 pixels (ratio 0.02 of all image pixels) are different.
+      - waiting 100ms before taking screenshot
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - captured a stable screenshot
+      - 16821 pixels (ratio 0.02 of all image pixels) are different.
+
+
+      265 |     await expect(page.locator(".empty-stage")).toBeVisible();
+      266 |     await freezePage(page);
+    > 267 |     await expect(page).toHaveScreenshot(`empty-chat-${scheme}.png`, { animations: "disabled", caret: "hide", maxDiffPixels: 0 });
+          |                        ^
+      268 |   });
+      269 |
+      270 |   test(`Everforest 空会话 ${scheme}`, async ({ page }) => {
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/visual.spec.js:267:24
+
+    attachment #1: empty-chat-dark (image/png) ─────────────────────────────────────────────────────
+    Expected: e2e/visual.spec.js-snapshots/empty-chat-dark-chromium-darwin.png
+    Received: test-results/visual-空会话-dark-chromium/empty-chat-dark-actual.png
+    Diff:     test-results/visual-空会话-dark-chromium/empty-chat-dark-diff.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/visual-空会话-dark-chromium/error-context.md
+
+  35) [chromium] › e2e/visual.spec.js:270:3 › Everforest 空会话 dark ──────────────────────────────────
+
+    Error: expect(page).toHaveScreenshot(expected) failed
+
+      18705 pixels (ratio 0.03 of all image pixels) are different.
+
+      Snapshot: everforest-empty-dark.png
+
+    Call log:
+      - Expect "toHaveScreenshot(everforest-empty-dark.png)" with timeout 5000ms
+        - verifying given screenshot expectation
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - 18705 pixels (ratio 0.03 of all image pixels) are different.
+      - waiting 100ms before taking screenshot
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - captured a stable screenshot
+      - 18705 pixels (ratio 0.03 of all image pixels) are different.
+
+
+      277 |     await expect(page.locator(".empty-stage")).toBeVisible();
+      278 |     await freezePage(page);
+    > 279 |     await expect(page).toHaveScreenshot(`everforest-empty-${scheme}.png`, { animations: "disabled", caret: "hide", maxDiffPixels: 0 });
+          |                        ^
+      280 |   });
+      281 |
+      282 |   test(`Everforest 真实消息 ${scheme}`, async ({ page }) => {
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/visual.spec.js:279:24
+
+    attachment #1: everforest-empty-dark (image/png) ───────────────────────────────────────────────
+    Expected: e2e/visual.spec.js-snapshots/everforest-empty-dark-chromium-darwin.png
+    Received: test-results/visual-Everforest-空会话-dark-chromium/everforest-empty-dark-actual.png
+    Diff:     test-results/visual-Everforest-空会话-dark-chromium/everforest-empty-dark-diff.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/visual-Everforest-空会话-dark-chromium/error-context.md
+
+  36) [chromium] › e2e/visual.spec.js:282:3 › Everforest 真实消息 dark ─────────────────────────────────
+
+    Error: expect(page).toHaveScreenshot(expected) failed
+
+      15126 pixels (ratio 0.02 of all image pixels) are different.
+
+      Snapshot: everforest-messages-dark.png
+
+    Call log:
+      - Expect "toHaveScreenshot(everforest-messages-dark.png)" with timeout 5000ms
+        - verifying given screenshot expectation
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - 15126 pixels (ratio 0.02 of all image pixels) are different.
+      - waiting 100ms before taking screenshot
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - captured a stable screenshot
+      - 15126 pixels (ratio 0.02 of all image pixels) are different.
+
+
+      289 |     await expect(page.locator(".empty-card")).toHaveCount(0);
+      290 |     await freezePage(page);
+    > 291 |     await expect(page).toHaveScreenshot(`everforest-messages-${scheme}.png`, { animations: "disabled", caret: "hide", maxDiffPixels: 0 });
+          |                        ^
+      292 |   });
+      293 |
+      294 |   test(`思考轨迹 ${scheme}`, async ({ page }) => {
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/visual.spec.js:291:24
+
+    attachment #1: everforest-messages-dark (image/png) ────────────────────────────────────────────
+    Expected: e2e/visual.spec.js-snapshots/everforest-messages-dark-chromium-darwin.png
+    Received: test-results/visual-Everforest-真实消息-dark-chromium/everforest-messages-dark-actual.png
+    Diff:     test-results/visual-Everforest-真实消息-dark-chromium/everforest-messages-dark-diff.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/visual-Everforest-真实消息-dark-chromium/error-context.md
+
+  37) [chromium] › e2e/visual.spec.js:294:3 › 思考轨迹 dark ────────────────────────────────────────────
+
+    Error: expect(page).toHaveScreenshot(expected) failed
+
+      23108 pixels (ratio 0.03 of all image pixels) are different.
+
+      Snapshot: reasoning-trail-dark.png
+
+    Call log:
+      - Expect "toHaveScreenshot(reasoning-trail-dark.png)" with timeout 5000ms
+        - verifying given screenshot expectation
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - 23108 pixels (ratio 0.03 of all image pixels) are different.
+      - waiting 100ms before taking screenshot
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - captured a stable screenshot
+      - 23108 pixels (ratio 0.03 of all image pixels) are different.
+
+
+      302 |     await expect(sheet).toHaveAttribute("data-open", "true");
+      303 |     await freezePage(page);
+    > 304 |     await expect(page).toHaveScreenshot(`reasoning-trail-${scheme}.png`, { animations: "disabled", caret: "hide", maxDiffPixels: 0 });
+          |                        ^
+      305 |   });
+      306 | }
+      307 |
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/visual.spec.js:304:24
+
+    attachment #1: reasoning-trail-dark (image/png) ────────────────────────────────────────────────
+    Expected: e2e/visual.spec.js-snapshots/reasoning-trail-dark-chromium-darwin.png
+    Received: test-results/visual-思考轨迹-dark-chromium/reasoning-trail-dark-actual.png
+    Diff:     test-results/visual-思考轨迹-dark-chromium/reasoning-trail-dark-diff.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/visual-思考轨迹-dark-chromium/error-context.md
+
+  38) [chromium] › e2e/visual.spec.js:308:1 › Everforest 外观主题卡 ─────────────────────────────────────
+
+    Error: expect(page).toHaveScreenshot(expected) failed
+
+      44060 pixels (ratio 0.05 of all image pixels) are different.
+
+      Snapshot: everforest-appearance.png
+
+    Call log:
+      - Expect "toHaveScreenshot(everforest-appearance.png)" with timeout 5000ms
+        - verifying given screenshot expectation
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - 44060 pixels (ratio 0.05 of all image pixels) are different.
+      - waiting 100ms before taking screenshot
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - captured a stable screenshot
+      - 44060 pixels (ratio 0.05 of all image pixels) are different.
+
+
+      314 |   await expect(page.locator(".theme-card").nth(0)).toHaveAttribute("data-theme-id", "everforest");
+      315 |   await freezePage(page);
+    > 316 |   await expect(page).toHaveScreenshot("everforest-appearance.png", { animations: "disabled", caret: "hide", maxDiffPixels: 0 });
+          |                      ^
+      317 | });
+      318 |
+      319 | test("Everforest 思考强度控件", async ({ page }) => {
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/visual.spec.js:316:22
+
+    attachment #1: everforest-appearance (image/png) ───────────────────────────────────────────────
+    Expected: e2e/visual.spec.js-snapshots/everforest-appearance-chromium-darwin.png
+    Received: test-results/visual-Everforest-外观主题卡-chromium/everforest-appearance-actual.png
+    Diff:     test-results/visual-Everforest-外观主题卡-chromium/everforest-appearance-diff.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/visual-Everforest-外观主题卡-chromium/error-context.md
+
+  39) [chromium] › e2e/visual.spec.js:319:1 › Everforest 思考强度控件 ────────────────────────────────────
+
+    Error: expect(locator).toHaveScreenshot(expected) failed
+
+    Locator: locator('.effort-popover')
+      Expected an image 280px by 132px, received 280px by 163px. 272 pixels (ratio 0.01 of all image pixels) are different.
+
+      Snapshot: everforest-effort-popover.png
+
+    Call log:
+      - Expect "toHaveScreenshot(everforest-effort-popover.png)" with timeout 5000ms
+        - verifying given screenshot expectation
+      - waiting for locator('.effort-popover')
+        - locator resolved to <div data-effort="max" class="popover-card runtime-popover effort-popover">…</div>
+      - taking element screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - attempting scroll into view action
+        - waiting for element to be stable
+      - Expected an image 280px by 132px, received 280px by 163px. 272 pixels (ratio 0.01 of all image pixels) are different.
+      - waiting 100ms before taking screenshot
+      - waiting for locator('.effort-popover')
+        - locator resolved to <div data-effort="max" class="popover-card runtime-popover effort-popover">…</div>
+      - taking element screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - attempting scroll into view action
+        - waiting for element to be stable
+      - captured a stable screenshot
+      - Expected an image 280px by 132px, received 280px by 163px. 272 pixels (ratio 0.01 of all image pixels) are different.
+
+
+      332 |   await freezePage(page);
+      333 |   // 严格比较浮层，避免小图标残留被像素容差忽略。
+    > 334 |   await expect(popover).toHaveScreenshot("everforest-effort-popover.png", { animations: "disabled", caret: "hide", maxDiffPixels: 0 });
+          |                         ^
+      335 | });
+      336 |
+      337 | test("Everforest 运行配置与模型选择器", async ({ page }) => {
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/visual.spec.js:334:25
+
+    attachment #1: everforest-effort-popover (image/png) ───────────────────────────────────────────
+    Expected: e2e/visual.spec.js-snapshots/everforest-effort-popover-chromium-darwin.png
+    Received: test-results/visual-Everforest-思考强度控件-chromium/everforest-effort-popover-actual.png
+    Diff:     test-results/visual-Everforest-思考强度控件-chromium/everforest-effort-popover-diff.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/visual-Everforest-思考强度控件-chromium/error-context.md
+
+  40) [chromium] › e2e/visual.spec.js:362:1 › Provider 设置页面 ────────────────────────────────────────
+
+    Error: expect(page).toHaveScreenshot(expected) failed
+
+      6869 pixels (ratio 0.01 of all image pixels) are different.
+
+      Snapshot: settings-providers.png
+
+    Call log:
+      - Expect "toHaveScreenshot(settings-providers.png)" with timeout 5000ms
+        - verifying given screenshot expectation
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - 6869 pixels (ratio 0.01 of all image pixels) are different.
+      - waiting 100ms before taking screenshot
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - captured a stable screenshot
+      - 6869 pixels (ratio 0.01 of all image pixels) are different.
+
+
+      365 |   await expect(page.locator(".provider-item")).toHaveCount(1);
+      366 |   await freezePage(page);
+    > 367 |   await expect(page).toHaveScreenshot("settings-providers.png", { animations: "disabled", caret: "hide", maxDiffPixels: 0 });
+          |                      ^
+      368 | });
+      369 |
+      370 | test("Provider 模型编辑基础弹层", async ({ page }) => {
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/visual.spec.js:367:22
+
+    attachment #1: settings-providers (image/png) ──────────────────────────────────────────────────
+    Expected: e2e/visual.spec.js-snapshots/settings-providers-chromium-darwin.png
+    Received: test-results/visual-Provider-设置页面-chromium/settings-providers-actual.png
+    Diff:     test-results/visual-Provider-设置页面-chromium/settings-providers-diff.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/visual-Provider-设置页面-chromium/error-context.md
+
+  41) [chromium] › e2e/visual.spec.js:370:1 › Provider 模型编辑基础弹层 ────────────────────────────────────
+
+    Error: expect(page).toHaveScreenshot(expected) failed
+
+      9267 pixels (ratio 0.01 of all image pixels) are different.
+
+      Snapshot: provider-model-dialog-basic.png
+
+    Call log:
+      - Expect "toHaveScreenshot(provider-model-dialog-basic.png)" with timeout 5000ms
+        - verifying given screenshot expectation
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - 9267 pixels (ratio 0.01 of all image pixels) are different.
+      - waiting 100ms before taking screenshot
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - captured a stable screenshot
+      - 9267 pixels (ratio 0.01 of all image pixels) are different.
+
+
+      376 |   await page.mouse.move(0, 0);
+      377 |   await freezePage(page);
+    > 378 |   await expect(page).toHaveScreenshot("provider-model-dialog-basic.png", { animations: "disabled", caret: "hide", maxDiffPixels: 0 });
+          |                      ^
+      379 | });
+      380 |
+      381 | test("Provider 模型额度弹层深色", async ({ page }) => {
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/visual.spec.js:378:22
+
+    attachment #1: provider-model-dialog-basic (image/png) ─────────────────────────────────────────
+    Expected: e2e/visual.spec.js-snapshots/provider-model-dialog-basic-chromium-darwin.png
+    Received: test-results/visual-Provider-模型编辑基础弹层-chromium/provider-model-dialog-basic-actual.png
+    Diff:     test-results/visual-Provider-模型编辑基础弹层-chromium/provider-model-dialog-basic-diff.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/visual-Provider-模型编辑基础弹层-chromium/error-context.md
+
+  42) [chromium] › e2e/visual.spec.js:381:1 › Provider 模型额度弹层深色 ────────────────────────────────────
+
+    Error: expect(page).toHaveScreenshot(expected) failed
+
+      10127 pixels (ratio 0.01 of all image pixels) are different.
+
+      Snapshot: provider-model-dialog-advanced-dark.png
+
+    Call log:
+      - Expect "toHaveScreenshot(provider-model-dialog-advanced-dark.png)" with timeout 5000ms
+        - verifying given screenshot expectation
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - 10127 pixels (ratio 0.01 of all image pixels) are different.
+      - waiting 100ms before taking screenshot
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - captured a stable screenshot
+      - 10127 pixels (ratio 0.01 of all image pixels) are different.
+
+
+      388 |   await expect(dialog.locator("#model-temperature")).toHaveCount(0);
+      389 |   await freezePage(page);
+    > 390 |   await expect(page).toHaveScreenshot("provider-model-dialog-advanced-dark.png", { animations: "disabled", caret: "hide", maxDiffPixels: 0 });
+          |                      ^
+      391 | });
+      392 |
+      393 | test("上下文与提示词集中配置", async ({ page }) => {
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/visual.spec.js:390:22
+
+    attachment #1: provider-model-dialog-advanced-dark (image/png) ─────────────────────────────────
+    Expected: e2e/visual.spec.js-snapshots/provider-model-dialog-advanced-dark-chromium-darwin.png
+    Received: test-results/visual-Provider-模型额度弹层深色-chromium/provider-model-dialog-advanced-dark-actual.png
+    Diff:     test-results/visual-Provider-模型额度弹层深色-chromium/provider-model-dialog-advanced-dark-diff.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/visual-Provider-模型额度弹层深色-chromium/error-context.md
+
+  43) [chromium] › e2e/visual.spec.js:393:1 › 上下文与提示词集中配置 ──────────────────────────────────────────
+
+    Error: expect(page).toHaveScreenshot(expected) failed
+
+      20397 pixels (ratio 0.02 of all image pixels) are different.
+
+      Snapshot: provider-advanced-open.png
+
+    Call log:
+      - Expect "toHaveScreenshot(provider-advanced-open.png)" with timeout 5000ms
+        - verifying given screenshot expectation
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - 20397 pixels (ratio 0.02 of all image pixels) are different.
+      - waiting 100ms before taking screenshot
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - captured a stable screenshot
+      - 20397 pixels (ratio 0.02 of all image pixels) are different.
+
+
+      397 |   await expect(page.locator("#cc-systemPrompt")).toBeVisible();
+      398 |   await freezePage(page);
+    > 399 |   await expect(page).toHaveScreenshot("provider-advanced-open.png", { animations: "disabled", caret: "hide", maxDiffPixels: 0 });
+          |                      ^
+      400 | });
+      401 |
+      402 | test("Provider 中等宽度顶部切换器", async ({ page }) => {
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/visual.spec.js:399:22
+
+    attachment #1: provider-advanced-open (image/png) ──────────────────────────────────────────────
+    Expected: e2e/visual.spec.js-snapshots/provider-advanced-open-chromium-darwin.png
+    Received: test-results/visual-上下文与提示词集中配置-chromium/provider-advanced-open-actual.png
+    Diff:     test-results/visual-上下文与提示词集中配置-chromium/provider-advanced-open-diff.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/visual-上下文与提示词集中配置-chromium/error-context.md
+
+  44) [chromium] › e2e/visual.spec.js:402:1 › Provider 中等宽度顶部切换器 ───────────────────────────────────
+
+    Error: expect(page).toHaveScreenshot(expected) failed
+
+      12914 pixels (ratio 0.03 of all image pixels) are different.
+
+      Snapshot: provider-medium-workbench.png
+
+    Call log:
+      - Expect "toHaveScreenshot(provider-medium-workbench.png)" with timeout 5000ms
+        - verifying given screenshot expectation
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - 12914 pixels (ratio 0.03 of all image pixels) are different.
+      - waiting 100ms before taking screenshot
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - captured a stable screenshot
+      - 12914 pixels (ratio 0.03 of all image pixels) are different.
+
+
+      406 |   await expect(page.locator("#pf-name")).toBeVisible();
+      407 |   await freezePage(page);
+    > 408 |   await expect(page).toHaveScreenshot("provider-medium-workbench.png", { animations: "disabled", caret: "hide", maxDiffPixels: 0 });
+          |                      ^
+      409 | });
+      410 |
+      411 | test("Provider 移动端列表与详情", async ({ page }) => {
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/visual.spec.js:408:22
+
+    attachment #1: provider-medium-workbench (image/png) ───────────────────────────────────────────
+    Expected: e2e/visual.spec.js-snapshots/provider-medium-workbench-chromium-darwin.png
+    Received: test-results/visual-Provider-中等宽度顶部切换器-chromium/provider-medium-workbench-actual.png
+    Diff:     test-results/visual-Provider-中等宽度顶部切换器-chromium/provider-medium-workbench-diff.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/visual-Provider-中等宽度顶部切换器-chromium/error-context.md
+
+  45) [chromium] › e2e/visual.spec.js:411:1 › Provider 移动端列表与详情 ────────────────────────────────────
+
+    Error: expect(page).toHaveScreenshot(expected) failed
+
+      896 pixels (ratio 0.01 of all image pixels) are different.
+
+      Snapshot: provider-mobile-list.png
+
+    Call log:
+      - Expect "toHaveScreenshot(provider-mobile-list.png)" with timeout 5000ms
+        - verifying given screenshot expectation
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - 896 pixels (ratio 0.01 of all image pixels) are different.
+      - waiting 100ms before taking screenshot
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - captured a stable screenshot
+      - 896 pixels (ratio 0.01 of all image pixels) are different.
+
+
+      415 |   await expect(page.locator("#pf-name")).toHaveCount(0);
+      416 |   await freezePage(page);
+    > 417 |   await expect(page).toHaveScreenshot("provider-mobile-list.png", { animations: "disabled", caret: "hide", maxDiffPixels: 0 });
+          |                      ^
+      418 |
+      419 |   await page.locator(".provider-item").first().click();
+      420 |   await expect(page.locator("#pf-name")).toBeVisible();
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/visual.spec.js:417:22
+
+    attachment #1: provider-mobile-list (image/png) ────────────────────────────────────────────────
+    Expected: e2e/visual.spec.js-snapshots/provider-mobile-list-chromium-darwin.png
+    Received: test-results/visual-Provider-移动端列表与详情-chromium/provider-mobile-list-actual.png
+    Diff:     test-results/visual-Provider-移动端列表与详情-chromium/provider-mobile-list-diff.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/visual-Provider-移动端列表与详情-chromium/error-context.md
+
+  46) [chromium] › e2e/visual.spec.js:425:1 › 移动端空会话 ───────────────────────────────────────────────
+
+    Error: expect(page).toHaveScreenshot(expected) failed
+
+      13686 pixels (ratio 0.05 of all image pixels) are different.
+
+      Snapshot: empty-chat-mobile.png
+
+    Call log:
+      - Expect "toHaveScreenshot(empty-chat-mobile.png)" with timeout 5000ms
+        - verifying given screenshot expectation
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - 13686 pixels (ratio 0.05 of all image pixels) are different.
+      - waiting 100ms before taking screenshot
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - captured a stable screenshot
+      - 13686 pixels (ratio 0.05 of all image pixels) are different.
+
+
+      429 |   await expect(page.locator(".mobile-nav")).toBeVisible();
+      430 |   await freezePage(page);
+    > 431 |   await expect(page).toHaveScreenshot("empty-chat-mobile.png", { animations: "disabled", caret: "hide", maxDiffPixels: 0 });
+          |                      ^
+      432 | });
+      433 |
+      434 | test("移动端思考轨迹", async ({ page }) => {
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/visual.spec.js:431:22
+
+    attachment #1: empty-chat-mobile (image/png) ───────────────────────────────────────────────────
+    Expected: e2e/visual.spec.js-snapshots/empty-chat-mobile-chromium-darwin.png
+    Received: test-results/visual-移动端空会话-chromium/empty-chat-mobile-actual.png
+    Diff:     test-results/visual-移动端空会话-chromium/empty-chat-mobile-diff.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/visual-移动端空会话-chromium/error-context.md
+
+  47) [chromium] › e2e/visual.spec.js:434:1 › 移动端思考轨迹 ──────────────────────────────────────────────
+
+    Error: expect(page).toHaveScreenshot(expected) failed
+
+      15872 pixels (ratio 0.05 of all image pixels) are different.
+
+      Snapshot: reasoning-trail-mobile.png
+
+    Call log:
+      - Expect "toHaveScreenshot(reasoning-trail-mobile.png)" with timeout 5000ms
+        - verifying given screenshot expectation
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - 15872 pixels (ratio 0.05 of all image pixels) are different.
+      - waiting 100ms before taking screenshot
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - captured a stable screenshot
+      - 15872 pixels (ratio 0.05 of all image pixels) are different.
+
+
+      441 |   await expect(sheet.locator(".reasoning-toggle")).toHaveCSS("min-height", "44px");
+      442 |   await freezePage(page);
+    > 443 |   await expect(page).toHaveScreenshot("reasoning-trail-mobile.png", { animations: "disabled", caret: "hide", maxDiffPixels: 0 });
+          |                      ^
+      444 | });
+      445 |
+      446 | test("工具轻量时间线深色", async ({ page }) => {
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/visual.spec.js:443:22
+
+    attachment #1: reasoning-trail-mobile (image/png) ──────────────────────────────────────────────
+    Expected: e2e/visual.spec.js-snapshots/reasoning-trail-mobile-chromium-darwin.png
+    Received: test-results/visual-移动端思考轨迹-chromium/reasoning-trail-mobile-actual.png
+    Diff:     test-results/visual-移动端思考轨迹-chromium/reasoning-trail-mobile-diff.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/visual-移动端思考轨迹-chromium/error-context.md
+
+  48) [chromium] › e2e/visual.spec.js:446:1 › 工具轻量时间线深色 ────────────────────────────────────────────
+
+    Error: expect(page).toHaveScreenshot(expected) failed
+
+      21198 pixels (ratio 0.03 of all image pixels) are different.
+
+      Snapshot: tool-timeline-dark.png
+
+    Call log:
+      - Expect "toHaveScreenshot(tool-timeline-dark.png)" with timeout 5000ms
+        - verifying given screenshot expectation
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - 21198 pixels (ratio 0.03 of all image pixels) are different.
+      - waiting 100ms before taking screenshot
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - captured a stable screenshot
+      - 21198 pixels (ratio 0.03 of all image pixels) are different.
+
+
+      452 |   await expect(page.locator(".tool-result-block")).toHaveCount(2);
+      453 |   await freezePage(page);
+    > 454 |   await expect(page).toHaveScreenshot("tool-timeline-dark.png", { animations: "disabled", caret: "hide", maxDiffPixels: 0 });
+          |                      ^
+      455 | });
+      456 |
+      457 | test("工具轻量时间线移动端", async ({ page }) => {
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/visual.spec.js:454:22
+
+    attachment #1: tool-timeline-dark (image/png) ──────────────────────────────────────────────────
+    Expected: e2e/visual.spec.js-snapshots/tool-timeline-dark-chromium-darwin.png
+    Received: test-results/visual-工具轻量时间线深色-chromium/tool-timeline-dark-actual.png
+    Diff:     test-results/visual-工具轻量时间线深色-chromium/tool-timeline-dark-diff.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/visual-工具轻量时间线深色-chromium/error-context.md
+
+  49) [chromium] › e2e/visual.spec.js:457:1 › 工具轻量时间线移动端 ───────────────────────────────────────────
+
+    Error: expect(page).toHaveScreenshot(expected) failed
+
+      15766 pixels (ratio 0.05 of all image pixels) are different.
+
+      Snapshot: tool-timeline-mobile.png
+
+    Call log:
+      - Expect "toHaveScreenshot(tool-timeline-mobile.png)" with timeout 5000ms
+        - verifying given screenshot expectation
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - 15766 pixels (ratio 0.05 of all image pixels) are different.
+      - waiting 100ms before taking screenshot
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - captured a stable screenshot
+      - 15766 pixels (ratio 0.05 of all image pixels) are different.
+
+
+      462 |   await expect(page.locator(".tool-result-content").first()).toHaveCSS("padding-left", "16px");
+      463 |   await freezePage(page);
+    > 464 |   await expect(page).toHaveScreenshot("tool-timeline-mobile.png", { animations: "disabled", caret: "hide", maxDiffPixels: 0 });
+          |                      ^
+      465 | });
+      466 |
+      467 | test("HTML 与 SVG 产物工具栏深色", async ({ page }) => {
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/visual.spec.js:464:22
+
+    attachment #1: tool-timeline-mobile (image/png) ────────────────────────────────────────────────
+    Expected: e2e/visual.spec.js-snapshots/tool-timeline-mobile-chromium-darwin.png
+    Received: test-results/visual-工具轻量时间线移动端-chromium/tool-timeline-mobile-actual.png
+    Diff:     test-results/visual-工具轻量时间线移动端-chromium/tool-timeline-mobile-diff.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/visual-工具轻量时间线移动端-chromium/error-context.md
+
+  50) [chromium] › e2e/visual.spec.js:467:1 › HTML 与 SVG 产物工具栏深色 ───────────────────────────────────
+
+    Error: expect(page).toHaveScreenshot(expected) failed
+
+      19154 pixels (ratio 0.02 of all image pixels) are different.
+
+      Snapshot: artifact-preview-toolbar-dark.png
+
+    Call log:
+      - Expect "toHaveScreenshot(artifact-preview-toolbar-dark.png)" with timeout 5000ms
+        - verifying given screenshot expectation
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - 19154 pixels (ratio 0.02 of all image pixels) are different.
+      - waiting 100ms before taking screenshot
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - captured a stable screenshot
+      - 19154 pixels (ratio 0.02 of all image pixels) are different.
+
+
+      473 |   await expect(page.locator(".code-block .code-actions button")).toHaveCount(3);
+      474 |   await freezePage(page);
+    > 475 |   await expect(page).toHaveScreenshot("artifact-preview-toolbar-dark.png", { animations: "disabled", caret: "hide", maxDiffPixels: 0 });
+          |                      ^
+      476 | });
+      477 |
+      478 | test("HTML 与 SVG 产物工具栏移动端", async ({ page }) => {
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/visual.spec.js:475:22
+
+    attachment #1: artifact-preview-toolbar-dark (image/png) ───────────────────────────────────────
+    Expected: e2e/visual.spec.js-snapshots/artifact-preview-toolbar-dark-chromium-darwin.png
+    Received: test-results/visual-HTML-与-SVG-产物工具栏深色-chromium/artifact-preview-toolbar-dark-actual.png
+    Diff:     test-results/visual-HTML-与-SVG-产物工具栏深色-chromium/artifact-preview-toolbar-dark-diff.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/visual-HTML-与-SVG-产物工具栏深色-chromium/error-context.md
+
+  51) [chromium] › e2e/visual.spec.js:478:1 › HTML 与 SVG 产物工具栏移动端 ──────────────────────────────────
+
+    Error: expect(page).toHaveScreenshot(expected) failed
+
+      14905 pixels (ratio 0.05 of all image pixels) are different.
+
+      Snapshot: artifact-preview-toolbar-mobile.png
+
+    Call log:
+      - Expect "toHaveScreenshot(artifact-preview-toolbar-mobile.png)" with timeout 5000ms
+        - verifying given screenshot expectation
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - 14905 pixels (ratio 0.05 of all image pixels) are different.
+      - waiting 100ms before taking screenshot
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - captured a stable screenshot
+      - 14905 pixels (ratio 0.05 of all image pixels) are different.
+
+
+      483 |   await expect(page.locator(".artifact-file")).toHaveCount(2);
+      484 |   await freezePage(page);
+    > 485 |   await expect(page).toHaveScreenshot("artifact-preview-toolbar-mobile.png", { animations: "disabled", caret: "hide", maxDiffPixels: 0 });
+          |                      ^
+      486 | });
+      487 |
+      488 | test("图像生成等待态深色", async ({ page }) => {
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/visual.spec.js:485:22
+
+    attachment #1: artifact-preview-toolbar-mobile (image/png) ─────────────────────────────────────
+    Expected: e2e/visual.spec.js-snapshots/artifact-preview-toolbar-mobile-chromium-darwin.png
+    Received: test-results/visual-HTML-与-SVG-产物工具栏移动端-chromium/artifact-preview-toolbar-mobile-actual.png
+    Diff:     test-results/visual-HTML-与-SVG-产物工具栏移动端-chromium/artifact-preview-toolbar-mobile-diff.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/visual-HTML-与-SVG-产物工具栏移动端-chromium/error-context.md
+
+  52) [chromium] › e2e/visual.spec.js:488:1 › 图像生成等待态深色 ────────────────────────────────────────────
+
+    Error: expect(page).toHaveScreenshot(expected) failed
+
+      12008 pixels (ratio 0.02 of all image pixels) are different.
+
+      Snapshot: image-generation-pending-dark.png
+
+    Call log:
+      - Expect "toHaveScreenshot(image-generation-pending-dark.png)" with timeout 5000ms
+        - verifying given screenshot expectation
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - 12008 pixels (ratio 0.02 of all image pixels) are different.
+      - waiting 100ms before taking screenshot
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - captured a stable screenshot
+      - 12008 pixels (ratio 0.02 of all image pixels) are different.
+
+
+      496 |   await expect(page.locator(".stream-image-slot")).toBeVisible();
+      497 |   await freezePage(page);
+    > 498 |   await expect(page).toHaveScreenshot("image-generation-pending-dark.png", { animations: "disabled", caret: "hide", maxDiffPixels: 0 });
+          |                      ^
+      499 | });
+      500 |
+      501 | test("图像生成等待态移动端", async ({ page }) => {
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/visual.spec.js:498:22
+
+    attachment #1: image-generation-pending-dark (image/png) ───────────────────────────────────────
+    Expected: e2e/visual.spec.js-snapshots/image-generation-pending-dark-chromium-darwin.png
+    Received: test-results/visual-图像生成等待态深色-chromium/image-generation-pending-dark-actual.png
+    Diff:     test-results/visual-图像生成等待态深色-chromium/image-generation-pending-dark-diff.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/visual-图像生成等待态深色-chromium/error-context.md
+
+  53) [chromium] › e2e/visual.spec.js:501:1 › 图像生成等待态移动端 ───────────────────────────────────────────
+
+    Error: expect(page).toHaveScreenshot(expected) failed
+
+      10540 pixels (ratio 0.04 of all image pixels) are different.
+
+      Snapshot: image-generation-pending-mobile.png
+
+    Call log:
+      - Expect "toHaveScreenshot(image-generation-pending-mobile.png)" with timeout 5000ms
+        - verifying given screenshot expectation
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - 10540 pixels (ratio 0.04 of all image pixels) are different.
+      - waiting 100ms before taking screenshot
+      - taking page screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - captured a stable screenshot
+      - 10540 pixels (ratio 0.04 of all image pixels) are different.
+
+
+      509 |   await expect(page.locator(".stream-image-slot")).toBeVisible();
+      510 |   await freezePage(page);
+    > 511 |   await expect(page).toHaveScreenshot("image-generation-pending-mobile.png", { animations: "disabled", caret: "hide", maxDiffPixels: 0 });
+          |                      ^
+      512 | });
+      513 |
+      514 | test("主题变更不产生多余通知", async ({ page }) => {
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/visual.spec.js:511:22
+
+    attachment #1: image-generation-pending-mobile (image/png) ─────────────────────────────────────
+    Expected: e2e/visual.spec.js-snapshots/image-generation-pending-mobile-chromium-darwin.png
+    Received: test-results/visual-图像生成等待态移动端-chromium/image-generation-pending-mobile-actual.png
+    Diff:     test-results/visual-图像生成等待态移动端-chromium/image-generation-pending-mobile-diff.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/visual-图像生成等待态移动端-chromium/error-context.md
+
+  53 failed
+    [chromium] › e2e/app.spec.js:353:1 › 思考阶段隐藏正文气泡并显示思考时长 ─────────────────────────────────────────
+    [chromium] › e2e/app.spec.js:995:1 › Everforest：主题包令牌与纯色外观完整生效 ─────────────────────────────────
+    [chromium] › e2e/app.spec.js:1156:1 › 额度提示：悬停显示 3+1 行且单行不折行 ────────────────────────────────────
+    [chromium] › e2e/app.spec.js:1233:1 › 设置：外观主题卡与自定义导入入口 ─────────────────────────────────────────
+    [chromium] › e2e/app.spec.js:1331:1 › 主题 JSON：更新默认主题、重启恢复并删除自定义变体 ──────────────────────────────
+    [chromium] › e2e/app.spec.js:1547:1 › 聊天模型选择器隐藏禁用供应商，但设置中仍显示其状态 ────────────────────────────────
+    [chromium] › e2e/app.spec.js:1763:1 › 设置内部编辑页：离开设置后重新打开供应商时不恢复过期编辑层 ────────────────────────────
+    [chromium] › e2e/app.spec.js:1871:1 › 数据迁移：浏览器环境显示明确的不可用状态 ─────────────────────────────────────
+    [chromium] › e2e/app.spec.js:1920:1 › 更新日志时间线 ──────────────────────────────────────────────────
+    [chromium] › e2e/app.spec.js:1968:1 › 移动端设置：离开二级页面后重新进入显示设置目录 ──────────────────────────────────
+    [chromium] › e2e/app.spec.js:2107:1 › 会话 ⋮ 菜单：重命名对话框可交互（二级界面修复） ────────────────────────────────
+    [chromium] › e2e/app.spec.js:2134:1 › 新建对话守卫：全新对话上不重复新建 ────────────────────────────────────────
+    [chromium] › e2e/app.spec.js:2173:1 › 设置：工具与 Skill 独立入口，启用后全局持续生效 ──────────────────────────────
+    [chromium] › e2e/app.spec.js:2233:1 › 图像模型立即显示 1:1 等待槽，并在流完成前原位展示无边框图片 ─────────────────────────
+    [chromium] › e2e/projects.spec.js:68:1 › 项目管理：创建、移动、重命名、删除及刷新保留 ────────────────────────────────
+    [chromium] › e2e/projects.spec.js:103:1 › 新建继承当前项目、显式跨项目及无项目；草稿和附件留在原聊天 ────────────────────────
+    [chromium] › e2e/runtime-refinement.spec.js:61:4 › reset inherited ─────────────────────────────
+    [chromium] › e2e/runtime-refinement.spec.js:61:4 › reset override ──────────────────────────────
+    [chromium] › e2e/runtime-refinement.spec.js:61:4 › reset fallback ──────────────────────────────
+    [chromium] › e2e/runtime-refinement.spec.js:130:3 › motion demonstration › particles clicks drag reset 
+    [chromium] › e2e/runtime-refinement.spec.js:145:1 › touch cancellation and visibility cleanup ──
+    [chromium] › e2e/settings-context.spec.js:97:1 › 升级默认重置与无密钥备份；模型编辑仅有额度 ─────────────────────────
+    [chromium] › e2e/settings-context.spec.js:126:3 › 上下文设置视觉 1280 light ───────────────────────────
+    [chromium] › e2e/settings-context.spec.js:126:3 › 上下文设置视觉 1024 dark ────────────────────────────
+    [chromium] › e2e/settings-context.spec.js:126:3 › 上下文设置视觉 390 light ────────────────────────────
+    [chromium] › e2e/settings-context.spec.js:138:1 › 离开聊天后重新打开上下文页面，项目菜单与能力覆盖可用 ───────────────────
+    [chromium] › e2e/sidebar-focus.spec.js:97:1 › compact shortcuts search, create and import; settings hover is flat 
+    [chromium] › e2e/visual.spec.js:243:1 › onboarding 初始浅色 ────────────────────────────────────────
+    [chromium] › e2e/visual.spec.js:251:1 › onboarding 初始深色 ────────────────────────────────────────
+    [chromium] › e2e/visual.spec.js:260:3 › 空会话 light ──────────────────────────────────────────────
+    [chromium] › e2e/visual.spec.js:270:3 › Everforest 空会话 light ───────────────────────────────────
+    [chromium] › e2e/visual.spec.js:282:3 › Everforest 真实消息 light ──────────────────────────────────
+    [chromium] › e2e/visual.spec.js:294:3 › 思考轨迹 light ─────────────────────────────────────────────
+    [chromium] › e2e/visual.spec.js:260:3 › 空会话 dark ───────────────────────────────────────────────
+    [chromium] › e2e/visual.spec.js:270:3 › Everforest 空会话 dark ────────────────────────────────────
+    [chromium] › e2e/visual.spec.js:282:3 › Everforest 真实消息 dark ───────────────────────────────────
+    [chromium] › e2e/visual.spec.js:294:3 › 思考轨迹 dark ──────────────────────────────────────────────
+    [chromium] › e2e/visual.spec.js:308:1 › Everforest 外观主题卡 ───────────────────────────────────────
+    [chromium] › e2e/visual.spec.js:319:1 › Everforest 思考强度控件 ──────────────────────────────────────
+    [chromium] › e2e/visual.spec.js:362:1 › Provider 设置页面 ──────────────────────────────────────────
+    [chromium] › e2e/visual.spec.js:370:1 › Provider 模型编辑基础弹层 ──────────────────────────────────────
+    [chromium] › e2e/visual.spec.js:381:1 › Provider 模型额度弹层深色 ──────────────────────────────────────
+    [chromium] › e2e/visual.spec.js:393:1 › 上下文与提示词集中配置 ────────────────────────────────────────────
+    [chromium] › e2e/visual.spec.js:402:1 › Provider 中等宽度顶部切换器 ─────────────────────────────────────
+    [chromium] › e2e/visual.spec.js:411:1 › Provider 移动端列表与详情 ──────────────────────────────────────
+    [chromium] › e2e/visual.spec.js:425:1 › 移动端空会话 ─────────────────────────────────────────────────
+    [chromium] › e2e/visual.spec.js:434:1 › 移动端思考轨迹 ────────────────────────────────────────────────
+    [chromium] › e2e/visual.spec.js:446:1 › 工具轻量时间线深色 ──────────────────────────────────────────────
+    [chromium] › e2e/visual.spec.js:457:1 › 工具轻量时间线移动端 ─────────────────────────────────────────────
+    [chromium] › e2e/visual.spec.js:467:1 › HTML 与 SVG 产物工具栏深色 ─────────────────────────────────────
+    [chromium] › e2e/visual.spec.js:478:1 › HTML 与 SVG 产物工具栏移动端 ────────────────────────────────────
+    [chromium] › e2e/visual.spec.js:488:1 › 图像生成等待态深色 ──────────────────────────────────────────────
+    [chromium] › e2e/visual.spec.js:501:1 › 图像生成等待态移动端 ─────────────────────────────────────────────
+  114 passed (7.3m)

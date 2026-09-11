@@ -1,0 +1,661 @@
+/* ============================================================
+   Clawbox · 纸本响应式 —— 断点 1040（折叠归档栏）/ 720（移动端）
+   ============================================================ */
+
+/* ---- ≤ 1040：对话侧栏转为覆盖层（由 JS 切换 data-archives="rail"） ---- */
+
+@media (max-width: 1040px) {
+  .app-shell[data-archives="rail"] {
+    grid-template-columns: 0px minmax(0, 1fr);
+  }
+
+  .app-shell[data-archives="rail"] .archive-drawer {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 70;
+    width: min(var(--archive-w), 100vw);
+    background: var(--paper-raised);
+    box-shadow: var(--paper-shadow-raised);
+    transform: translateX(-102%);
+    transition: transform var(--motion-sidebar) var(--ease-out), visibility 0s var(--motion-sidebar);
+    visibility: hidden;
+  }
+
+  .app-shell[data-archives="rail"] .archive-drawer.drawer-open {
+    visibility: visible;
+    transition-delay: 0s;
+    transform: none;
+  }
+
+  .drawer-scrim {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 65;
+    background: color-mix(in srgb, var(--canvas-end) 38%, transparent);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--motion-panel) var(--ease-out);
+  }
+
+  .app-shell[data-archives="rail"] .drawer-scrim.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+@media (min-width: 721px) and (max-width: 1180px) {
+  .provider-registry {
+    grid-template-columns: 1fr;
+  }
+
+  .provider-rail {
+    border-right: none;
+    border-bottom: 1px solid var(--separator);
+  }
+
+  .provider-rail-list {
+    display: flex;
+    gap: 5px;
+    overflow-x: auto;
+  }
+
+  .provider-rail .provider-item {
+    width: min(220px, 42vw);
+    flex: none;
+  }
+
+  .provider-rail-add {
+    width: auto;
+    align-self: flex-start;
+  }
+}
+
+/* ---- ≤ 720：移动端（底部导航 + 抽屉式归档） ---- */
+
+@media (max-width: 720px) {
+  /* 特特异性对齐 ≤1040 的 rail 覆盖，靠源码顺序取胜 */
+  .app-shell[data-archives] {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr auto;
+    height: 100vh;
+    height: 100dvh;
+  }
+
+  /* 特异性对齐 ≤1040 的 rail 规则（同为 [data-archives] 链），靠源码顺序取胜 */
+  .app-shell[data-archives] .archive-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 70;
+    width: 100%;
+    background: var(--paper-raised);
+    transform: translateX(-102%);
+    transition: transform var(--motion-sidebar) var(--ease-out), visibility 0s var(--motion-sidebar);
+    visibility: hidden;
+    border-right: none;
+  }
+
+  .app-shell[data-archives] .archive-drawer.drawer-open {
+    visibility: visible;
+    transition-delay: 0s;
+    transform: none;
+  }
+
+  .drawer-scrim {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 65;
+    background: color-mix(in srgb, var(--canvas-end) 38%, transparent);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--motion-panel) var(--ease-out);
+  }
+
+  .drawer-scrim.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .stage {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .mobile-nav {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-row: 2;
+    border-top: 1px solid var(--separator);
+    background: var(--paper-subtle);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .mobile-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    min-height: 56px;
+    color: var(--label-tertiary);
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    transition: color var(--motion-quick) var(--ease-out);
+  }
+
+  .mobile-nav-item.is-active {
+    color: var(--context);
+  }
+
+  .stage {
+    --stage-top: 56px;
+  }
+
+  .stage-header {
+    padding: 0 12px;
+  }
+
+  /* 状态胶囊 + 双图标 + 供应商徽章在窄屏放不下：允许工具条收缩，徽章收窄省略 */
+  .stage-actions {
+    flex: 0 1 auto;
+    min-width: 0;
+  }
+
+  .stage-actions .badge {
+    max-width: 128px;
+    min-width: 0;
+  }
+
+  .stage-title {
+    font-size: var(--size-headline);
+  }
+
+  .message-list {
+    padding: 18px 14px 22px;
+    gap: 18px;
+  }
+
+  .composer-zone {
+    padding: 8px 10px 12px;
+  }
+
+  .composer-paper {
+    padding: 10px 10px 6px 14px;
+  }
+
+  .message-entry.user .message-paper {
+    max-width: 94%;
+  }
+
+  .branch-nav-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .message-branch-switcher {
+    min-height: 40px;
+    margin-top: 3px;
+    margin-right: 0;
+  }
+
+  .branch-count {
+    min-width: 46px;
+  }
+
+  /* 原位编辑器：触控热区放大到 40/44px，文本框展开面略收 */
+  .message-editor {
+    padding: 11px 9px 7px 13px;
+  }
+
+  .editor-textarea {
+    min-height: 116px;
+  }
+
+  .editor-action-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .editor-action-btn.primary {
+    width: 44px;
+    height: 44px;
+  }
+
+  .empty-card {
+    padding: 26px 18px 24px;
+  }
+
+  .empty-title {
+    font-size: 34px;
+  }
+
+  /* 设置页：移动端推入式详情 */
+  .settings-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .settings-index {
+    border-right: none;
+    position: relative;
+  }
+
+  .settings-content {
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    background: var(--canvas-mid);
+    transform: translateX(100%);
+    transition: transform var(--motion-panel) var(--ease-out);
+  }
+
+  #app[data-settings-detail="open"] .settings-content {
+    transform: none;
+  }
+
+  .settings-pane {
+    padding: 18px 16px 42px;
+  }
+
+  .provider-registry-pane {
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+
+  .provider-registry-heading {
+    align-items: flex-start;
+  }
+
+  .provider-registry-heading > .btn {
+    flex: none;
+    min-width: 44px;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .provider-registry {
+    display: block;
+    min-height: calc(100dvh - 170px);
+    border-radius: var(--radius-md);
+  }
+
+  .provider-registry.has-detail .provider-rail,
+  .provider-registry:not(.has-detail) .provider-detail-empty {
+    display: none;
+  }
+
+  .provider-rail {
+    min-height: calc(100dvh - 170px);
+    border-right: none;
+  }
+
+  .provider-detail-head,
+  .provider-section {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  .provider-form-grid,
+  .provider-model-advanced-grid,
+  .provider-template-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .provider-model-section-head,
+  .provider-savebar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .provider-section-actions,
+  .provider-save-actions {
+    width: 100%;
+  }
+
+  .provider-section-actions .btn,
+  .provider-save-actions .btn {
+    flex: 1;
+  }
+
+  .provider-model-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .provider-model-badges {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .provider-model-actions {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .provider-model-meta {
+    flex-wrap: wrap;
+  }
+
+  .provider-savebar {
+    position: sticky;
+    padding: 12px 14px calc(12px + env(safe-area-inset-bottom));
+  }
+
+  .provider-detail {
+    padding-bottom: 0;
+  }
+
+  .provider-disclosure {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  .provider-advanced-body {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  .provider-model-dialog,
+  .provider-create-dialog {
+    width: calc(100vw - 20px);
+    max-height: calc(100dvh - 20px);
+    padding: 18px 16px 14px;
+  }
+
+  .provider-dialog-backdrop {
+    padding: 10px;
+  }
+
+  .provider-model-dialog-scroll {
+    max-height: calc(100dvh - 190px);
+  }
+
+  .html-preview-backdrop {
+    padding: 10px;
+  }
+
+  .html-preview-head {
+    padding: 14px 12px 8px 14px;
+  }
+
+  .html-preview-note {
+    margin: 0 14px 10px;
+  }
+
+  .html-preview-frame-shell {
+    height: calc(100dvh - 142px);
+    margin: 0 10px 10px;
+  }
+
+  .migration-card-head {
+    gap: 10px;
+  }
+
+  .migration-status-badge {
+    max-width: 142px;
+    text-align: center;
+  }
+
+  .migration-route {
+    gap: 5px;
+  }
+
+  .migration-route-node {
+    gap: 5px;
+    padding-inline: 7px;
+    font-size: var(--size-caption);
+  }
+
+  .migration-actions .btn {
+    width: 100%;
+  }
+
+  .theme-package-actions .btn {
+    width: 100%;
+  }
+
+  .theme-json-compat {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .migration-mode-toggle {
+    align-items: flex-start;
+  }
+
+  .extension-card-head {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .settings-extension-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .settings-extension-grid .extension-management-card {
+    margin-bottom: 16px;
+  }
+
+  .extension-add-btn {
+    width: 100%;
+  }
+
+  .extension-import-actions {
+    width: 100%;
+    justify-content: stretch;
+  }
+
+  .extension-import-btn {
+    flex: 1;
+  }
+
+  .extension-settings-list {
+    margin-right: -16px;
+    margin-left: -16px;
+  }
+
+  .runtime-sandbox-setting {
+    margin-right: -16px;
+    margin-left: -16px;
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+
+  .extension-settings-item {
+    gap: 6px;
+    padding-right: 8px;
+    padding-left: 10px;
+  }
+
+  .extension-settings-item .icon-btn {
+    width: 38px;
+    height: 38px;
+  }
+
+  .extension-enabled-toggle {
+    transform: scale(.9);
+    margin-left: 0;
+  }
+
+  .extension-settings-sub {
+    max-width: 130px;
+  }
+
+  .tool-result > summary,
+  .tool-result-summary {
+    align-items: center;
+  }
+
+  .tool-result-status {
+    display: none;
+  }
+
+  .tool-result-title {
+    display: grid;
+    gap: 0;
+  }
+
+  .tool-result-content {
+    margin-left: 7px;
+    padding-left: 16px;
+  }
+
+  .crop-dialog {
+    padding: 14px 14px 12px;
+  }
+
+  .crop-stage {
+    height: 42vh;
+  }
+
+  .crop-backdrop {
+    padding: 12px;
+  }
+
+  .settings-detail-close {
+    display: inline-flex;
+    position: sticky;
+    top: 10px;
+    margin-bottom: 10px;
+    margin-left: -6px;
+  }
+
+  /* 触控热区 ≥ 44px */
+  .icon-btn {
+    width: 44px;
+    height: 44px;
+  }
+
+  /* 右侧运行控件组：触控下保持大命中区；整组不内部碎裂 */
+  .runtime-summary-btn {
+    min-height: 38px;
+  }
+
+  .context-ring-btn {
+    width: 44px;
+    height: 44px;
+  }
+
+  .context-ring-btn::after {
+    inset: 0;
+  }
+
+  .composer-attach-btn {
+    width: 44px;
+    height: 44px;
+  }
+
+  .runtime-summary-btn .runtime-model {
+    max-width: 34vw;
+  }
+
+  .send-btn {
+    width: 44px;
+    height: 44px;
+  }
+
+  .mobile-nav-item {
+    min-height: 52px;
+  }
+
+  .suggestion-card {
+    padding: 15px 16px;
+    min-height: 56px;
+  }
+
+  .conversation-item {
+    padding: 12px 10px 12px 15px;
+  }
+
+  .message-actions {
+    opacity: 1;
+  }
+
+  .artifact-file-head {
+    gap: 6px;
+    padding-left: 9px;
+  }
+
+  .artifact-file .file-size {
+    display: none;
+  }
+
+  .artifact-action,
+  .artifact-actions .file-download,
+  .code-action {
+    width: 36px;
+    height: 36px;
+  }
+
+
+}
+
+/* ---- 设置页：隐藏归档抽屉（设置有自己的目录），链式属性抬高优先级覆盖折叠断点 ---- */
+
+.app-shell[data-show-archives="false"][data-archives] {
+  grid-template-columns: minmax(0, 1fr);
+  transition: none;
+}
+
+.app-shell[data-show-archives="false"][data-archives] .archive-drawer {
+  display: none;
+}
+
+.app-shell[data-show-archives="false"][data-archives] #drawerToggleBtn {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .provider-advanced-body,
+  .provider-model-advanced-grid {
+    animation: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .app-shell[data-show-archives="false"][data-archives] {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---- 极窄屏：分段方块与轴标签的整体微缩，
+   状态值与双语短标签不变 ---- */
+
+@media (max-width: 380px) {
+  .runtime-summary-btn .runtime-model {
+    max-width: 30vw;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-shell[data-archives] .archive-drawer,
+  .drawer-scrim { transition: none; }
+}
+
+/* 窄屏工具条优先保留标题和操作，服务详情仍可由辅助名称读取。 */
+@media (max-width: 720px) {
+  .stage-trailing { flex: 0 1 auto; }
+  .stage-leading { flex: 1; }
+  .app-shell[data-archives] .focus-settings { display: none; }
+  .stage-actions { gap: 2px; }
+  .stage-actions .status-pill { padding: 0; border: 0; background: transparent; flex: none; }
+  .stage-actions .status-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .stage-actions .badge { max-width: 40px; padding: 8px; }
+  .stage-actions .badge span { display: none; }
+}
+
+@media (min-width: 721px) and (max-width: 1040px) {
+  .app-shell[data-archives="rail"] { grid-template-columns: var(--compact-rail-w) minmax(0, 1fr); }
+}
+@media (max-width: 720px) {
+  .compact-rail { display: none; }
+  .app-shell[data-archives] { grid-template-columns: minmax(0, 1fr); }
+  .sidebar-new { min-height: 46px; }
+}

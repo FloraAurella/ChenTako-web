@@ -1,0 +1,16 @@
+/* Shared behavior tokens; existing geometry and theme colors remain the compatibility baseline. */
+:root { --ui-radius: var(--radius-xs); --ui-focus: var(--pear); }
+.ui-input:focus-visible, .ui-button:focus-visible, [data-surface]:focus-visible { outline:2px solid var(--ui-focus); outline-offset:3px; }
+.ui-input[aria-invalid="true"] { border-color:var(--danger, #ba4d4d); }
+.ui-button:disabled,.ui-input:disabled { cursor:not-allowed; }
+[data-surface="interactive"] { border:0; border-radius:var(--ui-radius); }
+[data-surface="interactive"]:hover { background:var(--context-soft); }
+[data-surface="interactive"].is-selected { background:var(--fill-selected); }
+/* Panel states deliberately use the exact same paint at rest and on hover. */
+[data-surface="panel"], [data-surface="panel"]:hover, .paper-panel.settings-card, .paper-panel.settings-card:hover {
+ border:.8px solid var(--separator); border-radius:var(--radius-md); background:var(--appearance-panel-bg, var(--surface-content));
+}
+.ui-status { color:var(--label-secondary); font-size:var(--text-xs,12px); }
+@media (prefers-reduced-motion:reduce) { .ui-button,.ui-input,.ui-surface { transition:none; animation:none; } }
+
+.composer-paper[data-surface="panel"] { border-radius:var(--radius-lg); }

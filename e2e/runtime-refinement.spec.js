@@ -1,0 +1,225 @@
+import { test, expect } from "@playwright/test";
+test.use({ video: { mode: "on", size: { width: 1280, height: 800 } } });
+const model = "deepseek-v4-flash-vision-exp";
+async function seed(page, { scheme = "light", reset = "high", override, models, legacy = false } = {}) {
+  await page.addInitScript(({ model, scheme, reset, override, models }) => {
+    if (localStorage.getItem("runtime-test-seeded")) return;
+    localStorage.setItem("runtime-test-seeded", "1");
+    localStorage.setItem("tribblebook-ui-preferences-v1", JSON.stringify({ appearanceMode: scheme }));
+    const provider = { id: "deepseek", displayName: "DeepSeek", enabled: true, hasKeyConfigured: true,
+      baseUrl: "https://example.com/v1", responseFormat: "openai-compatible", defaultModel: model,
+      models: models || ["deepseek-v4-flash", model, "deepseek-v4-pro", "1"],
+      defaultReasoningEffort: reset, modelOverrides: override ? { [model]: { defaultReasoningEffort: override } } : {}, saveChats: true };
+    localStorage.setItem("tribblebook-v6-state", JSON.stringify({ version: "2.5.1", providers: [provider],
+      activeProviderId: provider.id, activeConversationId: "demo", preferredReasoningEffort: "medium",
+      conversations: [{ id: "demo", title: "选择适合当前任务的模型", providerId: provider.id, model,
+        reasoningEffort: "medium", messages: [], createdAt: Date.now(), updatedAt: Date.now() }] }));
+  }, { model, scheme, reset, override, models });
+  await page.route("**/api/**", route => route.fulfill({ contentType: "application/json", body: JSON.stringify({ ok: true, providers: [] }) }));
+  await page.goto("/");
+  await expect(page.locator("#runtimeBtn")).toBeVisible();
+  if (legacy) await page.evaluate(() => {
+    Object.entries({ "--canvas": "#FDF6E3", "--surface-content": "#FFF9E8", "--accent": "#93B259",
+      "--separator": "#D8D0BD", "--effort-track": "#000", "--radius-md": "80px", "--context-soft": "#000", "--fill-selected": "#000" })
+      .forEach(([key, value]) => document.documentElement.style.setProperty(key, value));
+  });
+}
+async function open(page, panel) {
+  await page.locator("#runtimeBtn").click();
+  if (panel) await page.locator(`[data-runtime-open="${panel}"]`).click();
+}
+async function shot(page, info, name) {
+  await page.locator(".runtime-popover").screenshot({ path: info.outputPath(name + ".png"), animations: "disabled" });
+}
+test("root geometry and compact model list", async ({ page }, info) => {
+  await seed(page, { legacy: true }); await open(page);
+  const card = page.locator(".runtime-popover");
+  await expect(card).toHaveCSS("border-radius", "16px");
+  expect(await page.locator("[data-runtime-model-value]").evaluate(el => el.scrollWidth <= el.clientWidth)).toBe(true);
+  await shot(page, info, "root");
+  for (const panel of ["model", "effort"]) {
+    await page.locator(`[data-runtime-open="${panel}"]`).hover();
+    await shot(page, info, "hover-" + panel);
+    await expect(page.locator(`[data-runtime-open="${panel}"]`)).toHaveCSS("border-radius", "10px");
+  }
+  await page.locator('[data-runtime-open="model"]').click();
+  await expect(page.locator(".model-popover .option-sub")).toHaveCount(0);
+  await expect(page.locator(".model-popover .is-selected")).toBeFocused();
+  await expect(page.locator(".model-popover .group-label")).toHaveText("DeepSeek");
+  expect((await card.boundingBox()).height).toBeLessThanOrEqual(190);
+  await shot(page, info, "models");
+  await page.keyboard.press("End");
+  await expect(page.locator('[data-model="1"]')).toBeFocused();
+  await page.keyboard.press("Home"); await page.keyboard.press("Enter");
+  await expect(card).toHaveCount(0);
+  await expect(page.locator("#runtimeBtn")).toBeFocused();
+  await page.reload();
+  await expect(page.locator("#modelValue")).toHaveText("deepseek-v4-flash");
+});
+for (const [name, opts, expected] of [
+  ["inherited", { reset: "high" }, "2"], ["override", { reset: "high", override: "xhigh" }, "2"], ["fallback", { reset: "" }, "2"]
+]) test("reset " + name, async ({ page }) => {
+  await seed(page, opts); await open(page, "effort");
+  const rail = page.locator(".effort-rail");
+  await rail.press("End");
+  await page.locator("[data-effort-reset]").click();
+  await expect(rail).toHaveAttribute("aria-valuenow", expected);
+  await rail.press("Home"); await rail.press("ArrowRight");
+  await expect(rail).toHaveAttribute("aria-valuetext", "中等");
+  await page.keyboard.press("Escape");
+  await expect(page.locator("#runtimeBtn")).toBeFocused();
+  await page.reload(); await open(page, "effort");
+  await expect(rail).toHaveAttribute("aria-valuenow", "1");
+});
+test("pointer stops and rapid reversal", async ({ page }) => {
+  await seed(page); await open(page, "effort");
+  const rail = page.locator(".effort-rail"), box = await rail.boundingBox();
+  for (let index = 0; index < 5; index++) {
+    await rail.click({ position: { x: 14 + index * (box.width - 28) / 4, y: 22 } });
+    await expect(rail).toHaveAttribute("aria-valuenow", String(index));
+    await expect.poll(async () => {
+      const thumb = await page.locator(".effort-rail-thumb").boundingBox();
+      return Math.abs(thumb.x + thumb.width / 2 - (box.x + 14 + index * (box.width - 28) / 4));
+    }).toBeLessThan(1);
+  }
+  await page.mouse.move(box.x + 14, box.y + 22); await page.mouse.down();
+  await page.mouse.move(box.x + box.width + 50, box.y + 22, { steps: 12 });
+  await expect(rail).toHaveAttribute("aria-valuenow", "4");
+  await page.mouse.move(box.x - 20, box.y + 22, { steps: 12 });
+  await expect(rail).toHaveAttribute("aria-valuenow", "0");
+  await page.mouse.up();
+  await expect(rail).not.toHaveClass(/is-dragging/);
+  await page.mouse.move(box.x + box.width, box.y + 22);
+  await expect(rail).toHaveAttribute("aria-valuenow", "0");
+});
+for (const scheme of ["light", "dark"]) test("appearance " + scheme, async ({ page }, info) => {
+  await seed(page, { scheme, legacy: scheme === "light" }); await open(page, "effort");
+  const rail = page.locator(".effort-rail");
+  for (const [index, label] of [[0, "low"], [2, "high"], [3, "xhigh"], [4, "max"]]) {
+    const box = await rail.boundingBox();
+    await rail.click({ position: { x: 14 + (box.width - 28) * index / 4, y: 22 } });
+    await shot(page, info, scheme + "-" + label);
+  }
+  await expect(page.locator(".effort-current")).toHaveCSS("color", "rgb(214, 93, 177)");
+  const speed = await page.locator(".effort-particle").first().evaluate(el => {
+    const style = getComputedStyle(el);
+    return -parseFloat(style.getPropertyValue("--particle-travel")) / parseFloat(style.animationDuration);
+  });
+  expect(speed).toBeCloseTo(120, 1);
+  await page.evaluate(() => document.documentElement.style.setProperty("--effort-max-accent", "#123456"));
+  await expect(page.locator(".effort-current")).toHaveCSS("color", "rgb(18, 52, 86)");
+  await page.evaluate(() => document.documentElement.style.removeProperty("--effort-max-accent"));
+  await expect(page.locator(".effort-rail-track")).not.toHaveCSS("background-color", "rgb(0, 0, 0)");
+  await page.setViewportSize({ width: 375, height: 740 });
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await expect(page.locator(".effort-particle").first()).toHaveCSS("animation-name", "none");
+  const box = await page.locator(".effort-popover").boundingBox();
+  expect(box.x).toBeGreaterThanOrEqual(14); expect(box.x + box.width).toBeLessThanOrEqual(361);
+  await page.screenshot({ path: info.outputPath(scheme + "-mobile.png") });
+});
+test("long names and scroll", async ({ page }) => {
+  await seed(page, { models: [model, "very-long-model-".repeat(10), ...Array.from({ length: 30 }, (_, i) => "model-" + i)] });
+  await open(page, "model");
+  expect((await page.locator(".model-popover").boundingBox()).height).toBeLessThanOrEqual(400);
+  expect(await page.locator(".option-title").nth(1).evaluate(el => el.scrollWidth <= el.clientWidth)).toBe(true);
+  await page.keyboard.press("End");
+  await expect(page.locator('[data-model="model-29"]')).toBeFocused();
+});
+test.describe("motion demonstration", () => {
+
+  test("particles clicks drag reset", async ({ page }) => {
+    await seed(page, { legacy: true }); await open(page, "effort");
+    const rail = page.locator(".effort-rail"), box = await rail.boundingBox();
+    // Deliberate holds make continuous particle flow visible in the delivered video.
+    for (const fraction of [0.5, 0.75, 1]) {
+      await rail.click({ position: { x: 14 + (box.width - 28) * fraction, y: 22 } });
+      await page.waitForTimeout(1300);
+    }
+    await page.mouse.move(box.x + box.width - 14, box.y + 22); await page.mouse.down();
+    await page.mouse.move(box.x + 14, box.y + 22, { steps: 45 });
+    await page.mouse.move(box.x + box.width - 14, box.y + 22, { steps: 45 }); await page.mouse.up();
+    await page.locator("[data-effort-reset]").click(); await page.waitForTimeout(1600);
+    await expect(rail).toHaveAttribute("aria-valuetext", "高");
+  });
+});
+test("touch cancellation and visibility cleanup", async ({ browser }) => {
+  const context = await browser.newContext({ baseURL: "http://127.0.0.1:5173", hasTouch: true, viewport: { width: 375, height: 740 } });
+  try {
+    const page = await context.newPage();
+    await seed(page); await open(page, "effort");
+    const rail = page.locator(".effort-rail"), box = await rail.boundingBox();
+    const session = await context.newCDPSession(page);
+    await session.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x: box.x + 14, y: box.y + 22 }] });
+    await session.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ x: box.x + box.width - 14, y: box.y + 22 }] });
+    await expect(rail).toHaveAttribute("aria-valuenow", "4");
+    await session.send("Input.dispatchTouchEvent", { type: "touchCancel", touchPoints: [] });
+    await expect(rail).not.toHaveClass(/is-dragging/);
+    await session.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x: box.x + 14, y: box.y + 22 }] });
+    await session.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+    await expect(rail).toHaveAttribute("aria-valuenow", "0");
+    await page.evaluate(() => {
+      Object.defineProperty(document, "hidden", { configurable: true, value: true });
+      document.dispatchEvent(new Event("visibilitychange"));
+    });
+    await expect(page.locator(".effort-particle").first()).toHaveCSS("animation-play-state", "paused");
+    await page.keyboard.press("Escape");
+    await expect(page.locator(".effort-particle")).toHaveCount(0);
+    await page.evaluate(() => {
+      delete document.hidden;
+      document.dispatchEvent(new Event("visibilitychange"));
+    });
+    await open(page, "effort");
+    await expect(page.locator(".effort-particle").first()).toHaveCSS("animation-play-state", "running");
+  } finally { await context.close(); }
+});
+
+test("thumb hover and nearest-stop settling", async ({ page }) => {
+  await seed(page); await open(page, "effort");
+  const rail = page.locator(".effort-rail"), thumb = page.locator(".effort-rail-thumb");
+  const box = await rail.boundingBox(), travel = box.width - 28;
+  await thumb.hover();
+  await expect.poll(() => thumb.evaluate(el => getComputedStyle(el, "::before").transform)).toBe("matrix(1.08, 0, 0, 1.08, 0, 0)");
+  for (const [fraction, expected] of [[0.36, "1"], [0.39, "2"]]) {
+    const start = await thumb.boundingBox();
+    await page.mouse.move(start.x + start.width / 2, start.y + start.height / 2);
+    await page.mouse.down();
+    await page.mouse.move(box.x + 14 + travel * fraction, box.y + 22, { steps: 8 });
+    // The nearest stop must settle while the pointer is STILL down.
+    await expect.poll(async () => {
+      const dragged = await thumb.boundingBox();
+      return Math.abs(dragged.x + dragged.width / 2 - (box.x + 14 + travel * Number(expected) / 4));
+    }).toBeLessThan(1);
+    await page.mouse.up();
+    await expect(rail).toHaveAttribute("aria-valuenow", expected);
+    await expect.poll(async () => {
+      const settled = await thumb.boundingBox();
+      return Math.abs(settled.x + settled.width / 2 - (box.x + 14 + travel * Number(expected) / 4));
+    }).toBeLessThan(1);
+  }
+});
+
+test("max color wipes right to left and reverses without restarting", async ({ page }, info) => {
+  await seed(page); await open(page, "effort");
+  const rail = page.locator(".effort-rail"), fill = page.locator(".effort-rail-fill");
+  const box = await rail.boundingBox();
+  const clip = () => fill.evaluate(el => getComputedStyle(el, "::before").maskPosition);
+  await expect.poll(clip).toBe("0% 0px");
+  await rail.click({ position: { x: box.width - 14, y: 22 } });
+  // Pause only the color transition at its midpoint to inspect its direction deterministically.
+  const midway = await fill.evaluate(el => {
+    const animation = el.getAnimations({ subtree: true }).find(a => a.effect?.pseudoElement === "::before");
+    if (!animation) throw new Error("Color wipe transition missing");
+    animation.pause(); animation.currentTime = 500;
+    return getComputedStyle(el, "::before").maskPosition;
+  });
+  expect(midway).toMatch(/% 0px$/);
+  await page.locator(".effort-popover").screenshot({ path: info.outputPath("color-midpoint.png") });
+  const left = Number(midway.match(/([\d.]+)%/)[1]);
+  expect(left).toBeGreaterThan(0); expect(left).toBeLessThan(100);
+  await page.locator("[data-effort-reset]").click();
+  await expect.poll(clip).toBe("0% 0px");
+  await rail.click({ position: { x: box.width - 14, y: 22 } });
+  await expect.poll(clip).toBe("100% 0px");
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  expect(await fill.evaluate(el => parseFloat(getComputedStyle(el, "::before").transitionDuration))).toBeLessThanOrEqual(0.00001);
+});

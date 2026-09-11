@@ -1,0 +1,38 @@
+[
+  {
+    "port": 5188,
+    "optional": false,
+    "categories": [
+      "appearance",
+      "providers",
+      "context",
+      "tools",
+      "skills",
+      "data",
+      "about"
+    ],
+    "panelHoverStable": true,
+    "widths": [
+      1280,
+      1024,
+      390
+    ],
+    "pageErrors": 0
+  },
+  {
+    "port": 5199,
+    "optional": true,
+    "categories": [
+      "appearance",
+      "providers",
+      "context"
+    ],
+    "panelHoverStable": true,
+    "widths": [
+      1280,
+      1024,
+      390
+    ],
+    "pageErrors": 0
+  }
+]

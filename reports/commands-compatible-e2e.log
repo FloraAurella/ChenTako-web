@@ -1,0 +1,161 @@
+
+> ai-chatbox-structure-v2.0@1.1.5 test:e2e
+> playwright test --grep-invert (?:思考阶段隐藏正文气泡并显示思考时长$|Everforest：主题包令牌与纯色外观完整生效$|额度提示：悬停显示\ 3\+1\ 行且单行不折行$|设置：外观主题卡与自定义导入入口$|主题\ JSON：更新默认主题、重启恢复并删除自定义变体$|聊天模型选择器隐藏禁用供应商，但设置中仍显示其状态$|设置内部编辑页：离开设置后重新打开供应商时不恢复过期编辑层$|数据迁移：浏览器环境显示明确的不可用状态$|更新日志时间线$|移动端设置：离开二级页面后重新进入显示设置目录$|会话\ ⋮\ 菜单：重命名对话框可交互（二级界面修复）$|新建对话守卫：全新对话上不重复新建$|设置：工具与\ Skill\ 独立入口，启用后全局持续生效$|图像模型立即显示\ 1:1\ 等待槽，并在流完成前原位展示无边框图片$|项目管理：创建、移动、重命名、删除及刷新保留$|新建继承当前项目、显式跨项目及无项目；草稿和附件留在原聊天$|升级默认重置与无密钥备份；模型编辑仅有额度$|上下文设置视觉\ 1280\ light$|上下文设置视觉\ 1024\ dark$|上下文设置视觉\ 390\ light$|离开聊天后重新打开上下文页面，项目菜单与能力覆盖可用$|compact\ shortcuts\ search,\ create\ and\ import;\ settings\ hover\ is\ flat$|onboarding\ 初始浅色$|onboarding\ 初始深色$|空会话\ light$|Everforest\ 空会话\ light$|Everforest\ 真实消息\ light$|思考轨迹\ light$|空会话\ dark$|Everforest\ 空会话\ dark$|Everforest\ 真实消息\ dark$|思考轨迹\ dark$|Everforest\ 外观主题卡$|Everforest\ 思考强度控件$|Provider\ 设置页面$|Provider\ 模型编辑基础弹层$|Provider\ 模型额度弹层深色$|上下文与提示词集中配置$|Provider\ 中等宽度顶部切换器$|Provider\ 移动端列表与详情$|移动端空会话$|移动端思考轨迹$|工具轻量时间线深色$|工具轻量时间线移动端$|HTML\ 与\ SVG\ 产物工具栏深色$|HTML\ 与\ SVG\ 产物工具栏移动端$|图像生成等待态深色$|图像生成等待态移动端$|reset\ inherited$|reset\ override$|reset\ fallback$|particles\ clicks\ drag\ reset$|touch\ cancellation\ and\ visibility\ cleanup$) --reporter=list
+
+[WebServer] (node:32301) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 119 tests using 1 worker
+
+(node:32303) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓    1 [chromium] › e2e/app.spec.js:50:1 › 首次启动引导：展示全新开始、迁移导入与 128 位封套说明 (345ms)
+  ✓    2 [chromium] › e2e/app.spec.js:173:1 › 外壳与空状态扉页 (481ms)
+  ✓    3 [chromium] › e2e/app.spec.js:185:1 › 主题切换不产生全局通知 (381ms)
+  ✓    4 [chromium] › e2e/app.spec.js:195:1 › 侧栏移除外观切换与版本号，保留设置入口 (338ms)
+  ✓    5 [chromium] › e2e/app.spec.js:203:1 › 空状态灵感卡之间无游离逗号 (450ms)
+  ✓    6 [chromium] › e2e/app.spec.js:213:1 › 流式对话：思考面板 + Markdown 正文 + 元数据 (458ms)
+  ✓    7 [chromium] › e2e/app.spec.js:227:1 › 多轮工具 SSE：中间完成事件不截断，思考与正文按真实字节分片持续回传 (1.7s)
+  ✓    8 [chromium] › e2e/app.spec.js:306:1 › think 标签跨 SSE delta：思考进入折叠面板，闭合后的正文继续流式显示 (730ms)
+  ✓    9 [chromium] › e2e/app.spec.js:385:1 › 回答摘要（responses）在思考阶段展开，正文开始后自动收起 (2.0s)
+  ✓   10 [chromium] › e2e/app.spec.js:456:1 › 思维链：正文开始后状态稳定，手动重新展开不被后续正文覆盖 (1.9s)
+  ✓   11 [chromium] › e2e/app.spec.js:526:1 › 停止生成后：提示与五个操作按钮并排 (583ms)
+  ✓   12 [chromium] › e2e/app.spec.js:581:1 › 代码块按暖调主题配色渲染 (920ms)
+  ✓   13 [chromium] › e2e/app.spec.js:611:1 › HTML 代码块以无权限 iframe 安全预览，关闭按钮和 Esc 均恢复焦点 (1.3s)
+  ✓   14 [chromium] › e2e/app.spec.js:662:1 › 代码解释器 HTML / SVG 产物在流完成前原位出现并可安全运行 (1.8s)
+  ✓   15 [chromium] › e2e/app.spec.js:742:1 › 消息原位编辑：用户消息取消/重发分支、助手消息仍可保存 (1.0s)
+  ✓   16 [chromium] › e2e/app.spec.js:789:1 › 消息编辑：保存并重新发送创建会话内分支 (1.4s)
+  ✓   17 [chromium] › e2e/app.spec.js:813:1 › 响应进行时可以查看其他消息分支，原流继续接收并可切回 (2.7s)
+  ✓   18 [chromium] › e2e/app.spec.js:909:1 › Chat 浮层统一一次空白点击关闭 (405ms)
+  ✓   19 [chromium] › e2e/app.spec.js:915:1 › 运行配置浮层：根目录可进入思考强度面板 (854ms)
+  ✓   20 [chromium] › e2e/app.spec.js:938:1 › 思考强度重新打开时首帧直接显示已保存档位 (588ms)
+  ✓   21 [chromium] › e2e/app.spec.js:968:1 › 思考强度单轨五档交互 (961ms)
+  ✓   22 [chromium] › e2e/app.spec.js:1018:1 › 后台流式：切换会话不打断生成，切回原会话进度不丢 (2.4s)
+  ✓   23 [chromium] › e2e/app.spec.js:1059:1 › 响应中切换对话再切回：思维链展开态与阅读位置保留 (1.2s)
+  ✓   24 [chromium] › e2e/app.spec.js:1129:1 › 额度提示原位更新（tooltip 活更新，不重建） (1.3s)
+  ✓   25 [chromium] › e2e/app.spec.js:1180:1 › 压缩上下文：点击直接压缩，按会话锁定发送，进度提示可回看 (1.8s)
+  ✓   26 [chromium] › e2e/app.spec.js:1214:1 › 主题明暗切换自动换色 (408ms)
+  ✓   27 [chromium] › e2e/app.spec.js:1260:1 › 主题背景动效已停用 (384ms)
+  ✓   28 [chromium] › e2e/app.spec.js:1271:1 › Everforest 在减少动态模式下完全不创建动效层 (351ms)
+  ✓   29 [chromium] › e2e/app.spec.js:1279:1 › Everforest 窄屏安全回退：无横向溢出或素材遮挡 (420ms)
+  ✓   30 [chromium] › e2e/app.spec.js:1303:1 › JSON 主题文件：导出当前主题并重新导入应用 (528ms)
+  ✓   31 [chromium] › e2e/app.spec.js:1398:1 › 主题界面字体：导入 typefaces 主题后字体令牌生效，删除后恢复默认 (602ms)
+  ✓   32 [chromium] › e2e/app.spec.js:1437:1 › 外观：纯色背景、对比度与透景模式 (702ms)
+  ✓   33 [chromium] › e2e/app.spec.js:1472:1 › 设置：供应商表单与 Key 加密提示 (899ms)
+  ✓   34 [chromium] › e2e/app.spec.js:1484:1 › 设置：仅保存模型额度，模型改名迁移默认项 (1.0s)
+  ✓   35 [chromium] › e2e/app.spec.js:1570:1 › 历史会话绑定的供应商已删除时保持只读，重新选择模型后才能发送 (855ms)
+  ✓   36 [chromium] › e2e/app.spec.js:1600:1 › 设置：新 Key 继续按原请求同步后端，并只留下前端密文 (658ms)
+  ✓   37 [chromium] › e2e/app.spec.js:1648:1 › 设置：Key 在防抖窗口内离开页面仍会先完成自动同步 (511ms)
+  ✓   38 [chromium] › e2e/app.spec.js:1669:1 › 设置：Key 强制同步失败时保留当前页面与未同步输入 (467ms)
+  ✓   39 [chromium] › e2e/app.spec.js:1689:1 › 设置：已保存 Key 进入即显示等长密文，变更自动同步且不再提供清除按钮 (1.3s)
+  ✓   40 [chromium] › e2e/app.spec.js:1790:1 › 设置内切换边栏条目：清理旧的二级编辑状态 (559ms)
+  ✓   41 [chromium] › e2e/app.spec.js:1808:1 › 移动端供应商导航：返回设置后停留在供应商一级列表 (533ms)
+  ✓   42 [chromium] › e2e/app.spec.js:1823:1 › 浏览器旧状态：清除历史 demo 供应商并保留会话快照 (381ms)
+  ✓   43 [chromium] › e2e/app.spec.js:1882:1 › 数据迁移：桌面普通版创建前警告敏感数据并允许取消保存 (474ms)
+  ✓   44 [chromium] › e2e/app.spec.js:1939:1 › 快捷键：⌘K 聚焦搜索、⌘N 新建、Esc 关闭浮层 (466ms)
+  ✓   45 [chromium] › e2e/app.spec.js:1956:1 › 移动端 720px：底部导航与触控热区 (457ms)
+  ✓   46 [chromium] › e2e/app.spec.js:2005:1 › 滚动所有权：上滑后出现「有新回复」 (1.3s)
+  ✓   47 [chromium] › e2e/app.spec.js:2062:1 › 折叠断点 1040：抽屉转为覆盖层，开关可用 (433ms)
+  ✓   48 [chromium] › e2e/app.spec.js:2074:1 › 旧主题偏好迁移：cream-night → 深色 (323ms)
+  ✓   49 [chromium] › e2e/app.spec.js:2124:1 › 会话 ⋮ 菜单：置顶与删除入口存在 (458ms)
+  ✓   50 [chromium] › e2e/app.spec.js:2149:1 › 归档栏收回/展开（桌面） (814ms)
+  ✓   51 [chromium] › e2e/app.spec.js:2162:1 › 设置页隐藏「目录」归档边栏 (522ms)
+  ✓   52 [chromium] › e2e/app.spec.js:2213:1 › 模型返回裸 base64 图片时会渲染为可预览图片 (467ms)
+  ✓   53 [chromium] › e2e/app.spec.js:2301:1 › 统一运行时事件展示 Skill、沙箱结构化结果和结果图片 (759ms)
+  ✓   54 [chromium] › e2e/app.spec.js:2346:1 › 未知旧路由安全回退 Chat (406ms)
+  ✓   55 [chromium] › e2e/commands.spec.js:34:1 › 无模型也能使用帮助，未知指令不会发送，附件保留 (489ms)
+  ✓   56 [chromium] › e2e/commands.spec.js:50:1 › 补全、中文搜索、参数选择、恢复跟随配置 (833ms)
+  ✓   57 [chromium] › e2e/commands.spec.js:63:1 › 模型重名要求选择供应商，禁用模型隐藏，快捷参数与按钮一致 (1.4s)
+  ✓   58 [chromium] › e2e/commands.spec.js:81:1 › 部分模型名不会自动执行，无效参数保持输入 (522ms)
+  ✓   59 [chromium] › e2e/commands.spec.js:92:1 › 压缩首次补全不执行，重复请求受阻，新草稿不会被清除 (807ms)
+  ✓   60 [chromium] › e2e/commands.spec.js:108:1 › 空历史保留指令 (418ms)
+  ✓   61 [chromium] › e2e/commands.spec.js:114:1 › 字面量、多行和正文斜杠进入普通消息，指令不进入 Prompt 或标题 (962ms)
+  ✓   62 [chromium] › e2e/commands.spec.js:130:1 › 生成期间配置修改只影响下一次请求，停止按钮保持原行为 (552ms)
+  ✓   63 [chromium] › e2e/commands.spec.js:148:1 › 输入法确认不会执行指令，关闭和会话切换保留草稿 (530ms)
+  ✓   64 [chromium] › e2e/commands.spec.js:162:3 › 指令面板 light 1280 无溢出且 panel 悬停稳定 (491ms)
+  ✓   65 [chromium] › e2e/commands.spec.js:162:3 › 指令面板 light 1024 无溢出且 panel 悬停稳定 (555ms)
+  ✓   66 [chromium] › e2e/commands.spec.js:162:3 › 指令面板 light 390 无溢出且 panel 悬停稳定 (496ms)
+  ✓   67 [chromium] › e2e/commands.spec.js:162:3 › 指令面板 dark 1280 无溢出且 panel 悬停稳定 (494ms)
+  ✓   68 [chromium] › e2e/commands.spec.js:162:3 › 指令面板 dark 1024 无溢出且 panel 悬停稳定 (538ms)
+  ✓   69 [chromium] › e2e/commands.spec.js:162:3 › 指令面板 dark 390 无溢出且 panel 悬停稳定 (530ms)
+  ✓   70 [chromium] › e2e/commands.spec.js:176:1 › 发送准备时切换按钮模型，自动压缩和随后发送仍使用原请求快照 (1.0s)
+  ✓   71 [chromium] › e2e/commands.spec.js:197:1 › 压缩失败保留指令和附件且不创建普通指令消息 (490ms)
+  ✓   72 [chromium] › e2e/commands.spec.js:208:1 › 异步压缩完成后不修改其他会话草稿 (840ms)
+  ✓   73 [chromium] › e2e/commands.spec.js:220:1 › 参数 Tab 只补全，方向键 Enter 选择，点击外部保留输入 (432ms)
+  ✓   74 [chromium] › e2e/commands.spec.js:236:3 › 空状态 offline 准确引导 (357ms)
+  ✓   75 [chromium] › e2e/commands.spec.js:236:3 › 空状态 unconfigured 准确引导 (385ms)
+  ✓   76 [chromium] › e2e/commands.spec.js:236:3 › 空状态 ready 准确引导 (376ms)
+  ✓   77 [chromium] › e2e/commands.spec.js:244:1 › 重名模型的显式选择列表可按 Enter 确认 (415ms)
+  ✓   78 [chromium] › e2e/commands.spec.js:252:1 › 帮助支持键盘滚动并在 Escape 后恢复输入焦点 (492ms)
+  ✓   79 [chromium] › e2e/commands.spec.js:260:1 › 输入指令时点击停止按钮只停止回复，不执行指令 (501ms)
+  ✘   80 [chromium] › e2e/commands.spec.js:272:3 › 默认 light 辅助文字与选择项对比度至少 4.5 (404ms)
+(node:32584) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   81 [chromium] › e2e/commands.spec.js:272:3 › 默认 dark 辅助文字与选择项对比度至少 4.5 (498ms)
+SHORT left= 759  LONG left= 759  SHORT right= 1079  LONG right= 1079  width= 320
+  ✓   82 [chromium] › e2e/edge_shot.spec.js:15:1 › runtime panel fixed across model-name lengths (1.7s)
+label→value gap= 4  value→chevron gap= 4  truncated= true
+  ✓   83 [chromium] › e2e/edge_shot.spec.js:48:1 › runtime rows keep aligned values and truncate long model ids (1.3s)
+  ✓   84 [chromium] › e2e/modular-refactor.spec.js:9:1 › 注册的七个设置页面均可访问且共用字段模板 (848ms)
+  ✓   85 [chromium] › e2e/modular-refactor.spec.js:23:1 › 共享历史表面与项目状态操作：创建、重命名、删除保留聊天 (825ms)
+  ✓   86 [chromium] › e2e/projects.spec.js:43:1 › 项目分类：分区、五条限制、搜索与折叠恢复 (1.2s)
+  ✓   87 [chromium] › e2e/projects.spec.js:128:1 › 项目选择器键盘、长名称和移动端不溢出 (637ms)
+  ✓   88 [chromium] › e2e/projects.spec.js:153:1 › 项目移动期间保留输入节点、附件、消息节点与正在生成的回复 (1.7s)
+  ✓   89 [chromium] › e2e/projects.spec.js:200:1 › 聊天菜单移动、项目内置顶与活动聊天超过五条时可见 (928ms)
+  ✓   90 [chromium] › e2e/projects.spec.js:217:1 › 空白聊天带附件时不得复用，桌面和移动端项目列表布局 (690ms)
+  ✓   91 [chromium] › e2e/settings-context.spec.js:22:1 › 聊天配置保存、项目空提示词覆盖与继承、重启 (920ms)
+  ✓   92 [chromium] › e2e/settings-context.spec.js:42:1 › 未保存的跨项目导航会询问，取消保留草稿 (493ms)
+  ✓   93 [chromium] › e2e/settings-context.spec.js:56:1 › 新请求使用项目配置而非供应商提示词 (502ms)
+  ✓   94 [chromium] › e2e/settings-context.spec.js:70:1 › 达到预算阈值压缩全部已完成历史，保留待发送消息 (529ms)
+  ✓   95 [chromium] › e2e/settings-context.spec.js:84:1 › 压缩失败保留草稿，不发送、不无限重试 (505ms)
+  ✓   96 [chromium] › e2e/settings-context.spec.js:113:1 › 设置搜索定位与所有分类无横向溢出 (818ms)
+  ✓   97 [chromium] › e2e/settings-context.spec.js:153:1 › 自动压缩关闭时超预算保留输入，工具栏思考强度可恢复继承 (889ms)
+  ✓   98 [chromium] › e2e/settings-context.spec.js:171:1 › 低于阈值保留全部历史，不因轮数触发压缩 (490ms)
+  ✓   99 [chromium] › e2e/sidebar-focus.spec.js:20:1 › desktop sidebar interpolates, reverses and preserves focus and preference (1.4s)
+  ✓  100 [chromium] › e2e/sidebar-focus.spec.js:54:1 › settings remains reachable without footer appearance and version controls (625ms)
+  ✓  101 [chromium] › e2e/sidebar-focus.spec.js:66:1 › tablet and mobile drawers close without hidden keyboard targets or overflow (4.0s)
+  ✓  102 [chromium] › e2e/sidebar-focus.spec.js:88:1 › reduced motion and focus shortcut settle immediately (456ms)
+  ✓  103 [chromium] › e2e/sidebar-focus.spec.js:117:1 › relative age yields to a flat menu on hover and keyboard focus (643ms)
+  ✓  104 [chromium] › e2e/sidebar-focus.spec.js:144:1 › soft surfaces remain coherent in dark mode and settings (540ms)
+  ✓  105 [chromium] › e2e/sidebar-focus.spec.js:155:1 › archived palette cannot restore black hover, heavy shadows or sharp corners (1.3s)
+{"fixture":"50KB Markdown","report":{"networkEvents":329,"storePublishes":0,"markdownRenders":0,"domCommits":0,"reactCommits":4,"persistenceWrites":2,"longTasks":1,"longestLongTask":59,"elapsedMs":535.5999999977648}}
+  ✓  106 [chromium] › e2e/stream-performance.spec.js:118:3 › 50KB Markdown 合帧与持久化预算 (905ms)
+{"fixture":"100KB 代码","report":{"networkEvents":1029,"storePublishes":0,"markdownRenders":0,"domCommits":0,"reactCommits":4,"persistenceWrites":2,"longTasks":1,"longestLongTask":69,"elapsedMs":559.8999999985099}}
+  ✓  107 [chromium] › e2e/stream-performance.spec.js:118:3 › 100KB 代码 合帧与持久化预算 (939ms)
+  ✓  108 [chromium] › e2e/stream-performance.spec.js:146:1 › 持续流式输出时优先处理用户上滚，停止手势后补绘最新内容 (1.1s)
+  ✓  109 [chromium] › e2e/stream-performance.spec.js:190:1 › 滚动手势覆盖流结束时，终态会在手势停止后完整提交 (1.4s)
+  ✓  110 [chromium] › e2e/visual.spec.js:337:1 › Everforest 运行配置与模型选择器 (657ms)
+  ✓  111 [chromium] › e2e/visual.spec.js:355:1 › 未知旧路由回退到 Chat (369ms)
+  ✓  112 [chromium] › e2e/visual.spec.js:514:1 › 主题变更不产生多余通知 (334ms)
+(node:32713) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  113 [chromium] › e2e/runtime-refinement.spec.js:34:1 › root geometry and compact model list (1.2s)
+  ✓  114 [chromium] › e2e/runtime-refinement.spec.js:74:1 › pointer stops and rapid reversal (2.8s)
+  ✓  115 [chromium] › e2e/runtime-refinement.spec.js:95:41 › appearance light (1.4s)
+  ✓  116 [chromium] › e2e/runtime-refinement.spec.js:95:41 › appearance dark (1.4s)
+  ✓  117 [chromium] › e2e/runtime-refinement.spec.js:120:1 › long names and scroll (621ms)
+  ✓  118 [chromium] › e2e/runtime-refinement.spec.js:176:1 › thumb hover and nearest-stop settling (1.8s)
+  ✓  119 [chromium] › e2e/runtime-refinement.spec.js:201:1 › max color wipes right to left and reverses without restarting (3.1s)
+
+
+  1) [chromium] › e2e/commands.spec.js:272:3 › 默认 light 辅助文字与选择项对比度至少 4.5 ──────────────────────────
+
+    Error: expect(received).toBeGreaterThanOrEqual(expected)
+
+    Expected: >= 4.5
+    Received:    2.5894850561050258
+
+      286 |       });
+      287 |     });
+    > 288 |     for (const sample of ratios) { expect(sample.ratio).toBeGreaterThanOrEqual(4.5); expect(sample.size).toBeGreaterThanOrEqual(12); }
+          |                                                         ^
+      289 |   });
+      290 | }
+      291 |
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/commands.spec.js:288:57
+
+    Error Context: test-results/commands-默认-light-辅助文字与选择项对比度至少-4-5-chromium/error-context.md
+
+  1 failed
+    [chromium] › e2e/commands.spec.js:272:3 › 默认 light 辅助文字与选择项对比度至少 4.5 ───────────────────────────
+  118 passed (1.8m)

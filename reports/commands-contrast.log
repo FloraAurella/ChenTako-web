@@ -1,0 +1,17 @@
+
+> ai-chatbox-structure-v2.0@1.1.5 test:e2e
+> playwright test e2e/commands.spec.js --grep 对比度至少
+
+[WebServer] (node:32834) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 2 tests using 1 worker
+
+(node:32837) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+{"scheme":"light","minimumContrast":6.367243052544299,"samples":[{"element":"empty-lede","ratio":7.7121110950021645,"size":16},{"element":"composer-hint","ratio":7.381139129902347,"size":12},{"element":"command-option-detail","ratio":6.367243052544299,"size":12},{"element":"command-option-detail","ratio":7.7121110950021645,"size":12},{"element":"command-option-detail","ratio":7.7121110950021645,"size":12},{"element":"command-option-detail","ratio":7.7121110950021645,"size":12},{"element":"command-panel-hint","ratio":7.7121110950021645,"size":12}]}
+  ✓  1 [chromium] › e2e/commands.spec.js:272:3 › 默认 light 辅助文字与选择项对比度至少 4.5 (492ms)
+{"scheme":"dark","minimumContrast":6.096882344009098,"samples":[{"element":"empty-lede","ratio":7.584950914841423,"size":16},{"element":"composer-hint","ratio":8.617882355640903,"size":12},{"element":"command-option-detail","ratio":6.096882344009098,"size":12},{"element":"command-option-detail","ratio":7.584950914841423,"size":12},{"element":"command-option-detail","ratio":7.584950914841423,"size":12},{"element":"command-option-detail","ratio":7.584950914841423,"size":12},{"element":"command-panel-hint","ratio":7.584950914841423,"size":12}]}
+  ✓  2 [chromium] › e2e/commands.spec.js:272:3 › 默认 dark 辅助文字与选择项对比度至少 4.5 (419ms)
+
+  2 passed (2.2s)

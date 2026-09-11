@@ -1,0 +1,352 @@
+[
+  {
+    "file": "test-results/refined-dark.png",
+    "size": [
+      1280,
+      800
+    ],
+    "changedPixels": 36818,
+    "fraction": 0.03596,
+    "box": [
+      16,
+      28,
+      1184,
+      760
+    ]
+  },
+  {
+    "file": "test-results/projects-desktop.png",
+    "size": [
+      1280,
+      800
+    ],
+    "changedPixels": 3509,
+    "fraction": 0.00343,
+    "box": [
+      398,
+      150,
+      1172,
+      710
+    ]
+  },
+  {
+    "file": "test-results/focus-collapsed.png",
+    "size": [
+      1280,
+      800
+    ],
+    "changedPixels": 689,
+    "fraction": 0.00067,
+    "box": [
+      5,
+      13,
+      1043,
+      473
+    ]
+  },
+  {
+    "file": "test-results/projects-sidebar-mobile.png",
+    "size": [
+      390,
+      844
+    ],
+    "changedPixels": 0,
+    "fraction": 0.0,
+    "box": null
+  },
+  {
+    "file": "test-results/projects-mobile.png",
+    "size": [
+      320,
+      844
+    ],
+    "changedPixels": 1986,
+    "fraction": 0.00735,
+    "box": [
+      13,
+      551,
+      307,
+      594
+    ]
+  },
+  {
+    "file": "test-results/projects-sidebar-desktop.png",
+    "size": [
+      1280,
+      800
+    ],
+    "changedPixels": 0,
+    "fraction": 0.0,
+    "box": null
+  },
+  {
+    "file": "test-results/focus-desktop-light.png",
+    "size": [
+      1280,
+      800
+    ],
+    "changedPixels": 689,
+    "fraction": 0.00067,
+    "box": [
+      230,
+      13,
+      1159,
+      473
+    ]
+  },
+  {
+    "file": "test-results/focus-mobile.png",
+    "size": [
+      390,
+      844
+    ],
+    "changedPixels": 169,
+    "fraction": 0.00051,
+    "box": [
+      35,
+      134,
+      375,
+      481
+    ]
+  },
+  {
+    "file": "test-results/refined-menu.png",
+    "size": [
+      1280,
+      800
+    ],
+    "changedPixels": 17212,
+    "fraction": 0.01681,
+    "box": [
+      408,
+      90,
+      1160,
+      473
+    ]
+  },
+  {
+    "file": "test-results/legacy-attachment-hover.png",
+    "size": [
+      1280,
+      800
+    ],
+    "changedPixels": 234,
+    "fraction": 0.00023,
+    "box": [
+      10,
+      150,
+      1159,
+      473
+    ]
+  },
+  {
+    "file": "test-results/refined-hover.png",
+    "size": [
+      1280,
+      800
+    ],
+    "changedPixels": 29850,
+    "fraction": 0.02915,
+    "box": [
+      408,
+      90,
+      1160,
+      474
+    ]
+  },
+  {
+    "file": "test-results/legacy-settings-hover.png",
+    "size": [
+      1280,
+      800
+    ],
+    "changedPixels": 234,
+    "fraction": 0.00023,
+    "box": [
+      10,
+      150,
+      1159,
+      473
+    ]
+  },
+  {
+    "file": "test-results/refined-settings.png",
+    "size": [
+      1280,
+      800
+    ],
+    "changedPixels": 33829,
+    "fraction": 0.03304,
+    "box": [
+      16,
+      28,
+      1184,
+      760
+    ]
+  },
+  {
+    "file": "test-results/runtime-refinement-appearance-dark-chromium/dark-high.png",
+    "size": [
+      280,
+      163
+    ],
+    "changedPixels": 0,
+    "fraction": 0.0,
+    "box": null
+  },
+  {
+    "file": "test-results/runtime-refinement-appearance-dark-chromium/dark-xhigh.png",
+    "size": [
+      280,
+      163
+    ],
+    "changedPixels": 0,
+    "fraction": 0.0,
+    "box": null
+  },
+  {
+    "file": "test-results/runtime-refinement-appearance-dark-chromium/dark-low.png",
+    "size": [
+      280,
+      163
+    ],
+    "changedPixels": 0,
+    "fraction": 0.0,
+    "box": null
+  },
+  {
+    "file": "test-results/runtime-refinement-appearance-dark-chromium/dark-mobile.png",
+    "size": [
+      375,
+      740
+    ],
+    "changedPixels": 1276,
+    "fraction": 0.0046,
+    "box": [
+      29,
+      455,
+      279,
+      566
+    ]
+  },
+  {
+    "file": "test-results/runtime-refinement-appearance-dark-chromium/dark-max.png",
+    "size": [
+      280,
+      163
+    ],
+    "changedPixels": 0,
+    "fraction": 0.0,
+    "box": null
+  },
+  {
+    "file": "test-results/runtime-refinement-appearance-light-chromium/light-high.png",
+    "size": [
+      280,
+      163
+    ],
+    "changedPixels": 0,
+    "fraction": 0.0,
+    "box": null
+  },
+  {
+    "file": "test-results/runtime-refinement-appearance-light-chromium/light-mobile.png",
+    "size": [
+      375,
+      740
+    ],
+    "changedPixels": 47,
+    "fraction": 0.00017,
+    "box": [
+      9,
+      433,
+      231,
+      607
+    ]
+  },
+  {
+    "file": "test-results/runtime-refinement-appearance-light-chromium/light-xhigh.png",
+    "size": [
+      280,
+      163
+    ],
+    "changedPixels": 0,
+    "fraction": 0.0,
+    "box": null
+  },
+  {
+    "file": "test-results/runtime-refinement-appearance-light-chromium/light-max.png",
+    "size": [
+      280,
+      163
+    ],
+    "changedPixels": 0,
+    "fraction": 0.0,
+    "box": null
+  },
+  {
+    "file": "test-results/runtime-refinement-appearance-light-chromium/light-low.png",
+    "size": [
+      280,
+      163
+    ],
+    "changedPixels": 0,
+    "fraction": 0.0,
+    "box": null
+  },
+  {
+    "file": "test-results/runtime-refinement-max-col-272ec-reverses-without-restarting-chromium/color-midpoint.png",
+    "size": [
+      280,
+      163
+    ],
+    "changedPixels": 1567,
+    "fraction": 0.03433,
+    "box": [
+      27,
+      78,
+      267,
+      112
+    ]
+  },
+  {
+    "file": "test-results/runtime-refinement-root-geometry-and-compact-model-list-chromium/hover-model.png",
+    "size": [
+      320,
+      95
+    ],
+    "changedPixels": 0,
+    "fraction": 0.0,
+    "box": null
+  },
+  {
+    "file": "test-results/runtime-refinement-root-geometry-and-compact-model-list-chromium/models.png",
+    "size": [
+      320,
+      189
+    ],
+    "changedPixels": 0,
+    "fraction": 0.0,
+    "box": null
+  },
+  {
+    "file": "test-results/runtime-refinement-root-geometry-and-compact-model-list-chromium/hover-effort.png",
+    "size": [
+      320,
+      95
+    ],
+    "changedPixels": 0,
+    "fraction": 0.0,
+    "box": null
+  },
+  {
+    "file": "test-results/runtime-refinement-root-geometry-and-compact-model-list-chromium/root.png",
+    "size": [
+      320,
+      95
+    ],
+    "changedPixels": 0,
+    "fraction": 0.0,
+    "box": null
+  }
+]

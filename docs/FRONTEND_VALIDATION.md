@@ -36,3 +36,13 @@
 - 资料在极大文本／快速生成下的性能专项，以及备份恢复、取消操作等更细的浏览器回归扩展。
 
 所有 HTTP 用例均为本机模拟，不证明真实后端接受完整大资料、四协议适配或实际模型效果；后端修改等待用户另行指令。Agent、权限和新业务数据库不在本次范围。
+
+## 2026-09-12 收尾记录
+
+- 设置分类分组：共享层新增 `SettingsGroup` 模板，上下文设置页分为"常用配置／高级配置"两组；settings-context 浏览器用例 10 / 10 通过，含新的分组可见性断言（见 reports/frontend-context-followup.log）。
+- 大资料性能：knowledge 领域为规范化结果与全文拼接结果增加 WeakMap 缓存（正文原地修改、删除、顺序变化均失效）；chat 控制器拆出 `resolveRequestParts` 供常驻圆环复用请求快照，避免输入时重复编码／克隆大资料。新增 2 条单元用例，全部单元测试 41 文件、347 / 347 通过（见 reports/frontend-followup-unit.log）。
+- 浏览器用例补充与修复：seed 脚本增加修订号防止重复注入覆盖设置；导航选择器与菜单 role 断言修正；新增资料备份恢复／取消恢复、大资料不重复编码用例。followup e2e 39 / 39 通过（见 reports/frontend-followup-e2e.log）。
+- 过时断言修订（有产品依据）：`主题 JSON：更新默认主题、重启恢复并删除自定义变体` 此前断言按钮令牌跟随主题主色 `#93B259`。主题包 JSON `everforest-clawbox-theme-v1.json` 实际为 `--btn-primary`／`--send-btn` 定义更深的 `#617D43` 系列（白字对比度），`#93B259` 仅用于品牌标识与强调色，`tokens.css` 默认值一致；导入按钮为次要按钮，背景跟随 `--surface-elevated`（#F0F0E8）。断言按产品数据修正。
+- 修订后 app.spec 完整运行 68 项：59 通过、9 失败，9 条全部属于 52 项历史失败基线，无新增失败（见 reports/frontend-app-theme-followup.log）。已解决的继承失败累计 2 项：`touch cancellation and visibility cleanup` 与 `主题 JSON：更新默认主题、重启恢复并删除自定义变体`。
+
+尚未完成：其余 50 项历史失败的逐项分析、稳定性修复及有依据的断言修订；其他设置分类的常用／高级分组复核；资料在极大文本／快速生成下的性能专项扩展。

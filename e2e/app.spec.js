@@ -1372,12 +1372,14 @@ test("主题 JSON：更新默认主题、重启恢复并删除自定义变体", 
     logo: getComputedStyle(document.documentElement).getPropertyValue("--brand-logo").trim(),
     icon: getComputedStyle(document.documentElement).getPropertyValue("--icon-btn-ink").trim()
   }));
-  expect(buttonTokens.send).toBe("#93B259");
-  expect(buttonTokens.primary).toBe("#93B259");
+  // 主题包 JSON 明确为按钮定义更深的绿色（#617D43 系列）保证白字对比度；
+  // 主色 #93B259 只用于品牌标识与强调色。次要按钮背景跟随 surface-elevated。
+  expect(buttonTokens.send).toBe("#617D43");
+  expect(buttonTokens.primary).toBe("#617D43");
   expect(buttonTokens.logo).toBe("#93B259");
   expect(buttonTokens.icon).toBe("#73848A");
   await page.mouse.move(0, 0);
-  await expect(page.locator("#themePackageImportBtn")).toHaveCSS("background-color", "rgb(147, 178, 89)");
+  await expect(page.locator("#themePackageImportBtn")).toHaveCSS("background-color", "rgb(240, 240, 232)");
 
   // 重启后从本机存储恢复
   await page.reload();

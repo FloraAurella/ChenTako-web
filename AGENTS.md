@@ -1,10 +1,73 @@
-# Frontend development rules
+# 项目开发规范（强制）
 
-- Follow docs/MODULAR_REFACTOR_PLAN.md. The user's later instruction explicitly authorizes using and refactoring the copied Clawbox frontend; earlier prohibitions are superseded.
-- Core contains only generic infrastructure. App is the composition root. Functional UI and services belong to modules.
-- Declare module dependencies; consume another module only through its public entry or an injected contract. Do not bypass ownership via relative imports into another module's internals.
-- Register settings/navigation/UI contributions; do not add feature-name switch statements to shared renderers.
-- Resolve icons/fonts/themes through resources. Keep system, module and user ownership distinct.
-- Reuse shared UI primitives: interactive surfaces are borderless with hover feedback; panel surfaces retain their border/background on hover. Input focus and child button states are independent.
-- Preserve existing frontend functionality, persisted data and wire contracts during this refactor. Do not silently remove tools, skills or migration UI.
-- No subagents are required. Validate changes with relevant tests, then full regression for architecture-wide edits.
+本文件适用于本仓库全部源码、测试、脚本和文档。新增功能、修复和重构均必须遵守；不得以“先跑起来”“只是小改动”为由绕过模块边界。用户后续明确指令可改变范围，实施时必须同步相关文档，不得自行放宽规范。
+
+## 1. 当前产品范围
+
+- 当前任务只完成前端。未经用户新的明确指令，不新增或修改后端、Node 服务、Electron 主进程、IPC、数据库服务或部署配置。
+- Agent Loop、规划器、执行器和权限系统暂不实施。原有工具、技能设置与已支持的接口必须保留，不得以“暂不做 Agent”为由删除既有功能。
+- 使用并修改复制的 Clawbox 前端已获用户明确授权；早期禁止参考前端的要求已被取代。
+- 现有按钮暂不重新设计或移除，包括附件、发送／停止、模型与强度、上下文圆环。指令可以作为并行入口；如需改变按钮，必须有用户后续明确要求。
+- 本轮前端目标见 `docs/FRONTEND_COMPLETION_PLAN.md`。`docs/MODULAR_REFACTOR_PLAN.md` 是已完成重构的历史范围，不得用其“本次不做知识库”限制当前已授权工作。
+
+## 2. 模块所有权与依赖
+
+- `src/core/` 只能包含通用基础设施：模块运行时、依赖排序、事件、注册表、作用域和通用订阅。不得出现聊天、项目、供应商、知识库、主题等业务规则，也不得反向依赖 App、Modules、Shared 或 Resources。
+- `src/app/` 是唯一应用装配入口，负责选择模块、注入依赖、组织路由和外壳、组合全局状态及生命周期。不得把新增业务实现堆入 bootstrap、router 或 store。
+- `src/modules/<feature>/` 拥有对应功能的领域规则、服务、状态操作和界面。新功能必须有独立归属；不得只移动文件夹却继续跨模块调用私有实现。
+- 跨模块及 App 对模块的访问只能经过目标模块 `public/` 或明确注入的公共契约。禁止导入另一模块的 `domain/`、`services/`、`state/`、`ui/` 或私有控制器。
+- 模块不得导入 `src/app/`。共享层不得通过私有导入成为业务后门；跨层调用应经契约或注入完成。
+- 模块清单必须声明实际启动依赖；禁止依赖注册顺序碰巧正确，禁止循环依赖。
+- `public/` 只暴露跨模块确实需要的能力，按职责提供小入口，不用无差别桶导出拖入所有 UI、状态和服务。
+- `src/contracts/` 定义跨模块类型及已有数据兼容契约。不得借公共契约建立业务单例；历史 normalize 兼容逻辑不能被当成新增业务的容器。
+
+## 3. 注册、替换与生命周期
+
+- 设置分类、设置搜索、页面、插槽、指令和请求上下文贡献通过有拥有者的注册表接入。
+- 禁止在共享渲染器或通用协调器里添加按功能名称判断的 switch/if 来接入新业务。功能特有判断放在拥有该功能的模块中。
+- 功能状态变更只能由其领域服务／状态操作处理，UI 调用这些操作；原按钮、指令等不同入口必须共用同一业务实现。
+- 采用源码／构建时模块装配，不未经要求实现运行时插件安装、热卸载或任意用户代码执行。
+- 必要模块与可选模块须明确声明。可选模块关闭后，相关页面、设置、指令、搜索和请求贡献都不能残留；用户数据不得因此被自动删除。
+- 新增全局监听、订阅、定时器、帧回调、观察器和网络任务必须具备释放路径，跟随 Scope 或组件 effect 清理。
+- 初始化失败必须回滚已注册贡献。释放要可重复调用，异步结果不得在卸载后继续修改 UI 或失效状态。
+
+## 4. 数据与请求边界
+
+- 保留既有浏览器存储键、归档格式兼容性、DOM 交互契约和外部 HTTP/桌面桥行为；改变前必须有明确兼容方案和测试。
+- 新增持久化字段必须支持旧数据缺省、导出导入、刷新恢复及降级场景。禁止静默丢失资料、静默截断正文或把损坏数据当成完整数据发送。
+- 用户数据保存在既有前端存储体系中，本轮不以 SQLite 或新后端替换该体系。
+- 指令文本不进入模型 Prompt、普通聊天历史或聊天标题。非法指令不得自动当作消息发送。
+- 一次请求在开始准备时固定配置快照；自动压缩、预算校验和正式发送必须使用同一份供应商、模型、配置和固定上下文快照。
+- 会话切换、输入变化和异步完成必须按会话 ID 与版本隔离，不能覆盖新草稿或误清附件。
+
+## 5. 项目知识库的产品不变量
+
+- 项目知识库是独立业务模块；`src/resources/` 是界面资源库，两者不可混用。
+- 知识库文件默认作为全文上下文，在该项目每次模型请求中完整携带，不使用检索片段替代全文。
+- 项目资料不参与历史压缩，不发送给历史摘要请求；压缩完成后，下一次正式请求仍完整携带同一份固定资料。
+- 指令／系统提示词、项目资料、历史及摘要、本次输入／附件和输出预留必须可分别解释预算占用，说明估算性质。
+- 固定资料与本次输入已经超预算时，阻止正式发送并说明原因；不能试图通过压缩固定资料、静默截断或忽略文件解决。
+- 项目隔离、会话移入移出、文件替换删除和请求期间的资料变更必须有明确行为及测试。当前请求用快照，后续请求使用最新资料。
+- 文件读取失败、资料缺失或存储降级必须明确显示并阻止不完整的资料发送，不能显示“已完整携带”。
+
+## 6. 统一 UI 与资源
+
+- 所有新增按钮、图标按钮、文本框、输入区域、列表项、字段组、状态及卡片，优先使用 `src/shared/ui/` 中的模板。缺失能力先扩展共享模板，不在页面各写一套。
+- 无边框交互表面：常态无边框，悬停高亮，选中状态独立表达；用于历史、项目和菜单条目。
+- 有边框容器表面：背景与边框常驻，悬停不得改变材质；用于输入容器、设置卡片、资料详情。内部按钮、输入控件保留独立的焦点、错误和禁用反馈。
+- 字体、颜色、间距、高度、圆角、边框和焦点样式使用共享设计令牌，不在单个页面随意另设一套。圆角使用正圆弧；真正圆形图标按钮可用 50%。对现有模板的统一调整须验证全部使用场景，并尊重当前按钮不变的约束。
+- 图标、字体、主题和品牌图形经 `src/resources/` 的公开资源入口解析，不在业务组件复制 SVG、私带字体或绕过资源注册。
+- 系统、模块和用户资源拥有者必须区分；用户主题仍需校验，不能借资源导入执行用户 JS 或任意 SVG。
+- 桌面、平板和手机都必须可用，键盘与中文输入法必须正常；不得只依赖 hover 才能访问必要功能。
+- 新动态效果应有用途并尊重 prefers-reduced-motion。所有新增文字和用户上传内容按不可信数据安全渲染。
+
+## 7. 实施、验证与交付
+
+- 不需要子代理；未经用户或适用规则明确要求，不主动分派代理。
+- 先按改动影响范围运行针对性验证；架构级改动完成后必须执行架构检查、类型检查、构建、单元测试及浏览器回归。
+- 必须检查正常、错误、空状态、忙碌、切换会话、存储失败、取消及重复执行等相关边界。
+- 默认浅深主题及 1280／1024／390 宽度必须验证无页面级横向溢出，焦点、选中、错误和禁用状态可辨认。
+- 不得删除、跳过或批量更新测试／截图来制造通过。旧失败可单独分组，但必须保留基线证据并逐项解释新增差异；修订过时断言须记录产品依据。
+- 模拟接口测试不能被宣称为真实模型或后端连通验证。不得读取、保存或提交真实凭据作为测试材料。
+- 修改后同步 README 的目录说明、使用文档、架构说明和验证记录。交付必须说明实际完成、验证范围及尚未完成的项目。
+- Git 提交按可审查阶段组织；不得提交依赖、构建产物、用户数据、系统缓存或密钥。用户未要求远端推送时，仅提交本地。

@@ -18,7 +18,8 @@
 |---|---|
 | 架构检查（前端 + 后端） | 双双通过，见 reports/backend-verification.log |
 | 类型检查 | 前端（tsconfig.json）与 server（tsconfig.server.json）均通过；前端检查范围已排除 test/server |
-| 全部单元／集成测试 | 49 文件、406 / 406 通过（其中后端 59 条：core 5、契约同步 4、gateway 7、upstream 21、providers 15、chat 6 等，详见 `npx vitest run test/server`） |
+| 生产构建 | `npm run build` 通过（vite 双页面构建，server/ 不参与前端打包），1.0s 完成 |
+| 全部单元／集成测试 | 49 文件、406 / 406 通过（其中后端 59 条：core 6、契约同步 4、gateway 7、upstream 21、providers 15、chat 6） |
 | 真实入口冒烟 | `node server/app/main.ts` 启动于 127.0.0.1:3199，health 返回 `{"ok":true,"service":"clawbox-server"}`，未知接口 404 |
 | 契约防漂移 | 测试直接导入 `src/contracts/constants.js` 与 `src/modules/chat/stream/protocol.ts` 做全等断言 |
 | 流协议验收 | chat 集成测试用前端 `consumeAppStreamFrame` 状态机解码后端 SSE：started 首帧且仅一次、事件顺序、usage 去重、终态之后无事件均由前端状态机保证 |

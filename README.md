@@ -270,7 +270,7 @@ VITE_DISABLED_MODULES=extensions,data npm run dev -- --port 5188 --strictPort
 
 `test-results/` 是 Playwright 当次运行产物，可包含错误上下文和失败截图，后续运行可能覆盖。需要长期保留的结论与证据应整理到 `docs/` 和 `reports/`。
 
-截至 [2026-09-12 的验证记录](docs/VALIDATION.md)，架构检查、类型检查和构建通过，单元测试 306 项通过；完整旧浏览器套件在重构前后均为 90 项通过、53 项失败，失败标题集合一致。最终针对原可用用例加新增用例的回归为 92 项通过。**完整 E2E 并非全绿**，`npm run test:e2e` 仍包含这些既有失败；这些数字是已留存记录，不是每次编辑 README 后重新执行的结果。
+截至 [2026-09-12 的验证记录](docs/VALIDATION.md)，架构检查、类型检查和构建通过，单元测试 306 项通过；完整旧浏览器套件在重构前后均为 90 项通过、53 项失败，失败标题集合一致。最终针对原可用用例加新增用例的回归为 92 项通过。**完整 E2E 并非全绿**，`npm run test:e2e` 仍包含这些既有失败；以上是重构当时的留存记录，不是每次编辑 README 后重新执行的结果。当前基线与最新数字见 [前端阶段验证](docs/FRONTEND_VALIDATION.md)、[后端阶段验证](docs/BACKEND_VALIDATION.md) 与 [前端完成计划](docs/FRONTEND_COMPLETION_PLAN.md)。
 
 ## 修改功能时从哪里开始
 

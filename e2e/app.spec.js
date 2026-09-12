@@ -313,6 +313,54 @@ test("多轮工具 SSE：中间完成事件不截断，思考与正文按真实�
   await expect(entry.locator(".reasoning-body")).toContainText("准备调用工具。正在整理结果。");
 });
 
+test("等待响应：耗时刷新只写文本，不重建转圈元素", async ({ page }) => {
+  await mockBackend(page);
+  await page.addInitScript(() => {
+    const originalFetch = window.fetch;
+    window.fetch = (input, init) => {
+      const url = typeof input === "string" ? input : input?.url || "";
+      if (!url.includes("/api/chat")) return originalFetch(input, init);
+      const encoder = new TextEncoder();
+      const frames = [
+        ['event: chat.stream.started\ndata: {"version":1,"providerId":"p-demo","reasoningKind":"thinking"}\n\n', 1500],
+        ['event: chat.content.delta\ndata: {"delta":"终于开始回答"}\n\n', 30],
+        ['event: chat.stream.completed\ndata: {"finishReason":"stop"}\n\n', 20]
+      ];
+      let index = 0;
+      const stream = new ReadableStream({
+        start(controller) {
+          const push = () => {
+            if (index >= frames.length) { controller.close(); return; }
+            const [text, delay] = frames[index];
+            index += 1;
+            controller.enqueue(encoder.encode(text));
+            setTimeout(push, delay);
+          };
+          push();
+        }
+      });
+      return new Response(stream, { status: 200, headers: { "content-type": "text/event-stream" } });
+    };
+  });
+  await seedAndLoad(page);
+  await page.goto("/");
+  await page.fill("#composerInput", "等待期转圈回归");
+  await page.click("#sendBtn");
+
+  const spinner = page.locator(".message-entry.assistant .message-meta .response-spinner").first();
+  await expect(spinner).toBeVisible();
+  // 在转圈节点上打标记；修复前每个 paint 周期 innerHTML 重建会抹掉它
+  await spinner.evaluate((node) => { node.dataset.paintProbe = "same-node"; });
+  await page.waitForTimeout(1200); // 覆盖至少两个 500ms 等待期 paint 周期
+  expect(await spinner.evaluate((node) => node.dataset.paintProbe || "")).toBe("same-node");
+  // 耗时仍按秒推进，状态标签仍是等待响应
+  await expect(page.locator(".message-entry.assistant .message-meta").first()).toContainText(/等待响应 · \d+s/);
+
+  // 首帧到达后转圈退场，正文出现
+  await expect(page.locator("#messageList")).toContainText("终于开始回答");
+  await expect(page.locator(".message-entry.assistant .message-meta .response-spinner")).toHaveCount(0);
+});
+
 test("think 标签跨 SSE delta：思考进入折叠面板，闭合后的正文继续流式显示", async ({ page }) => {
   await page.addInitScript(() => {
     const originalFetch = window.fetch;

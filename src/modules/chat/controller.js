@@ -1540,6 +1540,10 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
     document.body.classList.add("is-streaming");
     refreshSendButton();
     setStreamingPlaceholder(assistantMessage, stream);
+    // 发送流程后段与 store 通知触发的调度式列表重渲会抹掉刚挂的等待态：
+    // 把补挂载排进 setTimeout(0)，落在 React 经 MessageChannel 的批量提交之后，
+    // 不必等 500ms 心跳才发现转圈消失。
+    setTimeout(() => schedulePaint(stream), 0);
 
     try {
       const response = await apiFetch("/api/chat", {
@@ -1643,7 +1647,22 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
 
   function responsePendingHtml(label, elapsedMs = 0) {
     const elapsed = elapsedMs > 0 ? ` · ${formatDuration(elapsedMs)}` : "";
-    return `<span class="response-spinner" aria-hidden="true"></span><span>${label}${elapsed}</span>`;
+    return `<span class="response-spinner" aria-hidden="true"></span><span class="response-pending-label">${label}${elapsed}</span>`;
+  }
+
+  /**
+   * 等待态只更新文本节点，不重建转圈元素：meta innerHTML 重建会让
+   * .response-spinner 的 CSS 旋转动画从 0° 重启（每 500ms 两次），视觉上卡顿。
+   * 仅在转圈节点不存在（消息列表重建后重挂载）时才整体重建。
+   */
+  function paintPendingMeta(meta, status, elapsedMs) {
+    if (!meta.querySelector(".response-spinner") || !meta.querySelector(".response-pending-label")) {
+      meta.innerHTML = responsePendingHtml(status, elapsedMs);
+      return;
+    }
+    const next = elapsedMs > 0 ? `${status} · ${formatDuration(elapsedMs)}` : status;
+    const label = meta.querySelector(".response-pending-label");
+    if (label.textContent !== next) label.textContent = next;
   }
 
   /** 补上流式等待态；只有收到真实 reasoning 后才挂载思考面板。 */
@@ -1657,9 +1676,9 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
     if (imageMode) mountImageGenerationSlot(entry, entry.dataset.messageId);
     if (reasoningStarted) mountReasoningSheet(entry);
     const meta = entry.querySelector(".message-meta");
-    if (meta) {
+    if (meta && !answerStarted) {
       const label = imageMode ? "正在生成图片" : reasoningStarted ? "正在思考" : "等待响应";
-      meta.innerHTML = responsePendingHtml(label);
+      paintPendingMeta(meta, label, 0);
     }
   }
 
@@ -1848,7 +1867,7 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
       const meta = entry.querySelector(".message-meta");
       if (meta && !answerStarted && !acc.completed) {
         const status = stream.expectsImage ? "正在生成图片" : acc.reasoning ? "正在思考" : "等待响应";
-        meta.innerHTML = responsePendingHtml(status, Date.now() - startedAt);
+        paintPendingMeta(meta, status, Date.now() - startedAt);
       } else if (meta && answerStarted && !acc.completed) {
         meta.textContent = formatDuration(Date.now() - startedAt);
       }

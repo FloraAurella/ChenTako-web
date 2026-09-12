@@ -39,6 +39,7 @@
 
 ## 2026-09-12 收尾记录
 
+- 等待响应转圈卡顿修复：等待期每 500ms 的耗时刷新此前以 `meta.innerHTML` 整体重建（每 tick 两次），转圈元素的 CSS 旋转动画被反复从 0° 重启。现改为转圈节点只建一次、状态与耗时仅写 `.response-pending-label` 文本节点；并把补挂载排进 `setTimeout(0)`，落在发送后调度式列表重渲之后，转圈不再延迟约 500ms 出现。新增 e2e 用例（探针断言转圈节点跨多个 paint 周期保持同一 DOM 节点、耗时按秒推进、首帧后退场）；app.spec + knowledge.spec 全量 81 项中 73 过、8 失败全部属于 52 项历史基线，无新增失败。
 - 设置分类分组：共享层新增 `SettingsGroup` 模板，上下文设置页分为"常用配置／高级配置"两组；settings-context 浏览器用例 10 / 10 通过，含新的分组可见性断言（见 reports/frontend-context-followup.log）。
 - 大资料性能：knowledge 领域为规范化结果与全文拼接结果增加 WeakMap 缓存（正文原地修改、删除、顺序变化均失效）；chat 控制器拆出 `resolveRequestParts` 供常驻圆环复用请求快照，避免输入时重复编码／克隆大资料。新增 2 条单元用例，全部单元测试 41 文件、347 / 347 通过（见 reports/frontend-followup-unit.log）。
 - 浏览器用例补充与修复：seed 脚本增加修订号防止重复注入覆盖设置；导航选择器与菜单 role 断言修正；新增资料备份恢复／取消恢复、大资料不重复编码用例。followup e2e 39 / 39 通过（见 reports/frontend-followup-e2e.log）。

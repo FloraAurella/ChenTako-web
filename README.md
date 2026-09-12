@@ -8,7 +8,7 @@
 
 ## 本地启动
 
-需要 Node.js 20.19+（后端要求 Node 22.5+，开发环境为 Node 26）。在本目录执行：
+需要 Node.js 20.19+（后端要求 Node 22.5+，开发验证环境为 Node 26）。后端以原生 TypeScript 由 Node 直接运行，使用 `node:sqlite`；未引入构建或转译步骤，完整的最低 Node 版本政策留待后端／平台阶段统一确定。在本目录执行：
 
 ```bash
 npm ci
@@ -136,7 +136,7 @@ v2.0/
 | [connections/](src/modules/connections/) | 供应商、模型、API 配置与后端连接状态 | `domain/`：模型规则与适配器；`services/`：供应商服务、密钥接口与后端同步；`ui/`：连接设置、编辑对话框和工作区；`public/`：公开接口 |
 | [context/](src/modules/context/) | 提示词、上下文预算、用量与压缩配置 | `domain/`：配置和预算规则；`services/`：配置服务与用量计算；`ui/`：上下文设置页；`public/`：公开接口 |
 | [appearance/](src/modules/appearance/) | 主题、外观设置、主题导入导出及偏好保存 | `domain/`：主题定义、校验、包与归档；`domain/custom/`：内置自定义主题定义；`services/`：外观设置与偏好持久化；`ui/`：外观设置页和主题卡片；`public/`：公开接口。根部 `controller.js`、`surface.js` 负责主题应用与表面外观 |
-| [extensions/](src/modules/extensions/) | 原有工具、技能设置及技能包解析 | `domain/`：扩展模型和技能包；`services/`：扩展设置服务；`ui/`：工具与技能设置；`public/`：公开接口。这里不代表已实现新的 Agent 权限系统 |
+| [extensions/](src/modules/extensions/) | 原有工具、技能设置及技能包解析；当前版本保留配置与导入入口，工具／技能执行尚未开放，非空 `extensions` 请求由后端明确拒绝 | `domain/`：扩展模型和技能包；`services/`：扩展设置服务；`ui/`：工具与技能设置（含能力预留说明）；`public/`：公开接口。这里不代表已实现新的 Agent 权限系统 |
 | [data/](src/modules/data/) | 对话归档、迁移、备份与版本信息 | `domain/`：归档与更新记录；`services/`：数据设置服务；`ui/`：数据及关于页面；`public/`：公开接口 |
 | [settings/](src/modules/settings/) | 设置目录、搜索和详情页的统一入口 | `services/`：组合已注册的领域服务；`ui/`：设置导航和详情容器；`public/`：公开接口。具体连接、外观等字段仍由对应业务模块拥有 |
 | [attachments/](src/modules/attachments/) | 附件读取、格式识别、数量及大小限制 | `services/`：附件处理；`public/`：公开接口。当前作为功能服务被调用，没有独立模块注册文件 |
@@ -160,7 +160,7 @@ VITE_DISABLED_MODULES=extensions,data npm run dev -- --port 5188 --strictPort
 
 | 目录或文件 | 用途 |
 |---|---|
-| `ui/` | `primitives.tsx` 提供 Surface、Button、IconButton、TextField、TextArea、ListItem、FieldGroup、StatusText；`SettingsCard.tsx` 提供统一设置卡片；`Icon.tsx` 提供图标组件 |
+| `ui/` | `primitives.tsx` 提供 Surface、Button、IconButton、TextField、TextArea、ListItem、FieldGroup、StatusText；`SettingsCard.tsx` 提供统一设置卡片与"常用／高级配置"分组（`SettingsGroup`）；`Icon.tsx` 提供图标组件 |
 | `overlays/` | 对话框层、对话框服务、Popover 控制器及行内错误展示与服务 |
 | `settings/` | 多个设置模块共用的界面辅助组件与视图模型 |
 | `state/` | React 状态订阅适配与模块贡献的 Context Provider |
@@ -191,7 +191,7 @@ VITE_DISABLED_MODULES=extensions,data npm run dev -- --port 5188 --strictPort
 
 ## `server/`：模块化 Node 后端
 
-零运行时依赖（`node:http` + `node:sqlite`），TypeScript 由 node 直接运行。目录职责与前端镜像：
+零运行时依赖（`node:http` + `node:sqlite`），TypeScript 由 node 直接运行，未引入后端构建步骤；SQLite 依赖 Node 22.5+ 的内置 `node:sqlite`，完整的最低版本政策留待后端／平台阶段统一确定。目录职责与前端镜像：
 
 | 目录或文件 | 用途 |
 |---|---|
@@ -270,7 +270,9 @@ VITE_DISABLED_MODULES=extensions,data npm run dev -- --port 5188 --strictPort
 
 `test-results/` 是 Playwright 当次运行产物，可包含错误上下文和失败截图，后续运行可能覆盖。需要长期保留的结论与证据应整理到 `docs/` 和 `reports/`。
 
-截至 [2026-09-12 的验证记录](docs/VALIDATION.md)，架构检查、类型检查和构建通过，单元测试 306 项通过；完整旧浏览器套件在重构前后均为 90 项通过、53 项失败，失败标题集合一致。最终针对原可用用例加新增用例的回归为 92 项通过。**完整 E2E 并非全绿**，`npm run test:e2e` 仍包含这些既有失败；以上是重构当时的留存记录，不是每次编辑 README 后重新执行的结果。当前基线与最新数字见 [前端阶段验证](docs/FRONTEND_VALIDATION.md)、[后端阶段验证](docs/BACKEND_VALIDATION.md) 与 [前端完成计划](docs/FRONTEND_COMPLETION_PLAN.md)。
+截至 [2026-09-12 的验证记录](docs/VALIDATION.md)，架构检查、类型检查和构建通过，单元测试 306 项通过；完整旧浏览器套件在重构前后均为 90 项通过、53 项失败，失败标题集合一致。以上是重构当时的留存记录，不是当前状态。
+
+**当前基线（2026-09-12 前端收口轮，见 [前端验证记录](docs/FRONTEND_VALIDATION.md)）**：架构检查（前端与 server）、TypeScript 类型检查、生产构建通过；单元测试 49 个文件 406 / 406 通过（无 `act(...)`、localStorage 实验警告与预期错误 stderr 噪声）；浏览器回归 185 / 185 通过（无跳过或删除用例），其中 29 个视觉快照经逐项审核后更新。历史阶段数字（306、345、406 混杂时期）仅作为各阶段证据保留在对应验证文档中，不代表当前状态。
 
 ## 修改功能时从哪里开始
 

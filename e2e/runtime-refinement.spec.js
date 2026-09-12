@@ -96,15 +96,19 @@ for (const [name, opts, expected, label] of [
 });
 test("pointer stops and rapid reversal", async ({ page }) => {
   await seed(page); await open(page, "effort");
-  const rail = page.locator(".effort-rail"), box = await rail.boundingBox();
+  const rail = page.locator(".effort-rail");
   for (let index = 0; index < 5; index++) {
-    await rail.click({ position: { x: 14 + index * (box.width - 28) / 4, y: 22 } });
+    const width = await rail.evaluate((element) => element.clientWidth);
+    await rail.click({ position: { x: 14 + index * (width - 28) / 4, y: 22 } });
     await expect(rail).toHaveAttribute("aria-valuenow", String(index));
-    await expect.poll(async () => {
-      const thumb = await page.locator(".effort-rail-thumb").boundingBox();
-      return Math.abs(thumb.x + thumb.width / 2 - (box.x + 14 + index * (box.width - 28) / 4));
-    }).toBeLessThan(1);
+    await expect.poll(() => rail.evaluate((element, stopIndex) => {
+      const thumb = element.querySelector(".effort-rail-thumb").getBoundingClientRect();
+      const railRect = element.getBoundingClientRect();
+      const expected = railRect.left + 14 + stopIndex * (element.clientWidth - 28) / 4;
+      return Math.abs(thumb.left + thumb.width / 2 - expected);
+    }, index)).toBeLessThan(1);
   }
+  const box = await rail.boundingBox();
   await page.mouse.move(box.x + 14, box.y + 22); await page.mouse.down();
   await page.mouse.move(box.x + box.width + 50, box.y + 22, { steps: 12 });
   await expect(rail).toHaveAttribute("aria-valuenow", "4");

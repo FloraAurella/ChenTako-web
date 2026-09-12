@@ -2297,6 +2297,9 @@ test("设置：工具与 Skill 独立入口，启用后全局持续生效", asyn
   await expect(page.locator("[data-extension-card]")).toHaveCount(1);
   // 扩展页统一使用当前中文名称
   await expect(page.locator("[data-extension-card='tool']")).toContainText("自定义工具");
+  await expect(page.locator("[data-extension-capability]")).toContainText("当前版本仅保留配置与导入入口");
+  await expect(page.locator("[data-extension-capability]")).toContainText("执行尚未开放");
+  await expect(page.locator("[data-extension-capability]")).toContainText("不会静默忽略");
   await expect(page.locator("[data-extension-card='tool']")).toContainText("运行时沙箱（macOS）");
   await page.click("[data-sandbox-toggle]");
   await expect(page.locator("[data-sandbox-toggle]")).toHaveAttribute("aria-checked", "true");
@@ -2306,6 +2309,7 @@ test("设置：工具与 Skill 独立入口，启用后全局持续生效", asyn
   await page.click("[data-section='skills']");
   await expect(page.locator("[data-extension-card]")).toHaveCount(1);
   await expect(page.locator("[data-extension-card='skill']")).toContainText("技能");
+  await expect(page.locator("[data-extension-capability]")).toContainText("执行尚未开放");
   await expect(page.locator("[data-extension-card='skill']")).toHaveAttribute("data-extension-config", "skills");
 
   await expect(page.locator("#skillMarkdownImportBtn")).toContainText("上传 .md");

@@ -159,7 +159,7 @@ test('输入法确认不会执行指令，关闭和会话切换保留草稿', as
 });
 
 for (const scheme of ['light', 'dark']) for (const width of [1280, 1024, 390]) {
-  test(`指令面板 ${scheme} ${width} 无溢出且 panel 悬停稳定`, async ({ page }) => {
+  test(`指令面板 ${scheme} ${width} 无溢出且 panel 悬停稳定`, async ({ page }, testInfo) => {
     await page.setViewportSize({ width, height: 840 }); await load(page, { scheme });
     await page.locator('#composerInput').fill('/');
     const panel = page.locator('.command-panel'); await expect(panel).toBeVisible();
@@ -169,7 +169,7 @@ for (const scheme of ['light', 'dark']) for (const width of [1280, 1024, 390]) {
     expect(rect.x).toBeGreaterThanOrEqual(0); expect(rect.x + rect.width).toBeLessThanOrEqual(width);
     expect(rect.y + rect.height).toBeLessThanOrEqual(input.y);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-    await page.screenshot({ path: `reports/commands-${scheme}-${width}.png` });
+    await page.screenshot({ path: testInfo.outputPath(`commands-${scheme}-${width}.png`) });
   });
 }
 

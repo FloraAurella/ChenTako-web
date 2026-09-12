@@ -138,6 +138,7 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
   let userScrollActive = false;
   let scrollIdleTimer = 0;
   let followFrame = 0;
+  let settleFollowGeneration = 0;
   let editingMessageId = "";
   let editingDraft = null;
   const popovers = createPopoverController({host:shell.popoverHost,beforeOpen:() => hideContextTooltip()});
@@ -477,11 +478,18 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
    * 展开时 scrollHeight 可能还没有溢出，单帧滚动会落空并停留在列表顶部。
    * 连续数帧把滚动钉在底部，直到位置贴住（或用户上滚解除跟随）。
    */
-  function settleFollowToBottom() {
+  function settleFollowToBottom(conversationId) {
+    const generation = ++settleFollowGeneration;
     let attempts = 0;
     let lastHeight = -1;
     const step = () => {
-      if (!els || !followStream || userScrollActive) return;
+      if (
+        !els ||
+        generation !== settleFollowGeneration ||
+        state().activeConversationId !== conversationId ||
+        !followStream ||
+        userScrollActive
+      ) return;
       const scroller = els.messageScroll;
       const list = els.messageList;
       // 列表尚未提交首个内容帧时，“高度稳定且贴底”恰好成立，会误判为完成；
@@ -528,6 +536,9 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
     render.lastConversationId = conversation ? conversation.id : "";
 
     if (switched) {
+      // 旧会话仍在等待 content-visibility 或字体布局稳定时，立即让其回底循环失效，
+      // 避免覆盖新会话保存的流式阅读位置。
+      settleFollowGeneration += 1;
       if (previousId && state().conversations.some((item) => item.id === previousId)) {
         state().pendingAttachmentsByConversation.set(previousId, state().pendingAttachments);
       }
@@ -559,7 +570,7 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
           followStream = true;
           els.newRepliesBtn.hidden = true;
           // 空会话没有可回底的内容：保持顶部，避免把空状态卡片钉到不可达位置。
-          if (getActivePath(conversation).length) settleFollowToBottom();
+          if (getActivePath(conversation).length) settleFollowToBottom(conversation.id);
         }
       }
     } else if (reason === "providers") {

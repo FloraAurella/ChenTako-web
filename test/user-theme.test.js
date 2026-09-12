@@ -1,6 +1,6 @@
 "use strict";
 
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { readFileSync } from "node:fs";
 import { resolve as resolvePath } from "node:path";
 import {
@@ -493,11 +493,26 @@ describe("用户主题本机持久化", () => {
     const storage = memoryStorage();
     saveUserThemeFile({ id: "seaside", raw: FULL_THEME }, storage);
     saveUserThemeFile({ id: "broken", raw: { format: "wrong", version: 9, name: "" } }, storage);
-    const restored = restoreUserThemes(storage);
+    const restoreErrors = [];
+    const originalError = console.error;
+    const errorSpy = vi.spyOn(console, "error").mockImplementation((...args) => {
+      if (typeof args[0] === "string" && args[0].startsWith("[Clawbox Theme] 无法恢复自定义主题 broken：")) {
+        restoreErrors.push(args[0]);
+      } else {
+        originalError(...args);
+      }
+    });
+    let restored;
+    try {
+      restored = restoreUserThemes(storage);
+    } finally {
+      errorSpy.mockRestore();
+    }
     expect(restored).toEqual(["seaside"]);
     expect(getTheme("seaside").user).toBe(true);
     expect(getTheme("seaside").tokens.light["--accent"]).toBe("#ffb35c");
     expect(getTheme("broken")).toBeNull();
+    expect(restoreErrors).toHaveLength(1);
   });
 
   it("注销：内置主题受保护，用户主题可移除", () => {

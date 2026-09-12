@@ -18,9 +18,12 @@ beforeEach(() => {
   registry = new Registry();
   instance = createComposerCommands({ input, registry, context: () => current, beforeOpen: vi.fn() });
 });
-afterEach(() => {
-  // 面板 root 的卸载排在微任务里：放进 act 边界，避免“测试外更新”警告。
-  act(() => { instance.dispose(); });
+async function disposeInstance() {
+  // dispose 将独立 React root 的卸载排在微任务里；act 必须等该微任务完成。
+  await act(async () => { instance.dispose(); await Promise.resolve(); });
+}
+afterEach(async () => {
+  await disposeInstance();
   document.body.innerHTML = ''; vi.restoreAllMocks();
 });
 /** 输入事件会同步重渲指令面板（flushSync），必须在 act 边界内触发。 */
@@ -94,7 +97,7 @@ it('ignores late results and removes listeners and panel on dispose', async () =
   register(() => new Promise(done => { resolve = done; })); fill('/fixture');
   let pending!: Promise<boolean>;
   await act(async () => { pending = instance.submit(); });
-  act(() => { instance.dispose(); });
+  await disposeInstance();
   await act(async () => { resolve(success); await pending; });
   fill('/fixture'); expect(document.querySelector('.command-panel-host')).toBeNull();
   expect(input.value).toBe('/fixture');

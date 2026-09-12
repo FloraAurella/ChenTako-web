@@ -214,13 +214,28 @@ describe("createStateArchive", () => {
       codeInterpreter: { enabled: false }
     };
 
-    await store.persist();
+    const archiveErrors = [];
+    const originalError = console.error;
+    const errorSpy = vi.spyOn(console, "error").mockImplementation((...args) => {
+      if (args[0] === "[Clawbox] 本地归档写入失败（配置依赖轻量备份恢复）" && args[1] instanceof Error) {
+        archiveErrors.push(args[1]);
+      } else {
+        originalError(...args);
+      }
+    });
+    try {
+      await store.persist();
+    } finally {
+      errorSpy.mockRestore();
+    }
 
     const backup = JSON.parse(localStorage.getItem(STORAGE_KEYS.state));
     expect(backup.providers[0].displayName).toBe("Provider A");
     expect(backup.extensions.tools[0].name).toBe("weather_lookup");
     expect(backup.extensions.skills[0].name).toBe("代码审查");
     expect(backup.lightweight).toBe(true);
+    expect(archiveErrors).toHaveLength(1);
+    expect(archiveErrors[0].message).toBe("database unavailable");
   });
 });
 

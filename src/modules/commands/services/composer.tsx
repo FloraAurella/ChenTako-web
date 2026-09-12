@@ -33,6 +33,7 @@ export function createComposerCommands({ input, registry, context, beforeOpen }:
   let navigated = false;
   let feedbackTimer = 0;
   let composing = false;
+  let disposed = false;
 
   const ordered = () => registry.list().sort((a, b) => (a.id === 'help' ? 1 : b.id === 'help' ? -1 : 0));
   function close(focus = false) {
@@ -201,6 +202,10 @@ export function createComposerCommands({ input, registry, context, beforeOpen }:
       }
     },
     close,
-    dispose() { scope.dispose(); close(); queueMicrotask(() => root.unmount()); host.remove(); feedback.remove(); }
+    dispose() {
+      if (disposed) return;
+      disposed = true;
+      scope.dispose(); close(); queueMicrotask(() => root.unmount()); host.remove(); feedback.remove();
+    }
   };
 }

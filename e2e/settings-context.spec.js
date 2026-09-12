@@ -124,6 +124,25 @@ test("设置搜索定位与所有分类无横向溢出", async ({ page }) => {
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   }
 });
+
+for (const width of [1024, 390]) {
+  test(`设置分类 ${width} 宽度下分组、能力说明与页面宽度完整`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await load(page, { hash: "#/settings/appearance" });
+    for (const key of ["appearance", "providers", "context", "tools", "skills", "data", "about", "knowledge"]) {
+      await page.goto(`/#/settings/${key}`);
+      await expect(page.locator("#settingsContent .settings-pane").first()).toBeVisible();
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+      if (key === "appearance" || key === "data") {
+        await expect(page.getByRole("region", { name: "常用配置", exact: true })).toBeVisible();
+        await expect(page.getByRole("region", { name: "高级配置", exact: true })).toBeVisible();
+      }
+      if (key === "tools" || key === "skills") {
+        await expect(page.locator("[data-extension-capability]")).toContainText("执行尚未开放");
+      }
+    }
+  });
+}
 for (const [width, scheme] of [[1280, "light"], [1024, "dark"], [390, "light"]]) {
   test(`上下文设置视觉 ${width} ${scheme}`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });

@@ -119,10 +119,10 @@ for (const missing of [true, false]) test(missing ? '缺失资料阻止发送且
   expect(requests).toBe(0);
 });
 
-for (const scheme of ['light', 'dark']) for (const width of [1280, 1024, 390]) test(`资料界面 ${scheme} ${width} 无横向溢出`, async ({ page }) => {
+for (const scheme of ['light', 'dark']) for (const width of [1280, 1024, 390]) test(`资料界面 ${scheme} ${width} 无横向溢出`, async ({ page }, testInfo) => {
   await page.setViewportSize({ width, height: 900 });
   await load(page, { scheme }); await library(page);
   await expect(page.locator('.knowledge-preview pre')).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-  await page.screenshot({ path: `reports/knowledge-${scheme}-${width}.png`, fullPage: true });
+  await page.screenshot({ path: testInfo.outputPath(`knowledge-${scheme}-${width}.png`), fullPage: true });
 });

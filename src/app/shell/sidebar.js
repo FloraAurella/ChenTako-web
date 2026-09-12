@@ -10,11 +10,21 @@ export function createSidebar({scope,store,theme,shell}) {
 
   // ---- 抽屉（移动端 / 折叠断点） ----
 
-  function focusDrawerControl() {
-    // Wait for React's inert update and the visibility transition's first paint.
-    scope.frame(() => scope.frame(() => {
-      document.getElementById("archivesCollapseBtn").focus();
-    }));
+  function focusDrawerControl(attempt = 0) {
+    // React 提交 drawer 的 inert/可见状态后再聚焦；满负载时固定等待两帧仍可能
+    // 早于提交，因此做有上限的逐帧确认。所有帧由 Scope 持有，卸载会自动取消。
+    scope.frame(() => {
+      const control = document.getElementById("archivesCollapseBtn");
+      const ready = control && !control.closest("[inert]") && control.getClientRects().length > 0;
+      if (ready) {
+        control.focus({ preventScroll: true });
+        // 浏览器仍可能在同一帧处理刚移除的 inert；仅在 focus 当场失败时重试，
+        // 成功后立即停止，不会抢回用户随后主动移动的焦点。
+        if (document.activeElement !== control && attempt < 10) focusDrawerControl(attempt + 1);
+      } else if (attempt < 10) {
+        focusDrawerControl(attempt + 1);
+      }
+    });
   }
 
   function openDrawer({ focus = true } = {}) {

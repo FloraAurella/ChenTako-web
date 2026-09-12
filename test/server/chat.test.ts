@@ -225,12 +225,20 @@ describe('/api/chat 集成', () => {
     const jsonProvider = await createProvider(server, { displayName: '伪流', baseUrl: jsonUpstream.url });
     // 非 SSE 上游必然触发网关 5xx 日志：捕获为测试 Logger，隔离预期输出并断言错误对象。
     const gatewayErrors: Array<{ status?: number; message?: string }> = [];
+    const originalError = console.error;
     const errorSpy = vi.spyOn(console, 'error').mockImplementation(((...args: unknown[]) => {
       const entry = args[1] ?? args[0];
-      if (entry && typeof entry === 'object' && 'status' in entry) gatewayErrors.push(entry as { status?: number; message?: string });
+      if (args[0] === '[gateway]' && entry && typeof entry === 'object' && 'status' in entry && (entry as any).status === 502) {
+        gatewayErrors.push(entry as { status?: number; message?: string });
+      } else {
+        originalError(...args);
+      }
     }) as typeof console.error);
-    expect((await post(server, '/api/chat', chatBody(jsonProvider))).status).toBe(502);
-    errorSpy.mockRestore();
+    try {
+      expect((await post(server, '/api/chat', chatBody(jsonProvider))).status).toBe(502);
+    } finally {
+      errorSpy.mockRestore();
+    }
     expect(gatewayErrors.some((entry) => entry.status === 502 && String(entry.message).length > 0)).toBe(true);
 
     const tightProvider = await createProvider(server, { displayName: '紧预算', baseUrl: jsonUpstream.url, contextWindow: 1000 });

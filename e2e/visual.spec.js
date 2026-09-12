@@ -275,6 +275,14 @@ for (const scheme of ["light", "dark"]) {
     await expect(page.locator("html")).toHaveAttribute("data-theme", "everforest");
     await expect(page.locator(".motion-layer")).toHaveCount(0);
     await expect(page.locator(".empty-stage")).toBeVisible();
+    const __sc = await page.evaluate(() => {
+      const sc = document.getElementById("messageScroll");
+      const empty = document.querySelector(".empty-stage");
+      return { scrollTop: sc?.scrollTop, scrollHeight: sc?.scrollHeight, clientHeight: sc?.clientHeight,
+        emptyRect: empty?.getBoundingClientRect().toJSON(), emptyStyleHeight: empty ? getComputedStyle(empty).minHeight : null,
+        appHeight: getComputedStyle(document.documentElement).getPropertyValue("--app-height") };
+    });
+    console.log("SC:" + JSON.stringify(__sc));
     await freezePage(page);
     await expect(page).toHaveScreenshot(`everforest-empty-${scheme}.png`, { animations: "disabled", caret: "hide", maxDiffPixels: 0 });
   });

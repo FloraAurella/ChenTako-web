@@ -103,7 +103,9 @@ test("compact shortcuts search, create and import; settings hover is flat", asyn
   await page.locator("#railSearchBtn").click();
   await expect(page.locator("#searchInput")).toBeFocused();
   await page.locator("#searchInput").fill("找不到的对话");
-  await expect(page.locator(".empty-list-note")).toContainText("没有匹配");
+  // 项目区域与聊天区域分别给出各自的无匹配提示，而不是共享一个全局 Locator
+  await expect(page.locator('[data-section="projects"] .empty-list-note')).toHaveText("没有匹配的项目");
+  await expect(page.locator('[data-section="chats"] .empty-list-note')).toHaveText("没有匹配的聊天");
   await page.locator("#searchInput").fill("");
   await page.locator("#archivesCollapseBtn").click();
   const chooser = page.waitForEvent("filechooser");

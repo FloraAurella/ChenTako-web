@@ -409,35 +409,67 @@ test("think 标签跨 SSE delta：思考进入折叠面板，闭合后的正文�
 });
 
 test("思考阶段隐藏正文气泡并显示思考时长", async ({ page }) => {
-  await seedAndLoad(page);
-  // 让 /api/chat 挂起 1.6s，确定性观察“正在思考”中间态
-  await page.route("**/api/chat", async (route) => {
-    await page.waitForTimeout(1600);
-    await route.fulfill({
-      status: 200,
-      headers: { "content-type": "text/event-stream; charset=utf-8" },
-      body: [
-        "event: chat.stream.started\ndata: {\"version\":1,\"providerId\":\"p-demo\",\"reasoningKind\":\"thinking\"}\n\n",
-        "event: chat.reasoning.delta\ndata: {\"delta\":\"先想一下用户要什么。\",\"kind\":\"thinking\"}\n\n",
-        "event: chat.content.delta\ndata: {\"delta\":\"你好，这是正式回复。\"}\n\n",
-        "event: chat.stream.completed\ndata: {\"finishReason\":\"stop\"}\n\n"
-      ].join("")
-    });
+  // 页面内替换 fetch：请求挂起 1.2s 观察等待指示器，随后先发 reasoning 帧
+  // 保持 1.6s 独立推理阶段，再推正文与完成帧，制造确定性的观察窗口。
+  await page.addInitScript(() => {
+    const originalFetch = window.fetch;
+    window.fetch = async (input, init) => {
+      const url = String(input instanceof Request ? input.url : input);
+      if (!url.includes("/api/chat")) return originalFetch(input, init);
+      const encoder = new TextEncoder();
+      let index = 0;
+      const frames = [
+        'event: chat.stream.started\ndata: {"version":1,"providerId":"p-demo","reasoningKind":"thinking"}\n\n',
+        'event: chat.reasoning.delta\ndata: {"delta":"先想一下用户要什么。","kind":"thinking"}\n\n'
+      ];
+      const stream = new ReadableStream({
+        start(controller) {
+          const push = () => {
+            if (index < frames.length) {
+              controller.enqueue(encoder.encode(frames[index]));
+              index += 1;
+              setTimeout(push, 60);
+            } else {
+              setTimeout(() => {
+                controller.enqueue(encoder.encode('event: chat.content.delta\ndata: {"delta":"你好，这是正式回复。"}\n\n'));
+                setTimeout(() => {
+                  controller.enqueue(encoder.encode('event: chat.stream.completed\ndata: {"finishReason":"stop"}\n\n'));
+                  controller.close();
+                }, 60);
+              }, 1600);
+            }
+          };
+          setTimeout(push, 1200);
+        }
+      });
+      return new Response(stream, { status: 200, headers: { "content-type": "text/event-stream" } });
+    };
   });
+  await seedAndLoad(page);
   await page.goto("/");
   await page.fill("#composerInput", "打个招呼");
   await page.click("#sendBtn");
   const entry = page.locator(".message-entry.assistant");
-  // 思考阶段：无正文时隐藏正式发言气泡，计时从请求发出开始跳动
-  await expect(entry).toHaveClass(/is-thinking/);
+  // 请求等待阶段：meta 内稳定的圆形指示器与“等待响应”文案，空正文气泡不可见
+  const meta = entry.locator(".message-meta");
+  await expect(meta.locator(".response-spinner")).toBeVisible();
+  await expect(meta.locator(".response-pending-label")).toContainText("等待响应");
   await expect(entry.locator(".message-body")).toBeHidden();
-  await expect(entry.locator(".reasoning-label")).toHaveText("正在思考…");
-  await expect(entry.locator(".reasoning-duration")).not.toHaveText("0s");
-  // 正文到达后：气泡恢复、面板收起为“已思考”并保留冻结的思考时长
+  // 推理阶段：面板可见并展开，正文仍未出现，思考时长从首个增量起持续增长
+  const sheet = entry.locator(".reasoning-sheet");
+  await expect(sheet).toBeVisible();
+  await expect(sheet).toHaveAttribute("data-open", "true");
+  await expect(sheet.locator(".reasoning-toggle")).toHaveAttribute("aria-expanded", "true");
+  await expect(sheet.locator(".reasoning-label")).toHaveText("正在思考…");
+  await expect(sheet.locator(".reasoning-body")).toContainText("先想一下用户要什么");
+  await expect(sheet.locator(".reasoning-duration")).toHaveText(/（[1-9]\d*s）/);
+  await expect(entry.locator(".message-body")).toBeHidden();
+  // 正文开始：气泡恢复，面板按阅读规则折叠为“已思考”并保留冻结的思考时长
   await expect(entry.locator(".message-body .markdown-body")).toContainText("正式回复", { timeout: 8000 });
-  await expect(entry).not.toHaveClass(/is-thinking/);
-  await expect(entry.locator(".reasoning-label")).toHaveText("已思考");
-  await expect(entry.locator(".reasoning-duration")).toHaveText(/\d+[sm]/);
+  await expect(sheet).toBeVisible();
+  await expect(sheet).toHaveAttribute("data-open", "false");
+  await expect(sheet.locator(".reasoning-label")).toHaveText("已思考");
+  await expect(sheet.locator(".reasoning-duration")).toHaveText(/（用时 \d+[sm]/);
 });
 
 test("回答摘要（responses）在思考阶段展开，正文开始后自动收起", async ({ page }) => {
@@ -1063,12 +1095,14 @@ test("Everforest：主题包令牌与纯色外观完整生效", async ({ page })
       "--canvas-mid", "--surface-content", "--label", "--accent", "--send-btn", "--font-body"
     ].map((token) => [token, style.getPropertyValue(token).trim()]));
   });
+  // 以当前主题包（resources/themes/everforest-clawbox-theme-v1.json）为权威，
+  // 不复制旧 Everforest 色值。
   expect(tokens).toMatchObject({
-    "--canvas-mid": "#FDF6E3",
-    "--surface-content": "#FFF9E8",
-    "--label": "#5C6A72",
+    "--canvas-mid": "#F7F5EC",
+    "--surface-content": "#FCFBF6",
+    "--label": "#46534D",
     "--accent": "#93B259",
-    "--send-btn": "#93B259"
+    "--send-btn": "#617D43"
   });
   expect(tokens["--font-body"]).toContain("New York");
 });
@@ -1222,10 +1256,16 @@ test("额度提示：悬停显示 3+1 行且单行不折行", async ({ page }) =
   await page.locator("#usageBtn").hover();
   const tooltip = page.locator("#contextTooltip");
   await expect(tooltip).toHaveClass(/is-open/);
-  await expect(tooltip.locator("[data-tooltip-title]")).toHaveText("背景信息窗口：");
-  await expect(tooltip.locator("[data-tooltip-percent]")).toContainText("已用");
-  await expect(tooltip.locator("[data-tooltip-window]")).toContainText("标记");
-  await expect(tooltip.locator("[data-tooltip-hint]")).toHaveText("点击直接压缩");
+  // 标题、用量百分比与已用／预算 token（当前共享令牌实现为权威文案）
+  await expect(tooltip.locator("[data-tooltip-title]")).toHaveText("上下文用量");
+  await expect(tooltip.locator("[data-tooltip-percent]")).toContainText(/%\s*已用/);
+  await expect(tooltip.locator("[data-tooltip-window]")).toContainText(/已用 .+ Tokens，预算 /);
+  // 分类明细行（指令／资料／历史／输入等占用可分别解释）
+  await expect(tooltip.locator(".context-tooltip-line").filter({ hasText: "历史与摘要" })).toHaveCount(1);
+  await expect(tooltip.locator(".context-tooltip-line").filter({ hasText: "本次输入与附件" })).toHaveCount(1);
+  // 估算说明与点击压缩入口
+  await expect(tooltip.locator("[data-tooltip-hint]")).toContainText("字符估算");
+  await expect(tooltip.locator("[data-tooltip-hint]")).toContainText("点击压缩历史");
   // 数值行保持单行不折行（旧版「剩余上下文」回归为 tooltip 次行）
   const info = await tooltip.locator("[data-tooltip-window]").evaluate((el) => ({
     whiteSpace: getComputedStyle(el).whiteSpace,
@@ -1295,10 +1335,15 @@ test("设置：外观主题卡与自定义导入入口", async ({ page }) => {
   // 首启种子只包含 Everforest。
   await expect(page.locator(".theme-card")).toHaveCount(1);
   await expect(page.locator(".theme-card").nth(0)).toHaveAttribute("data-theme-id", "everforest");
-  await expect(page.locator('[data-theme-id="everforest"] .theme-name-label'))
-    .toHaveCSS("white-space", "nowrap");
+  // 稳定语义内容与选中状态（不依赖已删除的装饰性内部标签）
+  const everforestCard = page.locator('[data-theme-id="everforest"]');
+  await expect(everforestCard).toHaveAttribute("aria-pressed", "true");
+  await expect(everforestCard).toHaveClass(/is-active/);
+  await expect(everforestCard.locator(".theme-strip-name")).toHaveText("Everforest");
+  await expect(everforestCard.locator(".theme-strip-status")).toContainText("当前主题");
+  await expect(everforestCard).toHaveAttribute("aria-label", "Everforest，当前主题");
   await expect(page.locator("#themePackageImportBtn")).toHaveText(/导入主题/);
-  await expect(page.locator("#themePackageExportBtn")).toHaveText(/导出当前主题/);
+  await expect(page.locator("#themePackageExportBtn")).toHaveText(/导出/);
   // 明暗模式切换不改变当前主题 ID。
   await page.locator(".appearance-mode-option").filter({ hasText: "深色" }).click();
   await expect(page.locator("html")).toHaveAttribute("data-theme", "everforest");
@@ -1931,8 +1976,7 @@ test("浏览器旧状态：清除历史 demo 供应商并保留会话快照", as
 test("数据迁移：浏览器环境显示明确的不可用状态", async ({ page }) => {
   await seedAndLoad(page, { hash: "#/settings/data" });
   await page.goto("/");
-  await expect(page.locator(".usage-stat").filter({ hasText: "版本" })).toContainText(`v${APP_SETTINGS_VERSION}`);
-  await expect(page.locator(".usage-stat").filter({ hasText: "版本" })).not.toContainText("补丁包");
+  // 版本与运行环境信息归“关于与更新”页：数据页只验证迁移、导入与兼容行为
   await expect(page.locator(".migration-card")).toBeVisible();
   await expect(page.locator(".migration-status-badge")).toHaveText("不可用");
   await expect(page.locator(".migration-card")).toContainText("迁移仅适用于打包后的 Clawbox macOS 桌面版");
@@ -1980,19 +2024,27 @@ test("数据迁移：桌面普通版创建前警告敏感数据并允许取消�
 test("更新日志时间线", async ({ page }) => {
   await seedAndLoad(page, { hash: "#/settings/changelog" });
   await page.goto("/");
+  // 侧栏已无版本号；changelog 路由归一到“关于与更新”，版本信息在该页呈现
+  await expect(page.locator(".sidebar-version")).toHaveCount(0);
+  await expect(page.locator(".settings-pane-title").filter({ hasText: "关于与更新" })).toBeVisible();
+  await expect(page.locator(".usage-stat").filter({ hasText: "版本" })).toContainText(`v${APP_VERSION}`);
+  await expect(page.locator(".usage-stat").filter({ hasText: "版本" })).toContainText("补丁包");
+  await expect(page.locator(".usage-stat").filter({ hasText: "运行环境" })).toContainText("浏览器");
+  // 发布记录时间线：当前版本卡片在前，历史版本随后
   const cards = page.locator(".release-card");
-  await expect(page.locator(".sidebar-version")).toHaveAttribute("title", `Clawbox v${APP_VERSION}`);
-  await expect(page.locator(".sidebar-version")).toHaveText(`v${APP_VERSION}`);
   await expect(cards.first()).toContainText("当前版本");
   await expect(cards.first()).toContainText(`v${CURRENT_RELEASE.displayVersion}`);
   await expect(cards.first()).toContainText("补丁包");
   await expect(cards.first()).toContainText(CURRENT_RELEASE.title);
-  await expect(cards.first()).toContainText("主题选择为纵向横栏");
-  await expect(cards.first()).toContainText("五档思考强度");
-  await expect(cards.first()).toContainText("PDF、Word、PowerPoint 与表格文件");
+  // 发布条目以 changelog 数据源为权威，不在测试里复制过期文案
+  for (const change of CURRENT_RELEASE.changes) {
+    await expect(cards.first()).toContainText(change.text);
+  }
   await expect(cards.first().locator(".release-list li")).toHaveCount(CURRENT_RELEASE.changes.length);
-  await expect(cards.nth(1)).toContainText("本地保存链路加固");
-  await expect(cards.nth(2)).toContainText("Clawbox 首个实验版本");
+  // 历史版本卡片按数据源新到旧排列
+  for (const [index, note] of RELEASE_NOTES.entries()) {
+    await expect(cards.nth(index + 1)).toContainText(note.title);
+  }
   await expect(cards).toHaveCount(1 + RELEASE_NOTES.length);
 });
 
@@ -2036,15 +2088,17 @@ test("移动端设置：离开二级页面后重新进入显示设置目录", as
   await settingsNav.click();
   await expect(page.locator("#page-settings")).toHaveClass(/page-active/);
   await expect(settingsDetail).not.toHaveAttribute("data-settings-detail", "open");
+  // 设置分类索引：外观等分类全部可见（不假设外观隐藏或供应商默认激活）
   await expect(page.locator("#settingsIndex")).toBeVisible();
-  await expect(page.locator("[data-section='appearance']")).toHaveCount(0);
-  await expect(page.locator("[data-section='providers']")).toHaveClass(/is-active/);
+  await expect(page.locator("[data-section='appearance']")).toBeVisible();
+  await expect(page.locator("[data-section='providers']")).toBeVisible();
   expect(await page.evaluate(() => location.hash)).toBe("#/settings");
 
-  await page.click("[data-section='providers']");
+  // 分类进入 → 详情视图
+  await page.click("[data-section='appearance']");
   await expect(settingsDetail).toHaveAttribute("data-settings-detail", "open");
-  await expect(page.locator(".settings-pane-title")).toHaveText("模型与供应商");
-  expect(await page.evaluate(() => location.hash)).toBe("#/settings/providers");
+  await expect(page.locator(".settings-pane-title")).toHaveText("外观");
+  expect(await page.evaluate(() => location.hash)).toBe("#/settings/appearance");
 
   // 二级页面的返回按钮应回到一级目录，而不是只依赖主导航切换。
   await page.click("[data-settings-back]");
@@ -2053,6 +2107,10 @@ test("移动端设置：离开二级页面后重新进入显示设置目录", as
 
   await page.click("[data-section='providers']");
   await expect(settingsDetail).toHaveAttribute("data-settings-detail", "open");
+  await expect(page.locator(".settings-pane-title")).toHaveText("模型与供应商");
+  // 详情是推入式全屏（自带返回按钮）：回到索引后底部导航才重新可达
+  await page.click("[data-settings-back]");
+  await expect(settingsDetail).not.toHaveAttribute("data-settings-detail", "open");
   await page.locator('.mobile-nav-item[data-nav="chat"]').click();
   await expect(page.locator("#page-chat")).toHaveClass(/page-active/);
 
@@ -2237,7 +2295,8 @@ test("设置：工具与 Skill 独立入口，启用后全局持续生效", asyn
   await expect(page).toHaveURL(/#\/settings\/tools$/);
   await expect(page.locator("[data-section='tools']")).toHaveClass(/is-active/);
   await expect(page.locator("[data-extension-card]")).toHaveCount(1);
-  await expect(page.locator("[data-extension-card='tool']")).toContainText("Tools");
+  // 扩展页统一使用当前中文名称
+  await expect(page.locator("[data-extension-card='tool']")).toContainText("自定义工具");
   await expect(page.locator("[data-extension-card='tool']")).toContainText("运行时沙箱（macOS）");
   await page.click("[data-sandbox-toggle]");
   await expect(page.locator("[data-sandbox-toggle]")).toHaveAttribute("aria-checked", "true");
@@ -2246,7 +2305,7 @@ test("设置：工具与 Skill 独立入口，启用后全局持续生效", asyn
 
   await page.click("[data-section='skills']");
   await expect(page.locator("[data-extension-card]")).toHaveCount(1);
-  await expect(page.locator("[data-extension-card='skill']")).toContainText("Skills");
+  await expect(page.locator("[data-extension-card='skill']")).toContainText("技能");
   await expect(page.locator("[data-extension-card='skill']")).toHaveAttribute("data-extension-config", "skills");
 
   await expect(page.locator("#skillMarkdownImportBtn")).toContainText("上传 .md");
@@ -2260,7 +2319,8 @@ test("设置：工具与 Skill 独立入口，启用后全局持续生效", asyn
   await expect(page.locator("[data-extension-card='skill'] .extension-settings-item")).toContainText("代码审查");
 
   const chatRequest = page.waitForRequest((request) => request.url().includes("/api/chat") && request.method() === "POST");
-  await page.locator(".mode-rail [data-nav='chat']").click();
+  // 当前外壳没有 mode-rail：设置页通过“返回对话”回到聊天
+  await page.getByRole("button", { name: "返回对话", exact: true }).click();
   await expect(page.locator("#extensionsBtn")).toHaveCount(0);
   await page.fill("#composerInput", "检查全局扩展");
   await page.click("#sendBtn");

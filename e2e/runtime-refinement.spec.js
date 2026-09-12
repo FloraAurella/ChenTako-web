@@ -1,20 +1,27 @@
 import { test, expect } from "@playwright/test";
 test.use({ video: { mode: "on", size: { width: 1280, height: 800 } } });
 const model = "deepseek-v4-flash-vision-exp";
-async function seed(page, { scheme = "light", reset = "high", override, models, legacy = false } = {}) {
-  await page.addInitScript(({ model, scheme, reset, override, models }) => {
+async function seed(page, { scheme = "light", reset = "high", projectOverride, models, legacy = false } = {}) {
+  await page.addInitScript(({ model, scheme, reset, projectOverride, models }) => {
     if (localStorage.getItem("runtime-test-seeded")) return;
     localStorage.setItem("runtime-test-seeded", "1");
     localStorage.setItem("tribblebook-ui-preferences-v1", JSON.stringify({ appearanceMode: scheme }));
+    // 思考强度权威数据是全局 chatConfig 与项目 configOverrides；
+    // 供应商配置不承载默认推理强度，settingsSchemaVersion 声明配置已按当前模型归一。
     const provider = { id: "deepseek", displayName: "DeepSeek", enabled: true, hasKeyConfigured: true,
       baseUrl: "https://example.com/v1", responseFormat: "openai-compatible", defaultModel: model,
-      models: models || ["deepseek-v4-flash", model, "deepseek-v4-pro", "1"],
-      defaultReasoningEffort: reset, modelOverrides: override ? { [model]: { defaultReasoningEffort: override } } : {}, saveChats: true };
-    localStorage.setItem("tribblebook-v6-state", JSON.stringify({ version: "2.5.1", providers: [provider],
+      models: models || ["deepseek-v4-flash", model, "deepseek-v4-pro", "1"], saveChats: true };
+    const chatConfig = { defaultReasoningEffort: reset };
+    const projects = projectOverride
+      ? [{ id: "proj-effort", name: "强度项目", configOverrides: { defaultReasoningEffort: projectOverride }, createdAt: Date.now() }]
+      : [];
+    localStorage.setItem("tribblebook-v6-state", JSON.stringify({ version: "2.5.1", settingsSchemaVersion: 1,
+      chatConfig, projects, providers: [provider],
       activeProviderId: provider.id, activeConversationId: "demo", preferredReasoningEffort: "medium",
       conversations: [{ id: "demo", title: "选择适合当前任务的模型", providerId: provider.id, model,
+        projectId: projectOverride ? "proj-effort" : null,
         reasoningEffort: "medium", messages: [], createdAt: Date.now(), updatedAt: Date.now() }] }));
-  }, { model, scheme, reset, override, models });
+  }, { model, scheme, reset, projectOverride, models });
   await page.route("**/api/**", route => route.fulfill({ contentType: "application/json", body: JSON.stringify({ ok: true, providers: [] }) }));
   await page.goto("/");
   await expect(page.locator("#runtimeBtn")).toBeVisible();
@@ -56,20 +63,36 @@ test("root geometry and compact model list", async ({ page }, info) => {
   await page.reload();
   await expect(page.locator("#modelValue")).toHaveText("deepseek-v4-flash");
 });
-for (const [name, opts, expected] of [
-  ["inherited", { reset: "high" }, "2"], ["override", { reset: "high", override: "xhigh" }, "2"], ["fallback", { reset: "" }, "2"]
+// 权威映射：low=0、medium=1、high=2、xhigh=3、max=4。
+// inherited：全局 chatConfig high；override：项目 configOverrides xhigh 覆盖；
+// fallback：非法配置值经归一化回退 medium。
+for (const [name, opts, expected, label] of [
+  ["inherited", { reset: "high" }, "2", "高"],
+  ["override", { reset: "high", projectOverride: "xhigh" }, "3", "极高"],
+  ["fallback", { reset: "bogus" }, "1", "中等"]
 ]) test("reset " + name, async ({ page }) => {
   await seed(page, opts); await open(page, "effort");
   const rail = page.locator(".effort-rail");
+  // 初始为继承自全局／项目配置的有效值，无会话覆盖
+  await expect(rail).toHaveAttribute("aria-valuenow", expected);
+  await expect(page.locator("[data-effort-source]")).toHaveText("正在跟随配置");
+  // 手动选择产生会话级覆盖
   await rail.press("End");
+  await expect(page.locator("[data-effort-source]")).toHaveText("当前会话自定义");
+  // 重置清除会话覆盖，重新继承当前全局／项目配置
   await page.locator("[data-effort-reset]").click();
   await expect(rail).toHaveAttribute("aria-valuenow", expected);
+  await expect(rail).toHaveAttribute("aria-valuetext", label);
+  await expect(page.locator("[data-effort-source]")).toHaveText("正在跟随配置");
+  // 会话级覆盖刷新后保留，展示最终有效值
   await rail.press("Home"); await rail.press("ArrowRight");
-  await expect(rail).toHaveAttribute("aria-valuetext", "中等");
+  await expect(rail).toHaveAttribute("aria-valuenow", "1");
   await page.keyboard.press("Escape");
   await expect(page.locator("#runtimeBtn")).toBeFocused();
   await page.reload(); await open(page, "effort");
   await expect(rail).toHaveAttribute("aria-valuenow", "1");
+  await page.locator("[data-effort-reset]").click();
+  await expect(rail).toHaveAttribute("aria-valuenow", expected);
 });
 test("pointer stops and rapid reversal", async ({ page }) => {
   await seed(page); await open(page, "effort");
@@ -142,10 +165,11 @@ test.describe("motion demonstration", () => {
     await expect(rail).toHaveAttribute("aria-valuetext", "高");
   });
 });
-test("touch cancellation and visibility cleanup", async ({ browser }) => {
-  const context = await browser.newContext({ baseURL: "http://127.0.0.1:5173", hasTouch: true, viewport: { width: 375, height: 740 } });
-  try {
-    const page = await context.newPage();
+test.describe("touch cancellation", () => {
+  // 默认上下文继承 Playwright baseURL（端口由 playwright.config 决定），测试不复制开发服务器常量。
+  test.use({ hasTouch: true, viewport: { width: 375, height: 740 } });
+  test("touch cancellation and visibility cleanup", async ({ page }) => {
+    const context = page.context();
     await seed(page); await open(page, "effort");
     const rail = page.locator(".effort-rail"), box = await rail.boundingBox();
     const session = await context.newCDPSession(page);
@@ -170,7 +194,7 @@ test("touch cancellation and visibility cleanup", async ({ browser }) => {
     });
     await open(page, "effort");
     await expect(page.locator(".effort-particle").first()).toHaveCSS("animation-play-state", "running");
-  } finally { await context.close(); }
+  });
 });
 
 test("thumb hover and nearest-stop settling", async ({ page }) => {

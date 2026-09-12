@@ -80,12 +80,15 @@ export class SseWriter {
   private res: ServerResponse;
   constructor(res: ServerResponse) {
     this.res = res;
-    res.writeHead(200, {
-      'Content-Type': 'text/event-stream; charset=utf-8',
-      'Cache-Control': 'no-cache, no-transform',
-      'Connection': 'keep-alive',
-      'X-Accel-Buffering': 'no'
-    });
+    // 错误收尾路径可能在头已发出后才构造 writer；此时沿用既有流头。
+    if (!res.headersSent) {
+      res.writeHead(200, {
+        'Content-Type': 'text/event-stream; charset=utf-8',
+        'Cache-Control': 'no-cache, no-transform',
+        'Connection': 'keep-alive',
+        'X-Accel-Buffering': 'no'
+      });
+    }
   }
   get closed() { return this.res.writableEnded || this.res.destroyed; }
   private write(chunk: string): Promise<void> {

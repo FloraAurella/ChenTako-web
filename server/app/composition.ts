@@ -5,14 +5,16 @@ import type { BackendContributions, BackendModule } from '../contracts/contribut
 import { module as gateway } from '../modules/gateway/public/module.ts';
 import { module as upstream } from '../modules/upstream/public/module.ts';
 import { module as providers } from '../modules/providers/public/module.ts';
+import { module as chat } from '../modules/chat/public/module.ts';
 
 /** 必需模块不可关闭；可选模块经 CLAWBOX_DISABLED_MODULES/DISABLED_MODULES 排除。 */
-const REQUIRED_MODULE_IDS = ['gateway', 'upstream'];
+const REQUIRED_MODULE_IDS = ['gateway', 'upstream', 'chat'];
 
 const builtins: readonly BackendModule[] = [
   gateway,
   upstream,
-  providers
+  providers,
+  chat
 ];
 
 export interface Composition {

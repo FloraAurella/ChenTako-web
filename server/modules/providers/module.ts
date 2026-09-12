@@ -1,6 +1,6 @@
 import type { BackendContributions, BackendModule } from '../../contracts/contributions.ts';
 import { serviceOf } from '../../contracts/contributions.ts';
-import { HttpError, readJsonBody, sendJson } from '../../core/router.ts';
+import { HttpError, readJsonBody, sendJson, type RouteContribution } from '../../core/router.ts';
 import type { UpstreamService } from '../upstream/public/module.ts';
 import { ProviderStore } from './services/store.ts';
 import { publicView, validateApiKey, ProviderError } from './domain/registry-rules.ts';
@@ -13,14 +13,15 @@ export const module: BackendModule = {
   id: 'providers',
   dependsOn: ['gateway', 'upstream'],
   setup({ services, scope }) {
+    const register = (route: RouteContribution) => { scope.defer(services.routes.register('providers', route)); };
     const store = new ProviderStore(services.config.dataDir);
     scope.defer(() => store.close());
-    services.services.register('providers', { id: 'providers.store', value: store });
+    scope.defer(services.services.register('providers', { id: 'providers.store', value: store }));
     const upstream = serviceOf<UpstreamService>(services.services, 'upstream');
     const bodyLimit = services.config.bodyLimitBytes;
     const ssrfAllow = services.config.ssrfAllow;
 
-    services.routes.register('providers', {
+    register({
       id: 'providers-list',
       method: 'GET',
       pattern: '/api/providers',
@@ -31,7 +32,7 @@ export const module: BackendModule = {
       }
     });
 
-    services.routes.register('providers', {
+    register({
       id: 'providers-upsert',
       method: 'PUT',
       pattern: '/api/providers',
@@ -57,7 +58,7 @@ export const module: BackendModule = {
     });
 
     // /api/providers/key 必须先于 /api/providers/:id 注册（路由按注册顺序匹配）。
-    services.routes.register('providers', {
+    register({
       id: 'providers-key-get',
       method: 'GET',
       pattern: '/api/providers/key',
@@ -73,7 +74,7 @@ export const module: BackendModule = {
       }
     });
 
-    services.routes.register('providers', {
+    register({
       id: 'providers-key-put',
       method: 'PUT',
       pattern: '/api/providers/key',
@@ -91,7 +92,7 @@ export const module: BackendModule = {
       }
     });
 
-    services.routes.register('providers', {
+    register({
       id: 'providers-key-delete',
       method: 'DELETE',
       pattern: '/api/providers/key',
@@ -102,7 +103,7 @@ export const module: BackendModule = {
       }
     });
 
-    services.routes.register('providers', {
+    register({
       id: 'providers-test',
       method: 'POST',
       pattern: '/api/providers/test',
@@ -150,7 +151,7 @@ export const module: BackendModule = {
       }
     });
 
-    services.routes.register('providers', {
+    register({
       id: 'providers-remove',
       method: 'DELETE',
       pattern: '/api/providers/:id',
@@ -162,6 +163,5 @@ export const module: BackendModule = {
       }
     });
 
-    return () => services.services.removeOwner('providers');
   }
 };

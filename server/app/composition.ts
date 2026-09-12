@@ -3,12 +3,14 @@ import { RouteRegistry } from '../core/router.ts';
 import { createModuleRuntime, type ModuleRuntime } from '../core/modules.ts';
 import type { BackendContributions, BackendModule } from '../contracts/contributions.ts';
 import { module as gateway } from '../modules/gateway/public/module.ts';
+import { module as upstream } from '../modules/upstream/public/module.ts';
 
 /** 必需模块不可关闭；可选模块经 CLAWBOX_DISABLED_MODULES/DISABLED_MODULES 排除。 */
-const REQUIRED_MODULE_IDS = ['gateway'];
+const REQUIRED_MODULE_IDS = ['gateway', 'upstream'];
 
 const builtins: readonly BackendModule[] = [
-  gateway
+  gateway,
+  upstream
 ];
 
 export interface Composition {

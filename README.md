@@ -1,23 +1,24 @@
 # ai-chatbox-structure-v2.0
 
-基于复制的 Clawbox 前端进行模块化重构的 AI 聊天应用前端。当前保留原有界面和业务行为，将聊天、项目、连接、上下文、外观等功能分开组织，方便后续逐模块修改。
+基于复制的 Clawbox 前端进行模块化重构的 AI 聊天应用。当前保留原有界面和业务行为，将聊天、项目、连接、上下文、外观等功能分开组织，方便后续逐模块修改。
 
-使用 React、Vite 和 TypeScript，同时保留部分 JavaScript 实现。本目录只包含前端，不包含原后端和 Electron 主进程。界面品牌、浏览器存储键、归档格式、HTTP 协议及 `window.clawbox` 桌面桥仍保留兼容约定。
+使用 React、Vite 和 TypeScript，同时保留部分 JavaScript 实现。界面品牌、浏览器存储键、归档格式、HTTP 协议及 `window.clawbox` 桌面桥仍保留兼容约定。
 
-项目知识库已实现前端上传、全文携带、压缩隔离和本地备份；真实后端联调、新的 Agent 权限系统及新的业务数据库尚未实施。下文的 `resources/` 是界面资源库，不是用户上传资料的项目知识库。
+仓库内已包含模块化 Node 后端（`server/`，零运行时依赖）：四协议上游适配、应用层 SSE v1 流式协议、供应商注册表与加密 API Key 存储。项目知识库在前端完成上传、全文携带、压缩隔离和本地备份；真实供应商联调、Agent 权限与工具／沙箱执行系统、Electron 桌面主进程尚未实施。下文的 `resources/` 是界面资源库，不是用户上传资料的项目知识库。
 
 ## 本地启动
 
-需要 Node.js 20.19+。在本目录执行：
+需要 Node.js 20.19+（后端要求 Node 22.5+，开发环境为 Node 26）。在本目录执行：
 
 ```bash
 npm ci
+npm run dev:server   # 模块化后端，监听 127.0.0.1:3000（需 Node 22.5+）
 npm run dev -- --host 127.0.0.1 --port 5188 --strictPort
 ```
 
 主页面：<http://127.0.0.1:5188/#/chat>；独立引导页面：<http://127.0.0.1:5188/onboarding.html>。直接运行 `npm run dev` 的配置默认端口为 5173。
 
-开发服务器默认把 `/api` 请求代理到 `http://127.0.0.1:3000`。后端未运行时会出现连接不可用；能打开前端不代表已经连通真实模型。桌面专属行为还需要外部 Electron 主进程提供桥接口。
+开发服务器默认把 `/api` 请求代理到 `http://127.0.0.1:3000`，即 `npm run dev:server` 启动的后端。后端未运行时前端显示连接不可用；能打开前端不代表已经连通真实模型——需要先在设置中配置供应商与 API Key。后端环境变量使用 `CLAWBOX_*` 命名空间（`PORT`、`HOST`、`API_TOKEN`、`DATA_DIR`、`SSRF_ALLOW`、`CORS_ORIGIN`、`DISABLED_MODULES`），只监听本机回环；供应商与加密 Key 保存在 `server/.data/`（不入库）。仅运行前端、用浏览器 mock 验证时可跳过后端。桌面专属行为还需要外部 Electron 主进程提供桥接口。详见 [后端计划](docs/BACKEND_PLAN.md)。
 
 ```bash
 npm run build
@@ -41,8 +42,9 @@ npm run preview -- --host 127.0.0.1 --port 5188
 ```text
 v2.0/
 ├── src/                 前端源码：应用装配、业务模块、共享组件与资源
+├── server/              模块化 Node 后端：core 运行时、四协议适配、供应商与密钥存储
 ├── docs/                架构、重构计划、验证记录和源码迁移映射
-├── test/                单元测试与组件测试
+├── test/                单元测试与组件测试（test/server/ 为后端测试）
 ├── e2e/                 浏览器端到端测试及截图基线
 ├── scripts/             架构检查、视觉核验和示例生成工具
 ├── examples/            可导入的示例主题包
@@ -58,13 +60,14 @@ v2.0/
 ├── package-lock.json    安装依赖使用的锁文件
 ├── vite.config.js       开发代理、双页面构建和单元测试配置
 ├── playwright.config.js 浏览器、测试端口和截图断言配置
-├── tsconfig.json        TypeScript 检查范围和编译选项
-└── .gitignore           依赖、构建产物及临时文件的忽略规则
+├── tsconfig.json        前端 TypeScript 检查范围和编译选项
+├── tsconfig.server.json 后端 TypeScript 检查配置（node 语义）
+└── .gitignore           依赖、构建产物、server/.data 及临时文件的忽略规则
 ```
 
 `dist/`、`node_modules/`、`test-results/` 在构建、安装或测试后生成，干净副本中可以不存在。若生成 `playwright-report/`，它存放 Playwright 的 HTML 报告；当前配置未显式启用 HTML reporter。以上生成目录均在忽略规则中。系统生成的 `.DS_Store` 不属于项目逻辑。
 
-## 源码的六个部分
+## 前端源码的六个部分
 
 | 目录 | 职责 |
 |---|---|
@@ -186,6 +189,22 @@ VITE_DISABLED_MODULES=extensions,data npm run dev -- --port 5188 --strictPort
 
 样式入口是 `styles/index.css`，主应用经 `app/styles/main.css` 导入；引导入口另外加载 `styles/onboarding.css`。调整颜色、间距、圆角等先查看 `styles/tokens.css`，共享控件规则查看 `styles/primitives.css`。主题编辑、校验和持久化属于 `modules/appearance/`，界面资源定义属于这里。
 
+## `server/`：模块化 Node 后端
+
+零运行时依赖（`node:http` + `node:sqlite`），TypeScript 由 node 直接运行。目录职责与前端镜像：
+
+| 目录或文件 | 用途 |
+|---|---|
+| `server/core/` | 模块运行时、有属主注册表、事件总线、Scope、路由注册表、body 限额、SSE 写出器——不含业务规则 |
+| `server/contracts/` | 线上协议契约（镜像前端 LIMITS／四协议／SSE v1 事件）与贡献类型 |
+| `server/modules/gateway/` | HTTP 传输与安全边界；`/api/health` 在此注册 |
+| `server/modules/upstream/` | 四协议适配、SSRF 防护、流累积与投影、非流式归一化 |
+| `server/modules/providers/` | 供应商注册表（SQLite）、AES-256-GCM 密钥保险库、providers/key/test 端点 |
+| `server/modules/chat/` | `/api/chat`（SSE v1）与 `/api/chat/compress` 编排 |
+| `server/app/` | 环境配置与组合装配；`main.ts` 为进程入口 |
+
+后端持久化仅限供应商注册表与加密 Key（`server/.data/`，gitignore）；会话与项目资料留在浏览器。`extensions` 一期只接受空声明，工具／沙箱执行明确拒绝。完整约定见 [AGENTS.md](AGENTS.md) 与 [架构文档](docs/ARCHITECTURE.md)。
+
 ## 文档、示例、脚本和测试目录
 
 当前开发约束见 [AGENTS.md](AGENTS.md)；本轮工作清单见 [前端完成计划](docs/FRONTEND_COMPLETION_PLAN.md)。项目资料的使用与限制见 [知识库说明](docs/KNOWLEDGE.md)，本次测试结果见 [前端阶段验证](docs/FRONTEND_VALIDATION.md)。
@@ -198,6 +217,8 @@ VITE_DISABLED_MODULES=extensions,data npm run dev -- --port 5188 --strictPort
 | [COMMANDS_REVIEW.md](docs/COMMANDS_REVIEW.md) | 本次指令实现的交付自审 |
 | [COMMANDS.md](docs/COMMANDS.md) | 四个指令的语法、补全、作用范围、并发行为和开发结构 |
 | [ARCHITECTURE.md](docs/ARCHITECTURE.md) | 模块边界、公开接口、资源注册和开发约定 |
+| [BACKEND_PLAN.md](docs/BACKEND_PLAN.md) | 模块化后端的目标、决策与契约来源 |
+| [BACKEND_VALIDATION.md](docs/BACKEND_VALIDATION.md) | 后端实现范围、测试证据与尚未完成项 |
 | [MODULAR_REFACTOR_PLAN.md](docs/MODULAR_REFACTOR_PLAN.md) | 模块化重构计划与完成范围 |
 | [source-migration-map.json](docs/source-migration-map.json) | 查询原 Clawbox 源文件迁移到了哪里 |
 | [VALIDATION.md](docs/VALIDATION.md) | 已执行验证、历史失败基线和证据范围 |
@@ -230,9 +251,12 @@ VITE_DISABLED_MODULES=extensions,data npm run dev -- --port 5188 --strictPort
 
 | 命令 | 用途 |
 |---|---|
-| `npm run check:architecture` | 检查源码架构边界 |
-| `npm run typecheck` | TypeScript 静态检查，不生成文件 |
-| `npm test` | 执行单元与组件测试 |
+| `npm run check:architecture` | 检查前端源码架构边界 |
+| `npm run check:architecture:server` | 检查后端 server/ 架构边界 |
+| `npm run typecheck` | TypeScript 静态检查（前端与 server 各自 tsconfig），不生成文件 |
+| `npm run dev:server` | 启动模块化后端（`node --watch`，127.0.0.1:3000） |
+| `npm run start:server` | 启动模块化后端（不带 watch） |
+| `npm test` | 执行单元与组件测试（含 test/server/ 后端测试） |
 | `npm run test:watch` | 在监听模式下运行单元测试 |
 | `npm run build` | 验证主应用与引导页能否构建 |
 | `npm run test:e2e` | 执行完整浏览器测试 |
@@ -264,6 +288,7 @@ VITE_DISABLED_MODULES=extensions,data npm run dev -- --port 5188 --strictPort
 | 新增设置分类或功能页面 | 对应模块的 `module.tsx` 与 `public/`，以及 `src/app/composition.ts` |
 | 数据保存、导入导出兼容 | `src/app/state/`、`src/contracts/`、`src/modules/data/` |
 | 项目知识库 | `src/modules/knowledge/`；经 `requestContexts` 注册贡献，App 连接持久化和聊天控制器 |
+| 后端 API、四协议、供应商存储 | `server/modules/`、`server/core/`；契约对齐见 `server/contracts/` 与 [后端计划](docs/BACKEND_PLAN.md) |
 
 修改前阅读 [AGENTS.md](AGENTS.md) 和 [架构约定](docs/ARCHITECTURE.md)。保持原有存储键、DOM 契约和外部接口兼容；新增模块按归属注册功能，复用共享组件，并根据改动范围选择验证。
 

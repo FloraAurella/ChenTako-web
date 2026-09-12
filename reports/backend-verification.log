@@ -1,0 +1,19 @@
+=== 架构检查（前端） ===
+Architecture boundaries passed: Core isolation, module ownership, public imports, resolved paths.
+
+=== 架构检查（后端） ===
+Server architecture boundaries passed: Core isolation, module ownership, public imports, resolved paths.
+
+=== 类型检查 ===
+typecheck: 前端与 server 均通过
+
+=== 全部单元/集成测试 ===
+ Test Files  49 passed (49)
+      Tests  406 passed (406)
+   Start at  13:55:17
+   Duration  5.88s (transform 1.95s, setup 253ms, collect 7.54s, tests 2.02s, environment 16.97s, prepare 3.31s)
+
+
+=== 真实入口冒烟（127.0.0.1:3199） ===
+health: {"ok":true,"service":"clawbox-server"}
+404code: 404

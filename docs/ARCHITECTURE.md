@@ -4,7 +4,7 @@
 
 这是 Clawbox 前端的源码重构，保留现有业务行为及兼容格式。`package.json` 使用项目名称 `ai-chatbox-structure-v2.0`；界面品牌、归档格式、浏览器存储键、Electron `window.clawbox` 桥与 HTTP 协议仍保持兼容。原 Clawbox 目录没有改动。
 
-已接入前端项目知识库，经请求上下文贡献组合到现有 chatConfig.systemPrompt；历史压缩请求不携带项目资料。四协议后端、SQLite 和 Agent 权限系统不在本轮范围。模拟 HTTP 验证不等于真实后端联调。
+已接入前端项目知识库，经请求上下文贡献组合到现有 chatConfig.systemPrompt；历史压缩请求不携带项目资料。2026-09-12 起本仓库新增模块化后端 `server/`（见 [后端计划](BACKEND_PLAN.md)），前端契约与后端实现同仓对齐；Agent 权限与工具／沙箱执行系统仍不在范围。模拟 HTTP 验证不等于真实后端联调。
 
 ## 目录职责
 
@@ -27,6 +27,13 @@
 | `src/modules/onboarding` | 独立引导入口 |
 | `src/shared` | UI 模板、弹窗/浮层、订阅桥、通用存储和请求适配 |
 | `src/resources` | 图标、字体、品牌剪影、默认主题 JSON、CSS 和资源注册库 |
+| `server/core` | 后端通用运行时：模块运行时、注册表、事件、Node 版 Scope、路由注册表、body 限额、SSE 写出器 |
+| `server/contracts` | 线上协议契约（镜像 `src/contracts` 与前端流协议）与后端贡献类型 |
+| `server/modules/gateway` | HTTP 传输与安全边界：仅回环监听、Origin/可选令牌校验、路由分发、404/405、CORS |
+| `server/modules/upstream` | 四协议适配：请求构造、思考强度映射、SSRF 防护、流累积与投影、归一化、模型列表 |
+| `server/modules/providers` | 供应商注册表（node:sqlite）与 AES-GCM 密钥保险库及对应端点 |
+| `server/modules/chat` | `/api/chat` 编排（SSE v1）与 `/api/chat/compress` |
+| `server/app` | 后端环境配置（`CLAWBOX_*` 命名空间）与模块组合装配 |
 
 `contracts/normalize.js` 保留旧数据规范化规则，经公开接口调用各领域的规范化函数。它属于兼容契约层，不能视作完全独立于业务的 Core。`app/state/store.js` 仍提供统一 store 门面，避免破坏原控制器和持久化结构；项目操作和聊天流操作已经从门面拆出。
 
@@ -88,3 +95,9 @@ npm run test:e2e
 `FrontendContributions.requestContexts` 由 App 注入聊天控制器。每个贡献以同步 `capture` 返回完整文本或可处理错误；捕获发生在发送准备之前。聊天业务只消费通用贡献，不导入知识库私有文件。配置快照固定系统提示词与资料，最终聊天通过既有 `chatConfig.systemPrompt` 传递；压缩仍只接收历史、摘要、供应商及模型。固定部分超预算时不尝试压缩。
 
 `projectKnowledge` 是 App 持久化组合中的新增可选字段，内容规范化归知识库模块所有，按项目 ID 隔离。完整 IndexedDB 和 localStorage 备份均保留正文；空间不足的降级骨架仅保留明确的缺失标记，读取时不得用旧正文冒充新资料。关闭源码装配中的 knowledge 模块仅移除其贡献，不删除持久化资料。
+
+## 后端（server/）模块约定
+
+后端沿用与前端相同的模块纪律：`server/core/` 不含业务；`server/modules/<feature>/` 按 `domain/`（纯规则）、`services/`（I/O）、`public/`（按职责小入口）组织；`server/app/composition.ts` 是唯一装配入口；跨模块只能经 `public/`，由 `npm run check:architecture:server` 强制。业务模块把 HTTP 端点注册进 `routes` 注册表、把能力句柄注册进 `services` 注册表（如 `providers.store`、`upstream`、`http-server`），gateway 请求时动态查询路由，装配顺序不影响可用性；全部注册经 `scope.defer`，模块释放自动注销。
+
+线上契约以 `src/contracts/` 与 `src/modules/chat/stream/protocol.ts` 为权威，`server/contracts/` 镜像并由 `test/server/contracts-sync.test.ts` 全等断言防漂移。后端持久化仅限供应商注册表与加密 API Key（`server/.data/`，gitignore，目录 0700、主密钥 0600）；会话与项目资料留在浏览器存储。安全基线：仅回环监听、Origin 白名单、可选 `CLAWBOX_API_TOKEN` 时序比对、SSRF 防护（`CLAWBOX_SSRF_ALLOW` 白名单）。启动与脚本见 [README](../README.md)，验证证据见 [后端验证](BACKEND_VALIDATION.md)。

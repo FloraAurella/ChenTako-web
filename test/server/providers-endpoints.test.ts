@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { describe, it, expect, afterAll } from 'vitest';
+import { describe, it, expect, afterAll, vi } from 'vitest';
 import { createServer as createHttpServer, type Server } from 'node:http';
 import { bootTestServer, type TestServer } from './boot.ts';
 
@@ -178,6 +178,14 @@ describe('providers 端点集成', () => {
     });
     expect(upstream404.status).toBe(404);
 
+    // 负向用例必然触发网关的 5xx 错误日志：这里捕获为测试 Logger，
+    // 只隔离本用例明确预期的输出，并顺带断言被记录的错误对象。
+    const gatewayErrors: Array<{ status?: number; message?: string }> = [];
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(((...args: unknown[]) => {
+      const entry = args[1] ?? args[0];
+      if (entry && typeof entry === 'object' && 'status' in entry) gatewayErrors.push(entry as { status?: number; message?: string });
+    }) as typeof console.error);
+
     const refused = await fetch(`${server.baseUrl}/api/providers/test`, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ displayName: '拒绝', baseUrl: 'http://127.0.0.1:1', responseFormat: 'openai-compatible' })
@@ -190,5 +198,7 @@ describe('providers 端点集成', () => {
     });
     expect(ssrf.status).toBe(400);
     expect((await ssrf.json() as any).error).toContain('上游地址被拒绝');
+    errorSpy.mockRestore();
+    expect(gatewayErrors.some((entry) => entry.status === 502 && String(entry.message).length > 0)).toBe(true);
   });
 });

@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { describe, it, expect, afterAll } from 'vitest';
+import { describe, it, expect, afterAll, vi } from 'vitest';
 import { createServer as createHttpServer, type IncomingMessage, type Server, type ServerResponse } from 'node:http';
 import { bootTestServer, type TestServer } from './boot.ts';
 import { consumeAppStreamFrame, createAppStreamState, type AppStreamState } from '../../src/modules/chat/stream/session.ts';
@@ -223,7 +223,15 @@ describe('/api/chat 集成', () => {
       res.end('{}');
     });
     const jsonProvider = await createProvider(server, { displayName: '伪流', baseUrl: jsonUpstream.url });
+    // 非 SSE 上游必然触发网关 5xx 日志：捕获为测试 Logger，隔离预期输出并断言错误对象。
+    const gatewayErrors: Array<{ status?: number; message?: string }> = [];
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(((...args: unknown[]) => {
+      const entry = args[1] ?? args[0];
+      if (entry && typeof entry === 'object' && 'status' in entry) gatewayErrors.push(entry as { status?: number; message?: string });
+    }) as typeof console.error);
     expect((await post(server, '/api/chat', chatBody(jsonProvider))).status).toBe(502);
+    errorSpy.mockRestore();
+    expect(gatewayErrors.some((entry) => entry.status === 502 && String(entry.message).length > 0)).toBe(true);
 
     const tightProvider = await createProvider(server, { displayName: '紧预算', baseUrl: jsonUpstream.url, contextWindow: 1000 });
     const tight = await post(server, '/api/chat', chatBody(tightProvider, {

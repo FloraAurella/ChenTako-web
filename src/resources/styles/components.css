@@ -2202,7 +2202,6 @@ body.prefers-reduced-motion .reasoning-toggle .chevron {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   padding: 40px 24px;
   min-height: 0;
   overflow-y: auto;
@@ -2212,6 +2211,9 @@ body.prefers-reduced-motion .reasoning-toggle .chevron {
   width: min(560px, 100%);
   text-align: center;
   padding: 34px 28px 30px;
+  /* 安全居中：margin:auto 在内容超出容器时退化为顶部对齐，
+     避免 flex 居中把卡片顶部裁剪成不可达区域。 */
+  margin: auto;
 }
 
 .empty-eyebrow {
@@ -3028,6 +3030,35 @@ body.prefers-reduced-motion .reasoning-toggle .chevron {
   font-size: var(--size-body-sm);
   line-height: 1.55;
   color: var(--label-secondary);
+  margin-bottom: 14px;
+}
+
+/* 设置分组（常用配置／高级配置）：提供与卡片一致但更轻的标题层级与纵向节奏。 */
+.settings-group {
+  display: block;
+  margin-bottom: 12px;
+}
+
+.settings-group-head {
+  padding: 8px 2px 2px;
+}
+
+.settings-group-head .settings-card-title {
+  font-size: var(--size-body-sm);
+  color: var(--label-secondary);
+  margin-bottom: 2px;
+}
+
+.settings-group-head .settings-card-desc {
+  margin-bottom: 12px;
+}
+
+/* 扩展能力预留说明：与卡片内普通说明区分，明确“配置保留、执行未开放”。 */
+.extension-capability-note {
+  display: block;
+  background: var(--paper-subtle);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
   margin-bottom: 14px;
 }
 

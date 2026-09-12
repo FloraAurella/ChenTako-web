@@ -473,6 +473,38 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
   }
 
   /**
+   * 打开会话后回底：首帧消息列仍按 content-visibility 估高布局，长消息尚未
+   * 展开时 scrollHeight 可能还没有溢出，单帧滚动会落空并停留在列表顶部。
+   * 连续数帧把滚动钉在底部，直到位置贴住（或用户上滚解除跟随）。
+   */
+  function settleFollowToBottom() {
+    let attempts = 0;
+    let lastHeight = -1;
+    const step = () => {
+      if (!els || !followStream || userScrollActive) return;
+      const scroller = els.messageScroll;
+      const list = els.messageList;
+      // 列表尚未提交首个内容帧时，“高度稳定且贴底”恰好成立，会误判为完成；
+      // 先等消息节点出现（空会话根本不进入本函数），再开始判定。
+      if (!list.children.length && attempts < 30) {
+        attempts += 1;
+        scope.frame(step);
+        return;
+      }
+      scroller.scrollTop = scroller.scrollHeight;
+      attempts += 1;
+      const height = scroller.scrollHeight;
+      const distance = height - scroller.scrollTop - scroller.clientHeight;
+      // content-visibility 估高与字体加载会让列表高度在数帧内持续增长：
+      // 高度稳定且已贴底才停止，用户上滚（解除跟随）立即让位。
+      if ((height === lastHeight && distance <= 1) || attempts >= 60) return;
+      lastHeight = height;
+      scope.frame(step);
+    };
+    scope.frame(step);
+  }
+
+  /**
    * 流内容写入和 scrollHeight 读取拆到相邻帧，避免在同一帧强制同步布局；
    * 同时保证一帧最多只有一次程序回底，并可被用户上滚立即取消。
    */
@@ -526,7 +558,8 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
         } else {
           followStream = true;
           els.newRepliesBtn.hidden = true;
-          scope.frame(() => scrollToBottom());
+          // 空会话没有可回底的内容：保持顶部，避免把空状态卡片钉到不可达位置。
+          if (getActivePath(conversation).length) settleFollowToBottom();
         }
       }
     } else if (reason === "providers") {

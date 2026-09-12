@@ -5,5 +5,5 @@ export const module: FrontendModule = {
  id: 'appearance', setup({ services, scope }) {
   scope.defer(services.domains.register('appearance', { id: 'appearance', create: createAppearanceSettingsService,
 }));
-scope.defer(services.settings.register('appearance', { id:'appearance', label:"外观", icon:'palette', description:"主题、明暗与背景", search:[{"id": "appearance-mode", "title": "明暗模式", "keywords": "浅色 深色 系统"}, {"id": "appearance-themes", "title": "主题", "keywords": "主题文件 颜色"}, {"id": "appearance-background", "title": "界面层次", "keywords": "背景 对比度 透明 透景"}], component: p => <AppearancePane service={p.service} state={p.state} /> }));
+scope.defer(services.settings.register('appearance', { id:'appearance', label:"外观", icon:'palette', description:"主题、明暗与背景", search:[{"id": "appearance-mode", "title": "明暗模式", "keywords": "浅色 深色 系统"}, {"id": "appearance-themes", "title": "主题", "keywords": "主题文件 颜色"}, {"id": "appearance-package", "title": "主题导入与导出", "keywords": "导入 导出 主题文件"}, {"id": "appearance-background", "title": "界面层次", "keywords": "背景 对比度 透明 透景"}], component: p => <AppearancePane service={p.service} state={p.state} /> }));
 }};

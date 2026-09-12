@@ -79,7 +79,7 @@ export function KnowledgePane({ store, active = true }: { store: any; active?: b
   const context = captureKnowledge({ state, conversation: { projectId } });
   return <section className="settings-pane knowledge-pane" aria-label="项目知识库">
     <h2 className="settings-pane-title">项目知识库</h2>
-    <p>文件在项目每次请求中完整携带，不参与历史压缩。修改只影响尚未开始的请求。</p>
+    <p className="settings-pane-lede">文件在项目每次请求中完整携带，不参与历史压缩。修改只影响尚未开始的请求。</p>
     <FieldGroup id="knowledge-project" label="管理项目" hint="资料按项目隔离；无项目的会话不会携带任何项目资料。">
       <select id="knowledge-project" className="field" value={projectId} onChange={event => setProject(event.target.value)} disabled={busy || !state.projects.length}>
         {!state.projects.length && <option value="">暂无项目</option>}

@@ -1,5 +1,5 @@
 import { Button } from "../../../shared/ui/primitives";
-import { SettingsCard } from "../../../shared/ui/SettingsCard";
+import { SettingsCard, SettingsGroup } from "../../../shared/ui/SettingsCard";
 import { useEffect } from "react";
 import { APP_SETTINGS_VERSION, CURRENT_RELEASE, RELEASE_NOTES } from "../../../shared/settings/settings-view-model";
 import { TrustedIcon } from "../../../shared/ui/Icon";
@@ -37,7 +37,8 @@ export function DataPane({ store, state, service }: { store: ExternalStore & { s
       <h2 className="settings-pane-title">数据管理</h2>
       <p className="settings-pane-lede">导入对话、迁移本机数据并查看旧配置。</p>
 
-      <div id="data-migration" tabIndex={-1} className="paper-panel settings-card migration-card" data-migration-mode="export">
+      <SettingsGroup id="data-common" title="常用配置" description="导出加密迁移包，或导入对话数据。">
+        <div id="data-migration" tabIndex={-1} className="paper-panel settings-card migration-card" data-migration-mode="export">
         <div className="migration-card-head">
           <div>
             <h3 className="settings-card-title">迁移</h3>
@@ -80,21 +81,25 @@ export function DataPane({ store, state, service }: { store: ExternalStore & { s
         ) : null}
       </div>
 
-      <div id="data-import" tabIndex={-1} className="paper-panel settings-card">
-        <h3 className="settings-card-title">导入对话</h3>
-        <p className="settings-card-desc">导入 JSON 或 <code className="inline-code">.clawbox.zip</code> 对话文件（最大 130MB）。</p>
-        <Button type="button" className="btn btn-primary" id="dataImportBtn" onClick={() => void service.data.importConversation()}>
-          <TrustedIcon name="upload" size={15} /> 选择文件导入
-        </Button>
-      </div>
-      <details className="settings-legacy-details"><summary>旧配置备份</summary>
-      <SettingsCard id="legacy-settings" title="旧配置备份" description="升级时保留的旧行为设置，仅供查阅，不再自动生效。备份不包含 API Key。">
-        {store.state.legacySettingsBackup ? <><pre className="settings-backup">{JSON.stringify(store.state.legacySettingsBackup, null, 2)}</pre><Button type="button" className="btn btn-secondary" onClick={() => {
-          const url = URL.createObjectURL(new Blob([JSON.stringify(store.state.legacySettingsBackup, null, 2)], { type: "application/json" }));
-          const a = document.createElement("a"); a.href = url; a.download = "clawbox-legacy-settings.json"; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
-        }}>导出旧配置</Button></> : <p className="field-help">没有需要迁移的旧配置。</p>}
-      </SettingsCard>
-      </details>
+        <div id="data-import" tabIndex={-1} className="paper-panel settings-card">
+          <h3 className="settings-card-title">导入对话</h3>
+          <p className="settings-card-desc">导入 JSON 或 <code className="inline-code">.clawbox.zip</code> 对话文件（最大 130MB）。</p>
+          <Button type="button" className="btn btn-primary" id="dataImportBtn" onClick={() => void service.data.importConversation()}>
+            <TrustedIcon name="upload" size={15} /> 选择文件导入
+          </Button>
+        </div>
+      </SettingsGroup>
+
+      <SettingsGroup id="data-advanced" title="高级配置" description="旧版配置备份与兼容行为；仅供查阅，不会自动生效。">
+        <details className="settings-legacy-details"><summary>旧配置备份</summary>
+        <SettingsCard id="legacy-settings" title="旧配置备份" description="升级时保留的旧行为设置，仅供查阅，不再自动生效。备份不包含 API Key。">
+          {store.state.legacySettingsBackup ? <><pre className="settings-backup">{JSON.stringify(store.state.legacySettingsBackup, null, 2)}</pre><Button type="button" className="btn btn-secondary" onClick={() => {
+            const url = URL.createObjectURL(new Blob([JSON.stringify(store.state.legacySettingsBackup, null, 2)], { type: "application/json" }));
+            const a = document.createElement("a"); a.href = url; a.download = "clawbox-legacy-settings.json"; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+          }}>导出旧配置</Button></> : <p className="field-help">没有需要迁移的旧配置。</p>}
+        </SettingsCard>
+        </details>
+      </SettingsGroup>
     </div>
   );
 }

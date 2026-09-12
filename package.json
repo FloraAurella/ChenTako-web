@@ -9,14 +9,17 @@
   },
   "scripts": {
     "dev": "vite",
+    "dev:server": "node --watch server/app/main.ts",
+    "start:server": "node server/app/main.ts",
     "build": "vite build",
-    "typecheck": "node ./node_modules/typescript/bin/tsc --noEmit",
+    "typecheck": "node ./node_modules/typescript/bin/tsc --noEmit && node ./node_modules/typescript/bin/tsc -p tsconfig.server.json --noEmit",
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "test:stream": "playwright test e2e/stream-performance.spec.js",
-    "check:architecture": "node scripts/check-architecture.mjs"
+    "check:architecture": "node scripts/check-architecture.mjs",
+    "check:architecture:server": "node scripts/check-architecture-server.mjs"
   },
   "devDependencies": {
     "@playwright/test": "1.62.1",

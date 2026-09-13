@@ -18,8 +18,7 @@ export function estimateContextTokens(value) {
 export function resolveInputBudget(model, config) {
   const available = Math.floor(model.contextWindow * 0.95) - model.maxTokens;
   if (available < 1) throw new Error("模型最大输出额度与安全余量已占满上下文窗口，请调整模型额度。");
-  if (config.inputBudget != null && config.inputBudget > available) throw new Error(`输入预算超过模型可用额度 ${available.toLocaleString()} Tokens，请调整上下文设置。`);
-  return config.inputBudget ?? available;
+  return available;
 }
 /**
  * Compress completed history without a fixed turn-count reserve.
@@ -32,4 +31,9 @@ export function compressionPrefix(messages, pending = false) {
   let boundary = visible.length - 1;
   while (boundary >= 0 && visible[boundary].role !== "user") boundary--;
   return boundary > 0 ? visible.slice(0, boundary) : [];
+}
+
+/** The trigger is inclusive and only a successful response can initiate it. */
+export function shouldCompressResponse(response, used, budget, threshold) {
+  return response.completed === true && !response.stopped && !response.error && used >= budget * threshold / 100;
 }

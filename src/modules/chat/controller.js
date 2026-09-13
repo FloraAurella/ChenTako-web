@@ -1,3 +1,7 @@
+import { AUXILIARY_CHAT_ROUTES } from '../../contracts/auxiliary';
+import { beginFirstResponse, endFirstResponse, isConversationLocked, FIRST_RESPONSE_LOCK_REASON } from './domain/first-response.js';
+import { createTitleGeneration, firstInputDescription } from './services/title-generation.js';
+import { captureAuxiliaryModel, validateAuxiliaryInput } from './services/auxiliary-models.js';
 import { createComposerCommands, parseCommandInput } from '../commands/public/composer';
 import { selectRuntimeModel, selectRuntimeEffort } from './services/runtime-selection.js';
 import { Scope } from "../../core/scope";
@@ -32,7 +36,7 @@ import {
   runtimeRootPanelMarkup
 } from "./services/popover-markup.js";
 import { resolveChatConfig, modelCompatibility } from "../context/public/domain_config.js";
-import { estimateContextTokens, resolveInputBudget, compressionPrefix } from "../context/public/domain_budget.js";
+import { estimateContextTokens, resolveInputBudget, compressionPrefix, shouldCompressResponse } from "../context/public/domain_budget.js";
 import { computeContextUsage } from "../context/public/services_context-usage.js";
 import { createConversationActions } from "./services/conversation-actions.js";
 import {
@@ -42,6 +46,7 @@ import {
   createStreamRegistry
 } from "./stream/index.ts";
 import {
+  contextMessages,
   getValidContextCompression,
   getMessagesAfterCompression,
   invalidateCompressionForIndex,
@@ -117,6 +122,8 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
   const scope = new Scope();
   const page = shell.pageChat;
   let els = null;
+  const titleGeneration = createTitleGeneration({ store, scope, toast });
+  const allowChange = conversation => { if (!isConversationLocked(conversation)) return true; toast(FIRST_RESPONSE_LOCK_REASON, { tone: "danger" }); return false; };
   // 进行中的流按会话并行：切换会话不打断后台流，切回时继续原进度渲染
   const streams = createStreamRegistry({
     isVisible: (conversationId) => {
@@ -131,6 +138,10 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
   });
   const compressionRequests = new Map();
   scope.defer(() => { for (const abort of compressionRequests.values()) abort.abort(); compressionRequests.clear(); });
+  scope.defer(store.subscribe(() => {
+    for (const [id, abort] of compressionRequests) if (!state().conversations.some(c => c.id === id)) abort.abort();
+  }));
+  scope.defer(() => { for (const conversation of state().conversations) endFirstResponse(conversation); });
   const compressingIds = new Set();   // 正在压缩上下文的会话 ID（按会话锁定请求）
   let followStream = true;
   let scrollbarDragging = false;
@@ -220,6 +231,7 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
     const missing = { status: 'unavailable', message: '会话已不存在。' };
     return {
       conversationId: conversation.id,
+      mutationUnavailable: isConversationLocked(conversation) ? FIRST_RESPONSE_LOCK_REASON : null,
       models: state().providers.filter(p => p.enabled !== false).flatMap(p => p.models.map(model => ({ providerId: p.id, providerName: p.displayName, model, selected: p.id === conversation.providerId && model === conversation.model }))),
       effort: resolveChatConfig(state(), conversation).reasoningEffort,
       followsConfig: !conversation.reasoningEffortOverride, busy, compactUnavailable: unavailable,
@@ -392,13 +404,7 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
       scrollIdleTimer = 0;
       userScrollActive = false;
       for (const stream of [...streams.values()]) {
-        if (stream.finishDeferred) {
-          const conversation = state().conversations.find((item) => item.id === stream.conversationId);
-          if (conversation) finishStream(conversation);
-        } else if (stream.conversationId === state().activeConversationId && state().route.name === "chat") {
-          // 清掉滚动期间的 200ms 后台定时器并立即补绘最新累计状态。
-          stream.scheduler.flush();
-        }
+        if (stream.conversationId === state().activeConversationId && state().route.name === "chat") stream.scheduler.flush();
       }
     }, STREAM_SCROLL_IDLE_MS);
   }
@@ -691,6 +697,7 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
     const messageId = entry.dataset.messageId;
     const action = button.dataset.messageAction;
     const conversation = activeConversation();
+    if (action !== "copy" && !allowChange(conversation)) return;
     const index = conversation.messages.findIndex((message) => message.id === messageId);
     if (index < 0) return;
     if (action === "copy") copyMessage(conversation.messages[index]);
@@ -702,6 +709,7 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
 
   function switchMessageBranch(button, forcedDirection = "") {
     const conversation = activeConversation();
+    if (!allowChange(conversation)) return;
     const entry = button.closest("[data-message-id]");
     // Branch navigation only changes the visible path. It is safe while a
     // response is running because the stream remains keyed by conversation
@@ -1085,6 +1093,7 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
 
   function startEditMessage(messageId) {
     const conversation = activeConversation();
+    if (!allowChange(conversation)) return;
     if (!conversation) return;
     if (streamOf(conversation.id)) {
       toast("本对话生成中暂不能编辑，请先停止或等待完成", { tone: "danger" });
@@ -1113,6 +1122,7 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
 
   function finishEdit(messageId, mode, text) {
     const conversation = activeConversation();
+    if (!allowChange(conversation)) return;
     if (!conversation) return;
     const index = conversation.messages.findIndex((message) => message.id === messageId);
     if (index < 0) return;
@@ -1182,6 +1192,7 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
   }
 
   function copyConversationFrom(conversation, messageId) {
+    if (!allowChange(conversation)) return;
     const visiblePrefix = flattenVisiblePrefix(conversation, messageId);
     if (!visiblePrefix.length) return;
     const branch = JSON.parse(JSON.stringify({
@@ -1193,6 +1204,8 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
     branch.id = `${conversation.id}-copy-${Date.now().toString(36)}`;
     branch.title = truncateText(`${conversation.title || "未命名对话"} · 副本`, 60);
     branch.pinned = false;
+    branch.titleGenerationAttempted = true;
+    delete branch.firstResponsePending;
     branch.contextCompression = null;
     branch.draft = "";
     branch.createdAt = Date.now();
@@ -1208,6 +1221,7 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
   }
 
   async function deleteMessage(conversation, index) {
+    if (!allowChange(conversation)) return;
     const message = conversation.messages[index];
     if (!message) return;
     const activePath = getActivePath(conversation);
@@ -1227,7 +1241,7 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
       confirmLabel: "删除",
       danger: true
     });
-    if (!ok) return;
+    if (!ok || !allowChange(conversation)) return;
     const removedIds = removeMessageSubtree(conversation, message.id);
     if (!removedIds.length) return;
     if (fallback && !removedIds.includes(fallback.id)) selectMessageVariant(conversation, fallback.id);
@@ -1244,6 +1258,7 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
   }
 
   function regenerateFrom(conversation, index) {
+    if (!allowChange(conversation)) return;
     if (streamOf(conversation.id)) {
       toast("本对话正在生成回复", { tone: "danger" });
       return;
@@ -1357,6 +1372,11 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
     if (!els) return;
     els.composerInput.disabled = !state().loaded;
     const conversation = activeConversation();
+    const locked = isConversationLocked(conversation);
+    els.runtimeBtn.disabled = locked;
+    els.runtimeBtn.title = locked ? FIRST_RESPONSE_LOCK_REASON : "模型与思考强度";
+    const projectButton = document.getElementById("projectSelectorBtn");
+    if (projectButton) { projectButton.disabled = locked; projectButton.title = locked ? FIRST_RESPONSE_LOCK_REASON : "选择项目"; }
     const model = conversation ? conversation.model : "";
     els.modelValue.textContent = model || "未选择";
     const level = effortLevelOf(conversation ? resolveChatConfig(state(), conversation).reasoningEffort : DEFAULT_EFFORT);
@@ -1462,30 +1482,22 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
       toast("输入或会话已变化，内容已保留，请再次发送。", { tone: "danger" });
       return;
     }
-    appendToActivePath(conversation, userMessage);
-    if (!conversation.title && text) {
-      conversation.title = truncateText(text, LIMITS.titleLength);
-    }
+    const firstResponse = beginFirstResponse(conversation);
+    const titleInput = firstInputDescription(userMessage, pending);
+    if (firstResponse && !conversation.title) conversation.title = truncateText(titleInput, LIMITS.titleLength);
     conversation.draft = "";
     state().pendingAttachments = [];
     els.composerInput.value = "";
     autoGrow(els.composerInput);
+    store.actions.appendMessage(conversation.id, userMessage);
     store.touchConversation(conversation);
 
-    startStream(conversation, config, true, request);
+    closeActivePopover();
+    void startStream(conversation, config, true, request);
+    if (firstResponse) void titleGeneration.generate(conversation, titleInput, request.titleTarget);
   }
 
-  function requestMessages(conversation) {
-    return getMessagesAfterCompression(conversation)
-      .filter((message) => !message.noticeKind)
-      .filter((message) => message.content || (message.files && message.files.length) || (message.parts && message.parts.length))
-      .map((message) => ({
-        role: message.role,
-        content: message.content,
-        ...(message.files && message.files.length ? { files: message.files } : {}),
-        ...(message.parts && message.parts.length ? { parts: message.parts.filter((part) => part.type === "image" || part.type === "text" || part.type === "file") } : {})
-      }));
-  }
+  const requestMessages = contextMessages;
 
   function captureRequest(conversation, config = resolveChatConfig(state(), conversation)) {
     return structuredClone(resolveRequestParts(conversation, config));
@@ -1501,6 +1513,8 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
       fixedContext, contextErrors: contexts.map(entry => entry.error).filter(Boolean),
       baseSystemPrompt: config.systemPrompt,
       provider, header: providerHeader(conversation), model: conversation.model,
+      compressionTarget: captureAuxiliaryModel(state(), config.compressionModel, provider, conversation.model),
+      titleTarget: captureAuxiliaryModel(state(), config.titleModel, provider, conversation.model),
       config: { ...config, systemPrompt: (config.systemPrompt || "") + fixedContext }, projectId: conversation.projectId, extensions: enabledExtensions(state().extensions),
       imageOutput: capabilityOf(conversation, "imageOutput") === true
     };
@@ -1525,15 +1539,10 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
       if (request.contextErrors.length) throw new Error(request.contextErrors.join(' '));
       const pending = extra || requestMessages(conversation).filter(message => message.role === 'user').at(-1);
       const fixed = estimateContextTokens({ systemPrompt: request.config.systemPrompt, messages: pending ? [pending] : [], extensions: request.extensions });
-      if (fixed > budget) throw new Error('固定资料、系统提示词与本次输入已超过输入预算；请精简资料或调整预算。资料不会被压缩或截断。');
-      const used = contextEstimate(conversation, config, extra, request);
-      if (config.autoCompress && used >= budget * config.compressionThreshold / 100) {
-        const prefix = compressionPrefix(getMessagesAfterCompression(conversation), !extra);
-        if (prefix.length && !(await compressContext(conversation, { prefix, request }))) return false;
-      }
+      if (fixed > budget) throw new Error('固定资料、系统提示词与本次输入已超过输入预算；请精简资料或选择更大窗口的模型。资料不会被压缩或截断。');
       if (scope.disposed) return false;
       if (conversation.projectId !== projectId) throw new Error("项目已变化，请重新发送。");
-      if (contextEstimate(conversation, config, extra, request) > budget) throw new Error("上下文超过输入预算；内容已保留，请压缩历史或在“上下文与提示词”调整预算后重试。");
+      if (contextEstimate(conversation, config, extra, request) > budget) throw new Error("上下文超过输入预算；内容已保留，请手动压缩历史、精简输入或选择更大窗口的模型后重试。");
       return true;
     } catch (error) {
       toast(error.message, { tone: "danger" });
@@ -1582,7 +1591,7 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
     // 思考计时不能依赖数据帧到达（长思考期间可能长时间无输出），用定时器驱动刷新
     stream.timer = window.setInterval(() => schedulePaint(stream), 500);
     document.body.classList.add("is-streaming");
-    refreshSendButton();
+    renderComposerControls();
     setStreamingPlaceholder(assistantMessage, stream);
     // 发送流程后段与 store 通知触发的调度式列表重渲会抹掉刚挂的等待态：
     // 把补挂载排进 setTimeout(0)，落在 React 经 MessageChannel 的批量提交之后，
@@ -1597,7 +1606,7 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
           provider: request.header,
           model: request.model,
           reasoningEffort: request.config.reasoningEffort,
-          chatConfig: { ...request.config, version: 1 },
+          chatConfig: { ...request.config, inputBudget: null, version: 1 },
           stream: streamEnabled,
           contextSummary: (getValidContextCompression(conversation) || {}).compression?.summary || "",
           extensions: request.extensions,
@@ -1931,16 +1940,6 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
   function finishStream(conversation) {
     const stream = streams.get(conversation.id);
     if (!stream) return;
-    const viewing = stream.conversationId === state().activeConversationId && state().route.name === "chat";
-    if (viewing && userScrollActive) {
-      stream.finishDeferred = true;
-      if (stream.timer) {
-        clearInterval(stream.timer);
-        stream.timer = 0;
-      }
-      return;
-    }
-    stream.finishDeferred = false;
     // 最终消息会由下面唯一一次 React 提交完成；取消尚未执行的增量帧，
     // 避免先 innerHTML、再 React 重复解析和挂载整段 Markdown。
     streams.finish(conversation.id, { flush: false });
@@ -1981,7 +1980,19 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
     if (!streams.size) document.body.classList.remove("is-streaming");
     // 流状态清理、最终消息通知、侧栏排序和持久化合成一次同步提交。
     // message 已在上方填入最终值，React 不会先渲染旧快照再渲染终态。
+    endFirstResponse(conversation);
     flushSync(() => store.actions.finishStream(conversation.id, messageId, {}));
+    renderComposerControls();
+    // Business completion is independent of scroll-driven rendering delays.
+    if (!scope.disposed && !acc.error && !acc.stopped && acc.completed && state().conversations.includes(conversation)) {
+      const request = stream.request;
+      try {
+        const budget = resolveInputBudget(resolveEffectiveModelConfig(request.provider, request.model), request.config);
+        if (shouldCompressResponse(acc, contextEstimate(conversation, request.config, null, request), budget, request.config.compressionThreshold) && compressionPrefix(getMessagesAfterCompression(conversation)).length) {
+          void compressContext(conversation, { request });
+        }
+      } catch (error) { toast(`自动压缩未执行：${error.message}`, { tone: "danger" }); }
+    }
     if (state().activeConversationId === conversation.id && state().route.name === "chat") {
       const entry = findMessageEntry(messageId);
       if (entry) bindMessageEvents(entry);
@@ -2027,7 +2038,8 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
     const sourceMessages = activePath.slice(0, activePath.findIndex((m) => m.id === throughMessage.id) + 1).filter((m) => !m.noticeKind);
     const sourceSignature = JSON.stringify(sourceMessages);
     const request = options.request || captureRequest(conversation);
-    const compressionModel = request.model;
+    const target = request.compressionTarget;
+    const compressionModel = target.model;
     const abort = new AbortController();
     compressionRequests.set(conversation.id, abort);
     // 压缩提示 = 假的模型响应：占位展示进度，结束后保留在对话中可点击回看
@@ -2051,30 +2063,34 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
     };
     if (isActive()) {
       renderMessages();
-      scrollToBottom();
+      if (followStream) scrollToBottom();
     }
     try {
-      const response = await apiFetch("/api/chat/compress", {
+      const contextSummary = (getValidContextCompression(conversation) || {}).compression?.summary || "";
+      const messages = prefix.filter(m => !m.noticeKind).map(m => ({ role: m.role, content: m.content, files: m.files || [], parts: (m.parts || []).filter(p => ["image", "text", "file"].includes(p.type)) }));
+      validateAuxiliaryInput(target, { contextSummary, messages });
+      const response = await apiFetch(AUXILIARY_CHAT_ROUTES.compress, {
         method: "POST",
         signal: abort.signal,
         body: JSON.stringify({
-          provider: request.header,
-          model: request.model,
-          contextSummary: (getValidContextCompression(conversation) || {}).compression?.summary || "",
-          messages: prefix.filter((m) => !m.noticeKind).map((m) => ({ role: m.role, content: m.content, files: m.files || [], parts: (m.parts || []).filter((p) => ["image", "text", "file"].includes(p.type)) }))
+          provider: target.header,
+          model: target.model,
+          contextSummary,
+          messages
         })
       });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(payload.error || `HTTP ${response.status}`);
-      if (scope.disposed || !state().conversations.some(item => item.id === conversation.id)) return false;
+      if (scope.disposed || !state().conversations.includes(conversation)) return false;
       const currentPath = getActivePath(conversation);
       const currentBoundary = currentPath.findIndex((m) => m.id === throughMessage.id);
       if (currentBoundary < 0 || JSON.stringify(currentPath.slice(0, currentBoundary + 1).filter((m) => !m.noticeKind)) !== sourceSignature) {
         throw new Error("压缩期间历史或分支已变化，请重新压缩");
       }
+      if (String(payload.summary || "").length > LIMITS.summaryChars) throw new Error("压缩摘要过长，原历史已保留，请更换压缩模型重试");
       if (!String(payload.summary || "").trim()) throw new Error("压缩结果为空，请重试");
       conversation.contextCompression = {
-        summary: String(payload.summary || "").slice(0, LIMITS.summaryChars),
+        summary: String(payload.summary || ""),
         throughMessageId: throughMessage.id,
         sourceMessageCount: activePath.slice(0, activePath.findIndex((m) => m.id === throughMessage.id) + 1).filter((message) => !message.noticeKind).length,
         model: compressionModel,
@@ -2105,6 +2121,7 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
   // ============ 浮层 ============
 
   function openRuntimePopover(anchor, initialPanel = "root") {
+    if (!allowChange(activeConversation())) return null;
     if (popovers.current && popovers.current.kind === "runtime") {
       closeActivePopover();
       return null;

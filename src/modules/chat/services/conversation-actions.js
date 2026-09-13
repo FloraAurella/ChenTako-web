@@ -1,3 +1,4 @@
+import { isConversationLocked, FIRST_RESPONSE_LOCK_REASON } from '../domain/first-response.js';
 "use strict";
 
 import { exportConversationArchive, importConversationArchive } from "../../data/public/domain_archive.js";
@@ -29,6 +30,7 @@ export function createConversationActions({
   openPopover
 }) {
   const state = () => store.state;
+  const allowChange = conversation => { if (!isConversationLocked(conversation)) return true; toast(FIRST_RESPONSE_LOCK_REASON, { tone: "danger" }); return false; };
   const projects = createProjectActions({ store, dialogs, toast, openPopover, createNewConversation, focusComposer });
 
   function bindSidebarEvents() {
@@ -40,7 +42,6 @@ export function createConversationActions({
       if (projectAction) {
         const id = projectAction.closest("[data-project-id]")?.dataset.projectId;
         if (projectAction.dataset.projectAction === "create") void projects.createProject();
-        if (projectAction.dataset.projectAction === "menu") projects.openProjectMenu(projectAction, id);
         if (projectAction.dataset.projectAction === "new-chat") createNewConversation({ projectId: id });
         return;
       }
@@ -84,14 +85,7 @@ export function createConversationActions({
       shell.searchInput.value = "";
       store.actions.setSidebar({ query: "" });
     }
-    const current = activeConversation();
-    if (current && current.messages.length === 0 && !String(current.draft || "").trim() && !state().pendingAttachments.length && (current.projectId ?? null) === projectId) {
-      store.revealConversation(current.id);
-      focusComposer();
-      closeDrawerIfOverlay();
-      return;
-    }
-    store.createConversation({ projectId });
+    store.actions.openTemporaryConversation({ projectId });
     focusComposer();
     closeDrawerIfOverlay();
   }
@@ -113,7 +107,7 @@ export function createConversationActions({
     const items = [
       { action: "pin", icon: "pin", label: conversation.pinned ? "取消置顶" : "置顶" },
       { action: "rename", icon: "edit", label: "重命名" },
-      { action: "export", icon: "download", label: "导出 .clawbox.zip" },
+      { action: "export", icon: "download", label: "导出 .ai-chatbox.zip" },
       { action: "move", icon: "folder", label: "移至项目" },
       { action: "delete", icon: "trash", label: "删除对话", danger: true }
     ];
@@ -123,9 +117,9 @@ export function createConversationActions({
       cardClass: "menu-popover",
       html: [
         `<div class="popover-scroll" role="menu">`,
-        items.slice(0, -1).map(menuItemHtml).join(""),
+        items.slice(0, -1).map(item => menuItemHtml({ ...item, disabled: item.action !== "export" && isConversationLocked(conversation) })).join(""),
         `<div class="menu-divider"></div>`,
-        menuItemHtml(items[items.length - 1]),
+        menuItemHtml({ ...items[items.length - 1], disabled: isConversationLocked(conversation) }),
         `</div>`
       ].join(""),
       bind(card, controller) {
@@ -142,7 +136,7 @@ export function createConversationActions({
 
   function menuItemHtml(item) {
     return [
-      `<button type="button" class="option-item${item.danger ? " danger" : ""}" role="menuitem" data-menu-action="${item.action}">`,
+      `<button type="button" class="option-item${item.danger ? " danger" : ""}" role="menuitem" data-menu-action="${item.action}"${item.disabled ? ` disabled title="${FIRST_RESPONSE_LOCK_REASON}"` : ""}>`,
       `<span class="menu-icon">${icon(item.icon, 15)}</span>`,
       `<div class="option-main"><div class="option-title">${escapeHtml(item.label)}</div></div>`,
       `</button>`
@@ -151,14 +145,15 @@ export function createConversationActions({
 
   async function renameConversation(id) {
     const conversation = state().conversations.find((item) => item.id === id);
-    if (!conversation) return;
+    if (!conversation || !allowChange(conversation)) return;
     const title = await dialogs.prompt({
       title: "重命名对话",
       value: conversation.title,
       placeholder: "给这段对话起个名字",
       confirmLabel: "保存"
     });
-    if (title === null) return;
+    if (title === null || !state().conversations.includes(conversation) || !allowChange(conversation)) return;
+    conversation.titleRevision = (conversation.titleRevision || 0) + 1;
     conversation.title = truncateText(title, 60) || "未命名对话";
     store.touchConversation(conversation);
     store.notify("conversation-renamed");
@@ -166,7 +161,7 @@ export function createConversationActions({
 
   function togglePin(id) {
     const conversation = state().conversations.find((item) => item.id === id);
-    if (!conversation) return;
+    if (!conversation || !allowChange(conversation)) return;
     conversation.pinned = !conversation.pinned;
     state().conversations = sortConversations(state().conversations);
     store.persistSoon();
@@ -175,19 +170,19 @@ export function createConversationActions({
 
   async function deleteConversation(id) {
     const conversation = state().conversations.find((item) => item.id === id);
-    if (!conversation) return;
+    if (!conversation || !allowChange(conversation)) return;
     const ok = await dialogs.confirm({
       title: "删除对话",
       message: `「${conversation.title || "未命名对话"}」连同全部消息将从此设备移除，无法恢复。`,
       confirmLabel: "删除",
       danger: true
     });
-    if (!ok) return;
+    if (!ok || !state().conversations.includes(conversation) || !allowChange(conversation)) return;
     stopStreamForConversation(id);
     state().pendingAttachmentsByConversation.delete(id);
     state().conversations = state().conversations.filter((item) => item.id !== id);
     if (!state().conversations.length) {
-      store.createConversation({ silent: true });
+      store.actions.openTemporaryConversation({ silent: true });
     } else if (state().activeConversationId === id) {
       state().activeConversationId = state().conversations[0].id;
     }
@@ -202,7 +197,7 @@ export function createConversationActions({
     try {
       const { bytes, filename } = exportConversationArchive(conversation);
       downloadBlob(new Blob([bytes], { type: "application/zip" }), filename);
-      toast("已导出 .clawbox.zip", { tone: "ok" });
+      toast("已导出 .ai-chatbox.zip", { tone: "ok" });
     } catch (error) {
       toast(`导出失败：${error.message}`, { tone: "danger" });
     }

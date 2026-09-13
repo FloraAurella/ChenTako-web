@@ -64,10 +64,10 @@ describe("会话归档导出 / 导入", () => {
 
   it("导出：conversation.json + media/ 图片（v3 结构）", () => {
     const { entries, filename } = exportConversationArchive(conversation);
-    expect(filename).toMatch(/\.clawbox\.zip$/);
+    expect(filename).toMatch(/\.ai-chatbox\.zip$/);
     expect(entries[0].name).toBe("conversation.json");
     const payload = JSON.parse(new TextDecoder().decode(entries[0].data));
-    expect(payload.kind).toBe("clawbox-conversation");
+    expect(payload.kind).toBe("ai-chatbox-conversation");
     expect(payload.version).toBe(3);
     expect(payload.conversation.messages[1].parts[0].media).toMatch(/^media\//);
     expect(entries.some((entry) => entry.name.startsWith("media/"))).toBe(true);

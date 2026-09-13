@@ -56,7 +56,7 @@ describe("createSafeStorage", () => {
     const realSetItem = localStorage.setItem.bind(localStorage);
     const setItemSpy = vi.spyOn(localStorage, "setItem").mockImplementation((key, value) => {
       const quotaBlocked = localStorage.getItem("kotoba-old-key") !== null;
-      if (quotaBlocked && key !== "__clawbox_probe__") {
+      if (quotaBlocked && key !== "__ai_chatbox_probe__") {
         throw new DOMException("QuotaExceededError", "QuotaExceededError");
       }
       realSetItem(key, value);
@@ -217,7 +217,7 @@ describe("createStateArchive", () => {
     const archiveErrors = [];
     const originalError = console.error;
     const errorSpy = vi.spyOn(console, "error").mockImplementation((...args) => {
-      if (args[0] === "[Clawbox] 本地归档写入失败（配置依赖轻量备份恢复）" && args[1] instanceof Error) {
+      if (args[0] === "[ai-chatbox] 本地归档写入失败（配置依赖轻量备份恢复）" && args[1] instanceof Error) {
         archiveErrors.push(args[1]);
       } else {
         originalError(...args);

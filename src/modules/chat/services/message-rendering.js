@@ -1,3 +1,4 @@
+import { isConversationLocked, FIRST_RESPONSE_LOCK_REASON } from '../domain/first-response.js';
 import { renderMarkdown } from "../../../shared/markdown.js";
 import { icon } from "../../../resources/icons/index.js";
 import { formatBytes, formatDuration, formatTime, formatTokenCount } from "../../../shared/utils.js";
@@ -244,7 +245,8 @@ export function renderAssistantFlowHtml(content, toolParts, artifactFiles = [], 
 
 function actions(message, index, conversation, busy, pathLength) {
   const lastAssistant = message.role === "assistant" && index === pathLength - 1;
-  const disabled = busy ? " disabled" : "";
+  const locked = isConversationLocked(conversation);
+  const disabled = busy || locked ? " disabled" : "";
   const buttons = [
     `<button type="button" class="icon-btn small" data-message-action="copy" title="复制${message.role === "assistant" ? "（含思考）" : ""}" aria-label="复制">${icon("copy", 14)}</button>`,
     `<button type="button" class="icon-btn small" data-message-action="edit" title="编辑" aria-label="编辑"${disabled}>${icon("edit", 14)}</button>`,
@@ -253,7 +255,7 @@ function actions(message, index, conversation, busy, pathLength) {
     `<button type="button" class="icon-btn small danger" data-message-action="delete" title="删除消息" aria-label="删除消息"${disabled}>${icon("trash", 14)}</button>`
   ];
   const stopped = message.stopped && !message.error ? `<span class="stopped-note">${icon("stop", 12)} 已停止生成</span>` : "";
-  return `<div class="message-actions${message.error || stopped ? " always-visible" : ""}">${stopped}${buttons.join("")}</div>`;
+  return `<div class="message-actions${message.error || stopped ? " always-visible" : ""}">${stopped}${buttons.map(button => locked && !button.includes('data-message-action="copy"') ? button.replace(/title="[^"]*"/, `title="${FIRST_RESPONSE_LOCK_REASON}"`) : button).join("")}</div>`;
 }
 
 function branchSwitcher(branch) {
@@ -320,7 +322,7 @@ export function renderMessageHtml(message, { conversation, index, pathLength, br
     : renderAssistantFlowHtml(message.content, toolParts, anchoredFiles, message.id);
   const body = `${messageText}${files}${media}${images}${pendingImage}${unsupported}${skipped}${error}`;
   const actionHtml = actions(message, index, conversation, streamActive, Number.isFinite(pathLength) ? pathLength : conversation.messages.length);
-  const branchHtml = user ? branchSwitcher(branch) : "";
+  const branchHtml = user ? branchSwitcher(isConversationLocked(conversation) && branch ? { ...branch, hasPrevious: false, hasNext: false } : branch) : "";
   const instantClass = suppressEntryAnimation ? " branch-switch-instant" : "";
   if (user) return `<div class="message-entry user${instantClass}" data-message-id="${messageId}"><div class="message-paper">${body}</div>${branchHtml}<div class="message-meta">${meta.join(" · ")}</div>${actionHtml}</div>`;
   const responsePending = streamActive && streamMessageId === message.id && !message.content && !streamExpectsImage;
@@ -376,10 +378,10 @@ export function renderEmptyStageHtml(providerName, backendStatus = "ok") {
   const configured = Boolean(providerName);
   const ready = configured && backendStatus === "ok";
   const title = backendStatus === "down" ? "本地服务未连接" : backendStatus === "checking" ? "正在检查连接" : configured ? "今天想聊点什么？" : "先连接一个模型";
-  const description = backendStatus === "down" ? "无法连接本地服务，请确认后端已启动。你仍可输入 /help 查看指令。"
-    : backendStatus === "checking" ? "正在检查本地服务，稍后即可确认连接状态。"
-    : configured ? "直接写下问题，或输入 / 切换模型、调整强度和查看帮助。" : "请先在设置中配置并启用供应商，再使用 /model 选择模型。";
+  const description = backendStatus === "down" ? "请启动本地服务，或检查连接设置。"
+    : backendStatus === "checking" ? "请稍候…"
+    : configured ? "输入问题，开始对话。" : "添加供应商并选择模型后即可聊天。";
   const link = backendStatus === "down" ? '<a class="empty-setup-link" href="#/settings/providers">查看连接设置</a>'
     : backendStatus === "ok" && !configured ? '<a class="empty-setup-link" href="#/settings/providers">配置模型</a>' : '';
-  return `<div class="empty-stage"><div class="paper-panel empty-card"><div class="empty-eyebrow">${escapeHtml(providerName || "Clawbox")}</div><h2 class="empty-title">${title}</h2><p class="empty-lede">${description}</p>${link}${ready ? '<div class="empty-divider"></div>' : ""}<div class="suggestion-list">${(ready ? suggestions : []).map((text, index) => `<button type="button" class="suggestion-card" data-suggestion="${index}"><span class="suggestion-index">0${index + 1}</span><span class="suggestion-text">${escapeHtml(text)}</span></button>`).join("")}</div></div></div>`;
+  return `<div class="empty-stage"><div class="paper-panel empty-card"><div class="empty-eyebrow">${escapeHtml(providerName || "ai-chatbox")}</div><h2 class="empty-title">${title}</h2><p class="empty-lede">${description}</p>${link}${ready ? '<div class="empty-divider"></div>' : ""}<div class="suggestion-list">${(ready ? suggestions : []).map((text, index) => `<button type="button" class="suggestion-card" data-suggestion="${index}"><span class="suggestion-index">0${index + 1}</span><span class="suggestion-text">${escapeHtml(text)}</span></button>`).join("")}</div></div></div>`;
 }

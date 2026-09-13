@@ -1,25 +1,29 @@
 import { EFFORT_LEVELS } from "../../../contracts/constants.js";
 
-export const SETTINGS_SCHEMA_VERSION = 1;
+export const SETTINGS_SCHEMA_VERSION = 2;
 export const CHAT_CONFIG_DEFAULTS = Object.freeze({
-  systemPrompt: "", inputBudget: null, autoCompress: false, compressionThreshold: 80,
+  systemPrompt: "", compressionThreshold: 80, compressionModel: null, titleModel: null,
   defaultReasoningEffort: "medium", temperature: 0.7, topP: 1,
   streaming: true, saveChats: true, userId: ""
 });
 const own = (value, key) => Object.prototype.hasOwnProperty.call(value || {}, key);
 const efforts = EFFORT_LEVELS.map((level) => level.key);
-const labels = { inputBudget: "输入预算", compressionThreshold: "压缩触发阈值", temperature: "Temperature", topP: "Top P", systemPrompt: "系统提示词", userId: "User ID", autoCompress: "自动压缩", streaming: "流式输出", saveChats: "本地保存对话" };
-const ranges = { inputBudget: [1, 10000000, true], compressionThreshold: [10, 95, true], temperature: [0, 2], topP: [0, 1] };
+const labels = { compressionThreshold: "压缩触发阈值", temperature: "Temperature", topP: "Top P", systemPrompt: "系统提示词", userId: "User ID", streaming: "流式输出", saveChats: "本地保存对话" };
+const ranges = { compressionThreshold: [10, 95, true], temperature: [0, 2], topP: [0, 1] };
 export function validateChatConfig(value) {
   if (!value || typeof value !== "object" || Array.isArray(value)) return "配置必须是对象";
   for (const key of Object.keys(CHAT_CONFIG_DEFAULTS)) {
     if (!own(value, key)) continue;
     const v = value[key];
-    if (key === "inputBudget" && v === null) continue;
+    if (["compressionModel", "titleModel"].includes(key)) {
+      if (v === null) continue;
+      if (!v || typeof v !== "object" || Array.isArray(v) || typeof v.providerId !== "string" || !v.providerId.trim() || v.providerId.length > 200 || typeof v.model !== "string" || !v.model.trim() || v.model.length > 200) return "请选择有效的供应商与模型";
+      continue;
+    }
     if (ranges[key]) {
       const [min, max, integer] = ranges[key];
       if (typeof v !== "number" || !Number.isFinite(v) || v < min || v > max || (integer && !Number.isInteger(v))) return `${labels[key]} 必须在 ${min}–${max} 之间${integer ? "，且为整数" : ""}`;
-    } else if (["autoCompress", "streaming", "saveChats"].includes(key)) {
+    } else if (["streaming", "saveChats"].includes(key)) {
       if (typeof v !== "boolean") return `${labels[key]} 必须是开关值`;
     } else if (key === "defaultReasoningEffort") {
       if (!efforts.includes(v)) return "请选择有效的思考强度";
@@ -30,7 +34,7 @@ export function validateChatConfig(value) {
 export function normalizeChatConfig(value, partial = false) {
   const result = partial ? {} : { ...CHAT_CONFIG_DEFAULTS };
   for (const key of Object.keys(CHAT_CONFIG_DEFAULTS)) {
-    if (own(value, key) && !validateChatConfig({ [key]: value[key] })) result[key] = value[key];
+    if (own(value, key) && !validateChatConfig({ [key]: value[key] })) result[key] = value[key] && typeof value[key] === "object" ? { providerId: value[key].providerId, model: value[key].model } : value[key];
   }
   return result;
 }
@@ -70,11 +74,22 @@ export function legacySettingsBackup(source) {
     conversations: conversations.map((c) => ({ id: String(c.id || ""), reasoningEffort: String(c.reasoningEffort || ""), saveChats: c.saveChats !== false && providers.find((p) => p.id === c.providerId)?.saveChats !== false }))
   };
 }
+function normalizeLegacyContextPolicy(source) {
+  const policy = source.legacySettingsBackup?.contextPolicy;
+  const projects = policy?.projects ?? source.projects;
+  return {
+    defaults: legacyFields(policy?.defaults ?? source.chatConfig, ["inputBudget", "autoCompress"]),
+    projects: (Array.isArray(projects) ? projects : []).filter(p => p && typeof p === "object").map(p => ({
+      id: String(p.id || ""), ...legacyFields(policy ? p : p.configOverrides, ["inputBudget", "autoCompress"])
+    }))
+  };
+}
 export function migrateChatSettings(source) {
-  if (source.settingsSchemaVersion >= SETTINGS_SCHEMA_VERSION) return {
+  if (source.settingsSchemaVersion >= 1) return {
     settingsSchemaVersion: SETTINGS_SCHEMA_VERSION, chatConfig: normalizeChatConfig(source.chatConfig),
     modelCompatibility: normalizeCompatibility(source.modelCompatibility),
-    legacySettingsBackup: source.legacySettingsBackup ? legacySettingsBackup(source.legacySettingsBackup) : null,
+    legacySettingsBackup: { ...(source.legacySettingsBackup ? legacySettingsBackup(source.legacySettingsBackup) : {}),
+      contextPolicy: normalizeLegacyContextPolicy(source) },
     settingsMigrationApplied: false
   };
   return { settingsSchemaVersion: SETTINGS_SCHEMA_VERSION, chatConfig: { ...CHAT_CONFIG_DEFAULTS }, modelCompatibility: {},

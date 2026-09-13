@@ -1,3 +1,5 @@
+import { contextMessages } from '../src/modules/chat/domain/queries.js';
+import { estimateContextTokens } from '../src/modules/context/domain/budget.js';
 import { describe, expect, it } from "vitest";
 import { computeContextUsage } from "../src/modules/context/services/context-usage.js";
 import { LIMITS } from "../src/contracts/constants.js";
@@ -154,4 +156,11 @@ describe("computeContextUsage", () => {
     expect(usage.outputTokens).toBe(30);
     expect(usage.approximateOutput).toBe(true);
   });
+});
+
+it("圆环与压缩触发使用相同消息字段，不把 ID、时间与思考计入请求预算", () => {
+  const c = { messages: [{ id: 'u', role: 'user', content: '要求', createdAt: 99 }, { id: 'a', role: 'assistant', content: '回答', reasoning: '内部思考'.repeat(500), createdAt: 100 }] };
+  const config = { systemPrompt: '规则' }; const extensions = { tools: [], skills: [] };
+  const usage = computeContextUsage(c, 10000, { config, fixedContext: '资料', maxTokens: 1000, extensions });
+  expect(usage.used).toBe(estimateContextTokens({ systemPrompt: '规则资料', contextSummary: '', messages: contextMessages(c), extensions }));
 });

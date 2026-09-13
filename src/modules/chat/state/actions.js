@@ -1,10 +1,27 @@
+import { isTemporaryConversation } from '../domain/queries.js';
 import { appendToActivePath } from '../domain/tree.js';
-export function createChatStateActions({state,conversationById,notify,notifyKeys,persistSoon,touchConversation}) {return {
+export function createChatStateActions({state,conversationById,notify,notifyKeys,persistSoon,touchConversation,createConversation}) {return {
+    openTemporaryConversation({ projectId = state.conversations.find(item => item.id === state.activeConversationId)?.projectId ?? null, silent = false } = {}) {
+      const validProjectId = state.projects.some(project => project.id === projectId) ? projectId : null;
+      const matches = item => isTemporaryConversation(item) && (item.projectId ?? null) === validProjectId;
+      // Moving/deleting projects can bring multiple recovered drafts into one group.
+      // Keep the active draft stable; the remaining drafts stay available after it is sent.
+      const existing = state.conversations.find(item => item.id === state.activeConversationId && matches(item))
+        || state.conversations.find(matches);
+      if (!existing) return createConversation({ projectId: validProjectId, silent, isTemporary: true });
+      state.activeConversationId = existing.id;
+      if (!silent) { persistSoon(); notify('conversation-selected'); }
+      return existing;
+    },
     appendMessage(conversationId, message) {
       const conversation = conversationById(conversationId);
       if (!conversation) return null;
+      const promoted = isTemporaryConversation(conversation) && message.role === 'user';
       appendToActivePath(conversation, message);
+      if (promoted) { conversation.isTemporary = false; touchConversation(conversation); }
+
       notify("conversation-updated", [
+        ...(promoted ? ["conversation-list"] : []),
         `conversation:${conversationId}`,
         `message:${conversationId}:${message.id}`
       ]);

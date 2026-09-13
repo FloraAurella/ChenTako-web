@@ -1,13 +1,13 @@
 "use strict";
 
-/** Clawbox core 层常量：存储键、限额、思考强度、供应商预设。 */
+/** ai-chatbox core 层常量：存储键、限额、思考强度、供应商预设。 */
 
-export const APP_NAME = "Clawbox";
+export const APP_NAME = "ai-chatbox";
 export const APP_VERSION = "1.1.5";
 export const APP_SETTINGS_VERSION = APP_VERSION;
 
 // 持久化键是已发布的数据协议，不随产品品牌改名。继续使用旧命名空间可让
-// Clawbox 原地读取升级前的对话、草稿、主题与界面偏好。
+// ai-chatbox 原地读取升级前的对话、草稿、主题与界面偏好。
 export const STORAGE_KEYS = {
   state: "tribblebook-v6-state",
   drafts: "tribblebook-drafts-v1", // 草稿轻量存储：击键只写这里，不触发全量状态序列化
@@ -161,5 +161,5 @@ export function effortLevelOf(key) {
 /** 首版不暴露内置测试供应商；真实供应商从下方四种协议模板创建。 */
 export const PROVIDER_PRESETS = [];
 
-export const EXPORT_ARCHIVE_KIND = "clawbox-conversation";
+export const EXPORT_ARCHIVE_KIND = "ai-chatbox-conversation";
 export const EXPORT_ARCHIVE_VERSION = 3;

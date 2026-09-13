@@ -1,6 +1,8 @@
+import { ProjectSettingsButton } from "../../projects/public/settings";
 import { Button, Surface } from "../../../shared/ui/primitives";
 import { useEffect, useRef, useState } from "react";
 import { icon } from "../../../resources/icons/index.js";
+import { isTemporaryConversation } from "../domain/queries.js";
 import { formatRelativeDays } from "../../../shared/utils.js";
 import { preloadConversationMessageHtml } from "../services/message-rendering.js";
 import { useStoreValue, type ExternalStore } from "../../../shared/state/react";
@@ -38,7 +40,7 @@ export function ConversationList({ store }: ConversationListProps) {
     pendingReveal.current = false;
     (store as any).revealConversation(activeId);
     if (activeProjectId) {
-      const siblings = conversations.filter((item) => item.projectId === activeProjectId);
+      const siblings = conversations.filter((item) => !isTemporaryConversation(item) && item.projectId === activeProjectId);
       if (siblings.findIndex((item) => item.id === activeId) >= 5) {
         setShowAll((previous) => new Set(previous).add(activeProjectId));
       }
@@ -52,6 +54,7 @@ export function ConversationList({ store }: ConversationListProps) {
   }, [activeId, activeProjectId, searching]);
   const providerOf = (conversation: any) => providers.find((provider) => provider.id === conversation.providerId) || null;
   const matched = conversations.filter((conversation) => {
+    if (isTemporaryConversation(conversation)) return false;
     if (!query) return true;
     const provider = providerOf(conversation);
     return [conversation.title, projects.find((project) => project.id === conversation.projectId)?.name || "", provider?.displayName || conversation.providerSnapshot?.displayName || "", conversation.model]
@@ -128,7 +131,7 @@ export function ConversationList({ store }: ConversationListProps) {
           return <div className="sidebar-project" data-project-id={project.id} key={project.id}>
             <div className={`project-row${activeProjectId === project.id ? " is-active" : ""}`}>
               <Button type="button" className="project-toggle" title={project.name} aria-expanded={open} onClick={() => toggle("collapsedProjectIds", project.id)}>{glyph("folder")}<span className="project-name">{project.name}</span>{glyph(open ? "chevronDown" : "chevronRight", 12)}</Button>
-              <Button type="button" className="icon-btn small" data-project-action="menu" aria-label={`${project.name}：更多操作`} aria-haspopup="menu" title="项目操作">{glyph("more")}</Button>
+              <ProjectSettingsButton store={store} project={project} />
               <Button type="button" className="icon-btn small" data-project-action="new-chat" aria-label={`${project.name}：新建聊天`} title="在项目内新建聊天">{glyph("edit")}</Button>
             </div>
             {open && <div className="project-conversations">

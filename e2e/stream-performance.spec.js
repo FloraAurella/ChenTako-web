@@ -16,6 +16,7 @@ const SEED_STATE = {
 };
 
 async function installReplay(page, content) {
+  await page.route("**/api/chat/title", r => r.fulfill({ json: { title: "性能测试" } }));
   await page.addInitScript(([state, output]) => {
     localStorage.setItem("tribblebook-v6-state", JSON.stringify(state));
     location.hash = "#/chat";
@@ -40,7 +41,7 @@ async function installReplay(page, content) {
     const originalFetch = window.fetch;
     window.fetch = async (input, init) => {
       const url = String(input instanceof Request ? input.url : input);
-      if (!url.includes("/api/chat")) return originalFetch(input, init);
+      if (new URL(url, location.href).pathname !== "/api/chat") return originalFetch(input, init);
       const chunks = [];
       for (let index = 0; index < output.length; index += 96) chunks.push(output.slice(index, index + 96));
       const frames = [
@@ -62,6 +63,7 @@ async function installReplay(page, content) {
 }
 
 async function installTimedScrollReplay(page, frameCount = 800) {
+  await page.route("**/api/chat/title", r => r.fulfill({ json: { title: "性能测试" } }));
   await page.addInitScript(([state, totalFrames]) => {
     localStorage.setItem("tribblebook-v6-state", JSON.stringify(state));
     location.hash = "#/chat";
@@ -73,7 +75,7 @@ async function installTimedScrollReplay(page, frameCount = 800) {
     const originalFetch = window.fetch;
     window.fetch = async (input, init) => {
       const url = String(input instanceof Request ? input.url : input);
-      if (!url.includes("/api/chat")) return originalFetch(input, init);
+      if (new URL(url, location.href).pathname !== "/api/chat") return originalFetch(input, init);
       const encoder = new TextEncoder();
       let timer = 0;
       let index = 0;
@@ -187,7 +189,7 @@ test("持续流式输出时优先处理用户上滚，停止手势后补绘最�
   await expect(page.locator("#newRepliesBtn")).toBeVisible();
 });
 
-test("滚动手势覆盖流结束时，终态会在手势停止后完整提交", async ({ page }) => {
+test("滚动手势覆盖流结束时，终态完整提交且保持阅读位置", async ({ page }) => {
   await installTimedScrollReplay(page, 45);
   await page.goto("/");
   await page.fill("#composerInput", "生成会在滚动期间结束的长文");

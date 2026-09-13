@@ -75,8 +75,11 @@ test("项目管理：创建、移动、重命名、删除及刷新保留", async
   await expect(page.locator("#messageList")).toContainText("内容 u");
   await project(page, "b").locator(".project-row").hover();
   await project(page, "b").locator('[data-project-action="menu"]').click();
-  await page.getByRole("menuitem", { name: "重命名项目" }).click();
-  await saveName(page, "产品设计新版");
+  await expect(page.getByRole("dialog", { name: "项目设置", exact: true })).toBeVisible();
+  await page.getByLabel("项目名称", { exact: true }).fill("产品设计新版");
+  await page.getByRole("button", { name: "保存名称", exact: true }).click();
+  await expect(page.getByRole("status").filter({ hasText: "项目名称已保存" })).toBeVisible();
+  await page.getByRole("button", { name: "关闭项目设置", exact: true }).click();
   await expect(page.locator("#projectSelectorBtn")).toContainText("产品设计新版");
   await expect(page.locator("#projectSelectorBtn")).toBeHidden();
   await openProjectSelection(page);
@@ -87,7 +90,7 @@ test("项目管理：创建、移动、重命名、删除及刷新保留", async
   const currentProject = page.locator('.sidebar-project').filter({ has: page.locator('.project-toggle', { hasText: "选择器新项目" }) });
   await currentProject.locator(".project-row").hover();
   await currentProject.locator('[data-project-action="menu"]').click();
-  await page.getByRole("menuitem", { name: "删除项目" }).click();
+  await page.getByRole("button", { name: "删除项目", exact: true }).click();
   await expect(page.locator(".dialog-message")).toContainText("全部聊天会保留");
   await page.locator('.dialog-card [data-role="confirm"]').click();
   await expect(page.locator("#projectSelectorBtn")).toContainText("无项目");
@@ -107,9 +110,9 @@ test("新建继承当前项目、显式跨项目及无项目；草稿和附件�
   await page.locator('[data-conversation-id="a3"]').click();
   await page.locator("#newConversationBtn").click();
   await expect(page.locator("#projectSelectorBtn")).toContainText("写作计划");
-  const firstId = await page.locator('.conversation-item.is-selected').getAttribute('data-conversation-id');
+  await expect(page.locator('.conversation-item.is-selected')).toHaveCount(0);
   await page.locator("#newConversationBtn").click();
-  await expect(page.locator('.conversation-item.is-selected')).toHaveAttribute('data-conversation-id', firstId);
+  await expect(page.locator('.conversation-item.is-selected')).toHaveCount(0);
   await page.locator("#composerInput").fill("项目 A 草稿");
   await page.locator("#attachmentInput").setInputFiles({ name: "note.txt", mimeType: "text/plain", buffer: Buffer.from("待发送附件") });
   await expect(page.locator("#composerChips")).toContainText("note.txt");
@@ -118,14 +121,15 @@ test("新建继承当前项目、显式跨项目及无项目；草稿和附件�
   await expect(page.locator("#projectSelectorBtn")).toContainText("产品设计");
   await expect(page.locator("#composerInput")).toHaveValue("");
   await expect(page.locator("#composerChips")).toBeHidden();
-  await page.locator(`[data-conversation-id="${firstId}"]`).click();
+  await project(page, "a").locator(".project-row").hover();
+  await project(page, "a").locator('[data-project-action="new-chat"]').click();
   await expect(page.locator("#composerInput")).toHaveValue("项目 A 草稿");
   await expect(page.locator("#composerChips")).toContainText("note.txt");
   await selectProject(page, "无项目");
   await page.keyboard.press("Meta+n");
   await expect(page.locator("#projectSelectorBtn")).toContainText("无项目");
-  await expect(page.locator("#composerInput")).toHaveValue("");
-  await expect(page.locator("#composerChips")).toBeHidden();
+  await expect(page.locator("#composerInput")).toHaveValue("项目 A 草稿");
+  await expect(page.locator("#composerChips")).toContainText("note.txt");
 });
 
 test("项目选择器键盘、长名称和移动端不溢出", async ({ page }) => {
@@ -153,7 +157,7 @@ test("项目选择器键盘、长名称和移动端不溢出", async ({ page }) 
   await page.screenshot({ path: "test-results/projects-mobile.png", animations: "disabled" });
 });
 
-test("项目移动期间保留输入节点、附件、消息节点与正在生成的回复", async ({ page }) => {
+test("首次响应之后项目移动保留输入节点、附件、消息节点与正在生成的回复", async ({ page }) => {
   await page.addInitScript(() => {
     const originalFetch = window.fetch;
     window.fetch = async (input, init) => {
@@ -173,7 +177,7 @@ test("项目移动期间保留输入节点、附件、消息节点与正在生�
       } }), { headers: { 'Content-Type': 'text/event-stream' } });
     };
   });
-  await load(page, { ...seed, conversations: seed.conversations.map(c => c.id === 'u' ? { ...c, messages: [] } : c) });
+  await load(page, { ...seed, conversations: seed.conversations.map(c => c.id === 'u' ? { ...c, messages: [], titleGenerationAttempted: true } : c) });
   await expect(page.locator('#projectSelectorBtn')).toBeVisible();
   await page.locator('#composerInput').fill('测试移动时继续回答');
   await expect(page.locator('#projectSelectorBtn')).toBeVisible();
@@ -213,7 +217,7 @@ test("聊天菜单移动、项目内置顶与活动聊天超过五条时可见",
   await page.locator('#searchInput').fill('不存在的名称');
   await page.locator('#newConversationBtn').click();
   await expect(page.locator('#searchInput')).toHaveValue('');
-  await expect(page.locator('.conversation-item.is-selected')).toBeVisible();
+  await expect(page.locator('.conversation-item.is-selected')).toHaveCount(0);
   await expect(page.locator('#projectSelectorBtn')).toContainText('产品设计');
 });
 
@@ -222,7 +226,7 @@ test("空白聊天带附件时不得复用，桌面和移动端项目列表布�
   await page.locator('#attachmentInput').setInputFiles({ name: 'only.txt', mimeType: 'text/plain', buffer: Buffer.from('只有附件') });
   await expect(page.locator('#composerChips')).toContainText('only.txt');
   await page.locator('#newConversationBtn').click();
-  await expect(page.locator('.conversation-item.is-selected')).not.toHaveAttribute('data-conversation-id', 'empty');
+  await expect(page.locator('.conversation-item.is-selected')).toHaveCount(0);
   await expect(page.locator('#composerChips')).toBeHidden();
   await page.locator('[data-conversation-id="empty"]').click();
   await expect(page.locator('#composerChips')).toContainText('only.txt');

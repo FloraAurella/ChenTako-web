@@ -1,9 +1,10 @@
+import { AUXILIARY_CHAT_ROUTES } from '../../contracts/auxiliary.ts';
 import type { BackendModule } from '../../contracts/contributions.ts';
 import { serviceOf } from '../../contracts/contributions.ts';
 import type { RouteContribution } from '../../core/router.ts';
 import type { ProviderStore } from '../providers/public/services_store.ts';
 import type { UpstreamService } from '../upstream/public/module.ts';
-import { handleChat, handleCompress, type ChatDeps } from './services/chat-routes.ts';
+import { handleChat, handleCompress, handleTitle, type ChatDeps } from './services/chat-routes.ts';
 
 /**
  * chat：/api/chat 与 /api/chat/compress 的编排。
@@ -27,10 +28,11 @@ export const module: BackendModule = {
       pattern: '/api/chat',
       handler: (context) => handleChat(deps, context)
     });
+    register({ id: 'chat-title', method: 'POST', pattern: AUXILIARY_CHAT_ROUTES.title, handler: context => handleTitle(deps, context) });
     register({
       id: 'chat-compress',
       method: 'POST',
-      pattern: '/api/chat/compress',
+      pattern: AUXILIARY_CHAT_ROUTES.compress,
       handler: (context) => handleCompress(deps, context)
     });
   }

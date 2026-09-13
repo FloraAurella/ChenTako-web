@@ -14,7 +14,7 @@ import { estimateContextTokens, resolveInputBudget } from "../domain/budget.js";
  */
 
 import { LIMITS } from "../../../contracts/constants.js";
-import { getMessagesAfterCompression, getValidContextCompression } from "../../chat/public/domain_queries.js";
+import { contextMessages, getMessagesAfterCompression, getValidContextCompression } from "../../chat/public/domain_queries.js";
 
 function estimateMessageTokens(message) {
   if (message.role === "user") {
@@ -45,7 +45,7 @@ function measuredUsage(message) {
 export function computeContextUsage(conversation, contextWindow, options = null) {
   if (options) {
     const compression = getValidContextCompression(conversation);
-    const messages = getMessagesAfterCompression(conversation).filter((m) => !m.noticeKind);
+    const messages = contextMessages(conversation);
     const summaryTokens = estimateContextTokens(compression?.compression.summary || "");
     const fixedContext = options.fixedContext || '';
     const systemPrompt = options.config.systemPrompt || '';

@@ -12,7 +12,7 @@ export function modelProviderGroupsHtml(providers, conversation) {
   return enabledProviders.length ? enabledProviders.map((provider) => {
     const models = provider.models.length ? provider.models.map((model) => `<button type="button" class="option-item${conversation.providerId === provider.id && conversation.model === model ? " is-selected" : ""}" aria-pressed="${conversation.providerId === provider.id && conversation.model === model}" data-provider-id="${attr(provider.id)}" data-model="${attr(model)}"><div class="option-main"><div class="option-title">${escape(model)}</div></div><span class="option-check">${icon("check", 15)}</span></button>`).join("") : `<div class="empty-list-note">暂无模型，去设置添加</div>`;
     return `<div class="group-label"><span>${escape(provider.displayName)}</span>${provider.hasKeyConfigured ? "" : `<span class="option-hint">未配 Key</span>`}</div>${models}`;
-  }).join("") : `<div class="empty-list-note">还没有配置供应商。<br/>可在设置中选择 API 协议并添加供应商。</div><div style="padding: 0 11px 11px;"><button type="button" class="btn btn-primary" style="width:100%" data-goto-settings>前往设置</button></div>`;
+  }).join("") : `<div class="empty-list-note">请先在设置中添加供应商。</div><div style="padding: 0 11px 11px;"><button type="button" class="btn btn-primary" style="width:100%" data-goto-settings>前往设置</button></div>`;
 }
 
 /** 运行配置二级「模型」面板：无标题行，直接供应商分组列表。 */
@@ -48,7 +48,7 @@ export function contextTooltipLinesMarkup(usage) {
     ['扩展定义', usage.breakdown.extensions], ['输出预留（预算外）', usage.breakdown.reserved]
   ].map(([label, value]) => `<span class="context-tooltip-line">${label}：约 ${formatTokenCount(value)}</span>`).join('') : '';
   const error = usage.contextErrors?.length ? '<span class="context-tooltip-line">项目资料不完整，请检查知识库</span>' : '';
-  return `<span class="context-tooltip-title" data-tooltip-title>上下文用量</span><span class="context-tooltip-line is-primary" data-tooltip-percent>${percent}% 已用</span><span class="context-tooltip-line" data-tooltip-window>已用 ${used} Tokens，预算 ${win}</span>${breakdown}${error}<span class="context-tooltip-hint" data-tooltip-hint>字符估算，含请求结构开销 · 点击压缩历史 · 将请求当前模型</span>`;
+  return `<span class="context-tooltip-title" data-tooltip-title>上下文用量</span><span class="context-tooltip-line is-primary" data-tooltip-percent>${percent}% 已用</span><span class="context-tooltip-line" data-tooltip-window>已用 ${used} Tokens，预算 ${win}</span>${breakdown}${error}<span class="context-tooltip-hint" data-tooltip-hint>估算含请求开销 · 点击请求模型压缩历史</span>`;
 }
 
 // @deprecated — 二级额度弹层已移除（点击改为一键压缩），保留导出以兼容历史引用

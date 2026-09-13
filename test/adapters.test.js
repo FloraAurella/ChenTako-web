@@ -51,7 +51,7 @@ describe("normalizeProviderResponse（非流式）", () => {
     expect(fallback.content).toBe("兜底");
   });
 
-  it("Clawbox 标准化响应保留图片与 Tool 执行记录", () => {
+  it("ai-chatbox 标准化响应保留图片与 Tool 执行记录", () => {
     const result = normalizeProviderResponse({
       content: "已经查询完成。",
       reasoning: "选择工具",
@@ -64,7 +64,7 @@ describe("normalizeProviderResponse（非流式）", () => {
     expect(result.toolEvents).toHaveLength(1);
   });
 
-  it("Clawbox 标准化响应优先读取统一 extensionEvents", () => {
+  it("ai-chatbox 标准化响应优先读取统一 extensionEvents", () => {
     const result = normalizeProviderResponse({
       content: "运行时完成。",
       extensionEvents: [

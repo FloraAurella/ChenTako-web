@@ -1,0 +1,198 @@
+
+ RUN  v3.2.7 /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0
+
+ ✓ test/server/providers-store.test.ts (4 tests) 20ms
+ ✓ test/server/core-runtime.test.ts (6 tests) 26ms
+ ✓ test/server/upstream.test.ts (21 tests) 23ms
+stdout | test/server/providers-endpoints.test.ts > providers 端点集成 > PUT 创建 → GET 列表（无 keyEnv、hasKeyConfigured=false）→ PUT 带 Key → hasKeyConfigured=true
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/gateway.test.ts > gateway 集成 > 新品牌令牌头生效且旧令牌头继续兼容
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/provider-model-response.test.ts > openai-compatible: tests the selected model with a real local response, preserving model-list test
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/gateway.test.ts > gateway 集成 > health 返回前端要求的精确形状
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/providers-endpoints.test.ts > providers 端点集成 > key 端点：保存/读取（no-store）/删除/404 语义
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/gateway.test.ts > gateway 集成 > 未知接口 404，方法不匹配 405 并带 Allow
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stderr | test/server/provider-model-response.test.ts > openai-compatible: tests the selected model with a real local response, preserving model-list test
+[gateway] HttpError: 模型未返回文字回复，请检查模型是否支持文字聊天
+    at testModel (/Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/server/modules/providers/services/test-model.ts:24:41)
+    at processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at Object.handler (/Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/server/modules/providers/module.ts:141:32)
+    at HttpGateway.handle (/Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/server/modules/gateway/services/http-server.ts:109:7) {
+  status: 502,
+  code: ''
+}
+
+stdout | test/server/gateway.test.ts > gateway 集成 > 非 /api 路径一律 404，不暴露文件系统
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/provider-model-response.test.ts > responses: tests the selected model with a real local response, preserving model-list test
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/chat.test.ts > /api/chat 集成 > 流式：经前端 consumeAppStreamFrame 状态机验收事件顺序与最终状态
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/gateway.test.ts > gateway 集成 > 跨站 Origin 被拒绝，vite 开发来源与健康检查无 Origin 请求被放行
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/providers-endpoints.test.ts > providers 端点集成 > 删除供应商带 body 回退匹配；不存在返回 404；同路径方法不匹配返回 405
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/gateway.test.ts > gateway 集成 > OPTIONS 预检放行允许来源并声明方法与头
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/gateway.test.ts > gateway 集成 > 配置 API_TOKEN 后：缺令牌 401，错误令牌 401，health 豁免，正确令牌放行
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/providers-endpoints.test.ts > providers 端点集成 > 非法载荷：缺 displayName、坏覆盖、坏 Key 形态、超大 body 413
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stderr | test/server/provider-model-response.test.ts > responses: tests the selected model with a real local response, preserving model-list test
+[gateway] HttpError: 模型未返回文字回复，请检查模型是否支持文字聊天
+    at testModel (/Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/server/modules/providers/services/test-model.ts:24:41)
+    at processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at Object.handler (/Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/server/modules/providers/module.ts:141:32)
+    at HttpGateway.handle (/Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/server/modules/gateway/services/http-server.ts:109:7) {
+  status: 502,
+  code: ''
+}
+
+stdout | test/server/gateway.test.ts > gateway 集成 > 畸形 JSON 请求体返回 400（走真实路由处理器之前的统一解析路径由后续路由验证）
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/provider-model-response.test.ts > anthropic: tests the selected model with a real local response, preserving model-list test
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/providers-endpoints.test.ts > providers 端点集成 > 连接测试：本地 mock 上游读取模型列表；无 Key 非回环 401；错误体转发状态码
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+ ✓ test/server/gateway.test.ts (8 tests) 107ms
+stdout | test/server/chat.test.ts > /api/chat 集成 > 非流式：返回与前端 normalizeProviderResponse 对齐的 JSON
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stderr | test/server/provider-model-response.test.ts > anthropic: tests the selected model with a real local response, preserving model-list test
+[gateway] HttpError: 模型未返回文字回复，请检查模型是否支持文字聊天
+    at testModel (/Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/server/modules/providers/services/test-model.ts:24:41)
+    at processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at Object.handler (/Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/server/modules/providers/module.ts:141:32)
+    at HttpGateway.handle (/Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/server/modules/gateway/services/http-server.ts:109:7) {
+  status: 502,
+  code: ''
+}
+
+stdout | test/server/provider-model-response.test.ts > google: tests the selected model with a real local response, preserving model-list test
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/chat.test.ts > /api/chat 集成 > 压缩：使用固定内置指令（不含人格提示词），返回摘要与用量
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/chat.test.ts > /api/chat 集成 > 校验与错误路径：400/401/404/409 与上游状态码转发
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+ ✓ test/server/providers-endpoints.test.ts (5 tests) 139ms
+stderr | test/server/provider-model-response.test.ts > google: tests the selected model with a real local response, preserving model-list test
+[gateway] HttpError: 模型未返回文字回复，请检查模型是否支持文字聊天
+    at testModel (/Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/server/modules/providers/services/test-model.ts:24:41)
+    at processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at Object.handler (/Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/server/modules/providers/module.ts:141:32)
+    at HttpGateway.handle (/Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/server/modules/gateway/services/http-server.ts:109:7) {
+  status: 502,
+  code: ''
+}
+
+ ✓ test/server/providers-rules.test.ts (6 tests) 5ms
+ ✓ test/server/provider-model-response.test.ts (4 tests) 156ms
+ ✓ test/server/contracts-sync.test.ts (5 tests) 3ms
+stdout | test/server/chat.test.ts > /api/chat 集成 > 流式请求上游返回非 SSE 时 502；预算冲突返回 400
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/chat.test.ts > /api/chat 集成 > 客户端取消会中止上游请求；上游中断经 chat.stream.error 收尾
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/chat.test.ts > /api/chat/title 辅助任务 > 标题四协议适配：openai-compatible，仅概括首次输入
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/chat.test.ts > /api/chat/title 辅助任务 > 标题四协议适配：responses，仅概括首次输入
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/chat.test.ts > /api/chat/title 辅助任务 > 标题四协议适配：anthropic，仅概括首次输入
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/chat.test.ts > /api/chat/title 辅助任务 > 标题四协议适配：google，仅概括首次输入
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/chat.test.ts > /api/chat/title 辅助任务 > 校验空输入、扩展执行、窗口不足和空模型输出，均明确失败
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stderr | test/server/chat.test.ts > /api/chat/title 辅助任务 > 校验空输入、扩展执行、窗口不足和空模型输出，均明确失败
+[gateway] HttpError: 标题模型没有返回有效标题
+    at handleAuxiliary (/Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/server/modules/chat/services/chat-routes.ts:256:29)
+    at processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at HttpGateway.handle (/Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/server/modules/gateway/services/http-server.ts:109:7) {
+  status: 502,
+  code: ''
+}
+
+stdout | test/server/chat.test.ts > 压缩拒绝模型无法携带的历史附件，不生成不完整摘要
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+ ✓ test/server/chat.test.ts (12 tests) 331ms
+ ✓ test/stream-engine.test.ts (13 tests) 61ms
+ ✓ test/normalize.test.js (36 tests) 74ms
+ ✓ test/command-composer.test.ts (8 tests) 67ms
+ ✓ test/dialogs.test.tsx (4 tests) 102ms
+ ✓ test/storage.test.js (24 tests) 50ms
+ ✓ test/skill-package.test.js (4 tests) 32ms
+ ✓ test/toast-system.test.tsx (3 tests) 72ms
+ ✓ test/provider-autosave.test.ts (11 tests) 30ms
+ ✓ test/stream-images.test.ts (3 tests) 23ms
+ ✓ test/projects.test.js (5 tests) 32ms
+ ✓ test/knowledge.test.ts (9 tests) 98ms
+ ✓ test/provider-key-vault.test.ts (2 tests) 5ms
+ ✓ test/provider-models.test.js (5 tests) 3ms
+ ✓ test/react-shell.test.tsx (2 tests) 122ms
+ ✓ test/tokens-consistency.test.js (6 tests) 34ms
+ ✓ test/first-response.test.ts (9 tests) 15ms
+ ✓ test/user-theme.test.js (31 tests) 16ms
+ ✓ test/archive.test.js (9 tests) 11ms
+ ✓ test/seed.test.js (14 tests) 5ms
+ ✓ test/theme-package.test.js (8 tests) 5ms
+ ✓ test/message-rendering.test.js (7 tests) 8ms
+ ✓ test/temporary-conversation.test.js (3 tests) 13ms
+ ✓ test/runtime-events.test.js (7 tests) 11ms
+ ✓ test/extensions.test.js (5 tests) 9ms
+ ✓ test/markdown.test.js (16 tests) 8ms
+ ✓ test/surface-appearance.test.js (4 tests) 7ms
+ ✓ test/chat-config.test.js (13 tests) 9ms
+ ✓ test/context-service.test.ts (7 tests) 12ms
+ ✓ test/store-subscriptions.test.ts (3 tests) 6ms
+ ✓ test/module-runtime.test.ts (7 tests) 16ms
+ ✓ test/commands.test.ts (23 tests) 10ms
+ ✓ test/adapters.test.js (12 tests) 6ms
+ ✓ test/theme-archive.test.js (6 tests) 5ms
+ ✓ test/theme.test.js (16 tests) 5ms
+ ✓ test/logo-shapes.test.js (7 tests) 4ms
+ ✓ test/conversation-tree.test.js (8 tests) 12ms
+ ✓ test/popover-markup.test.js (3 tests) 4ms
+ ✓ test/chat-attachments.test.js (4 tests) 8ms
+ ✓ test/context-usage.test.js (9 tests) 5ms
+ ✓ test/theme-loading.test.js (2 tests) 3ms
+ ✓ test/changelog.test.js (4 tests) 3ms
+ ✓ test/project-actions.test.js (1 test) 5ms
+ ✓ test/theme-card.test.tsx (3 tests) 2ms
+ ✓ test/relative-days.test.js (2 tests) 1ms
+
+ Test Files  53 passed (53)
+      Tests  449 passed (449)
+   Start at  10:10:32
+   Duration  5.66s (transform 1.80s, setup 192ms, collect 6.65s, tests 1.84s, environment 17.18s, prepare 3.19s)
+

@@ -22,6 +22,7 @@ export interface CommandContext {
   followsConfig: boolean;
   busy: boolean;
   compactUnavailable: string | null;
+  mutationUnavailable?: string | null;
   selectModel(providerId: string, model: string): CommandResult;
   selectEffort(effort: string | null): CommandResult;
   compact(): Promise<CommandResult>;
@@ -29,6 +30,8 @@ export interface CommandContext {
 export interface CommandContribution {
   id: string;
   name: string;
+  label?: string;
+  icon?: string;
   description: string;
   parameters: string;
   summary?(context: CommandContext): string;

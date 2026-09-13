@@ -1,5 +1,9 @@
+import { AUXILIARY_CHAT_ROUTES as FRONTEND_AUXILIARY } from '../../src/contracts/auxiliary';
+import { AUXILIARY_CHAT_ROUTES } from '../../server/contracts/auxiliary';
 // @vitest-environment node
-import { describe, it, expect } from 'vitest';
+import type { TitleRequest as FrontendTitleRequest, TitleResponse as FrontendTitleResponse } from '../../src/contracts/auxiliary';
+import type { TitleRequest, TitleResponse } from '../../server/contracts/auxiliary';
+import { describe, it, expect, expectTypeOf } from 'vitest';
 import { LIMITS as FRONTEND_LIMITS, RESPONSE_FORMATS as FRONTEND_FORMATS, EFFORT_LEVELS as FRONTEND_EFFORTS } from '../../src/contracts/constants.js';
 import { APP_STREAM_EVENTS as FRONTEND_EVENTS, APP_STREAM_VERSION as FRONTEND_VERSION } from '../../src/modules/chat/stream/protocol.ts';
 import { LIMITS, RESPONSE_FORMATS, EFFORT_KEYS } from '../../server/contracts/limits.ts';
@@ -10,6 +14,11 @@ import { APP_STREAM_EVENTS, APP_STREAM_VERSION } from '../../server/contracts/pr
  * 任何一侧单独改动都会在这里红测，强制两侧同步。
  */
 describe('前后端契约同步', () => {
+  it('辅助任务接口保持同步', () => {
+    expect(AUXILIARY_CHAT_ROUTES).toEqual(FRONTEND_AUXILIARY);
+    expectTypeOf<TitleRequest>().toEqualTypeOf<FrontendTitleRequest>();
+    expectTypeOf<TitleResponse>().toEqualTypeOf<FrontendTitleResponse>();
+  });
   it('LIMITS 与 src/contracts/constants.js 完全一致', () => {
     expect(LIMITS).toEqual(FRONTEND_LIMITS);
   });

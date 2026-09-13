@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { CHAT_CONFIG_DEFAULTS, resolveChatConfig, normalizeChatConfig, migrateChatSettings, validateChatConfig } from "../src/modules/context/domain/config.js";
-import { compressionPrefix, estimateContextTokens, resolveInputBudget } from "../src/modules/context/domain/budget.js";
+import { compressionPrefix, estimateContextTokens, resolveInputBudget, shouldCompressResponse } from "../src/modules/context/domain/budget.js";
 import { buildPersistentPayload } from "../src/app/state/persistence.js";
 import { createStore } from "../src/app/state/store.js";
 
@@ -21,7 +21,7 @@ describe("聊天配置与项目继承", () => {
   });
   it("拒绝非法参数，同时保留零值、false 和空字符串", () => {
     expect(normalizeChatConfig({ temperature: 0, systemPrompt: "", saveChats: false }, true)).toEqual({ temperature: 0, systemPrompt: "", saveChats: false });
-    expect(validateChatConfig({ inputBudget: 1.5 })).not.toBe("");
+    expect(validateChatConfig({ compressionThreshold: 1.5 })).not.toBe("");
     expect(validateChatConfig({ topP: NaN })).not.toBe("");
     expect(normalizeChatConfig({ unknown: 3 }, true)).toEqual({});
   });
@@ -47,7 +47,8 @@ describe("上下文预算", () => {
   it("预算扣除输出和安全余量，冲突不静默钳制", () => {
     expect(resolveInputBudget({ contextWindow: 10000, maxTokens: 1000 }, { inputBudget: null })).toBe(8500);
     expect(() => resolveInputBudget({ contextWindow: 100, maxTokens: 100 }, {})).toThrow();
-    expect(() => resolveInputBudget({ contextWindow: 10000, maxTokens: 1000 }, { inputBudget: 9000 })).toThrow();
+    // 用户要求预算始终自动计算，旧手动预算不再生效。
+    expect(resolveInputBudget({ contextWindow: 10000, maxTokens: 1000 }, { inputBudget: 9000 })).toBe(8500);
   });
   it("按用户轮次切分，保留工具组和待发送消息", () => {
     const messages = [ { role: "user", id: "u1" }, { role: "assistant", id: "a1", parts: [{ type: "tool_call" }, { type: "tool_result" }] }, { role: "user", id: "u2" }, { role: "assistant", id: "a2" }, { role: "user", id: "u3" } ];
@@ -100,4 +101,11 @@ it("旧轮数配置被移除，聊天及项目的其他设置继续生效", () =
   const config = resolveChatConfig({ ...source, projects: [{ id: "p", configOverrides: { keepRecentTurns: 100, systemPrompt: "项目" } }] }, { projectId: "p" });
   expect(config).not.toHaveProperty("keepRecentTurns");
   expect(config).toMatchObject({ temperature: 0.2, systemPrompt: "项目" });
+});
+
+it("结束触发阈值含等号，停止、错误和未结束均不触发", () => {
+  expect(shouldCompressResponse({ completed: true }, 799, 1000, 80)).toBe(false);
+  expect(shouldCompressResponse({ completed: true }, 800, 1000, 80)).toBe(true);
+  expect(shouldCompressResponse({ completed: true }, 801, 1000, 80)).toBe(true);
+  for (const result of [{ completed: false }, { completed: true, stopped: true }, { completed: true, error: "失败" }]) expect(shouldCompressResponse(result, 900, 1000, 80)).toBe(false);
 });

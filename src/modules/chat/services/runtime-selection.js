@@ -1,9 +1,11 @@
+import { isConversationLocked, FIRST_RESPONSE_LOCK_REASON } from '../domain/first-response.js';
 import { snapshotProviderForModel } from '../../connections/public/domain_models.js';
 import { resolveChatConfig } from '../../context/public/domain_config.js';
 import { EFFORT_LEVELS } from '../../../contracts/constants.js';
 
 /** Shared by the original runtime controls and slash commands. */
 export function selectRuntimeModel(store, conversation, providerId, model) {
+  if (isConversationLocked(conversation)) return { status: "unavailable", message: FIRST_RESPONSE_LOCK_REASON };
   const provider = store.state.providers.find(item => item.id === providerId);
   if (!provider || provider.enabled === false || !provider.models.includes(model)) {
     return { status: 'unavailable', message: '该模型已不可用，请重新选择。' };
@@ -17,6 +19,7 @@ export function selectRuntimeModel(store, conversation, providerId, model) {
   return { status: 'success', message: `模型已切换为 ${provider.displayName} / ${model}，下一次请求生效。` };
 }
 export function selectRuntimeEffort(store, conversation, value) {
+  if (isConversationLocked(conversation)) return { status: "unavailable", message: FIRST_RESPONSE_LOCK_REASON };
   if (value !== null && !EFFORT_LEVELS.some(item => item.key === value)) return { status: 'error', message: '无效思考强度。' };
   const next = value ?? resolveChatConfig(store.state, { ...conversation, reasoningEffortOverride: null }).reasoningEffort;
   conversation.reasoningEffort = next;

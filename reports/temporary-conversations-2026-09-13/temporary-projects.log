@@ -1,0 +1,28 @@
+[WebServer] (node:51145) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+
+Running 17 tests using 1 worker
+
+(node:51147) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/17] [chromium] › e2e/projects.spec.js:43:1 › 项目分类：分区、五条限制、搜索与折叠恢复
+[2/17] [chromium] › e2e/projects.spec.js:68:1 › 项目管理：创建、移动、重命名、删除及刷新保留
+[3/17] [chromium] › e2e/projects.spec.js:105:1 › 新建继承当前项目、显式跨项目及无项目；草稿和附件留在原聊天
+[4/17] [chromium] › e2e/projects.spec.js:132:1 › 项目选择器键盘、长名称和移动端不溢出
+[5/17] [chromium] › e2e/projects.spec.js:157:1 › 项目移动期间保留输入节点、附件、消息节点与正在生成的回复
+[6/17] [chromium] › e2e/projects.spec.js:204:1 › 聊天菜单移动、项目内置顶与活动聊天超过五条时可见
+[7/17] [chromium] › e2e/projects.spec.js:221:1 › 空白聊天带附件时不得复用，桌面和移动端项目列表布局
+[8/17] [chromium] › e2e/temporary-conversation.spec.js:16:1 › 新建不入历史，反复新建、指令和切换保留临时草稿附件，首次发送才加入
+[9/17] [chromium] › e2e/temporary-conversation.spec.js:36:1 › 刷新恢复待发送草稿且不加入历史
+[10/17] [chromium] › e2e/temporary-conversation.spec.js:41:1 › 前置校验失败不加入且保留输入
+[11/17] [chromium] › e2e/temporary-conversation.spec.js:46:1 › 项目内待发送会话首次发言后进入该项目，HTTP 错误不撤回历史
+[12/17] [chromium] › e2e/temporary-conversation.spec.js:59:3 › 待发送界面 light 1280 不增加历史且无横向溢出
+[13/17] [chromium] › e2e/temporary-conversation.spec.js:59:3 › 待发送界面 light 1024 不增加历史且无横向溢出
+[14/17] [chromium] › e2e/temporary-conversation.spec.js:59:3 › 待发送界面 light 390 不增加历史且无横向溢出
+[15/17] [chromium] › e2e/temporary-conversation.spec.js:59:3 › 待发送界面 dark 1280 不增加历史且无横向溢出
+[16/17] [chromium] › e2e/temporary-conversation.spec.js:59:3 › 待发送界面 dark 1024 不增加历史且无横向溢出
+[17/17] [chromium] › e2e/temporary-conversation.spec.js:59:3 › 待发送界面 dark 390 不增加历史且无横向溢出
+  17 passed (16.1s)

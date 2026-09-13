@@ -216,7 +216,7 @@ describe("normalizeMessage / normalizeConversation", () => {
     });
   });
 
-  it("把改名前的内置工具名迁移到 Clawbox 命名空间", () => {
+  it("把改名前的内置工具名迁移到 ai-chatbox 命名空间", () => {
     const message = normalizeMessage({
       role: "assistant",
       parts: [

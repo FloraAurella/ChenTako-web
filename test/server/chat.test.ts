@@ -184,7 +184,7 @@ describe('/api/chat 集成', () => {
     expect(payload.ok).toBe(true);
     expect(payload.summary).toBe('压缩后的上下文摘要');
     expect(upstreamSystem).toContain('你是对话上下文压缩器');
-    expect(upstreamSystem).not.toContain('Clawbox'); // 不夹带产品人格
+    expect(upstreamSystem).not.toContain('ai-chatbox'); // 不夹带产品人格
   });
 
   it('校验与错误路径：400/401/404/409 与上游状态码转发', async () => {
@@ -284,4 +284,49 @@ describe('/api/chat 集成', () => {
     expect(last.event).toBe(APP_STREAM_EVENTS.error);
     expect(JSON.parse(last.data).message.length).toBeGreaterThan(0);
   });
+});
+
+describe('/api/chat/title 辅助任务', () => {
+  it.each(['openai-compatible', 'responses', 'anthropic', 'google'])('标题四协议适配：%s，仅概括首次输入', async (format) => {
+    const mock = await bootMockUpstream((_req, res) => {
+      res.setHeader('Content-Type', 'application/json');
+      const payload = format === 'anthropic' ? { content: [{ type: 'text', text: '旅行计划' }] }
+        : format === 'google' ? { candidates: [{ content: { parts: [{ text: '旅行计划' }] } }] }
+        : format === 'responses' ? { output: [{ type: 'message', content: [{ type: 'output_text', text: '旅行计划' }] }] }
+        : { choices: [{ message: { content: '旅行计划' } }] };
+      res.end(JSON.stringify(payload));
+    });
+    const server = await boot();
+    const provider = await createProvider(server, { id: `title-${format}`, displayName: '标题模型', baseUrl: mock.url, responseFormat: format, systemPrompt: 'PERSONA_MUST_NOT_LEAK' });
+    const body = { ...chatBody(provider), input: '请帮我安排三天旅行', contextSummary: 'SUMMARY_MUST_NOT_LEAK', messages: [{ role: 'user', content: 'LATER_INPUT_MUST_NOT_LEAK' }] };
+    const response = await post(server, '/api/chat/title', body);
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual({ ok: true, title: '旅行计划' });
+    expect(mock.requests).toHaveLength(1);
+    expect(mock.requests[0].body).toContain('请帮我安排三天旅行');
+    expect(mock.requests[0].body).not.toContain('MUST_NOT_LEAK');
+  });
+  it('校验空输入、扩展执行、窗口不足和空模型输出，均明确失败', async () => {
+    const mock = await bootMockUpstream((_req, res) => { res.setHeader('Content-Type', 'application/json'); res.end(JSON.stringify({ choices: [{ message: { content: '' } }] })); });
+    const server = await boot();
+    const provider = await createProvider(server, { id: 'title-invalid', displayName: '标题错误', baseUrl: mock.url, contextWindow: 2000, maxTokens: 1000 });
+    const body = { provider: chatBody(provider).provider, model: 'm1', input: '测试' };
+    expect((await post(server, '/api/chat/title', { ...body, input: '' })).status).toBe(400);
+    expect((await post(server, '/api/chat/title', { ...body, extensions: { sandbox: true } })).status).toBe(400);
+    expect((await post(server, '/api/chat/title', { ...body, input: '输入'.repeat(2000) })).status).toBe(400);
+    expect(mock.requests).toHaveLength(0);
+    const empty = await post(server, '/api/chat/title', body);
+    expect(empty.status).toBe(502);
+    expect((await empty.json() as any).error).toContain('有效标题');
+  });
+});
+
+it('压缩拒绝模型无法携带的历史附件，不生成不完整摘要', async () => {
+  const mock = await bootMockUpstream((_req, res) => { res.end(JSON.stringify({ choices: [{ message: { content: '不应生成' } }] })); });
+  const server = await boot();
+  const provider = await createProvider(server, { id: 'compress-attachment', displayName: '压缩附件', baseUrl: mock.url });
+  const response = await post(server, '/api/chat/compress', { ...chatBody(provider), messages: [{ role: 'user', content: '文件资料', parts: [{ type: 'file', name: 'doc.pdf', mimeType: 'application/pdf', source: 'data:application/pdf;base64,AAAA' }] }, { role: 'assistant', content: '完成' }] });
+  expect(response.status).toBe(400);
+  expect((await response.json() as any).error).toContain('不支持部分历史附件');
+  expect(mock.requests).toHaveLength(0);
 });

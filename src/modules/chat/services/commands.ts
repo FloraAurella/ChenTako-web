@@ -21,7 +21,7 @@ function effortOptions(context: CommandContext, query: string): CommandOption[] 
   ].filter(item => `${item.label} ${item.detail}`.toLowerCase().includes(query.toLowerCase()));
 }
 export const chatCommands: CommandContribution[] = [
-  { id: 'model', name: 'model', description: '切换当前会话模型', parameters: '[模型名]', summary: context => context.models.find(item => item.selected)?.model || '未选择', available: () => null,
+  { id: 'model', name: 'model', label: '模型', icon: 'connection', description: '切换当前会话模型', parameters: '[模型名]', summary: context => context.models.find(item => item.selected)?.model || '未选择', available: context => context.mutationUnavailable || null,
     options: modelOptions,
     execute(context, argument) {
       const exact = context.models.filter(item => item.model === argument);
@@ -31,7 +31,7 @@ export const chatCommands: CommandContribution[] = [
         message: !context.models.length ? '没有可用模型，请在设置中配置并启用供应商。' : !options.length ? '没有匹配的模型，请修改搜索文字。' : exact.length > 1 ? '模型名称重复，请选择供应商。' : undefined };
     }
   },
-  { id: 'effort', name: 'effort', description: '调整思考强度或恢复跟随配置', parameters: '[强度 / default]', summary: context => `${context.effort} · ${context.followsConfig ? '跟随配置' : '会话自定义'}`, available: () => null,
+  { id: 'effort', name: 'effort', label: '思考强度', icon: 'spark', description: '调整思考强度或恢复跟随配置', parameters: '[强度 / default]', summary: context => `${context.effort} · ${context.followsConfig ? '跟随配置' : '会话自定义'}`, available: context => context.mutationUnavailable || null,
     options: effortOptions,
     execute(context, argument) {
       if (!argument) return { status: 'select', title: '选择思考强度', options: effortOptions(context, '') };
@@ -39,7 +39,7 @@ export const chatCommands: CommandContribution[] = [
       return value === undefined ? { status: 'error', message: '无效强度。可用值：low、medium、high、xhigh、max、default，或对应中文名称。' } : context.selectEffort(value);
     }
   },
-  { id: 'compact', name: 'compact', description: '压缩已完成的聊天历史', parameters: '',
+  { id: 'compact', name: 'compact', label: '压缩历史', icon: 'archive', description: '压缩已完成的聊天历史', parameters: '',
     available: context => context.compactUnavailable,
     execute: (context, argument) => argument ? { status: 'error', message: '/compact 不接受参数。' } : context.compact()
   }

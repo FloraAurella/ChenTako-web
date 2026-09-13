@@ -519,9 +519,11 @@ export function normalizeConversation(raw) {
   return {
     id: String(source.id || createId()),
     title: cleanString(source.title, 120).trim(),
+    titleGenerationAttempted: source.titleGenerationAttempted === true || messages.some(message => !message.noticeKind),
     createdAt,
     updatedAt: Number(source.updatedAt) > 0 ? Number(source.updatedAt) : createdAt,
     pinned: source.pinned === true,
+    isTemporary: source.isTemporary === true && !messages.some((message) => message.role === "user"),
     projectId: typeof source.projectId === "string" && source.projectId ? source.projectId : null,
     providerId: String(source.providerId || ""),
     providerSnapshot: source.providerSnapshot && typeof source.providerSnapshot === "object"

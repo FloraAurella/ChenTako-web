@@ -1,5 +1,6 @@
 import { APP_STREAM_EVENTS, type NormalizedResponse } from '../../../contracts/protocol.ts';
-import { STREAM_TIMEOUT_MS } from '../../../contracts/limits.ts';
+import { TITLE_GENERATION_PROMPT } from '../domain/title.ts';
+import { LIMITS, STREAM_TIMEOUT_MS } from '../../../contracts/limits.ts';
 import type { ChatConfig, ProviderHeader, WireMessage } from '../../../contracts/types.ts';
 import { HttpError, SseWriter, sendJson, readJsonBody, type RequestContext } from '../../../core/router.ts';
 import type { ProviderStore } from '../../providers/public/services_store.ts';
@@ -61,7 +62,7 @@ async function resolveChatRequest(deps: ChatDeps, req: RequestContext['req'], bo
   if (!ssrfCheck.ok) throw new HttpError(`上游地址被拒绝：${ssrfCheck.reason}`, 400);
   const apiKey = deps.store.resolveKey(registered);
   if (!apiKey && !deps.upstream.isLoopbackBaseUrl(registered.baseUrl)) {
-    throw new HttpError(`供应商「${registered.displayName}」未配置 API Key。请在设置界面保存，或在环境中设置 CLAWBOX_API_KEY_${registered.keyEnv}。`, 401);
+    throw new HttpError(`供应商「${registered.displayName}」未配置 API Key。请在设置界面保存，或在环境中设置 AI_CHATBOX_API_KEY_${registered.keyEnv}。`, 401);
   }
 
   const modelConfig = resolveProviderModelConfig(registered, model.trim());
@@ -199,51 +200,75 @@ export async function handleChat(deps: ChatDeps, { req, res }: RequestContext): 
 }
 
 /** POST /api/chat/compress：固定内置技术指令生成摘要；只服从压缩目标，不带人格提示词。 */
-export async function handleCompress(deps: ChatDeps, { req, res }: RequestContext): Promise<void> {
+export async function handleCompress(deps: ChatDeps, context: RequestContext): Promise<void> {
+  return handleAuxiliary(deps, context, 'compress');
+}
+
+export async function handleTitle(deps: ChatDeps, context: RequestContext): Promise<void> {
+  return handleAuxiliary(deps, context, 'title');
+}
+
+async function handleAuxiliary(deps: ChatDeps, { req, res }: RequestContext, purpose: 'compress' | 'title'): Promise<void> {
   const body = await readJsonBody(req, deps.bodyLimit);
-  const request = await resolveChatRequest(deps, req, body, null);
+  if (hasExecutableExtensions(body.extensions)) throw new HttpError(EXTENSIONS_UNSUPPORTED_ERROR, 400);
+  const label = purpose === 'title' ? '标题生成' : '上下文压缩';
+  const title = purpose === 'title';
+  if (title && (typeof body.input !== 'string' || !body.input.trim() || body.input.length > LIMITS.messageChars)) throw new HttpError('首次输入描述为空或过长', 400);
+  const request = await resolveChatRequest(deps, req, title
+    ? { provider: body.provider, model: body.model, messages: [{ role: 'user', content: body.input }] }
+    : body, null);
   const { controller, done } = bindLifecycle(res);
 
   try {
     const merged: MergedProvider = {
       ...request.merged,
       temperature: 0.7, topP: 1, userId: '',
-      systemPrompt: CONTEXT_COMPRESSION_PROMPT
+      systemPrompt: title ? TITLE_GENERATION_PROMPT : CONTEXT_COMPRESSION_PROMPT,
+      chatConfigVersion: 1, inputBudget: null
     };
     const built = deps.upstream.buildRequest(merged, {
       model: request.model,
-      reasoningEffort: 'high',
+      reasoningEffort: title ? 'low' : 'high',
       stream: false,
       messages: request.messages,
       contextSummary: request.contextSummary
     });
+    if (!title && built.skippedFiles.length) throw new HttpError('压缩模型不支持部分历史附件，请选择可处理完整历史的模型。原历史已保留。', 400);
     let upstream: Response;
     try {
       upstream = await fetch(built.url, { ...built.options, signal: controller.signal });
     } catch (error) {
       const aborted = controller.signal.aborted || isAbortError(error);
-      throw new HttpError(aborted ? '上下文压缩超时或连接已断开' : `无法连接压缩模型：${errorMessage(error)}`, aborted ? 504 : 502);
+      throw new HttpError(aborted ? `${label}超时或连接已断开` : `无法连接${label}模型：${errorMessage(error)}`, aborted ? 504 : 502);
     }
     if (!upstream.ok) {
-      throw new HttpError(`上下文压缩失败（${upstream.status}）：${await readUpstreamError(upstream)}`,
+      throw new HttpError(`${label}失败（${upstream.status}）：${await readUpstreamError(upstream)}`,
         upstream.status >= 400 && upstream.status <= 599 ? upstream.status : 502);
     }
     let payload: unknown;
     try { payload = await upstream.json(); }
     catch {
-      throw new HttpError('压缩模型返回了无法解析的 JSON', 502);
+      throw new HttpError(`${label}模型返回了无法解析的 JSON`, 502);
     }
     const normalized = deps.upstream.normalizeJson(payload, request.merged.responseFormat);
+    if (title) {
+      const generated = String(normalized.content || '').replace(/\s+/g, ' ').trim().replace(/^["“「]+|["”」]+$/g, '').slice(0, LIMITS.titleLength);
+      if (!generated) throw new HttpError('标题模型没有返回有效标题', 502);
+      sendJson(res, 200, { ok: true, title: generated });
+      return;
+    }
     const summary = String(normalized.content || normalized.reasoning || '').trim();
     if (!summary) throw new HttpError('压缩模型没有返回有效摘要', 502);
     if (Buffer.byteLength(summary, 'utf8') > 2 * 1024 * 1024) {
       throw new HttpError('压缩结果超过 2MB，请缩短对话后重试', 502);
     }
+    if (summary.length > LIMITS.summaryChars) throw new HttpError('压缩摘要过长，原历史已保留，请更换压缩模型重试', 502);
     sendJson(res, 200, { ok: true, summary, usage: normalized.usage });
   } catch (error) {
+    if (error instanceof ContextBudgetError) throw new HttpError(error.message, 400, error.code);
     if (error instanceof HttpError) throw error;
     const aborted = controller.signal.aborted || isAbortError(error);
-    throw new HttpError(aborted ? '上下文压缩超时或连接已断开' : `无法连接压缩模型：${errorMessage(error)}`, aborted ? 504 : 502);
+    throw new HttpError(aborted ? `${label}超时或连接已断开` : `无法连接${label}模型：${errorMessage(error)}`, aborted ? 504 : 502);
   } finally {
     done();
   }

@@ -49,13 +49,13 @@ const SEED_STATE = {
 
 test("首次启动引导：展示全新开始、迁移导入与 128 位封套说明", async ({ page }) => {
   await page.goto("/onboarding.html");
-  await expect(page.locator("#onboardingTitle")).toContainText("决定第一份记忆");
-  await expect(page.locator("#onboardingFreshBtn")).toContainText("启动全新 Clawbox");
+  await expect(page.locator("#onboardingTitle")).toContainText("欢迎使用 ai-chatbox");
+  await expect(page.locator("#onboardingFreshBtn")).toContainText("启动全新 ai-chatbox");
   await expect(page.locator("#onboardingImportBtn")).toContainText("从迁移包导入");
   await expect(page.locator(".migration-seal")).toContainText("AES · 128 BIT");
   await expect(page.locator(".migration-seal")).toContainText("KEY.MD");
   await expect(page.locator("#onboardingFreshBtn")).toBeDisabled();
-  await expect(page.locator("#onboardingStatus")).toContainText("首次启动时使用");
+  await expect(page.locator("#onboardingStatus")).toContainText("首次启动时可用");
 });
 
 const testSeedRevisions = new WeakMap();
@@ -84,7 +84,7 @@ async function seedAndLoad(page, { state = SEED_STATE, hash = "#/chat", themeId 
 async function mockBackend(page) {
   await page.route("**/api/health", (route) => route.fulfill({
     contentType: "application/json",
-    body: JSON.stringify({ ok: true, service: "clawbox-server" })
+    body: JSON.stringify({ ok: true, service: "ai-chatbox-server" })
   }));
   await page.route("**/api/providers", (route) => route.fulfill({
     contentType: "application/json",
@@ -96,7 +96,7 @@ async function mockBackend(page) {
     body: [
       "event: chat.stream.started\ndata: {\"version\":1,\"providerId\":\"p-demo\",\"reasoningKind\":\"thinking\"}\n\n",
       "event: chat.reasoning.delta\ndata: {\"delta\":\"先想一下用户要什么。\",\"kind\":\"thinking\"}\n\n",
-      "event: chat.content.delta\ndata: {\"delta\":\"你好，这是一段 **Clawbox** 风格的回复。\"}\n\n",
+      "event: chat.content.delta\ndata: {\"delta\":\"你好，这是一段 **ai-chatbox** 风格的回复。\"}\n\n",
       "event: chat.usage\ndata: {\"inputTokens\":8,\"outputTokens\":6,\"totalTokens\":14,\"estimated\":false}\n\n",
       "event: chat.stream.completed\ndata: {\"finishReason\":\"stop\"}\n\n"
     ].join("")
@@ -227,8 +227,8 @@ test("流式对话：思考面板 + Markdown 正文 + 元数据", async ({ page 
   await page.click("#sendBtn");
   await expect(page.locator(".message-entry.user .markdown-body")).toContainText("打个招呼");
   await expect(page.locator(".reasoning-sheet")).toContainText("已思考", { timeout: 8000 });
-  await expect(page.locator(".message-entry.assistant .message-body .markdown-body")).toContainText("Clawbox");
-  await expect(page.locator(".message-entry.assistant .message-body .markdown-body strong")).toHaveText("Clawbox");
+  await expect(page.locator(".message-entry.assistant .message-body .markdown-body")).toContainText("ai-chatbox");
+  await expect(page.locator(".message-entry.assistant .message-body .markdown-body strong")).toHaveText("ai-chatbox");
   await expect(page.locator(".message-entry.assistant")).toContainText("tokens");
   // 自动生成标题（取前 18 字）
   await expect(page.locator("#stageTitle")).toContainText("打个招呼");
@@ -890,7 +890,7 @@ test("消息编辑：保存并重新发送创建会话内分支", async ({ page 
   await page.click('[data-editor="resend"]');
   // 新路径显示修改后的问题与新回复，旧路径保留在同一会话内
   await expect(page.locator(".message-entry.user .markdown-body").first()).toContainText("换个问法");
-  await expect(page.locator(".message-entry.assistant .message-body .markdown-body").last()).toContainText("Clawbox", { timeout: 8000 });
+  await expect(page.locator(".message-entry.assistant .message-body .markdown-body").last()).toContainText("ai-chatbox", { timeout: 8000 });
   await expect(page.locator(".message-entry")).toHaveCount(2);
   await expect(page.locator(".message-branch-switcher .branch-count")).toHaveText("2 / 2");
   await page.click('.message-branch-switcher [data-message-branch="previous"]');
@@ -1095,7 +1095,7 @@ test("Everforest：主题包令牌与纯色外观完整生效", async ({ page })
       "--canvas-mid", "--surface-content", "--label", "--accent", "--send-btn", "--font-body"
     ].map((token) => [token, style.getPropertyValue(token).trim()]));
   });
-  // 以当前主题包（resources/themes/everforest-clawbox-theme-v1.json）为权威，
+  // 以当前主题包（resources/themes/everforest-ai-chatbox-theme-v1.json）为权威，
   // 不复制旧 Everforest 色值。
   expect(tokens).toMatchObject({
     "--canvas-mid": "#F7F5EC",
@@ -1264,7 +1264,7 @@ test("额度提示：悬停显示 3+1 行且单行不折行", async ({ page }) =
   await expect(tooltip.locator(".context-tooltip-line").filter({ hasText: "历史与摘要" })).toHaveCount(1);
   await expect(tooltip.locator(".context-tooltip-line").filter({ hasText: "本次输入与附件" })).toHaveCount(1);
   // 估算说明与点击压缩入口
-  await expect(tooltip.locator("[data-tooltip-hint]")).toContainText("字符估算");
+  await expect(tooltip.locator("[data-tooltip-hint]")).toContainText("估算含请求开销");
   await expect(tooltip.locator("[data-tooltip-hint]")).toContainText("点击压缩历史");
   // 数值行保持单行不折行（旧版「剩余上下文」回归为 tooltip 次行）
   const info = await tooltip.locator("[data-tooltip-window]").evaluate((el) => ({
@@ -1437,7 +1437,7 @@ test("主题 JSON：更新默认主题、重启恢复并删除自定义变体", 
   await expect(page.locator("#themePackageImportBtn")).toBeVisible();
   await expect(page.locator(".theme-card")).toHaveCount(1);
 
-  const examplePath = path.resolve(__dirname, "../src/resources/themes/everforest-clawbox-theme-v1.json");
+  const examplePath = path.resolve(__dirname, "../src/resources/themes/everforest-ai-chatbox-theme-v1.json");
   const [fileChooser] = await Promise.all([
     page.waitForEvent("filechooser"),
     page.locator("#themePackageImportBtn").click()
@@ -1627,17 +1627,14 @@ test("设置：仅保存模型额度，模型改名迁移默认项", async ({ pa
   const outputField = dialog.locator(".provider-model-field").filter({ hasText: "最大输出 Token" });
   await outputField.locator("input[type='checkbox']").uncheck();
   await outputField.locator("input[type='number']").fill("4096");
-  await dialog.getByRole("button", { name: "应用更改" }).click();
+  await dialog.getByRole("button", { name: "保存更改" }).click();
 
-  await expect(page.locator('[data-model-row="demo-renamed"]')).toContainText("4.1K output");
-  await expect(page.locator('[data-model-row="demo-renamed"]')).toContainText("自定义");
-  await expect(page.locator('[data-model-row="demo-renamed"]')).toContainText("默认");
-  expect(submittedBody).toBeNull();
+  await expect(page.locator('[data-model-row="demo-renamed"] .provider-model-summary')).toHaveAttribute("title", /最大输出 4.1K.*默认模型/);
 
   await expect(page.locator("#pf-system")).toHaveCount(0);
   await expect(page.locator("#pf-user")).toHaveCount(0);
   await expect(page.locator("#model-temperature")).toHaveCount(0);
-  await page.locator("#pf-save").click();
+  await expect(page.locator("#pf-save")).toHaveCount(0);
 
   await expect.poll(() => submittedBody?.defaultModel).toBe("demo-renamed");
   expect(submittedBody.models).toEqual(["demo-renamed", "demo-pro"]);
@@ -1646,7 +1643,7 @@ test("设置：仅保存模型额度，模型改名迁移默认项", async ({ pa
   expect(submittedBody.modelCapabilities["demo-model"]).toBeUndefined();
   expect(submittedBody.systemPrompt).toBe("");
   expect(submittedBody.settingsSchemaVersion).toBe(1);
-  await expect(page.locator(".provider-save-state")).toContainText("已保存");
+  await expect(page.locator(".provider-auto-state")).toContainText("已保存");
 });
 
 test("聊天模型选择器隐藏禁用供应商，但设置中仍显示其状态", async ({ page }) => {
@@ -1704,6 +1701,11 @@ test("历史会话绑定的供应商已删除时保持只读，重新选择模�
 
 test("设置：新 Key 继续按原请求同步后端，并只留下前端密文", async ({ page }) => {
   const originalKey = "sk-new-provider-secret";
+  let submittedKey = null;
+  await page.route("**/api/providers/key", async route => {
+    if (route.request().method() === "PUT") submittedKey = route.request().postDataJSON().apiKey;
+    await route.fulfill({ json: { ok: true, apiKey: submittedKey || "", hasKeyConfigured: Boolean(submittedKey) } });
+  });
   let submittedBody = null;
   await page.route("**/api/providers/test", (route) => route.fulfill({
     contentType: "application/json",
@@ -1735,10 +1737,10 @@ test("设置：新 Key 继续按原请求同步后端，并只留下前端密文
   await page.locator("#pf-models-fetch").click();
   await expect(page.locator('[data-model-row="demo-model"]')).toBeVisible();
   await page.locator("#pf-key").fill(originalKey);
-  await page.locator("#pf-save").click();
+  await expect(page.locator("#pf-save")).toHaveCount(0);
 
   await expect(page.locator(".provider-item").filter({ hasText: "加密测试供应商" })).toBeVisible();
-  expect(submittedBody.apiKey).toBe(originalKey);
+  await expect.poll(() => submittedKey || submittedBody?.apiKey).toBe(originalKey);
   await expect.poll(() => readProviderVaultJson(page)).toContain("ciphertext");
   const vaultJson = await readProviderVaultJson(page);
   expect(vaultJson).not.toContain(originalKey);
@@ -1880,7 +1882,7 @@ test("设置内部编辑页：离开设置后重新打开供应商时不恢复�
   await expect(page.locator(".provider-item")).toHaveCount(1);
   await expect(page.locator("#pf-name")).toBeVisible();
   await expect(page.locator(".provider-model-dialog")).toHaveCount(0);
-  await expect(page.locator(".provider-save-state")).toContainText("已保存");
+  await expect(page.locator(".provider-auto-state")).toContainText("已保存");
 
   await page.locator('[data-section="tools"]').click();
   await page.locator('[data-extension-new="tool"]').click();
@@ -1979,7 +1981,7 @@ test("数据迁移：浏览器环境显示明确的不可用状态", async ({ pa
   // 版本与运行环境信息归“关于与更新”页：数据页只验证迁移、导入与兼容行为
   await expect(page.locator(".migration-card")).toBeVisible();
   await expect(page.locator(".migration-status-badge")).toHaveText("不可用");
-  await expect(page.locator(".migration-card")).toContainText("迁移仅适用于打包后的 Clawbox macOS 桌面版");
+  await expect(page.locator(".migration-card")).toContainText("迁移仅适用于打包后的 ai-chatbox macOS 桌面版");
   await expect(page.locator("#migrationCreateBtn")).toBeDisabled();
 });
 
@@ -2030,7 +2032,8 @@ test("更新日志时间线", async ({ page }) => {
   await expect(page.locator(".usage-stat").filter({ hasText: "版本" })).toContainText(`v${APP_VERSION}`);
   await expect(page.locator(".usage-stat").filter({ hasText: "版本" })).toContainText("补丁包");
   await expect(page.locator(".usage-stat").filter({ hasText: "运行环境" })).toContainText("浏览器");
-  // 发布记录时间线：当前版本卡片在前，历史版本随后
+  await page.locator(".ui-disclosure > summary").click();
+  // 发布记录时间线：展开后当前版本卡片在前，历史版本随后
   const cards = page.locator(".release-card");
   await expect(cards.first()).toContainText("当前版本");
   await expect(cards.first()).toContainText(`v${CURRENT_RELEASE.displayVersion}`);
@@ -2250,19 +2253,19 @@ test("会话 ⋮ 菜单：置顶与删除入口存在", async ({ page }) => {
   await expect(page.locator('[data-menu-action="delete"]')).toContainText("删除");
 });
 
-test("新建对话守卫：全新对话上不重复新建", async ({ page }) => {
+test("新建待发送对话：发言前不加入历史且重复点击不堆积", async ({ page }) => {
   await seedAndLoad(page);
   await page.goto("/");
-  await expect(page.locator(".conversation-item")).toHaveCount(1);
+  await expect(page.locator(".conversation-item")).toHaveCount(0);
   await page.click("#newConversationBtn");
   await page.click("#newConversationBtn");
-  await expect(page.locator(".conversation-item")).toHaveCount(1);
-  // 有消息的对话上正常新建
+  await expect(page.locator(".conversation-item")).toHaveCount(0);
+  // 从已有历史打开临时会话，已有记录保留
   await seedAndLoad(page, { state: SEED_WITH_HISTORY });
   await page.goto("/");
   await expect(page.locator(".conversation-item")).toHaveCount(1);
   await page.click("#newConversationBtn");
-  await expect(page.locator(".conversation-item")).toHaveCount(2);
+  await expect(page.locator(".conversation-item")).toHaveCount(1);
 });
 
 test("归档栏收回/展开（桌面）", async ({ page }) => {
@@ -2297,9 +2300,9 @@ test("设置：工具与 Skill 独立入口，启用后全局持续生效", asyn
   await expect(page.locator("[data-extension-card]")).toHaveCount(1);
   // 扩展页统一使用当前中文名称
   await expect(page.locator("[data-extension-card='tool']")).toContainText("自定义工具");
-  await expect(page.locator("[data-extension-capability]")).toContainText("当前版本仅保留配置与导入入口");
+  await expect(page.locator("[data-extension-capability]")).toContainText("当前仅可管理配置");
   await expect(page.locator("[data-extension-capability]")).toContainText("执行尚未开放");
-  await expect(page.locator("[data-extension-capability]")).toContainText("不会静默忽略");
+  await expect(page.locator("[data-extension-capability]")).toContainText("相关请求会被拒绝");
   await expect(page.locator("[data-extension-card='tool']")).toContainText("运行时沙箱（macOS）");
   await page.click("[data-sandbox-toggle]");
   await expect(page.locator("[data-sandbox-toggle]")).toHaveAttribute("aria-checked", "true");

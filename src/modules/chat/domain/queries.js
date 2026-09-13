@@ -34,3 +34,21 @@ export function invalidateCompressionForIndex(conversation, changedIndex) {
   return false;
 }
 
+
+/** Draft shells are persisted for recovery but are not history entries. Legacy records stay visible. */
+export function isTemporaryConversation(conversation) {
+  return conversation?.isTemporary === true && !conversation.messages.some(message => message.role === 'user');
+}
+
+export function contextMessages(conversation) {
+    return getMessagesAfterCompression(conversation)
+      .filter((message) => !message.noticeKind)
+      .filter((message) => message.content || (message.files && message.files.length) || (message.parts && message.parts.length))
+      .map((message) => ({
+        role: message.role,
+        content: message.content,
+        ...(message.files && message.files.length ? { files: message.files } : {}),
+        ...(message.parts && message.parts.length ? { parts: message.parts.filter((part) => part.type === "image" || part.type === "text" || part.type === "file") } : {})
+      }));
+  }
+

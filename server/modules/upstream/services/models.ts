@@ -52,7 +52,8 @@ export async function listModels({
   const upstream = await fetch(buildModelsUrl(baseUrl), {
     method: 'GET',
     headers: protocolHeaders(responseFormat, apiKey),
-    signal
+    signal,
+    redirect: 'error'
   });
   const text = await upstream.text();
   let payload: JsonRecord = {};

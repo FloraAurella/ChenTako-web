@@ -2,9 +2,11 @@
 
 ## 在线部署
 
-当前版本已发布到 [GitHub Pages](https://floraaurella.github.io/ChenTako-web/)。GitHub Actions 会在 `main` 推送后自动构建 `dist` 并发布。
+前端部署入口为 [ChatGPT Sites](https://chentako-web.floraaurella.chatgpt.site)（默认仅所有者）及 [GitHub Pages](https://floraaurella.github.io/ChenTako-web/)；二者连接 [Cloudflare 后端](https://chentako-api.chentako.workers.dev/api/health)。GitHub Actions 会在 `main` 推送后自动构建 `dist` 并发布。
 
-Pages 构建支持仓库变量 `CHENTAKO_API_BASE_URL`，通过 `VITE_API_BASE_URL` 注入前端 API 地址；未设置时仍使用相对 `/api`，适合本地开发。当前后端入口依赖 Node HTTP 与 SQLite，不能直接作为 Cloudflare Worker 上传；Worker 部署需要单独的 Worker/D1 适配层和 Cloudflare 登录授权。
+Pages 仓库变量 `CHENTAKO_API_BASE_URL` 通过 `VITE_API_BASE_URL` 注入后端地址；Sites 使用相同地址构建。Worker 的 `server/app/worker.ts` 复用四协议、流式、标题和摘要路由，通过 Durable Objects 的 SQLite 为每个浏览器隔离供应商配置，API Key 用 Worker Secret 对应的主密钥加密。聊天和项目资料仍留在浏览器。本机 Node 入口继续使用原有 SQLite 文件。
+
+部署及维护见 [云端部署说明](docs/DEPLOYMENT.md)。云端单次 JSON 请求上限为 20 MiB，超出时明确拒绝，不截断资料。Sites 与 Pages 为不同来源，浏览器本地记录和供应商配置不会自动互通；本机凭据数据库不上传。
 
 ## ChenTako-web 当前运行范围（2026-09-13）
 

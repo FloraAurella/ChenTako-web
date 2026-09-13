@@ -24,7 +24,7 @@ export interface UpstreamService {
   protocolHeaders(responseFormat: Parameters<typeof protocolHeaders>[0], apiKey: string): Record<string, string>;
 }
 
-export const module: BackendModule = {
+export const createUpstreamModule = (validate = validateUpstreamUrl): BackendModule => ({
   id: 'upstream',
   dependsOn: [],
   setup({ services }) {
@@ -34,7 +34,7 @@ export const module: BackendModule = {
       collect: collectProviderStreamRound,
       project: createProviderStreamProjector,
       finishReason: finishReasonOf,
-      validateUpstreamUrl,
+      validateUpstreamUrl: validate,
       isLoopbackBaseUrl,
       listModels,
       protocolHeaders
@@ -42,4 +42,5 @@ export const module: BackendModule = {
     services.services.register('upstream', { id: 'upstream', value: upstream });
     return () => services.services.removeOwner('upstream');
   }
-};
+});
+export const module = createUpstreamModule();

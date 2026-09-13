@@ -16,6 +16,7 @@ export interface ChatDeps {
   upstream: UpstreamService;
   ssrfAllow: readonly string[];
   bodyLimit: number;
+  taskPrompt?: typeof taskPrompt;
 }
 
 function errorMessage(error: unknown): string {
@@ -136,7 +137,7 @@ export async function handleChat(deps: ChatDeps, { req, res }: RequestContext): 
     });
     let upstream: Response;
     try {
-      upstream = await fetch(built.url, { ...built.options, signal: controller.signal });
+      upstream = await fetch(built.url, { ...built.options, signal: controller.signal, redirect: 'error' });
     } catch (error) {
       const aborted = controller.signal.aborted || isAbortError(error);
       throw new HttpError(aborted ? '上游请求超时或连接已断开' : `无法连接上游服务：${errorMessage(error)}`, aborted ? 504 : 502);
@@ -223,7 +224,7 @@ async function handleAuxiliary(deps: ChatDeps, { req, res }: RequestContext, pur
     const merged: MergedProvider = {
       ...request.merged,
       temperature: 0.7, topP: 1, userId: '',
-      systemPrompt: taskPrompt(title ? 'title' : 'summary'),
+      systemPrompt: (deps.taskPrompt || taskPrompt)(title ? 'title' : 'summary'),
       chatConfigVersion: 1, inputBudget: null
     };
     const built = deps.upstream.buildRequest(merged, {
@@ -236,7 +237,7 @@ async function handleAuxiliary(deps: ChatDeps, { req, res }: RequestContext, pur
     if (!title && built.skippedFiles.length) throw new HttpError('压缩模型不支持部分历史附件，请选择可处理完整历史的模型。原历史已保留。', 400);
     let upstream: Response;
     try {
-      upstream = await fetch(built.url, { ...built.options, signal: controller.signal });
+      upstream = await fetch(built.url, { ...built.options, signal: controller.signal, redirect: 'error' });
     } catch (error) {
       const aborted = controller.signal.aborted || isAbortError(error);
       throw new HttpError(aborted ? `${label}超时或连接已断开` : `无法连接${label}模型：${errorMessage(error)}`, aborted ? 504 : 502);

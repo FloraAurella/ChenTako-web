@@ -1,0 +1,11 @@
+{
+  "name": "chentako-api",
+  "main": "server/app/worker.ts",
+  "account_id": "9297739d48a987c6530332e463b3c152",
+  "compatibility_date": "2026-09-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "durable_objects": { "bindings": [{ "name": "VAULTS", "class_name": "ProviderVault" }] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["ProviderVault"] }],
+  "vars": { "CORS_ORIGINS": "https://floraaurella.github.io,https://chentako-web.floraaurella.chatgpt.site,http://127.0.0.1:5173" }
+}

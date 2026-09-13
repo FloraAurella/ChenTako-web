@@ -200,4 +200,6 @@ appearance 模块不再贡献主题选择、导入导出界面与相应设置搜
 
 ## ChenTako-web 暂停写作模块（2026-09-13）
 
+云端装配位于 `server/app/worker.ts`：Web 传输适配器位于 core，沿用 Node 的通用路由契约；供应商模块通过同步 SQL 契约复用仓储，Node 使用本地 SQLite，Worker 使用每浏览器隔离的 SQLite Durable Object。上游校验与提示词读取通过模块工厂注入，云端不复制聊天业务路由。浏览器只在配置云端 API 地址时附加随机身份，原本地／桌面连接不变。部署和数据边界见 `DEPLOYMENT.md`。
+
 App composition 的 suspendedModules 在启动前排除 writing，不使用 UI 隐藏代替业务停用。写作指令、插槽、请求上下文和请求操作均不注册；知识库与普通聊天贡献不变。资源提示词入口只静态导入 system；服务端 taskPrompt 仍仅读取 summary/title。转换脚本 PROMPT_NAMES 限定相同三个启用文件。恢复需显式解除装配暂停并恢复写作提示词目录映射和转换列表；源代码和归档兼容均保留。

@@ -11,7 +11,7 @@ import { handleChat, handleCompress, handleTitle, type ChatDeps } from './servic
  * 校验 → 注册表匹配 → Key 解析 → 上游构造 → SSE v1 投影，全部经
  * providers / upstream 的公开服务完成，本模块不直接触碰存储细节。
  */
-export const module: BackendModule = {
+export const createChatModule = (taskPrompt?: ChatDeps['taskPrompt']): BackendModule => ({
   id: 'chat',
   dependsOn: ['gateway', 'providers', 'upstream'],
   setup({ services, scope }) {
@@ -19,7 +19,8 @@ export const module: BackendModule = {
       store: serviceOf<ProviderStore>(services.services, 'providers.store'),
       upstream: serviceOf<UpstreamService>(services.services, 'upstream'),
       ssrfAllow: services.config.ssrfAllow,
-      bodyLimit: services.config.bodyLimitBytes
+      bodyLimit: services.config.bodyLimitBytes,
+      taskPrompt
     };
     const register = (route: RouteContribution) => { scope.defer(services.routes.register('chat', route)); };
     register({
@@ -36,4 +37,5 @@ export const module: BackendModule = {
       handler: (context) => handleCompress(deps, context)
     });
   }
-};
+});
+export const module = createChatModule();

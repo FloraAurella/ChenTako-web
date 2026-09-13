@@ -27,21 +27,23 @@
     "check:architecture:server": "node scripts/check-architecture-server.mjs"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260911.1",
     "@playwright/test": "1.62.1",
+    "@testing-library/jest-dom": "6.9.1",
+    "@testing-library/react": "16.3.2",
     "@types/node": "25.9.5",
     "@types/react": "19.2.18",
     "@types/react-dom": "19.2.5",
     "@vitejs/plugin-react": "5.2.0",
     "electron": "40.0.0",
     "electron-builder": "26.0.12",
+    "fake-indexeddb": "6.2.5",
+    "jsdom": "25.0.1",
     "prettier": "3.6.2",
     "typescript": "5.8.3",
     "vite": "7.3.6",
     "vitest": "3.2.7",
-    "jsdom": "25.0.1",
-    "@testing-library/react": "16.3.2",
-    "@testing-library/jest-dom": "6.9.1",
-    "fake-indexeddb": "6.2.5"
+    "wrangler": "^4.131.1"
   },
   "dependencies": {
     "fflate": "0.8.2",

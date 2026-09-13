@@ -12,6 +12,7 @@ function isPrivateAddress(address: string): boolean {
     const parts = ip.split('.').map(Number);
     return (
       parts[0] === 10 ||
+      (parts[0] === 100 && Number(parts[1]) >= 64 && Number(parts[1]) <= 127) ||
       parts[0] === 127 ||
       (parts[0] === 169 && parts[1] === 254) ||
       (parts[0] === 172 && Number(parts[1]) >= 16 && Number(parts[1]) <= 31) ||
@@ -20,15 +21,21 @@ function isPrivateAddress(address: string): boolean {
       Number(parts[0]) >= 224
     );
   }
+  const mapped = /^::ffff:([a-f0-9]{1,4}):([a-f0-9]{1,4})$/i.exec(ip);
+  if (mapped) {
+    const high = parseInt(mapped[1]!, 16); const low = parseInt(mapped[2]!, 16);
+    return isPrivateAddress(`${high >> 8}.${high & 255}.${low >> 8}.${low & 255}`);
+  }
+  if (ip.startsWith('::ffff:') && ip.includes('.')) return isPrivateAddress(ip.slice(7));
   return /^::1$/.test(ip) ||
-    /^fe80:/i.test(ip) ||
-    /^fc00:/i.test(ip) ||
-    /^fd/.test(ip) ||
+    /^fe[89ab]/i.test(ip) ||
+    /^f[cd]/i.test(ip) ||
+    /^ff/i.test(ip) ||
     /^::$/.test(ip) ||
     /^2001:db8:/i.test(ip);
 }
 
-export async function validateUpstreamUrl(baseUrl: string, allowedHosts: readonly string[]): Promise<{ ok: boolean; reason?: string }> {
+export async function validateUpstreamUrl(baseUrl: string, allowedHosts: readonly string[], lookup: (hostname: string, options: { all: true }) => Promise<{ address: string }[]> = dns.lookup): Promise<{ ok: boolean; reason?: string }> {
   let url: URL;
   try {
     url = new URL(baseUrl);
@@ -53,7 +60,7 @@ export async function validateUpstreamUrl(baseUrl: string, allowedHosts: readonl
   }
   // 域名：解析后检查所有地址，任何一个命中私网都拦截
   try {
-    const result = await dns.lookup(hostname, { all: true });
+    const result = await lookup(hostname, { all: true });
     const addresses = Array.isArray(result) ? result.map((item) => item.address) : [String(result)];
     if (addresses.some((address) => isPrivateAddress(address))) {
       return { ok: false, reason: `域名 ${hostname} 解析到内网地址，已阻止` };

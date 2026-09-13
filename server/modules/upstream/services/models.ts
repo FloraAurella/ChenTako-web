@@ -53,8 +53,12 @@ export async function listModels({
     method: 'GET',
     headers: protocolHeaders(responseFormat, apiKey),
     signal,
-    redirect: 'error'
+    redirect: 'manual'
   });
+  if (upstream.status >= 300 && upstream.status < 400) {
+    await upstream.body?.cancel();
+    throw Object.assign(new Error('上游返回了重定向，已拒绝跟随'), { upstreamStatus: upstream.status });
+  }
   const text = await upstream.text();
   let payload: JsonRecord = {};
   try { payload = text ? JSON.parse(text) as JsonRecord : {}; } catch { /* 使用空对象 */ }

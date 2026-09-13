@@ -14,7 +14,11 @@ export async function testModel(upstream: UpstreamService, options: {
     defaultReasoningEffort: '', maxTokens: 1024, contextWindow: 8192,
     temperature: 1, topP: 1, streaming: false, saveChats: false, systemPrompt: '', userId: ''
   }, { model, reasoningEffort: 'none', stream: false, messages: [{ role: 'user', content: 'Reply with OK.' }] });
-  const response = await fetch(built.url, { ...built.options, signal, redirect: 'error' });
+  const response = await fetch(built.url, { ...built.options, signal, redirect: 'manual' });
+  if (response.status >= 300 && response.status < 400) {
+    await response.body?.cancel();
+    throw new HttpError('上游返回了重定向，已拒绝跟随', 502);
+  }
   if (!response.ok) {
     await response.body?.cancel();
     throw new HttpError(`模型响应失败（HTTP ${response.status}），请检查模型 ID、权限和 API 格式`, response.status);

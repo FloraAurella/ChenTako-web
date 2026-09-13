@@ -5,7 +5,7 @@ import net from 'node:net';
  * SSRF 防护（原版 lib/upstream.ts 移植）：默认阻断 localhost/内网/链路本地地址，
  * 防止后端被当作跳板。允许列表由应用配置传入（AI_CHATBOX_SSRF_ALLOW）。
  */
-function isPrivateAddress(address: string): boolean {
+export function isPrivateAddress(address: string): boolean {
   const ip = address.toLowerCase();
   if (net.isIP(ip) === 0) return false;
   if (net.isIPv4(ip)) {

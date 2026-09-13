@@ -137,10 +137,14 @@ export async function handleChat(deps: ChatDeps, { req, res }: RequestContext): 
     });
     let upstream: Response;
     try {
-      upstream = await fetch(built.url, { ...built.options, signal: controller.signal, redirect: 'error' });
+      upstream = await fetch(built.url, { ...built.options, signal: controller.signal, redirect: 'manual' });
     } catch (error) {
       const aborted = controller.signal.aborted || isAbortError(error);
       throw new HttpError(aborted ? '上游请求超时或连接已断开' : `无法连接上游服务：${errorMessage(error)}`, aborted ? 504 : 502);
+    }
+    if (upstream.status >= 300 && upstream.status < 400) {
+      await upstream.body?.cancel();
+      throw new HttpError('上游返回了重定向，已拒绝跟随', 502);
     }
     if (!upstream.ok) {
       throw new HttpError(`上游返回 ${upstream.status}：${await readUpstreamError(upstream)}`,
@@ -237,10 +241,14 @@ async function handleAuxiliary(deps: ChatDeps, { req, res }: RequestContext, pur
     if (!title && built.skippedFiles.length) throw new HttpError('压缩模型不支持部分历史附件，请选择可处理完整历史的模型。原历史已保留。', 400);
     let upstream: Response;
     try {
-      upstream = await fetch(built.url, { ...built.options, signal: controller.signal, redirect: 'error' });
+      upstream = await fetch(built.url, { ...built.options, signal: controller.signal, redirect: 'manual' });
     } catch (error) {
       const aborted = controller.signal.aborted || isAbortError(error);
       throw new HttpError(aborted ? `${label}超时或连接已断开` : `无法连接${label}模型：${errorMessage(error)}`, aborted ? 504 : 502);
+    }
+    if (upstream.status >= 300 && upstream.status < 400) {
+      await upstream.body?.cancel();
+      throw new HttpError('上游返回了重定向，已拒绝跟随', 502);
     }
     if (!upstream.ok) {
       throw new HttpError(`${label}失败（${upstream.status}）：${await readUpstreamError(upstream)}`,

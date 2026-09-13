@@ -141,7 +141,7 @@ export class HttpGateway {
       this.server.once('error', onError);
       this.server.listen(port, host, () => {
         this.server.removeListener('error', onError);
-        console.log(`ai-chatbox 模块化后端已启动: http://${host}:${port}（仅本机回环）`);
+        console.log(`ChenTako 模块化后端已启动: http://${host}:${port}（仅本机回环）`);
         resolve();
       });
     });

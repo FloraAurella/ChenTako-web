@@ -48,7 +48,7 @@ describe("JSON 主题文件", () => {
 
   it("扩展名和下载文件名只使用 json", () => {
     expect(THEME_PACKAGE_EXTENSION).toBe("json");
-    expect(themePackageFilename(theme)).toBe("ai-chatbox-studio.json");
+    expect(themePackageFilename(theme)).toBe("ChenTako-studio.json");
   });
 
   it("不导出主题动效，也不保留背景图片字段", () => {

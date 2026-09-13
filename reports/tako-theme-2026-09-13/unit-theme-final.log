@@ -1,0 +1,14 @@
+
+> chentako@1.1.5 test
+> vitest run test/theme.test.js
+
+
+ RUN  v3.2.7 /Users/qxc/Desktop/ai/coding-project/ChenTako
+
+ ✓ test/theme.test.js (16 tests) 6ms
+
+ Test Files  1 passed (1)
+      Tests  16 passed (16)
+   Start at  11:44:21
+   Duration  725ms (transform 79ms, setup 6ms, collect 115ms, tests 6ms, environment 352ms, prepare 52ms)
+

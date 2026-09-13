@@ -1,7 +1,5 @@
 import { Button, TextField } from "../../../shared/ui/primitives";
 import { SettingsCard, SettingsGroup } from "../../../shared/ui/SettingsCard";
-import { ThemeCard } from "./ThemeCard";
-import { listThemes } from "../domain/registry.js";
 import { readSurfaceAppearance } from "../surface.js";
 import { APPEARANCE_CONTRAST_MAX, APPEARANCE_CONTRAST_MIN } from "../../../shared/settings/settings-view-model";
 import { TrustedIcon } from "../../../shared/ui/Icon";
@@ -32,8 +30,6 @@ function ContrastControl({ value, onChange }: { value: number; onChange: (value:
 export function AppearancePane({ service, state }: { service: SettingsService; state: SettingsState }) {
   const theme = service.theme;
   const current = theme.current();
-  const activeTheme = listThemes().find((entry: any) => entry.id === current.themeId);
-  const themeLabel = activeTheme?.label || current.themeId;
   const scheme = current.scheme === "dark" ? "dark" : "light";
   const persisted = readSurfaceAppearance(current.themeId, scheme);
   const activeOverride = state.appearanceOverride;
@@ -53,22 +49,7 @@ export function AppearancePane({ service, state }: { service: SettingsService; s
           {([["system", "monitor", "跟随系统"], ["light", "sun", "浅色"], ["dark", "moon", "深色"]] as const).map(([value, icon, label]) => <label key={value} className={`appearance-mode-option${mode === value ? " active" : ""}`}><TextField type="radio" name="appearanceMode" value={value} checked={mode === value} onChange={() => service.appearance.setAppearanceMode(value)} /><span className="appearance-mode-label"><TrustedIcon name={icon} size={16} /> {label}</span></label>)}
         </div>
       </SettingsCard>
-      <section className="appearance-themes" id="appearance-themes" tabIndex={-1} aria-labelledby="appearance-themes-title">
-        <header className="appearance-section-head">
-          <div><h3 id="appearance-themes-title" tabIndex={-1} className="settings-card-title">主题</h3></div>
-        </header>
-        <div className="theme-grid" id="themeGrid">{listThemes().map((entry: any) => <ThemeCard key={entry.id} entry={entry} activeId={current.themeId} scheme={scheme} service={service} />)}</div>
-      </section>
-    </SettingsGroup>
-
-    <SettingsGroup id="appearance-advanced" title="高级配置">
-      <SettingsCard id="appearance-package" title="主题导入与导出" description="支持 ai-chatbox 主题 JSON。">
-        <div className="theme-package-actions">
-          <Button type="button" className="btn btn-secondary" id="themePackageImportBtn" disabled={state.themePackageBusy} onClick={() => void service.appearance.chooseThemeJson()}><TrustedIcon name="upload" size={15} /> 导入主题</Button>
-          <Button type="button" className="btn btn-ghost" id="themePackageExportBtn" disabled={state.themePackageBusy} onClick={() => void service.appearance.exportThemeJson()}><TrustedIcon name="download" size={15} /> 导出</Button>
-        </div>
-      </SettingsCard>
-      <SettingsCard id="appearance-background" title="界面层次" description={`${themeLabel} · ${scheme === "dark" ? "深色" : "浅色"} · 即时生效`}>
+      <SettingsCard id="appearance-background" title="界面层次" description={`${scheme === "dark" ? "深色" : "浅色"} · 即时生效`}>
         <div className="bg-effect-stack">
           <ContrastControl value={appearance.contrast} onChange={service.appearance.setContrast} />
           <div className="bg-effect-divider" aria-hidden="true" />

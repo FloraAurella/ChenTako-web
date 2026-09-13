@@ -1,0 +1,19 @@
+
+> chentako@1.1.5 test:e2e
+> playwright test e2e/tako-theme.spec.js
+
+[WebServer] (node:99769) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 6 tests using 1 worker
+
+(node:99773) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › e2e/tako-theme.spec.js:6:5 › 章鱼烧主题消息、焦点与刷新 light 1280 (720ms)
+  ✓  2 [chromium] › e2e/tako-theme.spec.js:6:5 › 章鱼烧主题消息、焦点与刷新 light 1024 (614ms)
+  ✓  3 [chromium] › e2e/tako-theme.spec.js:6:5 › 章鱼烧主题消息、焦点与刷新 light 390 (602ms)
+  ✓  4 [chromium] › e2e/tako-theme.spec.js:6:5 › 章鱼烧主题消息、焦点与刷新 dark 1280 (593ms)
+  ✓  5 [chromium] › e2e/tako-theme.spec.js:6:5 › 章鱼烧主题消息、焦点与刷新 dark 1024 (621ms)
+  ✓  6 [chromium] › e2e/tako-theme.spec.js:6:5 › 章鱼烧主题消息、焦点与刷新 dark 390 (587ms)
+
+  6 passed (5.0s)

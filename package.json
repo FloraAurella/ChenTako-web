@@ -1,13 +1,18 @@
 {
-  "name": "ai-chatbox-structure-v2.0",
+  "name": "chentako",
   "version": "1.1.5",
   "private": true,
   "type": "module",
-  "description": "模块化 AI Chatbox：前端与零依赖模块化 Node 后端",
+  "description": "模块化 ChenTako：前端与零依赖模块化 Node 后端",
   "engines": {
     "node": ">=20.19"
   },
   "scripts": {
+    "prompts:convert": "node scripts/convert-prompts.mjs",
+    "predev": "npm run prompts:convert",
+    "predev:server": "npm run prompts:convert",
+    "prestart:server": "npm run prompts:convert",
+    "prebuild": "npm run prompts:convert",
     "dev": "vite",
     "dev:server": "node --watch server/app/main.ts",
     "start:server": "node server/app/main.ts",

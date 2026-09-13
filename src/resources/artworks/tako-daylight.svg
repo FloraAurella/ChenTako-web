@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" fill="none">
+<title>晴日摊屋：日轮、竹叶与章鱼烧浅色边缘画作</title>
+<defs>
+ <radialGradient id="sun"><stop stop-color="#FFCB68" stop-opacity=".3"/><stop offset="1" stop-color="#FFCB68" stop-opacity="0"/></radialGradient>
+ <linearGradient id="batter" x2=".6" y2="1"><stop stop-color="#FFDA89"/><stop offset="1" stop-color="#E8A453"/></linearGradient>
+ <linearGradient id="rim" x2="1" y2="1"><stop stop-color="#E9AB65"/><stop offset="1" stop-color="#DB8050"/></linearGradient>
+</defs>
+<ellipse cx="1540" cy="150" rx="270" ry="290" fill="url(#sun)"/>
+<g stroke="#CE8A35" stroke-linecap="round" opacity=".24">
+ <circle cx="1530" cy="85" r="101" stroke-width=".8"/><circle cx="1530" cy="85" r="91" stroke-width="1.3"/>
+ <circle cx="1530" cy="85" r="83" stroke-dasharray="1 7"/>
+ <g stroke-width="1.3"><path d="M1643.0 85.0L1659.0 85.0"/><path d="M1641.6 102.7L1657.4 105.2"/><path d="M1637.5 119.9L1652.7 124.9"/><path d="M1630.7 136.3L1644.9 143.6"/><path d="M1621.4 151.4L1634.4 160.8"/><path d="M1609.9 164.9L1621.2 176.2"/><path d="M1596.4 176.4L1605.8 189.4"/><path d="M1581.3 185.7L1588.6 199.9"/><path d="M1564.9 192.5L1569.9 207.7"/><path d="M1547.7 196.6L1550.2 212.4"/><path d="M1530.0 198.0L1530.0 214.0"/><path d="M1512.3 196.6L1509.8 212.4"/><path d="M1495.1 192.5L1490.1 207.7"/><path d="M1478.7 185.7L1471.4 199.9"/><path d="M1463.6 176.4L1454.2 189.4"/><path d="M1450.1 164.9L1438.8 176.2"/><path d="M1438.6 151.4L1425.6 160.8"/><path d="M1429.3 136.3L1415.1 143.6"/><path d="M1422.5 119.9L1407.3 124.9"/><path d="M1418.4 102.7L1402.6 105.2"/><path d="M1417.0 85.0L1401.0 85.0"/><path d="M1418.4 67.3L1402.6 64.8"/><path d="M1422.5 50.1L1407.3 45.1"/><path d="M1429.3 33.7L1415.1 26.4"/><path d="M1438.6 18.6L1425.6 9.2"/><path d="M1450.1 5.1L1438.8 -6.2"/><path d="M1463.6 -6.4L1454.2 -19.4"/><path d="M1478.7 -15.7L1471.4 -29.9"/><path d="M1495.1 -22.5L1490.1 -37.7"/><path d="M1512.3 -26.6L1509.8 -42.4"/><path d="M1530.0 -28.0L1530.0 -44.0"/><path d="M1547.7 -26.6L1550.2 -42.4"/><path d="M1564.9 -22.5L1569.9 -37.7"/><path d="M1581.3 -15.7L1588.6 -29.9"/><path d="M1596.4 -6.4L1605.8 -19.4"/><path d="M1609.9 5.1L1621.2 -6.2"/><path d="M1621.4 18.6L1634.4 9.2"/><path d="M1630.7 33.7L1644.9 26.4"/><path d="M1637.5 50.1L1652.7 45.1"/><path d="M1641.6 67.3L1657.4 64.8"/></g>
+ <path d="M1371 75q-38 12-62 1m80 89q-43 35-82 21m124 57q-38 28-60 30"/>
+</g>
+<g stroke="#D6A35D" opacity=".2" stroke-width="1">
+ <path d="M1500 287q-150 110 5 220t-45 224"/><path d="M1512 292q-150 110 5 220t-45 224"/>
+ <path d="M1540 258q-161 150 1 235t-16 209"/>
+</g>
+<g transform="translate(1460 878) rotate(-16)" opacity=".26">
+ <path d="M-150-32Q0-81 160-28L133 52Q0 86-131 45Z" fill="#F5CFA0" stroke="url(#rim)" stroke-width="1.6"/>
+ <path d="M-148-29Q0 18 157-28M-131 46Q0 70 133 52M-126-20l18 56M-98-15l10 63M-65-7l7 61M-26 0l3 59M18 2l-2 59M62-3l-5 61M106-11l-10 62" stroke="#BB843D" stroke-width=".8"/>
+ <g transform="translate(-84 -38) rotate(-16)">
+ <circle r="59" fill="url(#batter)" stroke="#B56B25" stroke-width="1.2"/>
+ <path d="M-49.0 -23.6C-35.4 -53.1,-20.6 -34.2,-14.8 -16.5S1.8 -1.2,8.3 -24.8S37.2 -42.5,49.0 -17.7" fill="none" stroke="#A84A23" stroke-width="8.8" stroke-linecap="round"/>
+ <path d="M-32.5 -34.8Q-11.8 -50.1,1.2 -27.7T38.4 -26.6" fill="none" stroke="#FFF9DE" stroke-width="5.3" stroke-linecap="round"/>
+ <path d="M-20 -47l9-5 3 6-9 5Zm33 7 9 3-2 6-9-3ZM-8-18l8-5 3 6-8 5Z" fill="#7D8D42"/>
+ <path d="M-22-60q15-19 24-7l-8 13q-6-10-16-6ZM13-60q15-5 22 6l-10 4Z" fill="#D8984B" stroke="#B87937" stroke-width=".7"/>
+ <path d="M-35.4 17.7q8 16 23 21" fill="none" stroke="#FFF3C9" stroke-width="2"/>
+ </g><g transform="translate(11 -57) rotate(9)">
+ <circle r="64" fill="url(#batter)" stroke="#B56B25" stroke-width="1.2"/>
+ <path d="M-53.1 -25.6C-38.4 -57.6,-22.4 -37.1,-16.0 -17.9S1.9 -1.3,9.0 -26.9S40.3 -46.1,53.1 -19.2" fill="none" stroke="#A84A23" stroke-width="9.6" stroke-linecap="round"/>
+ <path d="M-35.2 -37.8Q-12.8 -54.4,1.3 -30.1T41.6 -28.8" fill="none" stroke="#FFF9DE" stroke-width="5.8" stroke-linecap="round"/>
+ <path d="M-20 -47l9-5 3 6-9 5Zm33 7 9 3-2 6-9-3ZM-8-18l8-5 3 6-8 5Z" fill="#7D8D42"/>
+ <path d="M-22-60q15-19 24-7l-8 13q-6-10-16-6ZM13-60q15-5 22 6l-10 4Z" fill="#D8984B" stroke="#B87937" stroke-width=".7"/>
+ <path d="M-38.4 19.2q8 16 23 21" fill="none" stroke="#FFF3C9" stroke-width="2"/>
+ </g><g transform="translate(104 -25) rotate(26)">
+ <circle r="55" fill="url(#batter)" stroke="#B56B25" stroke-width="1.2"/>
+ <path d="M-45.6 -22.0C-33.0 -49.5,-19.2 -31.9,-13.8 -15.4S1.6 -1.1,7.7 -23.1S34.6 -39.6,45.6 -16.5" fill="none" stroke="#A84A23" stroke-width="8.2" stroke-linecap="round"/>
+ <path d="M-30.3 -32.4Q-11.0 -46.8,1.1 -25.8T35.8 -24.8" fill="none" stroke="#FFF9DE" stroke-width="5.0" stroke-linecap="round"/>
+ <path d="M-20 -47l9-5 3 6-9 5Zm33 7 9 3-2 6-9-3ZM-8-18l8-5 3 6-8 5Z" fill="#7D8D42"/>
+ <path d="M-22-60q15-19 24-7l-8 13q-6-10-16-6ZM13-60q15-5 22 6l-10 4Z" fill="#D8984B" stroke="#B87937" stroke-width=".7"/>
+ <path d="M-33.0 16.5q8 16 23 21" fill="none" stroke="#FFF3C9" stroke-width="2"/>
+ </g>
+ <path d="M41-113 120-260M47-111l81-146" stroke="#A88143" stroke-width="2" stroke-linecap="round"/>
+</g>
+<g stroke="#B47F42" stroke-linecap="round" opacity=".17">
+ <path d="M1411 664c-45-48 29-65-1-107m53 130c-50-54 27-63 10-116" stroke-width="1.2"/>
+ <path d="M1420 669c-45-48 28-65-2-107" stroke-width=".5"/>
+</g>
+<g transform="translate(42 940) rotate(-25)" stroke="#7E8B42" opacity=".24">
+ <path d="M-40 130Q8-8 160-100" stroke-width="1.5"/>
+ <path d="M12 14Q-42-60-23-108Q17-80 12 14ZM40-19Q16-111 48-133Q65-80 40-19ZM67-47Q135-62 152-109Q96-114 67-47ZM97-73Q173-82 190-143Q130-134 97-73Z" fill="#B1B965" fill-opacity=".26"/>
+ <path d="M12 14-21-96M40-19l8-104M67-47l75-57M97-73l81-60" stroke-width=".6"/>
+</g>
+<g fill="#C88548" opacity=".22"><circle cx="1392" cy="384" r="2"/><circle cx="1561" cy="543" r="3"/><circle cx="1294" cy="947" r="2"/><circle cx="1335" cy="934" r="1.5"/><circle cx="1446" cy="229" r="2"/></g>
+<g stroke="#C58046" opacity=".18"><path d="m1340 322 3 8 8 3-8 3-3 8-3-8-8-3 8-3Z"/><path d="m1550 630 3 7 7 3-7 3-3 7-3-7-7-3 7-3Z"/></g>
+</svg>

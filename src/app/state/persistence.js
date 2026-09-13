@@ -1,3 +1,4 @@
+import { hasPersistentWork, projectWorkPersistence } from '../../modules/writing/public/persistence';
 import { normalizeLibraries } from '../../modules/knowledge/public/library';
 import { createSafeStorage } from "../../shared/storage/safe-storage.js";
 "use strict";
@@ -227,7 +228,7 @@ export async function loadPersistedState() {
   ]);
 
   if (idbResult.error) {
-    console.warn("[ai-chatbox] IndexedDB 归档读取失败，回退本地备份", idbResult.error);
+    console.warn("[ChenTako] IndexedDB 归档读取失败，回退本地备份", idbResult.error);
   }
   const idbPayload = idbResult.payload;
   const lsPayload = lsResult.payload && typeof lsResult.payload === "object" ? lsResult.payload : null;
@@ -275,13 +276,17 @@ export function safeStringify(value) {
 export function buildPersistentPayload(state) {
   const providerById = new Map(state.providers.map((provider) => [provider.id, provider]));
   const conversations = state.conversations.filter((conversation) => {
+    if (hasPersistentWork(conversation)) return true;
     if (conversation.saveChats === false) return false;
     const provider = providerById.get(conversation.providerId);
     if (conversation.saveChats == null && provider?.saveChats === false) return false;
     return true;
   });
   // Runtime request locks and local title revisions must not survive persistence.
-  const persistedConversations = conversations.map(({ firstResponsePending, titleRevision, ...conversation }) => conversation);
+  const persistedConversations = conversations.map(({ firstResponsePending, titleRevision, ...conversation }) => {
+    const saveChats = conversation.saveChats ?? providerById.get(conversation.providerId)?.saveChats;
+    return projectWorkPersistence(conversation, saveChats);
+  });
   const keptIds = new Set(conversations.map((conversation) => conversation.id));
   const activeConversationId = keptIds.has(state.activeConversationId)
     ? state.activeConversationId

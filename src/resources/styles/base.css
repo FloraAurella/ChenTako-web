@@ -1,6 +1,6 @@
 /* ============================================================
-   ai-chatbox · 基础层 —— 重置 / 排版 / 环境材质
-   画布恒为主题提供的纯色；卡片材质由对比度与透景模式统一派生。
+   ChenTako · 基础层 —— 重置 / 排版 / 环境材质
+   画布采用主题纯色基底与可信 SVG 边缘画作；卡片材质由对比度与透景模式派生。
    ============================================================ */
 
 *,
@@ -62,11 +62,33 @@ body {
   border: 0 !important;
 }
 
-/* ---- 画布：主题只提供纯色，不再叠加图片、纹理、渐变或环境光。 ---- */
+/* ---- 画布：纯色基底 + 源码注册的双态 SVG 画作。 ---- */
 .app-canvas {
   position: relative;
   min-height: 100%;
   background: var(--canvas-mid);
+}
+
+/* 纯装饰层始终位于 app-shell 下方，不捕获交互、不参与滚动或可访问性树。
+   画作自身将细节留在边缘；额外遮罩保护开放式聊天正文。 */
+.app-canvas::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: var(--theme-artwork, none);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  mask-image: linear-gradient(to right, #000, transparent 24%, transparent 72%, #000 94%);
+}
+
+@media (max-width: 720px) {
+  .app-canvas::before {
+    background-position: right center;
+    opacity: .55;
+    mask-image: linear-gradient(to right, transparent 58%, #000);
+  }
 }
 
 /* ---- 透景模式：唯一可选材质；强度全部由“对比度”派生。 ---- */

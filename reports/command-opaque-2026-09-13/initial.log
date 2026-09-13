@@ -1,0 +1,198 @@
+
+> chentako@1.1.5 test:e2e
+> playwright test e2e/commands.spec.js --grep 欢迎页指令菜单不透字
+
+[WebServer] (node:4817) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 6 tests using 1 worker
+
+(node:4819) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 [chromium] › e2e/commands.spec.js:365:3 › 欢迎页指令菜单不透字 light 1280 (5.8s)
+(node:4892) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 [chromium] › e2e/commands.spec.js:365:3 › 欢迎页指令菜单不透字 light 1024 (5.8s)
+(node:4919) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  3 [chromium] › e2e/commands.spec.js:365:3 › 欢迎页指令菜单不透字 light 390 (5.7s)
+(node:4937) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  4 [chromium] › e2e/commands.spec.js:365:3 › 欢迎页指令菜单不透字 dark 1280 (5.7s)
+(node:4952) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  5 [chromium] › e2e/commands.spec.js:365:3 › 欢迎页指令菜单不透字 dark 1024 (5.7s)
+(node:4972) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  6 [chromium] › e2e/commands.spec.js:365:3 › 欢迎页指令菜单不透字 dark 390 (5.8s)
+
+
+  1) [chromium] › e2e/commands.spec.js:365:3 › 欢迎页指令菜单不透字 light 1280 ───────────────────────────────
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  locator('#command-option-1')
+    Expected: "true"
+    Received: "false"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveAttribute" with timeout 5000ms
+      - waiting for locator('#command-option-1')
+        14 × locator resolved to <button type="button" role="option" tabindex="-1" id="command-option-1" aria-selected="false" aria-disabled="false" data-surface="interactive" class="ui-button ui-menu-item command-option ">…</button>
+           - unexpected value "false"
+
+
+      386 |     await expect(panel).toHaveCSS('background-color', paper);
+      387 |     await input.press('ArrowDown');
+    > 388 |     await expect(page.locator('#command-option-1')).toHaveAttribute('aria-selected', 'true');
+          |                                                     ^
+      389 |     await page.screenshot({ path: testInfo.outputPath(`opaque-menu-${scheme}-${width}.png`) });
+      390 |     await input.press('Escape');
+      391 |     await expect(page.locator('.command-panel-host')).toBeHidden();
+        at /Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/commands.spec.js:388:53
+
+    Error Context: test-results/commands-欢迎页指令菜单不透字-light-1280-chromium/error-context.md
+
+  2) [chromium] › e2e/commands.spec.js:365:3 › 欢迎页指令菜单不透字 light 1024 ───────────────────────────────
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  locator('#command-option-1')
+    Expected: "true"
+    Received: "false"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveAttribute" with timeout 5000ms
+      - waiting for locator('#command-option-1')
+        14 × locator resolved to <button type="button" role="option" tabindex="-1" id="command-option-1" aria-selected="false" aria-disabled="false" data-surface="interactive" class="ui-button ui-menu-item command-option ">…</button>
+           - unexpected value "false"
+
+
+      386 |     await expect(panel).toHaveCSS('background-color', paper);
+      387 |     await input.press('ArrowDown');
+    > 388 |     await expect(page.locator('#command-option-1')).toHaveAttribute('aria-selected', 'true');
+          |                                                     ^
+      389 |     await page.screenshot({ path: testInfo.outputPath(`opaque-menu-${scheme}-${width}.png`) });
+      390 |     await input.press('Escape');
+      391 |     await expect(page.locator('.command-panel-host')).toBeHidden();
+        at /Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/commands.spec.js:388:53
+
+    Error Context: test-results/commands-欢迎页指令菜单不透字-light-1024-chromium/error-context.md
+
+  3) [chromium] › e2e/commands.spec.js:365:3 › 欢迎页指令菜单不透字 light 390 ────────────────────────────────
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  locator('#command-option-1')
+    Expected: "true"
+    Received: "false"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveAttribute" with timeout 5000ms
+      - waiting for locator('#command-option-1')
+        14 × locator resolved to <button type="button" role="option" tabindex="-1" id="command-option-1" aria-selected="false" aria-disabled="false" data-surface="interactive" class="ui-button ui-menu-item command-option ">…</button>
+           - unexpected value "false"
+
+
+      386 |     await expect(panel).toHaveCSS('background-color', paper);
+      387 |     await input.press('ArrowDown');
+    > 388 |     await expect(page.locator('#command-option-1')).toHaveAttribute('aria-selected', 'true');
+          |                                                     ^
+      389 |     await page.screenshot({ path: testInfo.outputPath(`opaque-menu-${scheme}-${width}.png`) });
+      390 |     await input.press('Escape');
+      391 |     await expect(page.locator('.command-panel-host')).toBeHidden();
+        at /Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/commands.spec.js:388:53
+
+    Error Context: test-results/commands-欢迎页指令菜单不透字-light-390-chromium/error-context.md
+
+  4) [chromium] › e2e/commands.spec.js:365:3 › 欢迎页指令菜单不透字 dark 1280 ────────────────────────────────
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  locator('#command-option-1')
+    Expected: "true"
+    Received: "false"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveAttribute" with timeout 5000ms
+      - waiting for locator('#command-option-1')
+        14 × locator resolved to <button type="button" role="option" tabindex="-1" id="command-option-1" aria-selected="false" aria-disabled="false" data-surface="interactive" class="ui-button ui-menu-item command-option ">…</button>
+           - unexpected value "false"
+
+
+      386 |     await expect(panel).toHaveCSS('background-color', paper);
+      387 |     await input.press('ArrowDown');
+    > 388 |     await expect(page.locator('#command-option-1')).toHaveAttribute('aria-selected', 'true');
+          |                                                     ^
+      389 |     await page.screenshot({ path: testInfo.outputPath(`opaque-menu-${scheme}-${width}.png`) });
+      390 |     await input.press('Escape');
+      391 |     await expect(page.locator('.command-panel-host')).toBeHidden();
+        at /Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/commands.spec.js:388:53
+
+    Error Context: test-results/commands-欢迎页指令菜单不透字-dark-1280-chromium/error-context.md
+
+  5) [chromium] › e2e/commands.spec.js:365:3 › 欢迎页指令菜单不透字 dark 1024 ────────────────────────────────
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  locator('#command-option-1')
+    Expected: "true"
+    Received: "false"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveAttribute" with timeout 5000ms
+      - waiting for locator('#command-option-1')
+        14 × locator resolved to <button type="button" role="option" tabindex="-1" id="command-option-1" aria-selected="false" aria-disabled="false" data-surface="interactive" class="ui-button ui-menu-item command-option ">…</button>
+           - unexpected value "false"
+
+
+      386 |     await expect(panel).toHaveCSS('background-color', paper);
+      387 |     await input.press('ArrowDown');
+    > 388 |     await expect(page.locator('#command-option-1')).toHaveAttribute('aria-selected', 'true');
+          |                                                     ^
+      389 |     await page.screenshot({ path: testInfo.outputPath(`opaque-menu-${scheme}-${width}.png`) });
+      390 |     await input.press('Escape');
+      391 |     await expect(page.locator('.command-panel-host')).toBeHidden();
+        at /Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/commands.spec.js:388:53
+
+    Error Context: test-results/commands-欢迎页指令菜单不透字-dark-1024-chromium/error-context.md
+
+  6) [chromium] › e2e/commands.spec.js:365:3 › 欢迎页指令菜单不透字 dark 390 ─────────────────────────────────
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  locator('#command-option-1')
+    Expected: "true"
+    Received: "false"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveAttribute" with timeout 5000ms
+      - waiting for locator('#command-option-1')
+        14 × locator resolved to <button type="button" role="option" tabindex="-1" id="command-option-1" aria-selected="false" aria-disabled="false" data-surface="interactive" class="ui-button ui-menu-item command-option ">…</button>
+           - unexpected value "false"
+
+
+      386 |     await expect(panel).toHaveCSS('background-color', paper);
+      387 |     await input.press('ArrowDown');
+    > 388 |     await expect(page.locator('#command-option-1')).toHaveAttribute('aria-selected', 'true');
+          |                                                     ^
+      389 |     await page.screenshot({ path: testInfo.outputPath(`opaque-menu-${scheme}-${width}.png`) });
+      390 |     await input.press('Escape');
+      391 |     await expect(page.locator('.command-panel-host')).toBeHidden();
+        at /Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/commands.spec.js:388:53
+
+    Error Context: test-results/commands-欢迎页指令菜单不透字-dark-390-chromium/error-context.md
+
+  6 failed
+    [chromium] › e2e/commands.spec.js:365:3 › 欢迎页指令菜单不透字 light 1280 ────────────────────────────────
+    [chromium] › e2e/commands.spec.js:365:3 › 欢迎页指令菜单不透字 light 1024 ────────────────────────────────
+    [chromium] › e2e/commands.spec.js:365:3 › 欢迎页指令菜单不透字 light 390 ─────────────────────────────────
+    [chromium] › e2e/commands.spec.js:365:3 › 欢迎页指令菜单不透字 dark 1280 ─────────────────────────────────
+    [chromium] › e2e/commands.spec.js:365:3 › 欢迎页指令菜单不透字 dark 1024 ─────────────────────────────────
+    [chromium] › e2e/commands.spec.js:365:3 › 欢迎页指令菜单不透字 dark 390 ──────────────────────────────────

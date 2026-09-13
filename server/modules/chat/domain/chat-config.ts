@@ -1,4 +1,4 @@
-import { EFFORT_KEYS } from '../../../contracts/limits.ts';
+import { EFFORT_KEYS, LIMITS } from '../../../contracts/limits.ts';
 import type { ChatConfig } from '../../../contracts/types.ts';
 
 /** chatConfig.version 1 解析（原版 lib/chat-config.ts 移植）：与前端 config 默认值对齐。 */
@@ -8,7 +8,7 @@ export function parseChatConfig(value: unknown): ChatConfig | null {
   const input = value as Record<string, unknown>;
   if (input.version !== 1) throw new Error('不支持的聊天配置版本');
   const result: Record<string, unknown> = { version: 1 };
-  for (const [key, max] of [['systemPrompt', 102400], ['userId', 200]] as const) {
+  for (const [key, max] of [['systemPrompt', LIMITS.requestSystemPromptChars], ['userId', 200]] as const) {
     if (typeof input[key] !== 'string' || String(input[key]).length > max) throw new Error(`${key} 格式无效或过长`);
     result[key] = input[key];
   }

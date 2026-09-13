@@ -16,6 +16,9 @@ export interface CommandModel {
   providerId: string; providerName: string; model: string; selected: boolean;
 }
 export interface CommandContext {
+  store?: any;
+  target?: string;
+  submitContent?(text: string): Promise<boolean>;
   conversationId: string;
   models: CommandModel[];
   effort: string;
@@ -28,6 +31,11 @@ export interface CommandContext {
   compact(): Promise<CommandResult>;
 }
 export interface CommandContribution {
+  hidden?: boolean;
+  executeOnSelect?: boolean;
+  inputPrefix?: string;
+  acceptsMultiline?: boolean;
+  submitsContent?: boolean;
   id: string;
   name: string;
   label?: string;

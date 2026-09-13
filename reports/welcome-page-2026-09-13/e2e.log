@@ -1,0 +1,21 @@
+
+> chentako@1.1.5 test:e2e
+> playwright test e2e/app.spec.js --grep 居中欢迎页|开始页使用|外壳与空状态
+
+[WebServer] (node:4136) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 8 tests using 1 worker
+
+(node:4138) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › e2e/app.spec.js:183:1 › 外壳与空状态扉页 (518ms)
+  ✓  2 [chromium] › e2e/app.spec.js:213:1 › 开始页使用品牌欢迎行，不再展示推荐卡片 (381ms)
+  ✓  3 [chromium] › e2e/app.spec.js:2508:3 › 居中欢迎页与附件 light 1280 (643ms)
+  ✓  4 [chromium] › e2e/app.spec.js:2508:3 › 居中欢迎页与附件 light 1024 (586ms)
+  ✓  5 [chromium] › e2e/app.spec.js:2508:3 › 居中欢迎页与附件 light 390 (560ms)
+  ✓  6 [chromium] › e2e/app.spec.js:2508:3 › 居中欢迎页与附件 dark 1280 (604ms)
+  ✓  7 [chromium] › e2e/app.spec.js:2508:3 › 居中欢迎页与附件 dark 1024 (556ms)
+  ✓  8 [chromium] › e2e/app.spec.js:2508:3 › 居中欢迎页与附件 dark 390 (571ms)
+
+  8 passed (5.9s)

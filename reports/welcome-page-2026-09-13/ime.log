@@ -1,0 +1,14 @@
+
+> chentako@1.1.5 test:e2e
+> playwright test e2e/commands.spec.js --grep 输入法确认
+
+[WebServer] (node:4449) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:4451) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › e2e/commands.spec.js:177:1 › 输入法确认不会执行指令，关闭和会话切换保留草稿 (655ms)
+
+  1 passed (2.0s)

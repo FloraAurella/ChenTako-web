@@ -15,6 +15,8 @@
 
 .composer-paper[data-surface="panel"] { border-radius:var(--radius-lg); }
 .ui-input.composer-input:focus-visible { outline: none; box-shadow: none; }
+/* Search fields use their existing border or enclosing surface for focus feedback. */
+.ui-input.ui-input--quiet-focus:focus-visible { outline: none; box-shadow: none; }
 
 /* Compact menus have a single controller-owned active row, shared by pointer and keyboard. */
 :root {
@@ -43,3 +45,9 @@
 .ui-disclosure > summary:hover { background:var(--control-hover); }
 .ui-disclosure > summary:focus-visible { outline:2px solid var(--ui-focus); outline-offset:3px; }
 .ui-disclosure[open] > summary { margin-bottom:var(--space-3); }
+
+/* 密集文字浮层可选择实色材质，避免底层文字透出；悬停不改变材质。 */
+[data-surface="panel"][data-material="opaque"],
+[data-surface="panel"][data-material="opaque"]:hover {
+  background: var(--surface-content);
+}

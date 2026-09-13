@@ -1,0 +1,158 @@
+
+> chentako@1.1.5 test:e2e
+> playwright test e2e/appearance-controls.spec.js e2e/app.spec.js --grep 精简外观设置|主题明暗切换自动换色|外观：纯色背景
+
+[WebServer] (node:694) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 8 tests using 1 worker
+
+(node:700) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › e2e/app.spec.js:1337:1 › 主题明暗切换自动换色 (583ms)
+  ✓  2 [chromium] › e2e/app.spec.js:1567:1 › 外观：纯色背景、对比度与透景模式 (698ms)
+  ✘  3 [chromium] › e2e/appearance-controls.spec.js:5:3 › 精简外观设置 light 1280 (30.0s)
+(node:791) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  4 [chromium] › e2e/appearance-controls.spec.js:5:3 › 精简外观设置 light 1024 (30.1s)
+(node:842) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  5 [chromium] › e2e/appearance-controls.spec.js:5:3 › 精简外观设置 light 390 (7.6s)
+
+
+  1) [chromium] › e2e/appearance-controls.spec.js:5:3 › 精简外观设置 light 1280 ──────────────────────────
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.check: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for locator('input[name="appearanceMode"][value="light"]')
+        - locator resolved to <input type="radio" value="light" class="ui-input " name="appearanceMode"/>
+      - attempting click action
+        2 × waiting for element to be visible, enabled and stable
+          - element is visible, enabled and stable
+          - scrolling into view if needed
+          - done scrolling
+          - <span class="appearance-mode-label">…</span> intercepts pointer events
+        - retrying click action
+        - waiting 20ms
+        2 × waiting for element to be visible, enabled and stable
+          - element is visible, enabled and stable
+          - scrolling into view if needed
+          - done scrolling
+          - <span class="appearance-mode-label">…</span> intercepts pointer events
+        - retrying click action
+          - waiting 100ms
+        57 × waiting for element to be visible, enabled and stable
+           - element is visible, enabled and stable
+           - scrolling into view if needed
+           - done scrolling
+           - <span class="appearance-mode-label">…</span> intercepts pointer events
+         - retrying click action
+           - waiting 500ms
+
+
+      11 |     await expect(page.locator('#themeGrid, .theme-card, #themePackageImportBtn, #themePackageExportBtn, #appearance-themes, #appearance-package')).toHaveCount(0);
+      12 |     await expect(page.locator('input[name="appearanceMode"]')).toHaveCount(3);
+    > 13 |     await page.locator(`input[name="appearanceMode"][value="${scheme}"]`).check();
+         |                                                                           ^
+      14 |     await page.locator('#appearanceContrastRange').fill('42');
+      15 |     await page.locator('#appearanceTransparentToggle').click();
+      16 |     await expect(page.locator('#appearanceContrastValue')).toHaveText('42');
+        at /Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/appearance-controls.spec.js:13:75
+
+    Error Context: test-results/appearance-controls-精简外观设置-light-1280-chromium/error-context.md
+
+  2) [chromium] › e2e/appearance-controls.spec.js:5:3 › 精简外观设置 light 1024 ──────────────────────────
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.check: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for locator('input[name="appearanceMode"][value="light"]')
+        - locator resolved to <input type="radio" value="light" class="ui-input " name="appearanceMode"/>
+      - attempting click action
+        2 × waiting for element to be visible, enabled and stable
+          - element is visible, enabled and stable
+          - scrolling into view if needed
+          - done scrolling
+          - <span class="appearance-mode-label">…</span> intercepts pointer events
+        - retrying click action
+        - waiting 20ms
+        2 × waiting for element to be visible, enabled and stable
+          - element is visible, enabled and stable
+          - scrolling into view if needed
+          - done scrolling
+          - <span class="appearance-mode-label">…</span> intercepts pointer events
+        - retrying click action
+          - waiting 100ms
+        57 × waiting for element to be visible, enabled and stable
+           - element is visible, enabled and stable
+           - scrolling into view if needed
+           - done scrolling
+           - <span class="appearance-mode-label">…</span> intercepts pointer events
+         - retrying click action
+           - waiting 500ms
+
+
+      11 |     await expect(page.locator('#themeGrid, .theme-card, #themePackageImportBtn, #themePackageExportBtn, #appearance-themes, #appearance-package')).toHaveCount(0);
+      12 |     await expect(page.locator('input[name="appearanceMode"]')).toHaveCount(3);
+    > 13 |     await page.locator(`input[name="appearanceMode"][value="${scheme}"]`).check();
+         |                                                                           ^
+      14 |     await page.locator('#appearanceContrastRange').fill('42');
+      15 |     await page.locator('#appearanceTransparentToggle').click();
+      16 |     await expect(page.locator('#appearanceContrastValue')).toHaveText('42');
+        at /Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/appearance-controls.spec.js:13:75
+
+    Error Context: test-results/appearance-controls-精简外观设置-light-1024-chromium/error-context.md
+
+  3) [chromium] › e2e/appearance-controls.spec.js:5:3 › 精简外观设置 light 390 ───────────────────────────
+
+    Test was interrupted.
+
+    Error: locator.check: Test ended.
+    Call log:
+      - waiting for locator('input[name="appearanceMode"][value="light"]')
+        - locator resolved to <input type="radio" value="light" class="ui-input " name="appearanceMode"/>
+      - attempting click action
+        2 × waiting for element to be visible, enabled and stable
+          - element is visible, enabled and stable
+          - scrolling into view if needed
+          - done scrolling
+          - <span class="appearance-mode-label">…</span> intercepts pointer events
+        - retrying click action
+        - waiting 20ms
+        2 × waiting for element to be visible, enabled and stable
+          - element is visible, enabled and stable
+          - scrolling into view if needed
+          - done scrolling
+          - <span class="appearance-mode-label">…</span> intercepts pointer events
+        - retrying click action
+          - waiting 100ms
+        14 × waiting for element to be visible, enabled and stable
+           - element is visible, enabled and stable
+           - scrolling into view if needed
+           - done scrolling
+           - <span class="appearance-mode-label">…</span> intercepts pointer events
+         - retrying click action
+           - waiting 500ms
+
+
+      11 |     await expect(page.locator('#themeGrid, .theme-card, #themePackageImportBtn, #themePackageExportBtn, #appearance-themes, #appearance-package')).toHaveCount(0);
+      12 |     await expect(page.locator('input[name="appearanceMode"]')).toHaveCount(3);
+    > 13 |     await page.locator(`.appearance-mode-option:has(input[value="${scheme}"])`).click();
+         |                                                                           ^
+      14 |     await page.locator('#appearanceContrastRange').fill('42');
+      15 |     await page.locator('#appearanceTransparentToggle').click();
+      16 |     await expect(page.locator('#appearanceContrastValue')).toHaveText('42');
+        at /Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/appearance-controls.spec.js:13:75
+
+    Error Context: test-results/appearance-controls-精简外观设置-light-390-chromium/error-context.md
+
+  2 failed
+    [chromium] › e2e/appearance-controls.spec.js:5:3 › 精简外观设置 light 1280 ───────────────────────────
+    [chromium] › e2e/appearance-controls.spec.js:5:3 › 精简外观设置 light 1024 ───────────────────────────
+  1 interrupted
+    [chromium] › e2e/appearance-controls.spec.js:5:3 › 精简外观设置 light 390 ────────────────────────────
+  3 did not run
+  2 passed (1.2m)

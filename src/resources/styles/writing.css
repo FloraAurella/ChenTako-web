@@ -1,0 +1,38 @@
+.writing-status, .writing-toolbar { display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap; }
+
+.writing-status { justify-content: space-between; margin-bottom: var(--space-3); font-size: var(--size-caption); }
+.chat-page.page-active:has(> .writing-pane) { display: grid; position: relative; grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; overflow: hidden; }
+.chat-page:has(> .writing-pane) > .message-scroll { grid-column: 1; grid-row: 1; min-width: 0; overflow-y: auto; }
+.chat-page:has(> .writing-pane) > .composer-zone { grid-column: 1; grid-row: 2; min-width: 0; padding: var(--space-3); }
+.chat-page:has(> .writing-pane:not(.is-collapsed)) > .message-scroll,
+.chat-page:has(> .writing-pane:not(.is-collapsed)) > .composer-zone { width: calc(100% - max(280px, 42%)); margin-right: 0; }
+.chat-page:has(> .writing-pane) .empty-stage { padding-top: var(--space-5); }
+.writing-pane { position: absolute; inset: 0 0 0 auto; width: max(280px, 42%); box-sizing: border-box; min-width: 0; min-height: 0; overflow: auto; overscroll-behavior: contain; padding: var(--space-4); background: var(--surface-content); border-left: 1px solid var(--separator); display: flex; flex-direction: column; gap: var(--space-3); font-size: var(--size-body-sm); z-index: 1; transform: translateX(0); opacity: 1; visibility: visible; transition: transform var(--motion-sidebar) var(--ease-out), opacity var(--motion-sidebar) var(--ease-out), visibility 0s; }
+.writing-pane.is-collapsed { transform: translateX(100%); opacity: 0; visibility: hidden; pointer-events: none; transition-delay: 0s, 0s, var(--motion-sidebar); }
+.writing-pane h2, .writing-pane h3 { margin: 0; font-size: var(--size-title-sm); }
+.writing-pane .ui-input { min-width: 0; width: 100%; }
+.writing-pane .ui-button { font-size: var(--size-caption); }
+.writing-chapters { display: flex; flex-direction: column; gap: var(--space-3); }
+.writing-chapters > button { display: flex; justify-content: space-between; gap: var(--space-3); text-align: left; width: 100%; }
+.writing-chapters > button span { overflow-wrap: anywhere; min-width: 0; }
+.writing-chapters [aria-current="true"] { background: var(--accent-soft); color: var(--label); }
+.writing-document, .writing-notice, .writing-pane > .ui-surface { padding: var(--space-3); }
+.writing-pane pre, .writing-notice p { white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; line-height: var(--lh-body); }
+.writing-document pre { max-height: 50vh; overflow: auto; }
+.writing-pane [role="alert"] { color: var(--danger); }
+.writing-version { padding-block: var(--space-3); }
+
+.writing-version-nav { display: flex; justify-content: center; align-items: center; gap: var(--space-3); }
+.writing-request { padding: var(--space-3); background: var(--accent-soft); border-radius: var(--radius-md); white-space: pre-wrap; overflow-wrap: anywhere; }
+@media (max-width: 760px) {
+  .chat-page:has(> .writing-pane:not(.is-collapsed)) > .message-scroll,
+  .chat-page:has(> .writing-pane:not(.is-collapsed)) > .composer-zone { width: 100%; margin-right: 0; }
+  .chat-page:has(> .writing-pane.is-mobile-open) > .message-scroll,
+  .chat-page:has(> .writing-pane.is-mobile-open) > .composer-zone { visibility: hidden; }
+  .writing-pane { width: 100%; border-left: 0; transform: translateX(100%); opacity: 0; visibility: hidden; pointer-events: none; transition-delay: 0s, 0s, var(--motion-sidebar); }
+  .writing-pane.is-mobile-open { transform: translateX(0); opacity: 1; visibility: visible; pointer-events: auto; transition-delay: 0s; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .writing-pane, .writing-pane.is-collapsed, .writing-pane.is-mobile-open { transform: none; transition: opacity 100ms var(--ease-out), visibility 0s; }
+}
+body.prefers-reduced-motion .writing-pane { transform: none; transition: none; }

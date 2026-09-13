@@ -1,0 +1,19 @@
+
+> chentako@1.1.5 test:e2e
+> playwright test e2e/appearance-controls.spec.js
+
+[WebServer] (node:958) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 6 tests using 1 worker
+
+(node:960) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › e2e/appearance-controls.spec.js:5:3 › 精简外观设置 light 1280 (1.6s)
+  ✓  2 [chromium] › e2e/appearance-controls.spec.js:5:3 › 精简外观设置 light 1024 (900ms)
+  ✓  3 [chromium] › e2e/appearance-controls.spec.js:5:3 › 精简外观设置 light 390 (854ms)
+  ✓  4 [chromium] › e2e/appearance-controls.spec.js:5:3 › 精简外观设置 dark 1280 (899ms)
+  ✓  5 [chromium] › e2e/appearance-controls.spec.js:5:3 › 精简外观设置 dark 1024 (896ms)
+  ✓  6 [chromium] › e2e/appearance-controls.spec.js:5:3 › 精简外观设置 dark 390 (893ms)
+
+  6 passed (7.3s)

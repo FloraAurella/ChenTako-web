@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { mkdirSync } from 'node:fs';
 
 const provider = { id: 'a', displayName: '供应商 A', baseUrl: 'https://example.com/v1', responseFormat: 'openai-compatible', models: ['model-a', 'model-b', 'same'], defaultModel: 'model-a', contextWindow: 131072, maxTokens: 8192, hasKeyConfigured: true };
 const second = { ...provider, id: 'b', displayName: '供应商 B', models: ['same'] };
@@ -192,20 +193,30 @@ for (const scheme of ['light', 'dark']) for (const width of [1280, 1024, 390]) {
     await page.setViewportSize({ width, height: 840 }); await load(page, { scheme });
     await page.locator('#composerInput').fill('/');
     const panel = page.locator('.command-panel'); await expect(panel).toBeVisible();
-    await expect(page.locator('.command-option-title')).toHaveText(['模型', '思考强度', '压缩历史', '帮助']);
-    await expect(page.locator('.command-option-icon svg')).toHaveCount(4);
+    await expect(page.locator('.command-option-title')).toHaveText(['模型', '思考强度', '压缩历史', '创建章节', '重命名章节', '讨论', '写作', '编辑', '帮助']);
+    await expect(page.locator('.command-option-icon svg')).toHaveCount(9);
     await expect(page.locator('#composerInput')).toBeFocused();
     expect(await page.locator('#composerInput').evaluate(el => getComputedStyle(el).outlineStyle)).toBe('none');
     expect(await page.locator('#composerInput').evaluate(el => getComputedStyle(el).boxShadow)).toBe('none');
     const paint = el => { const s = getComputedStyle(el); return [s.backgroundColor, s.borderColor]; };
     const before = await panel.evaluate(paint); await panel.hover(); expect(await panel.evaluate(paint)).toEqual(before);
-    const rect = await panel.boundingBox(); const input = await page.locator('#composerInput').boundingBox();
+    // The command list scrolls on mobile; validate the visible clipping viewport.
+    const viewport = page.locator('.command-panel-host');
+    const rect = await viewport.boundingBox(); const input = await page.locator('#composerInput').boundingBox();
     expect(rect.x).toBeGreaterThanOrEqual(0); expect(rect.x + rect.width).toBeLessThanOrEqual(width);
     expect(rect.y + rect.height).toBeLessThanOrEqual(input.y);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    if (width === 390) {
+      await page.mouse.move(0, 0);
+      await page.locator('#composerInput').fill('/');
+      await expect(page.getByRole('option').first()).toHaveAttribute('aria-selected', 'true');
+      for (let i = 1, count = await page.getByRole('option').count(); i < count; i++) await page.locator('#composerInput').press('ArrowDown');
+      await expect(page.getByRole('option').last()).toHaveAttribute('aria-selected', 'true');
+      expect(await viewport.evaluate(el => el.scrollTop)).toBeGreaterThan(0);
+    }
     await page.mouse.move(0, 0);
     await page.screenshot({ path: testInfo.outputPath(`commands-${scheme}-${width}.png`) });
-    await panel.screenshot({ path: testInfo.outputPath(`menu-${scheme}-${width}.png`) });
+    await viewport.screenshot({ path: testInfo.outputPath(`menu-${scheme}-${width}.png`) });
   });
 }
 
@@ -287,7 +298,7 @@ test('重名模型的显式选择列表可按 Enter 确认', async ({ page }) =>
 
 test('帮助支持键盘滚动并在 Escape 后恢复输入焦点', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 640 }); await load(page);
-  await command(page, '/help'); await page.locator('#composerInput').press('PageDown');
+  await command(page, '/help'); await expect(page.locator('.command-help')).toBeVisible(); await page.locator('#composerInput').press('PageDown');
   expect(await page.locator('.command-panel-host').evaluate(el => el.scrollTop)).toBeGreaterThan(0);
   await page.locator('#composerInput').press('Escape');
   await expect(page.locator('.command-panel-host')).toBeHidden(); await expect(page.locator('#composerInput')).toBeFocused();
@@ -360,3 +371,40 @@ test('录屏对齐：鼠标和键盘共用唯一活动行，二级当前值用�
   await expect(input).toHaveValue('');
   await expect(input).toBeFocused();
 });
+
+for (const scheme of ['light', 'dark']) for (const width of [1280, 1024, 390]) {
+  test(`欢迎页指令菜单不透字 ${scheme} ${width}`, async ({ page }, testInfo) => {
+    await page.setViewportSize({ width, height: 900 });
+    await load(page, { scheme });
+    // 在透景开启时复现：菜单必须仍有独立的实色底板。
+    await page.goto('/#/settings/appearance');
+    await page.locator('#appearanceTransparentToggle').click();
+    await expect(page.locator('html')).toHaveClass(/transparency-mode/);
+    await page.goto('/#/chat');
+    const input = page.locator('#composerInput');
+    await input.fill('/');
+    const panel = page.locator('.command-panel');
+    await expect(panel).toBeVisible();
+    await expect(panel).toHaveAttribute('data-material', 'opaque');
+    const paper = await page.evaluate(() => {
+      const probe = document.createElement('div');
+      probe.style.background = 'var(--surface-content)'; document.body.append(probe);
+      const color = getComputedStyle(probe).backgroundColor; probe.remove(); return color;
+    });
+    await expect(panel).toHaveCSS('background-color', paper);
+    expect(paper).toMatch(/^rgb\(/);
+    await panel.hover();
+    await expect(panel).toHaveCSS('background-color', paper);
+    const selectedId = await page.locator('.command-option[aria-selected="true"]').getAttribute('id');
+    const nextIndex = (Number(selectedId.split('-').pop()) + 1) % await page.locator('.command-option').count();
+    await input.press('ArrowDown');
+    await expect(page.locator(`#command-option-${nextIndex}`)).toHaveAttribute('aria-selected', 'true');
+    mkdirSync('reports/command-opaque-2026-09-13', { recursive: true });
+    await page.screenshot({ path: `reports/command-opaque-2026-09-13/${scheme}-${width}.png` });
+    await input.press('Escape');
+    await expect(page.locator('.command-panel-host')).toBeHidden();
+    await expect(page.locator('.welcome-heading')).toBeVisible();
+    await expect(input).toHaveValue('/');
+    await expect(page.locator('html')).toHaveClass(/transparency-mode/);
+  });
+}

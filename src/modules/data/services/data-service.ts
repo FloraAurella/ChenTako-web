@@ -79,7 +79,7 @@ export function createDataSettingsService(
         stateBridge.patch({ migrationBusy: false });
         toast("已取消迁移");
       } else {
-        toast("数据已落盘，ai-chatbox 正在重启并导出迁移包", { tone: "ok" });
+        toast("数据已落盘，ChenTako 正在重启并导出迁移包", { tone: "ok" });
       }
     } catch (error) {
       stateBridge.patch({ migrationBusy: false });

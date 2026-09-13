@@ -5,6 +5,8 @@ import { bootTestServer, type TestServer } from './boot.ts';
 import { consumeAppStreamFrame, createAppStreamState, type AppStreamState } from '../../src/modules/chat/stream/session.ts';
 import { APP_STREAM_EVENTS } from '../../src/modules/chat/stream/protocol.ts';
 
+vi.mock('../../server/modules/chat/services/prompt-files.ts', () => ({ taskPrompt: (name: string) => name === 'summary' ? '你是对话上下文压缩器（测试固定提示词）' : '根据首次输入生成标题（测试固定提示词）' }));
+
 const servers: TestServer[] = [];
 const upstreams: Array<{ server: Server; requests: Array<{ url: string; body: string }> }> = [];
 afterAll(async () => {
@@ -159,11 +161,11 @@ describe('/api/chat 集成', () => {
     const response = await post(server, '/api/chat', chatBody(provider, { chatConfig: { ...CHAT_CONFIG, streaming: false }, stream: false }));
     const payload = await response.json() as any;
     expect(response.status).toBe(200);
-    expect(payload).toMatchObject({ content: '答案', reasoning: '推理', reasoningKind: 'thinking', skippedAttachments: [] });
+    expect(payload).toMatchObject({ content: '答案', reasoning: '推理', reasoningKind: 'thinking', skippedAttachments: [], finishReason: 'stop' });
     expect(payload.usage).toMatchObject({ inputTokens: 4, outputTokens: 1, totalTokens: 5, estimated: false });
   });
 
-  it('压缩：使用固定内置指令（不含人格提示词），返回摘要与用量', async () => {
+  it('压缩：使用文件提示词（测试注入）（不含人格提示词），返回摘要与用量', async () => {
     const server = await boot();
     let upstreamSystem = '';
     const upstream = await bootMockUpstream((req, res, body) => {
@@ -184,7 +186,7 @@ describe('/api/chat 集成', () => {
     expect(payload.ok).toBe(true);
     expect(payload.summary).toBe('压缩后的上下文摘要');
     expect(upstreamSystem).toContain('你是对话上下文压缩器');
-    expect(upstreamSystem).not.toContain('ai-chatbox'); // 不夹带产品人格
+    expect(upstreamSystem).not.toContain('ChenTako'); // 不夹带产品人格
   });
 
   it('校验与错误路径：400/401/404/409 与上游状态码转发', async () => {

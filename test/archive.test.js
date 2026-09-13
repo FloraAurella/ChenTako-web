@@ -64,7 +64,7 @@ describe("会话归档导出 / 导入", () => {
 
   it("导出：conversation.json + media/ 图片（v3 结构）", () => {
     const { entries, filename } = exportConversationArchive(conversation);
-    expect(filename).toMatch(/\.ai-chatbox\.zip$/);
+    expect(filename).toMatch(/\.ChenTako\.zip$/);
     expect(entries[0].name).toBe("conversation.json");
     const payload = JSON.parse(new TextDecoder().decode(entries[0].data));
     expect(payload.kind).toBe("ai-chatbox-conversation");

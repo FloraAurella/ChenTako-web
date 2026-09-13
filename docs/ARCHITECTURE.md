@@ -2,7 +2,7 @@
 
 ## 当前边界
 
-这是 ai-chatbox 前端的源码重构，保留现有业务行为及兼容格式。`package.json` 使用项目名称 `ai-chatbox-structure-v2.0`；界面品牌更新为 ai-chatbox，归档读取、浏览器存储、旧 Electron 桥与 HTTP 认证头保持向后兼容。仓库外参考目录没有改动。
+这是 ChenTako 前端的源码重构，保留现有业务行为及兼容格式。`package.json` 使用项目名称 `chentako`；界面品牌更新为 ChenTako，归档读取、浏览器存储、旧 Electron 桥与 HTTP 认证头保持向后兼容。仓库外参考目录没有改动。
 
 已接入前端项目知识库，经请求上下文贡献组合到现有 chatConfig.systemPrompt；历史压缩请求不携带项目资料。2026-09-12 起本仓库新增模块化后端 `server/`（见 [后端计划](BACKEND_PLAN.md)），前端契约与后端实现同仓对齐；Agent 权限与工具／沙箱执行系统仍不在范围。模拟 HTTP 验证不等于真实后端联调。
 
@@ -67,7 +67,7 @@ VITE_DISABLED_MODULES=extensions,data npm run dev -- --port 5188
 
 `resources/registry.js` 提供拥有者与优先级：`user > module > system`。注销上层资源后，下层恢复。图标生成、字体 token 应用、Logo 与默认主题读取已通过资源解析；主题编辑和持久化继续由 appearance 模块负责。
 
-`resources/logos/ai-chatbox.svg` 是默认品牌图形唯一源，固定使用 `24×24` 视窗与 `currentColor`。应用内标志、两个 HTML 首帧 favicon 和 appearance 生成的主题 favicon 都从该文件派生；替换品牌图形不得在调用方复制 SVG path。`logos/shapes.js` 只负责可信源码注册、安全子集解析与主题色注入，不拥有第二份图形数据。
+`resources/logos/ChenTako.svg` 是默认品牌图形唯一源，固定使用 `24×24` 视窗与 `currentColor`。应用内标志、两个 HTML 首帧 favicon 和 appearance 生成的主题 favicon 都从该文件派生；替换品牌图形不得在调用方复制 SVG path。`logos/shapes.js` 只负责可信源码注册、安全子集解析与主题色注入，不拥有第二份图形数据。
 
 源码模块可以注册可信图标/字体资源；用户主题文件继续经过已有数据格式校验，不接收可执行 JS 或用户 SVG 图标注册。用户资源仅允许 `theme/` 名称空间。注册库本身不是文件上传解析器，调用者不能跳过主题导入校验。
 
@@ -150,3 +150,54 @@ connections/provider-service 与 context/context-service 分别拥有保存调�
 聊天业务在网络响应终态写入完整内容后判断压缩，不再由发送准备流程执行。业务收尾不受滚动期间增量绘制节流影响。`chat/domain/first-response.js` 拥有一次性机会与运行锁规则；`chat/services/title-generation.js` 管理标题请求、取消和晚到结果保护，`auxiliary-models.js` 解析固定模型快照。项目移动/删除通过 App 注入的公共权限规则校验，UI 通过聊天 public 入口读取锁定原因。运行状态不持久化；一次性标记由既有会话兼容契约与归档保存。
 
 圆环和压缩判断共用 `chat/public/domain_queries.js` 的实际消息投影。上下文模块提供阈值、自动预算、专用模型配置与项目继承。后端聊天模块新增 title 路由，和 compress 共用辅助生命周期；前后端辅助接口契约同步测试阻止路由漂移。详见 [响应上下文策略](RESPONSE_CONTEXT_POLICY.md)。
+
+### ChenTako 默认主题资源
+
+`resources/themes/tako-festival-theme-v1.json` 是 Tako Festival 的唯一令牌源；`resources/styles/tokens.css` 同步浅色、显式深色及系统深色首帧回退。`appearance/domain/custom/tako-festival.theme.js` 通过主题契约注册，不在页面复制颜色。历史 `everforest` ID 保持稳定，默认源码定义经已有种子刷新逻辑升级，用户同 ID 覆盖不强制改写。主题卡文案读取资源自身的 note，移除 Everforest 专属判断。字体使用资源注册表中的 humanist／rounded／mono 系统字体栈。
+
+参考图配色修订仍只修改默认主题令牌及首帧镜像；无新增模块或依赖。参考图色值按界面语义映射，按钮文字与辅助说明使用对比度校验后的变体。
+
+### 精简外观设置
+
+appearance 模块不再贡献主题选择、导入导出界面与相应设置搜索项；仅渲染明暗、对比度、透景控制。保留领域注册表、导入导出服务、旧数据与主题公共 API，不通过删除数据实现关闭入口。
+
+### 双态背景画作
+
+用户已授权在纯色基底上叠加可信 SVG 装饰。`resources/artworks/index.js` 注册并解析源码画作 URL，appearance 控制器按主题 ID／模式写入私有 CSS 变量 `--theme-artwork`，Scope 释放时清除，切换无画作主题时写入 none。该变量不进入用户主题令牌白名单，不扩大用户 SVG 执行能力。共享样式只提供无交互的伪元素与响应式遮罩，所有业务选择仍归 appearance；App 不导入模块私有实现。
+
+### 空会话欢迎布局
+
+欢迎内容仍归 chat 的空态渲染器；共享样式依据 `.chat-page:has(.empty-stage)` 调整布局，不引入全局业务状态、重复 composer 或额外监听。附件按钮从资源图标注册表读取 paperclip，保持 DOM ID、文件选择及权限路径不变。
+
+共享 panel 模板支持 `data-material="opaque"` 实色材质；commands 浮层显式使用，背景读取主题 surface-content，普通卡片仍按原对比度／透景规则渲染。悬停保持相同材质，不增加功能名称判断。
+
+
+## 2026-09-13：章节写作模块
+
+`writing` 是默认启用的可选模块，依赖 commands、chat、projects、context。作品归对话所有，章节、正文、候选、版本和模式全部由该模块的领域服务修改，既有 normalize 入口只通过 `writing/public/work.ts` 调用兼容校验。App 只装配模块和持久化作品字段。
+
+跨模块新增 `chat.auxiliary` 插槽和 `RequestOperation` 公共生命周期：准备、验证、开始、更新、结束、释放。固定上下文贡献可给出预算分组；操作回调不进入配置快照。写作贡献连贯性检查与候选结果归属，聊天提供通用网络和取消机制，不包含章节／模式的业务分支。输出的 `contextText` 是跨模块消息兼容字段：可见正文保留，后续上下文与压缩使用该回执，避免未采纳章节正文混入历史摘要。
+
+作品继续使用原浏览器存储键和对话 ZIP；关闭聊天历史保存时仍保存作品，但剥离普通消息。未来／损坏作品保留恢复数据并阻止发送。写作模块关闭后所有贡献清理，作品数据保留。请求系统文本上限采用前后端镜像 `LIMITS.requestSystemPromptChars`，非流式 `/api/chat` 额外返回 `finishReason` 用于完整性判断。详见 [写作使用说明](WRITING.md)。
+
+## 文件提示词（2026-09-13）
+
+根目录 `prompts/` 拥有产品提示词文本。前端通过 `src/resources/public/prompts.js` 的小入口读取构建资源；context 在有效请求配置中采用文件系统提示词，writing 读取自身任务提示词。旧配置字段保留归档兼容，但不再拥有提示词优先级。后端 chat 的 `services/prompt-files.ts` 按模块位置定位同一目录中的摘要／标题文件，在辅助请求开始时校验并捕获文本；不读取前端内部实现。没有新增注册业务单例、后端持久化或运行时用户代码执行。
+
+提示词源文件允许作者暂存未格式化的 UTF-8 正文；`scripts/convert-prompts.mjs` 在 npm 启动／构建前预处理为 JSON 字符串，读取器仍只消费 JSON。转换脚本不进入应用运行时，不调用模型，不执行模板，写入前保存原始字节备份，再使用同目录临时文件替换。转换错误通过非零退出码阻止后续命令。
+
+主题资源身份已与旧 Everforest 分离：`tako-festival` 由源码和默认主题包共同声明，背景资源使用同一 ID。appearance 负责旧 ID 的偏好迁移、归档裁剪与首次恢复过滤；不触碰会话或项目数据。
+
+## 写入工作区调整（2026-09-13）
+
+用户明确将首版候选／采纳改为直接正文。writing 服务以 `beginBody/updateBody/saveBody/selectVersion` 管理正文和版本；`workspaceVersion:2` 标识一次性旧稿迁移，UI 只展示当前正文版本。请求贡献声明 `outputSurface:workspace`，chat 通用传输为请求／响应消息保留同名持久化字段，聊天列表按归属隐藏工作区条目，树路径索引仍采用原路径以保证分支操作兼容。`executeOnSelect` 由指令贡献声明，协调器不按写作指令名分支。右侧可折叠状态归作品，折叠不卸载手动编辑状态。
+
+### 2026-09-13 章节指令与右侧栏入口
+
+新增通用 `chat.header.actions` 插槽，AppShell 仅在聊天路由渲染贡献，不含写作业务判断；writing 模块拥有右侧栏图标、开合状态和媒体查询订阅（卸载清理）。图标通过 resources 注册，按钮复用共享 IconButton。工作区始终挂载，以 transform/opacity 过渡并通过 inert/aria-hidden 管理关闭状态；不引入动画库或计时器。
+
+`/name` 由 writing 指令贡献解析双参数并调用章节服务 rename；服务集中校验手动编辑锁、生成锁、名称和唯一性，保留稳定 ID 与所有版本。工作区移除创建和重命名表单，不删除领域操作或旧归档数据。
+
+## ChenTako-web 暂停写作模块（2026-09-13）
+
+App composition 的 suspendedModules 在启动前排除 writing，不使用 UI 隐藏代替业务停用。写作指令、插槽、请求上下文和请求操作均不注册；知识库与普通聊天贡献不变。资源提示词入口只静态导入 system；服务端 taskPrompt 仍仅读取 summary/title。转换脚本 PROMPT_NAMES 限定相同三个启用文件。恢复需显式解除装配暂停并恢复写作提示词目录映射和转换列表；源代码和归档兼容均保留。

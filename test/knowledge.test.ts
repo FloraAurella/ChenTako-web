@@ -74,7 +74,7 @@ describe('项目资料边界', () => {
   });
   it('注册贡献随模块关闭和释放清理', () => {
     const app = createComposition();
-    expect(app.contributions.requestContexts.list()).toHaveLength(1);
+    expect(app.contributions.requestContexts.list().map(c => c.id)).toEqual(['knowledge.fulltext']);
     expect(app.contributions.settings.get('knowledge')).toBeUndefined();
     expect(app.contributions.slots.get('knowledge.project-settings')?.slot).toBe('project.settings');
     app.dispose();
@@ -82,7 +82,8 @@ describe('项目资料边界', () => {
     const without = createComposition(['knowledge']);
     expect(without.contributions.slots.get('knowledge.status')).toBeUndefined();
     expect(without.contributions.slots.get('knowledge.project-settings')).toBeUndefined();
-    expect(without.contributions.requestContexts.list()).toEqual([]);
+    expect(without.contributions.requestContexts.get('knowledge.fulltext')).toBeUndefined();
+    expect(without.contributions.requestContexts.list().map(c => c.id)).toEqual([]);
     without.dispose();
   });
 });

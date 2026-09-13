@@ -14,7 +14,7 @@ export function CommandPanel({ view, choose, activate }: { view: PanelView; choo
     // Layout changes under a stationary pointer must not undo keyboard navigation.
     if (!previous || previous.x !== event.clientX || previous.y !== event.clientY) activate(index);
   }
-  return <Surface className="command-panel" aria-label={view.title}>
+  return <Surface className="command-panel" data-material="opaque" aria-label={view.title}>
     {view.help && <div className="command-panel-heading">{view.title}</div>}
     {view.message && <p className="command-panel-message" role="status">{view.message}</p>}
     {view.help ? <div className="command-help">{view.help.map((line, index) => <p key={index}>{line}</p>)}</div> :

@@ -1,0 +1,205 @@
+
+> chentako@1.1.5 test
+> vitest run
+
+
+ RUN  v3.2.7 /Users/qxc/Desktop/ai/coding-project/ChenTako
+
+ ✓ test/server/providers-store.test.ts (4 tests) 37ms
+ ✓ test/server/core-runtime.test.ts (6 tests) 29ms
+ ✓ test/server/upstream.test.ts (21 tests) 66ms
+ ✓ test/server/providers-rules.test.ts (6 tests) 10ms
+ ✓ test/server/contracts-sync.test.ts (5 tests) 7ms
+stdout | test/server/providers-endpoints.test.ts > providers 端点集成 > PUT 创建 → GET 列表（无 keyEnv、hasKeyConfigured=false）→ PUT 带 Key → hasKeyConfigured=true
+ChenTako 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/gateway.test.ts > gateway 集成 > 新品牌令牌头生效且旧令牌头继续兼容
+ChenTako 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/provider-model-response.test.ts > openai-compatible: tests the selected model with a real local response, preserving model-list test
+ChenTako 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/chat.test.ts > /api/chat 集成 > 流式：经前端 consumeAppStreamFrame 状态机验收事件顺序与最终状态
+ChenTako 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/gateway.test.ts > gateway 集成 > health 返回前端要求的精确形状
+ChenTako 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/gateway.test.ts > gateway 集成 > 未知接口 404，方法不匹配 405 并带 Allow
+ChenTako 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stderr | test/server/provider-model-response.test.ts > openai-compatible: tests the selected model with a real local response, preserving model-list test
+[gateway] HttpError: 模型未返回文字回复，请检查模型是否支持文字聊天
+    at testModel (/Users/qxc/Desktop/ai/coding-project/ChenTako/server/modules/providers/services/test-model.ts:24:41)
+    at processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at Object.handler (/Users/qxc/Desktop/ai/coding-project/ChenTako/server/modules/providers/module.ts:141:32)
+    at HttpGateway.handle (/Users/qxc/Desktop/ai/coding-project/ChenTako/server/modules/gateway/services/http-server.ts:116:7) {
+  status: 502,
+  code: ''
+}
+
+stdout | test/server/gateway.test.ts > gateway 集成 > 非 /api 路径一律 404，不暴露文件系统
+ChenTako 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/gateway.test.ts > gateway 集成 > 跨站 Origin 被拒绝，vite 默认与文档开发来源及健康检查无 Origin 请求被放行
+ChenTako 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/chat.test.ts > /api/chat 集成 > 非流式：返回与前端 normalizeProviderResponse 对齐的 JSON
+ChenTako 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/providers-endpoints.test.ts > providers 端点集成 > key 端点：保存/读取（no-store）/删除/404 语义
+ChenTako 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/provider-model-response.test.ts > responses: tests the selected model with a real local response, preserving model-list test
+ChenTako 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/chat.test.ts > /api/chat 集成 > 压缩：使用固定内置指令（不含人格提示词），返回摘要与用量
+ChenTako 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/gateway.test.ts > gateway 集成 > OPTIONS 预检放行允许来源并声明方法与头
+ChenTako 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/gateway.test.ts > gateway 集成 > 配置 API_TOKEN 后：缺令牌 401，错误令牌 401，health 豁免，正确令牌放行
+ChenTako 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/providers-endpoints.test.ts > providers 端点集成 > 删除供应商带 body 回退匹配；不存在返回 404；同路径方法不匹配返回 405
+ChenTako 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/chat.test.ts > /api/chat 集成 > 校验与错误路径：400/401/404/409 与上游状态码转发
+ChenTako 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/gateway.test.ts > gateway 集成 > 畸形 JSON 请求体返回 400（走真实路由处理器之前的统一解析路径由后续路由验证）
+ChenTako 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/providers-endpoints.test.ts > providers 端点集成 > 非法载荷：缺 displayName、坏覆盖、坏 Key 形态、超大 body 413
+ChenTako 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stderr | test/server/provider-model-response.test.ts > responses: tests the selected model with a real local response, preserving model-list test
+[gateway] HttpError: 模型未返回文字回复，请检查模型是否支持文字聊天
+    at testModel (/Users/qxc/Desktop/ai/coding-project/ChenTako/server/modules/providers/services/test-model.ts:24:41)
+    at processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at Object.handler (/Users/qxc/Desktop/ai/coding-project/ChenTako/server/modules/providers/module.ts:141:32)
+    at HttpGateway.handle (/Users/qxc/Desktop/ai/coding-project/ChenTako/server/modules/gateway/services/http-server.ts:116:7) {
+  status: 502,
+  code: ''
+}
+
+ ✓ test/server/gateway.test.ts (8 tests) 184ms
+ ✓ test/server/writing-transport.test.ts (2 tests) 3ms
+stdout | test/server/providers-endpoints.test.ts > providers 端点集成 > 连接测试：本地 mock 上游读取模型列表；无 Key 非回环 401；错误体转发状态码
+ChenTako 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/provider-model-response.test.ts > anthropic: tests the selected model with a real local response, preserving model-list test
+ChenTako 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stderr | test/server/provider-model-response.test.ts > anthropic: tests the selected model with a real local response, preserving model-list test
+[gateway] HttpError: 模型未返回文字回复，请检查模型是否支持文字聊天
+    at testModel (/Users/qxc/Desktop/ai/coding-project/ChenTako/server/modules/providers/services/test-model.ts:24:41)
+    at processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at Object.handler (/Users/qxc/Desktop/ai/coding-project/ChenTako/server/modules/providers/module.ts:141:32)
+    at HttpGateway.handle (/Users/qxc/Desktop/ai/coding-project/ChenTako/server/modules/gateway/services/http-server.ts:116:7) {
+  status: 502,
+  code: ''
+}
+
+ ✓ test/server/providers-endpoints.test.ts (5 tests) 225ms
+stdout | test/server/provider-model-response.test.ts > google: tests the selected model with a real local response, preserving model-list test
+ChenTako 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/chat.test.ts > /api/chat 集成 > 流式请求上游返回非 SSE 时 502；预算冲突返回 400
+ChenTako 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stderr | test/server/provider-model-response.test.ts > google: tests the selected model with a real local response, preserving model-list test
+[gateway] HttpError: 模型未返回文字回复，请检查模型是否支持文字聊天
+    at testModel (/Users/qxc/Desktop/ai/coding-project/ChenTako/server/modules/providers/services/test-model.ts:24:41)
+    at processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at Object.handler (/Users/qxc/Desktop/ai/coding-project/ChenTako/server/modules/providers/module.ts:141:32)
+    at HttpGateway.handle (/Users/qxc/Desktop/ai/coding-project/ChenTako/server/modules/gateway/services/http-server.ts:116:7) {
+  status: 502,
+  code: ''
+}
+
+stdout | test/server/chat.test.ts > /api/chat 集成 > 客户端取消会中止上游请求；上游中断经 chat.stream.error 收尾
+ChenTako 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+ ✓ test/server/provider-model-response.test.ts (4 tests) 273ms
+stdout | test/server/chat.test.ts > /api/chat/title 辅助任务 > 标题四协议适配：openai-compatible，仅概括首次输入
+ChenTako 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/chat.test.ts > /api/chat/title 辅助任务 > 标题四协议适配：responses，仅概括首次输入
+ChenTako 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/chat.test.ts > /api/chat/title 辅助任务 > 标题四协议适配：anthropic，仅概括首次输入
+ChenTako 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/chat.test.ts > /api/chat/title 辅助任务 > 标题四协议适配：google，仅概括首次输入
+ChenTako 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/chat.test.ts > /api/chat/title 辅助任务 > 校验空输入、扩展执行、窗口不足和空模型输出，均明确失败
+ChenTako 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stderr | test/server/chat.test.ts > /api/chat/title 辅助任务 > 校验空输入、扩展执行、窗口不足和空模型输出，均明确失败
+[gateway] HttpError: 标题模型没有返回有效标题
+    at handleAuxiliary (/Users/qxc/Desktop/ai/coding-project/ChenTako/server/modules/chat/services/chat-routes.ts:256:29)
+    at processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at HttpGateway.handle (/Users/qxc/Desktop/ai/coding-project/ChenTako/server/modules/gateway/services/http-server.ts:116:7) {
+  status: 502,
+  code: ''
+}
+
+stdout | test/server/chat.test.ts > 压缩拒绝模型无法携带的历史附件，不生成不完整摘要
+ChenTako 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+ ✓ test/server/chat.test.ts (12 tests) 479ms
+ ✓ test/normalize.test.js (36 tests) 109ms
+ ✓ test/dialogs.test.tsx (4 tests) 196ms
+ ✓ test/command-composer.test.ts (8 tests) 163ms
+ ✓ test/stream-engine.test.ts (13 tests) 179ms
+ ✓ test/toast-system.test.tsx (3 tests) 195ms
+ ✓ test/storage.test.js (24 tests) 46ms
+ ✓ test/theme-artwork.test.js (4 tests) 55ms
+ ✓ test/commands.test.ts (23 tests) 17ms
+ ✓ test/provider-autosave.test.ts (11 tests) 40ms
+ ✓ test/writing.test.ts (16 tests) 43ms
+ ✓ test/knowledge.test.ts (9 tests) 119ms
+ ✓ test/react-shell.test.tsx (2 tests) 308ms
+ ✓ test/stream-images.test.ts (3 tests) 36ms
+ ✓ test/projects.test.js (5 tests) 48ms
+ ✓ test/tokens-consistency.test.js (6 tests) 26ms
+ ✓ test/theme-archive.test.js (6 tests) 11ms
+ ✓ test/skill-package.test.js (4 tests) 69ms
+ ✓ test/first-response.test.ts (9 tests) 61ms
+ ✓ test/provider-key-vault.test.ts (2 tests) 31ms
+ ✓ test/logo-shapes.test.js (7 tests) 8ms
+ ✓ test/chat-config.test.js (13 tests) 19ms
+ ✓ test/archive.test.js (9 tests) 26ms
+ ✓ test/temporary-conversation.test.js (3 tests) 11ms
+ ✓ test/user-theme.test.js (31 tests) 17ms
+ ✓ test/message-rendering.test.js (11 tests) 24ms
+ ✓ test/theme-package.test.js (8 tests) 6ms
+ ✓ test/theme.test.js (16 tests) 12ms
+ ✓ test/context-service.test.ts (7 tests) 11ms
+ ✓ test/markdown.test.js (16 tests) 25ms
+ ✓ test/extensions.test.js (5 tests) 7ms
+ ✓ test/runtime-events.test.js (7 tests) 11ms
+ ✓ test/store-subscriptions.test.ts (3 tests) 8ms
+ ✓ test/surface-appearance.test.js (4 tests) 7ms
+ ✓ test/conversation-tree.test.js (8 tests) 15ms
+ ✓ test/module-runtime.test.ts (7 tests) 9ms
+ ✓ test/chat-attachments.test.js (4 tests) 7ms
+ ✓ test/seed.test.js (14 tests) 10ms
+ ✓ test/adapters.test.js (12 tests) 10ms
+ ✓ test/changelog.test.js (4 tests) 4ms
+ ✓ test/project-actions.test.js (1 test) 2ms
+ ✓ test/provider-models.test.js (5 tests) 5ms
+ ✓ test/context-usage.test.js (10 tests) 4ms
+ ✓ test/theme-loading.test.js (2 tests) 5ms
+ ✓ test/relative-days.test.js (2 tests) 2ms
+ ✓ test/popover-markup.test.js (3 tests) 3ms
+ ✓ test/theme-card.test.tsx (3 tests) 2ms
+
+ Test Files  56 passed (56)
+      Tests  476 passed (476)
+   Start at  14:01:18
+   Duration  9.43s (transform 2.62s, setup 496ms, collect 12.87s, tests 3.33s, environment 28.13s, prepare 4.87s)
+

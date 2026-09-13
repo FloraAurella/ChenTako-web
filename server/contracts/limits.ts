@@ -12,6 +12,7 @@ export const LIMITS = {
   filesPerMessage: 8,
   filesTotalBytes: 80 * 1024 * 1024,
   messageChars: 100 * 1024,
+  requestSystemPromptChars: 16 * 1024 * 1024,
   draftChars: 100 * 1024,
   summaryChars: 2 * 1024 * 1024,
   importBytes: 130 * 1024 * 1024,

@@ -1,0 +1,139 @@
+{
+  "baseline": {
+    "startTime": "2026-09-13T05:53:16.430Z",
+    "duration": 493604.896,
+    "expected": 232,
+    "skipped": 0,
+    "unexpected": 44,
+    "flaky": 0
+  },
+  "initialFullRun": {
+    "total": 290,
+    "passed": 238,
+    "failed": 52
+  },
+  "initialFailuresSharedWithBaseline": 44,
+  "initialNewDifferences": [
+    {
+      "name": "commands.spec.js >> 帮助支持键盘滚动并在 Escape 后恢复输入焦点",
+      "recheck": {
+        "status": "expected",
+        "errors": []
+      }
+    },
+    {
+      "name": "commands.spec.js >> 指令面板 dark 1024 无溢出且 panel 悬停稳定",
+      "recheck": {
+        "status": "expected",
+        "errors": []
+      }
+    },
+    {
+      "name": "commands.spec.js >> 指令面板 dark 1280 无溢出且 panel 悬停稳定",
+      "recheck": {
+        "status": "expected",
+        "errors": []
+      }
+    },
+    {
+      "name": "commands.spec.js >> 指令面板 dark 390 无溢出且 panel 悬停稳定",
+      "recheck": {
+        "status": "expected",
+        "errors": []
+      }
+    },
+    {
+      "name": "commands.spec.js >> 指令面板 light 1024 无溢出且 panel 悬停稳定",
+      "recheck": {
+        "status": "expected",
+        "errors": []
+      }
+    },
+    {
+      "name": "commands.spec.js >> 指令面板 light 1280 无溢出且 panel 悬停稳定",
+      "recheck": {
+        "status": "expected",
+        "errors": []
+      }
+    },
+    {
+      "name": "commands.spec.js >> 指令面板 light 390 无溢出且 panel 悬停稳定",
+      "recheck": {
+        "status": "expected",
+        "errors": []
+      }
+    },
+    {
+      "name": "response-policy.spec.js >> 上下文策略三个控件与模型继承 1024 light",
+      "recheck": {
+        "status": "expected",
+        "errors": []
+      }
+    }
+  ],
+  "remainingFailures": [
+    "app.spec.js >> JSON 主题文件：导出当前主题并重新导入应用",
+    "app.spec.js >> Tako Festival · 章鱼烧祭 窄屏安全回退：无横向溢出或素材遮挡",
+    "app.spec.js >> 主题 JSON：更新默认主题、重启恢复并删除自定义变体",
+    "app.spec.js >> 主题界面字体：导入 typefaces 主题后字体令牌生效，删除后恢复默认",
+    "app.spec.js >> 压缩上下文：点击直接压缩，按会话锁定发送，进度提示可回看",
+    "app.spec.js >> 设置：外观主题卡与自定义导入入口",
+    "commands.spec.js >> 空状态 offline 准确引导",
+    "commands.spec.js >> 空状态 ready 准确引导",
+    "commands.spec.js >> 空状态 unconfigured 准确引导",
+    "modular-refactor.spec.js >> 共享历史表面与项目状态操作：创建、重命名、删除保留聊天",
+    "runtime-refinement.spec.js >> appearance dark",
+    "runtime-refinement.spec.js >> appearance light",
+    "settings-context.spec.js >> 上下文设置视觉 1280 light",
+    "settings-context.spec.js >> 上下文设置视觉 390 light",
+    "settings-context.spec.js >> 设置分类 1024 宽度下分组、能力说明与页面宽度完整",
+    "settings-context.spec.js >> 设置分类 390 宽度下分组、能力说明与页面宽度完整",
+    "visual.spec.js >> Everforest 外观主题卡",
+    "visual.spec.js >> Everforest 思考强度控件",
+    "visual.spec.js >> Everforest 真实消息 dark",
+    "visual.spec.js >> Everforest 真实消息 light",
+    "visual.spec.js >> Everforest 空会话 dark",
+    "visual.spec.js >> Everforest 空会话 light",
+    "visual.spec.js >> Everforest 运行配置与模型选择器",
+    "visual.spec.js >> HTML 与 SVG 产物工具栏深色",
+    "visual.spec.js >> HTML 与 SVG 产物工具栏移动端",
+    "visual.spec.js >> Provider 中等宽度顶部切换器",
+    "visual.spec.js >> Provider 模型编辑基础弹层",
+    "visual.spec.js >> Provider 模型额度弹层深色",
+    "visual.spec.js >> Provider 移动端列表与详情",
+    "visual.spec.js >> Provider 设置页面",
+    "visual.spec.js >> onboarding 初始浅色",
+    "visual.spec.js >> onboarding 初始深色",
+    "visual.spec.js >> 上下文与提示词集中配置",
+    "visual.spec.js >> 图像生成等待态深色",
+    "visual.spec.js >> 图像生成等待态移动端",
+    "visual.spec.js >> 工具轻量时间线深色",
+    "visual.spec.js >> 工具轻量时间线移动端",
+    "visual.spec.js >> 思考轨迹 dark",
+    "visual.spec.js >> 思考轨迹 light",
+    "visual.spec.js >> 移动端思考轨迹",
+    "visual.spec.js >> 移动端空会话",
+    "visual.spec.js >> 空会话 dark",
+    "visual.spec.js >> 空会话 light"
+  ],
+  "remainingOnlyBaseline": true,
+  "baselineFailuresNowPassing": [
+    "knowledge.spec.js >> 大资料用量刷新不重复编码全文或复制请求，输入保持可用"
+  ],
+  "writingFinal": {
+    "startTime": "2026-09-13T06:04:33.532Z",
+    "duration": 14316.407,
+    "expected": 17,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "regressionRecheck": {
+    "startTime": "2026-09-13T06:07:29.646Z",
+    "duration": 8440.519,
+    "expected": 9,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

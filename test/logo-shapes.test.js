@@ -13,13 +13,13 @@ import {
 import { resources } from "../src/resources/registry.js";
 
 describe("品牌 Logo 剪影", () => {
-  it("默认使用对话框与 AI的唯一 SVG 资源", () => {
+  it("默认使用章鱼烧轮廓、酱汁与海苔的唯一 SVG 资源", () => {
     expect(DEFAULT_LOGO_SHAPE).toBe("paper-pen");
     expect(isValidLogoShape(DEFAULT_LOGO_SHAPE)).toBe(true);
-    expect(LOGO_SHAPES[DEFAULT_LOGO_SHAPE]).toBe(readFileSync(resolve("src/resources/logos/ai-chatbox.svg"), "utf8"));
+    expect(LOGO_SHAPES[DEFAULT_LOGO_SHAPE]).toBe(readFileSync(resolve("src/resources/logos/ChenTako.svg"), "utf8"));
   });
 
-  it("默认品牌标的对话框与 AI共用一种主题颜色", () => {
+  it("默认品牌标的章鱼烧轮廓、酱汁与海苔共用一种主题颜色", () => {
     const paths = logoSvgPaths(DEFAULT_LOGO_SHAPE, "#ffffff", "#ffb35c");
     expect(paths).toContain('stroke="#ffffff"');
     expect(paths).toContain('fill="#ffffff"');
@@ -36,7 +36,7 @@ describe("品牌 Logo 剪影", () => {
   it("规范 SVG 保持 24 视窗、透明背景和小尺寸圆角几何", () => {
     const svg = LOGO_SHAPES[DEFAULT_LOGO_SHAPE];
     expect(svg).toContain('viewBox="0 0 24 24"');
-    expect(svg).toContain('color="#93B259"');
+    expect(svg).toContain('color="#FF3B1F"');
     expect(svg).toContain('stroke-linecap="round"');
     expect(svg).toContain('stroke-linejoin="round"');
     expect(svg).not.toMatch(/<(?:rect|circle)[^>]+(?:width="24"|r="12")/);
@@ -45,7 +45,7 @@ describe("品牌 Logo 剪影", () => {
 
   it.each(["index.html", "onboarding.html"])("%s 首帧 favicon 引用唯一 SVG", (file) => {
     const html = readFileSync(resolve(file), "utf8");
-    expect(html).toContain('href="/src/resources/logos/ai-chatbox.svg"');
+    expect(html).toContain('href="/src/resources/logos/ChenTako.svg"');
     expect(html).not.toContain("data:image/svg+xml");
   });
 

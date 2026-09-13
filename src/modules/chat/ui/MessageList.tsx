@@ -39,6 +39,7 @@ export function MessageList({ store }: MessageListProps) {
     : "";
   const instantBranches = instantBranchIds();
   return <>{visibleMessages.map((message: any, index: number) => {
+    if (message.outputSurface === 'workspace') return null;
     const variants = message.role === "user" ? getUserVariants(conversation, message.id, visibleMessages) : null;
     return <MessageEntry
     key={`${conversationId}:${message.id}`}

@@ -48,7 +48,7 @@ export function ThemeCard({ entry, activeId, scheme, service }: {
       <span className="theme-strip-identity">
         <span className="theme-strip-status">{active ? <><TrustedIcon name="check" size={12} /> 当前主题</> : "界面主题"}</span>
         <span className="theme-strip-name">{entry.label}</span>
-        <span className="theme-strip-note">{entry.id === "everforest" ? "森林绿意，安静专注。" : entry.note || "你的专属工作空间"}</span>
+        <span className="theme-strip-note">{entry.note || "你的专属工作空间"}</span>
       </span>
       <span className="theme-strip-palette">
         <span className="theme-strip-colors" role="img" aria-label={colors.map(([label, token]) => `${label} ${tokens[token]}`).join("，")}>

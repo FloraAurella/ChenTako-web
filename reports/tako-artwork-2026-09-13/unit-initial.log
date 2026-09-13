@@ -1,0 +1,39 @@
+
+> chentako@1.1.5 test
+> vitest run test/theme-artwork.test.js test/theme.test.js
+
+
+ RUN  v3.2.7 /Users/qxc/Desktop/ai/coding-project/ChenTako
+
+ ✓ test/theme.test.js (16 tests) 6ms
+ ❯ test/theme-artwork.test.js (4 tests | 1 failed) 39ms
+   ✓ 可信双态背景画作 > tako-daylight.svg 为独立、无可执行内容的 SVG 12ms
+   ✓ 可信双态背景画作 > tako-nightfall.svg 为独立、无可执行内容的 SVG 2ms
+   × 可信双态背景画作 > 两态返回不同源码资源，其他主题不继承章鱼烧画作 6ms
+     → expected 'url("data:image/svg+xml,%3csvg%20xmln…' to contain 'tako-nightfall.svg'
+   ✓ 可信双态背景画作 > 主题应用同步画作，切换无画作主题与重复释放均清除 17ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/theme-artwork.test.js > 可信双态背景画作 > 两态返回不同源码资源，其他主题不继承章鱼烧画作
+AssertionError: expected 'url("data:image/svg+xml,%3csvg%20xmln…' to contain 'tako-nightfall.svg'
+
+Expected: "tako-nightfall.svg"
+Received: "url("data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201600%201000'%20fill='none'%3e%3ctitle%3e炭火夜摊：灯笼、烟气与余烬深色边缘画作%3c/title%3e%3cdefs%3e%3cradialGradient%20id='glow'%3e%3cstop%20stop-color='%23FF8A3D'%20stop-opacity='.13'/%3e%3cstop%20offset='1'%20stop-color='%23FF8A3D'%20stop-opacity='0'/%3e%3c/radialGradient%3e%3clinearGradient%20id='lantern'%20x2='1'%20y2='.25'%3e%3cstop%20stop-color='%23A84623'/%3e%3cstop%20offset='.45'%20stop-color='%23FFAF57'/%3e%3cstop%20offset='1'%20stop-color='%23CA552D'/%3e%3c/linearGradient%3e%3clinearGradient%20id='smoke'%20x2='0'%20y2='1'%3e%3cstop%20stop-color='%23F0A665'%20stop-opacity='0'/%3e%3cstop%20offset='.55'%20stop-color='%23F0A665'%20stop-opacity='.2'/%3e%3cstop%20offset='1'%20stop-color='%23F0A665'%20stop-opacity='0'/%3e%3c/linearGradient%3e%3c/defs%3e%3cellipse%20cx='1515'%20cy='147'%20rx='250'%20ry='310'%20fill='url(%23glow)'/%3e%3cg%20stroke='%23FFBD79'%20opacity='.24'%3e%3cpath%20d='M1180-30q195%20123%20440%2049'%20stroke-width='1.2'/%3e%3cpath%20d='M1438%2038v51m114-55v120'%20stroke-width='1'/%3e%3c/g%3e%3cg%20transform='translate(1438%20145)%20rotate(6)'%20opacity='.29'%3e%3cpath%20d='M-27-56C-68-40-70%2037-28%2056H28C69%2038%2068-39%2027-56Z'%20fill='url(%23lantern)'%20fill-opacity='.42'%20stroke='%23FFB36B'%20stroke-width='1.2'/%3e%3cpath%20d='M-27-56H27V-48H-27ZM-28%2048H28V56H-28Z'%20fill='%23C48C5E'/%3e%3cg%20stroke='%23FFC57E'%20stroke-width='.7'%3e%3cpath%20d='M-27-48C-51-15-51%2020-28%2048M-13-48C-26-15-26%2020-14%2048M0-48V48M13-48C26-15%2026%2020%2014%2048M27-48C51-15%2051%2020%2028%2048'/%3e%3cpath%20d='M-43-34H43M-52-17H52M-54%200H54M-51%2018H51M-43%2035H43'/%3e%3c/g%3e%3cpath%20d='M-12%2059%200%2069%2012%2059M0%2069v31m-6-6-2%2034m8-27v36m6-42%203%2031'%20stroke='%23F8A159'%20stroke-width='1.1'%20stroke-linecap='round'/%3e%3c/g%3e%3cg%20transform='translate(1552%20234)%20scale(.7)%20rotate(-8)'%20opacity='.2'%3e%3cpath%20d='M-30-59C-80-40-77%2040-30%2061H30C78%2041%2078-40%2030-59Z'%20fill='%23C9582C'%20fill-opacity='.3'%20stroke='%23FFB16D'/%3e%3cpath%20d='M-30-55H30M-30%2056H30M-53-32H53M-63-12H63M-63%2012H63M-53%2033H53M0-54V55M-20-54Q-43%200-20%2055M20-54Q43%200%2020%2055M0%2064v36m-7-4v36m7-31v35m7-40v34'%20stroke='%23FFB16D'/%3e%3c/g%3e%3cg%20stroke='url(%23smoke)'%20stroke-linecap='round'%3e%3cpath%20d='M1572%20970c-150-87-145-183-30-253s-161-90-93-227%20137-104%2081-219'%20stroke-width='1.4'/%3e%3cpath%20d='M1583%20985c-170-95-146-188-35-260s-158-95-87-228%20134-106%2080-225'%20stroke-width='.6'/%3e%3cpath%20d='M1485%201008c-140-123%205-148%2026-244s-158-109-66-183'%20stroke-width='.8'/%3e%3c/g%3e%3cg%20transform='translate(1531%20988)%20rotate(-18)'%20stroke='%23E18B48'%20opacity='.2'%3e%3cellipse%20rx='234'%20ry='107'%20stroke-width='1.2'/%3e%3cellipse%20rx='219'%20ry='96'%20stroke-width='.6'/%3e%3cellipse%20rx='198'%20ry='82'%20stroke-dasharray='2%208'/%3e%3cpath%20d='M-160-45Q0-120%20160-45M-167-26Q0-98%20167-26M-169-8Q0-76%20169-8'%20stroke-width='.7'/%3e%3c/g%3e%3cg%20transform='translate(60%20985)%20rotate(-35)'%20stroke='%23FFAA62'%20opacity='.15'%3e%3cpath%20d='M-180%200Q0-70%20180%200M-160%2012Q0-46%20160%2012M-139%2024Q0-22%20139%2024'/%3e%3cpath%20d='M-60-39q-28-27-7-62t-8-59M-10-46q-32-43-7-78t-7-61M45-44q-27-32-5-63'%20stroke-width='1.2'/%3e%3c/g%3e%3cg%20fill='%23FFA359'%20opacity='.3'%3e%3ccircle%20cx='1388'%20cy='331'%20r='1.8'/%3e%3ccircle%20cx='1534'%20cy='466'%20r='2.4'/%3e%3ccircle%20cx='1451'%20cy='743'%20r='1.5'/%3e%3ccircle%20cx='1367'%20cy='879'%20r='2'/%3e%3ccircle%20cx='1577'%20cy='770'%20r='2.8'/%3e%3c/g%3e%3cg%20stroke='%23FFC67E'%20opacity='.25'%3e%3cpath%20d='m1510%20366%202%207%207%202-7%202-2%207-2-7-7-2%207-2ZM1390%20782l2%206%206%202-6%202-2%206-2-6-6-2%206-2Z'/%3e%3c/g%3e%3cg%20stroke='%23F28C62'%20stroke-linecap='round'%20opacity='.23'%3e%3cpath%20d='m1464%20915%203-8m-30-49%204-6m113-212%202-6m-191%20298%202-8m163-628%202-6'/%3e%3c/g%3e%3c/svg%3e")"
+
+ ❯ test/theme-artwork.test.js:20:58
+     18|   it('两态返回不同源码资源，其他主题不继承章鱼烧画作', () => {
+     19|     expect(themeArtworkBackground('everforest', 'light')).toContain('t…
+     20|     expect(themeArtworkBackground('everforest', 'dark')).toContain('ta…
+       |                                                          ^
+     21|     expect(themeArtworkBackground('custom', 'light')).toBe('none');
+     22|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 19 passed (20)
+   Start at  12:30:44
+   Duration  796ms (transform 101ms, setup 11ms, collect 217ms, tests 45ms, environment 800ms, prepare 121ms)
+

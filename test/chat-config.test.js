@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { CHAT_CONFIG_DEFAULTS, resolveChatConfig, normalizeChatConfig, migrateChatSettings, validateChatConfig } from "../src/modules/context/domain/config.js";
 import { compressionPrefix, estimateContextTokens, resolveInputBudget, shouldCompressResponse } from "../src/modules/context/domain/budget.js";
 import { buildPersistentPayload } from "../src/app/state/persistence.js";
@@ -11,7 +11,7 @@ describe("聊天配置与项目继承", () => {
     state.chatConfig.temperature = 0.9;
     expect(resolveChatConfig(state, { projectId: "p" }).temperature).toBe(0.9);
     delete state.projects[0].configOverrides.systemPrompt;
-    expect(resolveChatConfig(state, { projectId: "p" }).systemPrompt).toBe("global");
+    expect(resolveChatConfig(state, { projectId: "p" }).systemPrompt).toBe("");
   });
   it("会话思考覆盖优先，切换模型不会改变配置；项目移除回归默认", () => {
     const state = { chatConfig: { defaultReasoningEffort: "low" }, projects: [{ id: "p", configOverrides: { defaultReasoningEffort: "high" } }] };
@@ -100,7 +100,7 @@ it("旧轮数配置被移除，聊天及项目的其他设置继续生效", () =
   expect(normalizeChatConfig({ keepRecentTurns: 2, systemPrompt: "" }, true)).toEqual({ systemPrompt: "" });
   const config = resolveChatConfig({ ...source, projects: [{ id: "p", configOverrides: { keepRecentTurns: 100, systemPrompt: "项目" } }] }, { projectId: "p" });
   expect(config).not.toHaveProperty("keepRecentTurns");
-  expect(config).toMatchObject({ temperature: 0.2, systemPrompt: "项目" });
+  expect(config).toMatchObject({ temperature: 0.2, systemPrompt: "" });
 });
 
 it("结束触发阈值含等号，停止、错误和未结束均不触发", () => {
@@ -109,3 +109,10 @@ it("结束触发阈值含等号，停止、错误和未结束均不触发", () =
   expect(shouldCompressResponse({ completed: true }, 801, 1000, 80)).toBe(true);
   for (const result of [{ completed: false }, { completed: true, stopped: true }, { completed: true, error: "失败" }]) expect(shouldCompressResponse(result, 900, 1000, 80)).toBe(false);
 });
+
+// Tests use explicit empty fixtures, never author-owned prompt text.
+vi.mock('../prompts/system.json', () => ({ default: '' }));
+vi.mock('../prompts/discussion.json', () => ({ default: '' }));
+vi.mock('../prompts/write.json', () => ({ default: '' }));
+vi.mock('../prompts/edit.json', () => ({ default: '' }));
+vi.mock('../prompts/continuity.json', () => ({ default: '' }));

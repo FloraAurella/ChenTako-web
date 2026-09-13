@@ -1,0 +1,27 @@
+
+> chentako@1.1.5 test:e2e
+> playwright test e2e/chentako-brand.spec.js e2e/tako-theme.spec.js e2e/app.spec.js --grep ChenTako 品牌|章鱼烧主题消息|主题明暗切换|主题 JSON：
+
+[WebServer] (node:99464) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 14 tests using 1 worker
+
+(node:99466) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [chromium] › e2e/app.spec.js:1337:1 › 主题明暗切换自动换色 (631ms)
+  ✓   2 [chromium] › e2e/app.spec.js:1459:1 › 主题 JSON：更新默认主题、重启恢复并删除自定义变体 (1.4s)
+  ✓   3 [chromium] › e2e/chentako-brand.spec.js:7:5 › ChenTako 品牌 light 1280 (716ms)
+  ✓   4 [chromium] › e2e/chentako-brand.spec.js:7:5 › ChenTako 品牌 light 1024 (776ms)
+  ✓   5 [chromium] › e2e/chentako-brand.spec.js:7:5 › ChenTako 品牌 light 390 (720ms)
+  ✓   6 [chromium] › e2e/chentako-brand.spec.js:7:5 › ChenTako 品牌 dark 1280 (760ms)
+  ✓   7 [chromium] › e2e/chentako-brand.spec.js:7:5 › ChenTako 品牌 dark 1024 (749ms)
+  ✓   8 [chromium] › e2e/chentako-brand.spec.js:7:5 › ChenTako 品牌 dark 390 (700ms)
+  ✓   9 [chromium] › e2e/tako-theme.spec.js:6:5 › 章鱼烧主题消息、焦点与刷新 light 1280 (687ms)
+  ✓  10 [chromium] › e2e/tako-theme.spec.js:6:5 › 章鱼烧主题消息、焦点与刷新 light 1024 (682ms)
+  ✓  11 [chromium] › e2e/tako-theme.spec.js:6:5 › 章鱼烧主题消息、焦点与刷新 light 390 (654ms)
+  ✓  12 [chromium] › e2e/tako-theme.spec.js:6:5 › 章鱼烧主题消息、焦点与刷新 dark 1280 (683ms)
+  ✓  13 [chromium] › e2e/tako-theme.spec.js:6:5 › 章鱼烧主题消息、焦点与刷新 dark 1024 (668ms)
+  ✓  14 [chromium] › e2e/tako-theme.spec.js:6:5 › 章鱼烧主题消息、焦点与刷新 dark 390 (663ms)
+
+  14 passed (12.2s)

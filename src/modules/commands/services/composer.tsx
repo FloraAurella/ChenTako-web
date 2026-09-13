@@ -39,7 +39,8 @@ export function createComposerCommands({ input, feedbackHost, registry, context,
   let composing = false;
   let disposed = false;
 
-  const ordered = () => registry.list().sort((a, b) => (a.id === 'help' ? 1 : b.id === 'help' ? -1 : 0));
+  const parseInput = (text: string) => parseCommandInput(text, registry.list().filter(c => c.acceptsMultiline).map(c => c.name));
+  const ordered = () => registry.list().filter(c => !c.hidden).sort((a, b) => (a.id === 'help' ? 1 : b.id === 'help' ? -1 : 0));
   function close(focus = false) {
     view = null; host.hidden = true; options = []; suggestions = [];
     input.setAttribute('aria-expanded', 'false'); input.removeAttribute('aria-activedescendant');
@@ -104,7 +105,7 @@ export function createComposerCommands({ input, feedbackHost, registry, context,
   }
   function showOptions(result: Extract<CommandResult, { status: 'select' }>, ctx: CommandContext, explicit = false) {
     selectionReady = explicit;
-    const parsed = parseCommandInput(input.value);
+    const parsed = parseInput(input.value);
     const commandIcon = parsed.kind === 'command' ? registry.get(parsed.name)?.icon : undefined;
     options = result.options;
     show({ title: result.title, items: options.map(item => ({ ...item, icon: commandIcon })), active: Math.max(0, options.findIndex(item => item.selected)), message: result.message || (!options.length ? '没有匹配项，请修改参数或在设置中配置模型。' : undefined), busy: ctx.busy }, 'options');
@@ -129,16 +130,17 @@ export function createComposerCommands({ input, feedbackHost, registry, context,
     }
   }
   async function submit(): Promise<boolean> {
-    const parsed = parseCommandInput(input.value);
+    const parsed = parseInput(input.value);
     if (parsed.kind !== 'command') return false;
     const ctx = context();
     if (!ctx) { report('请先创建或选择会话。', true); return true; }
     const command = registry.get(parsed.name);
     if (!command) { close(true); report('未知指令。输入 /help 查看帮助；使用 // 前缀发送字面量。', true); return true; }
+    if (parsed.target && !command.acceptsMultiline) { close(true); report('选章前缀只能与支持正文的指令组合。', true); return true; }
     const unavailable = command.available(ctx);
     if (unavailable) { close(true); report(unavailable, true); return true; }
     close();
-    await finish(() => command.execute(ctx, parsed.argument), ctx);
+    await finish(() => command.execute({ ...ctx, target: parsed.target }, parsed.argument), ctx);
     return true;
   }
   async function choose(index: number) {
@@ -146,7 +148,10 @@ export function createComposerCommands({ input, feedbackHost, registry, context,
     if (!ctx || ctx.conversationId !== owner) { close(); return; }
     if (mode === 'suggestions') {
       const command = suggestions[index]; if (!command) return;
-      setText(`/${command.name}${command.options ? ' ' : ''}`);
+      const parsed = parseInput(input.value);
+      const targetPrefix = parsed.kind === 'command' && parsed.target ? `@${JSON.stringify(parsed.target)} ` : '';
+      setText(`${targetPrefix}/${command.name}${command.options ? ' ' : ''}`);
+      if (command.executeOnSelect) { await submit(); return; }
       if (command.options) showOptions({ status: 'select', title: command.description, options: command.options(ctx, '') }, ctx);
       else { close(true); report(`已补全 /${command.name}，再次按 Enter 执行。`); }
     } else if (mode === 'options') {
@@ -156,13 +161,13 @@ export function createComposerCommands({ input, feedbackHost, registry, context,
   }
   function update() {
     version++; selectionReady = false; feedback.hidden = true;
-    const parsed = parseCommandInput(input.value); const ctx = context();
+    const parsed = parseInput(input.value); const ctx = context();
     if (composing || parsed.kind !== 'command' || !ctx) { close(); return; }
     const command = registry.get(parsed.name);
     if (command?.options && parsed.hasSeparator) {
       showOptions({ status: 'select', title: command.description, options: command.options(ctx, parsed.argument) }, ctx);
     } else if (!parsed.argument) {
-      suggestions = ordered().filter(item => `${item.name} ${item.label || ""} ${item.description}`.toLowerCase().includes(parsed.name));
+      suggestions = ordered().filter(item => !parsed.target || item.acceptsMultiline).filter(item => `${item.name} ${item.label || ""} ${item.description}`.toLowerCase().includes(parsed.name));
       show({ title: '指令', items: suggestions.map(item => ({ id: item.id, label: item.label || `/${item.name}`, icon: item.icon, command: `/${item.name}`, detail: [item.description, item.summary?.(ctx)].filter(Boolean).join(" · "), unavailable: item.available(ctx) })), active: 0,
         message: suggestions.length ? undefined : '没有匹配指令。输入 /help 查看帮助。', busy: ctx.busy }, 'suggestions');
     } else close();
@@ -184,12 +189,12 @@ export function createComposerCommands({ input, feedbackHost, registry, context,
       view.active = (view.active + (event.key === 'ArrowDown' ? 1 : -1) + view.items.length) % view.items.length; paint(); return true;
     }
     if (['Enter', 'Tab'].includes(event.key) && view.items.length) {
-      const parsed = parseCommandInput(input.value);
+      const parsed = parseInput(input.value);
       if (mode === 'suggestions' || event.key === 'Tab' || navigated || selectionReady || (parsed.kind === 'command' && !parsed.argument)) {
         event.preventDefault();
         if (event.key === 'Tab' && mode === 'options' && parsed.kind === 'command') {
           const option = options[view.active];
-          if (option) setText(`/${parsed.name} ${option.argument}`);
+          if (option) { const prefix = registry.get(parsed.name)?.inputPrefix; setText(prefix ? `${prefix}${option.argument}` : `/${parsed.name} ${option.argument}`); }
         } else void choose(view.active);
         return true;
       }
@@ -207,8 +212,13 @@ export function createComposerCommands({ input, feedbackHost, registry, context,
   scope.listen(window.visualViewport, 'resize', position);
   scope.listen(window.visualViewport, 'scroll', position);
   return {
-    submit, keydown,
-    isCommand: () => parseCommandInput(input.value).kind === 'command',
+    submit, keydown, parseInput,
+    contentOfInput(text: string): string | null {
+      const parsed = parseInput(text);
+      if (parsed.kind === 'message') return parsed.text;
+      return registry.get(parsed.name)?.submitsContent && parsed.argument.trim() ? parsed.argument.trim() : null;
+    },
+    isCommand: () => parseInput(input.value).kind === 'command',
     synchronize() {
       const next = context();
       const nextId = next?.conversationId || '';

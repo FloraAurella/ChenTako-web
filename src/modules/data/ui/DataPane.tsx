@@ -83,7 +83,7 @@ export function DataPane({ store, state, service }: { store: ExternalStore & { s
 
         <div id="data-import" tabIndex={-1} className="paper-panel settings-card">
           <h3 className="settings-card-title">导入对话</h3>
-          <p className="settings-card-desc">导入 JSON 或 <code className="inline-code">.ai-chatbox.zip</code> 对话文件（最大 130MB）。</p>
+          <p className="settings-card-desc">导入 JSON 或 <code className="inline-code">.ChenTako.zip</code> 对话文件（最大 130MB）。</p>
           <Button type="button" className="btn btn-primary" id="dataImportBtn" onClick={() => void service.data.importConversation()}>
             <TrustedIcon name="upload" size={15} /> 选择文件导入
           </Button>
@@ -95,7 +95,7 @@ export function DataPane({ store, state, service }: { store: ExternalStore & { s
         <SettingsCard id="legacy-settings" title="旧配置备份" description="仅供查阅，不自动生效；不含 API Key。">
           {store.state.legacySettingsBackup ? <><pre className="settings-backup">{JSON.stringify(store.state.legacySettingsBackup, null, 2)}</pre><Button type="button" className="btn btn-secondary" onClick={() => {
             const url = URL.createObjectURL(new Blob([JSON.stringify(store.state.legacySettingsBackup, null, 2)], { type: "application/json" }));
-            const a = document.createElement("a"); a.href = url; a.download = "ai-chatbox-legacy-settings.json"; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+            const a = document.createElement("a"); a.href = url; a.download = "ChenTako-legacy-settings.json"; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
           }}>导出旧配置</Button></> : <p className="field-help">暂无旧配置。</p>}
         </SettingsCard>
         </details>

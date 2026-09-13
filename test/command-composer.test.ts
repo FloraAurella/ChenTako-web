@@ -35,6 +35,13 @@ function register(execute: CommandContribution['execute']) {
   registry.register('fixture', { id: 'fixture', name: 'fixture', description: '注入的测试能力', parameters: '', available: () => null, execute });
 }
 describe('generic command composer coordination', () => {
+  it('exposes only content-bearing command bodies to the budget preview', () => {
+    registry.register('fixture', { id: 'draft', name: 'draft', description: '内容入口', parameters: '[正文]', acceptsMultiline: true, submitsContent: true, available: () => null, execute: () => success });
+    expect(instance.contentOfInput('@"目标 章" /draft 第一行\n第二行')).toBe('第一行\n第二行');
+    expect(instance.contentOfInput('/draft')).toBeNull();
+    expect(instance.contentOfInput('/unknown text')).toBeNull();
+    expect(instance.contentOfInput('普通输入')).toBe('普通输入');
+  });
   it('uses registered actions without feature-specific routing', async () => {
     const action = vi.fn(() => success); register(action); fill('/fixture'); await submit();
     expect(action).toHaveBeenCalledOnce(); expect(input.value).toBe('');

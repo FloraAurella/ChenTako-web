@@ -1,5 +1,5 @@
 // DB 名称与 AES-GCM additionalData 都是已发布的加密协议，改动任一项都会让
-// 升级前保存的供应商密钥无法解密，因此在 ai-chatbox 中保持字节级兼容。
+// 升级前保存的供应商密钥无法解密，因此在 ChenTako 中保持字节级兼容。
 const VAULT_DB_NAME = "tribblebook-provider-secrets-v1";
 const VAULT_STORE_NAME = "vault";
 const VAULT_DB_VERSION = 1;

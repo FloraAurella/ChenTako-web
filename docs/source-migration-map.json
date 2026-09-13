@@ -94,5 +94,5 @@
   "src/react/onboarding/OnboardingApp.tsx": "src/modules/onboarding/ui/OnboardingApp.tsx",
   "src/themes/custom/.gitkeep": "src/modules/appearance/domain/custom/.gitkeep",
   "src/themes/custom/everforest.theme.js": "src/modules/appearance/domain/custom/everforest.theme.js",
-  "src/resources/themes/everforest-ai-chatbox-theme-v1.json": "src/resources/themes/everforest-ai-chatbox-theme-v1.json"
+  "src/resources/themes/everforest-ChenTako-theme-v1.json": "src/resources/themes/everforest-ChenTako-theme-v1.json"
 }

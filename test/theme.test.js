@@ -10,7 +10,7 @@ import {
 } from "../src/modules/appearance/domain/contract.js";
 import { registerTheme, listThemes, getTheme, unregisterTheme, SOURCE_THEME_ORDER } from "../src/modules/appearance/domain/registry.js";
 import { migrateLegacyThemePrefs } from "../src/modules/appearance/controller.js";
-import everforestDefinition from "../src/modules/appearance/domain/custom/everforest.theme.js";
+import takoDefinition from "../src/modules/appearance/domain/custom/tako-festival.theme.js";
 import { LIGHT_TOKENS, DARK_TOKENS } from "../src/modules/appearance/domain/base-themes.js";
 
 const VALID_THEME = {
@@ -147,19 +147,19 @@ describe("主题契约", () => {
 describe("主题注册表", () => {
   beforeEach(() => {
     // 开发模式由 custom/*.theme.js 自动注册，测试环境显式补齐唯一源码主题。
-    registerTheme(everforestDefinition, { replace: true, sourceCustom: true });
+    registerTheme(takoDefinition, { replace: true, sourceCustom: true });
   });
 
-  it("唯一默认主题是 Everforest，旧默认主题已不再注册", () => {
+  it("唯一默认主题是 Tako Festival · 章鱼烧祭，旧默认主题已不再注册", () => {
     const themes = listThemes();
     expect(themes.filter((theme) => theme.sourceCustom).map((theme) => theme.id))
-      .toEqual(["everforest"]);
+      .toEqual(["tako-festival"]);
     expect(getTheme("embroidered-starlight")).toBeNull();
     expect(getTheme("seaside")).toBeNull();
   });
 
   it("默认主题与首帧基线的身份色、行动色与虹彩令牌一致", () => {
-    const theme = getTheme("everforest");
+    const theme = getTheme("tako-festival");
     const light = theme.tokens.light;
     const dark = theme.tokens.dark;
     expect(light["--pear"]).toBe(LIGHT_TOKENS["--pear"]);
@@ -172,29 +172,29 @@ describe("主题注册表", () => {
     expect(dark["--rainbow-alpha"]).toBe(DARK_TOKENS["--rainbow-alpha"]);
   });
 
-  it("源码主题顺序只包含 Everforest，用户主题排在其后", () => {
+  it("源码主题顺序只包含 Tako Festival · 章鱼烧祭，用户主题排在其后", () => {
     registerTheme(defineTheme(VALID_THEME), { replace: true, user: true });
-    expect(SOURCE_THEME_ORDER).toEqual(["everforest"]);
+    expect(SOURCE_THEME_ORDER).toEqual(["tako-festival"]);
     expect(listThemes().slice(0, 2).map((theme) => theme.id)).toEqual([
-      "everforest",
+      "tako-festival",
       "studio"
     ]);
   });
 
-  it("Everforest 是独立双态主题，并完整采用主题包字体与配色", () => {
-    const theme = getTheme("everforest");
-    expect(theme.label).toBe("Everforest");
+  it("Tako Festival · 章鱼烧祭 是独立双态主题，并完整采用主题包字体与配色", () => {
+    const theme = getTheme("tako-festival");
+    expect(theme.label).toBe("Tako Festival · 章鱼烧祭");
     expect(theme.fixedScheme).toBe("");
-    expect(theme.typefaces).toEqual({ body: "serif", display: "serif", mono: "mono" });
-    expect(theme.tokens.light["--canvas-mid"]).toBe("#F7F5EC");
-    expect(theme.tokens.light["--pear"]).toBe("#93B259");
-    expect(theme.tokens.light["--send-btn"]).toBe("#617D43");
-    expect(theme.tokens.light["--effort-accent"]).toBe("#93B259");
-    expect(theme.tokens.light["--effort-dot"]).toBe("#98A19B");
-    expect(theme.tokens.dark["--canvas-mid"]).toBe("#232A2E");
-    expect(theme.tokens.dark["--accent"]).toBe("#A7C080");
-    expect(theme.tokens.dark["--focus-ring"]).toBe("#A7C080");
-    expect(theme.tokens.dark["--effort-accent"]).toBe("#A7C080");
+    expect(theme.typefaces).toEqual({ body: "humanist", display: "rounded", mono: "mono" });
+    expect(theme.tokens.light["--canvas-mid"]).toBe("#FFF8E7");
+    expect(theme.tokens.light["--pear"]).toBe("#FF3B1F");
+    expect(theme.tokens.light["--send-btn"]).toBe("#FF3B1F");
+    expect(theme.tokens.light["--effort-accent"]).toBe("#D98B3A");
+    expect(theme.tokens.light["--effort-dot"]).toBe("#97745E");
+    expect(theme.tokens.dark["--canvas-mid"]).toBe("#1A1210");
+    expect(theme.tokens.dark["--accent"]).toBe("#FF8A3D");
+    expect(theme.tokens.dark["--focus-ring"]).toBe("#FF8A3D");
+    expect(theme.tokens.dark["--effort-accent"]).toBe("#FF8A3D");
     expect(theme.motion || "").toBe("");
 
     const serialized = JSON.stringify({ tokens: theme.tokens }).toLowerCase();
@@ -203,13 +203,22 @@ describe("主题注册表", () => {
     }
   });
 
-  it("Everforest 主正文在明暗两态保持可读对比度", () => {
-    const theme = getTheme("everforest");
+  it("Tako Festival · 章鱼烧祭 主正文在明暗两态保持可读对比度", () => {
+    const theme = getTheme("tako-festival");
     for (const scheme of ["light", "dark"]) {
       const tokens = theme.tokens[scheme];
       const surface = tokens["--surface-content"];
       expect(contrastRatio(tokens["--label"], surface)).toBeGreaterThanOrEqual(4.5);
-      expect(contrastRatio(tokens["--on-send-btn"], tokens["--send-btn"])).toBeGreaterThanOrEqual(3);
+      for (const background of ["--canvas-mid", "--surface-content", "--surface-elevated"]) {
+        for (const foreground of ["--label", "--label-secondary", "--label-tertiary"]) {
+          expect(contrastRatio(tokens[foreground], tokens[background]), `${scheme} ${foreground}/${background}`).toBeGreaterThanOrEqual(4.5);
+        }
+      }
+      for (const state of ["--send-btn", "--send-btn-hover", "--send-btn-pressed"]) {
+        expect(contrastRatio(tokens["--on-send-btn"], tokens[state]), `${scheme} ${state}`).toBeGreaterThanOrEqual(4.5);
+      }
+      expect(contrastRatio(tokens["--on-user-bubble"], tokens["--user-bubble-bg"])).toBeGreaterThanOrEqual(4.5);
+      expect(contrastRatio(tokens["--syntax-comment"], tokens["--code-bg"])).toBeGreaterThanOrEqual(4.5);
     }
   });
 
@@ -223,20 +232,20 @@ describe("主题注册表", () => {
 });
 
 describe("旧主题迁移", () => {
-  it("旧固定场景、纸本、海盐与原默认 ID 统一映射到 Everforest", () => {
+  it("旧固定场景、纸本、海盐与原默认 ID 统一映射到 Tako Festival · 章鱼烧祭", () => {
     expect(migrateLegacyThemePrefs({ legacyThemeFamily: "cream" })).toMatchObject({
-      themeId: "everforest", appearanceMode: "light"
+      themeId: "tako-festival", appearanceMode: "light"
     });
     expect(migrateLegacyThemePrefs({ legacyThemeFamily: "sea-night" })).toMatchObject({
-      themeId: "everforest", appearanceMode: "dark"
+      themeId: "tako-festival", appearanceMode: "dark"
     });
-    expect(migrateLegacyThemePrefs({ legacyThemeFamily: "forest" }).themeId).toBe("everforest");
-    expect(migrateLegacyThemePrefs({ legacyThemeFamily: "tropical-sticker" }).themeId).toBe("everforest");
+    expect(migrateLegacyThemePrefs({ legacyThemeFamily: "forest" }).themeId).toBe("tako-festival");
+    expect(migrateLegacyThemePrefs({ legacyThemeFamily: "tropical-sticker" }).themeId).toBe("tako-festival");
     expect(migrateLegacyThemePrefs({ legacyThemeFamily: "whatever-night" }).appearanceMode).toBe("dark");
-    expect(migrateLegacyThemePrefs({ themeId: "paper-dark" }).themeId).toBe("everforest");
-    expect(migrateLegacyThemePrefs({ themeId: "paper-light" }).themeId).toBe("everforest");
-    expect(migrateLegacyThemePrefs({ themeId: "seaside" }).themeId).toBe("everforest");
-    expect(migrateLegacyThemePrefs({ themeId: "embroidered-starlight" }).themeId).toBe("everforest");
+    expect(migrateLegacyThemePrefs({ themeId: "paper-dark" }).themeId).toBe("tako-festival");
+    expect(migrateLegacyThemePrefs({ themeId: "paper-light" }).themeId).toBe("tako-festival");
+    expect(migrateLegacyThemePrefs({ themeId: "seaside" }).themeId).toBe("tako-festival");
+    expect(migrateLegacyThemePrefs({ themeId: "embroidered-starlight" }).themeId).toBe("tako-festival");
   });
 
   it("旧 appearanceMode 语义保留", () => {
@@ -250,7 +259,7 @@ describe("旧主题迁移", () => {
   });
 
   it("已是新主题 ID 时不迁移", () => {
-    expect(migrateLegacyThemePrefs({ themeId: "everforest", appearanceMode: "dark" }).themeId)
-      .toBe("everforest");
+    expect(migrateLegacyThemePrefs({ themeId: "tako-festival", appearanceMode: "dark" }).themeId)
+      .toBe("tako-festival");
   });
 });

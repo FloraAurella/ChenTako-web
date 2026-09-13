@@ -534,14 +534,14 @@ export function restoreUserThemes(safeStorage) {
   for (const entry of readStore(safeStorage).themes) {
     const { errors, definition } = buildUserThemeDefinition(entry.raw);
     if (errors.length || !definition) {
-      console.error(`[ai-chatbox Theme] 无法恢复自定义主题 ${entry.id}：${errors.join("；")}`);
+      console.error(`[ChenTako Theme] 无法恢复自定义主题 ${entry.id}：${errors.join("；")}`);
       continue;
     }
     try {
       registerTheme(definition, { replace: true });
       restored.push(definition.id);
     } catch (error) {
-      console.error(`[ai-chatbox Theme] 注册自定义主题 ${entry.id} 失败`, error);
+      console.error(`[ChenTako Theme] 注册自定义主题 ${entry.id} 失败`, error);
     }
   }
   return restored;

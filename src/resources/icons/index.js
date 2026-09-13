@@ -1,13 +1,14 @@
 import { resources, registerSystem } from '../registry.js';
 "use strict";
 
-/** 内联 SVG 图标集（24 视窗 · 描线风格 · currentColor）。品牌标见 logos/ai-chatbox.svg。 */
+/** 内联 SVG 图标集（24 视窗 · 描线风格 · currentColor）。品牌标见 logos/ChenTako.svg。 */
 
 import { logoSvgPaths } from "../logos/shapes.js";
 
 const PATHS = {
   folder: '<path d="M3 7V5a2 2 0 0 1 2-2h5l2 3h7a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/>',
   bolt: '<path d="m13 3-8 11h6l-1 7 9-12h-7l1-6Z" fill="currentColor" stroke-linejoin="round"/>',
+  sidebarRight: '<rect x="3" y="4" width="18" height="16" rx="3"/><path d="M15 4v16"/>',
   sidebarOpen: '<rect x="3" y="4" width="18" height="16" rx="3"/><path d="M9 4v16m4-11 3 3-3 3"/>',
   sidebarClose: '<rect x="3" y="4" width="18" height="16" rx="3"/><path d="M9 4v16m7-11-3 3 3 3"/>',
   newChat: '<path d="M20 11.5a8 8 0 0 1-8 8H5l-2 2v-10a8 8 0 0 1 16-4M12 7v8M8 11h8"/>',
@@ -71,7 +72,7 @@ export function icon(name, size = 18, className = "") {
 }
 
 /**
- * 品牌标（ai-chatbox）。对话框与 AI图形继承 currentColor；品牌块在浅色主题
+ * 品牌标（ChenTako）。章鱼烧图形继承 currentColor；品牌块在浅色主题
  * 使用亮色标、深色主题使用深色标，均由 --on-brand-logo 负责对比度。
  */
 export function pearLogo(size = 22) {

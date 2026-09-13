@@ -136,7 +136,7 @@ export function createSettingsStateBridge(): SettingsStateBridge {
       ? null
       : {
           available: false,
-          reason: "迁移仅适用于打包后的 ai-chatbox macOS 桌面版。",
+          reason: "迁移仅适用于打包后的 ChenTako macOS 桌面版。",
           dataLocation: "",
           themeArchivePath: "",
           encryption: "",

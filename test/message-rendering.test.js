@@ -5,6 +5,7 @@ import { normalizeConversation } from "../src/contracts/normalize.js";
 import { forkUserMessage, getActivePath } from "../src/modules/chat/domain/tree.js";
 import {
   preloadConversationMessageHtml,
+  renderEmptyStageHtml,
   renderMessageHtml,
   renderMessageHtmlCached
 } from "../src/modules/chat/services/message-rendering.js";
@@ -123,5 +124,20 @@ describe("message branch rendering", () => {
     expect(html).toContain('data-message-id="x&quot; onmouseover=&quot;alert(1)"');
     expect(html).toContain('title="report&quot; onmouseover=&quot;alert(2).txt"');
     expect(html).not.toContain('<span class="file-name" title="report" onmouseover=');
+  });
+});
+
+describe("开始页欢迎与连接反馈", () => {
+  it.each([
+    ["模型", "ok", "欢迎回来，随时开始吧"],
+    ["模型", "down", "本地服务未连接"],
+    ["模型", "checking", "正在检查连接"],
+    ["", "ok", "配置模型"]
+  ])("%s / %s 保留对应提示", (provider, status, expected) => {
+    const html = renderEmptyStageHtml(provider, status);
+    expect(html).toContain(expected);
+    expect(html).toContain('class="welcome-logo"');
+    expect(html).not.toContain('suggestion-card');
+    expect(html).not.toContain('empty-card');
   });
 });

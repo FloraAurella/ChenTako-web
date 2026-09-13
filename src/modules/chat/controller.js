@@ -1,3 +1,4 @@
+import { completeRequestCheck } from './services/request-operation.js';
 import { AUXILIARY_CHAT_ROUTES } from '../../contracts/auxiliary';
 import { beginFirstResponse, endFirstResponse, isConversationLocked, FIRST_RESPONSE_LOCK_REASON } from './domain/first-response.js';
 import { createTitleGeneration, firstInputDescription } from './services/title-generation.js';
@@ -135,6 +136,17 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
     },
     publish: (stream) => paint(stream)
   });
+  scope.defer(() => {
+    for (const stream of streams.values()) {
+      for (const op of stream.operations || []) { op.finish({ text: stream.state.content, complete: false }); op.dispose(); }
+      stream.operations = [];
+    }
+  });
+  const operationPreparations = new Map();
+  scope.defer(() => { for (const entry of operationPreparations.values()) { entry.abort.abort(); entry.operations.forEach(op => op.dispose()); } operationPreparations.clear(); });
+  scope.defer(store.subscribe(() => {
+    for (const [id, entry] of operationPreparations) if (!state().conversations.some(c => c.id === id)) entry.abort.abort();
+  }));
   const compressionRequests = new Map();
   scope.defer(() => { for (const abort of compressionRequests.values()) abort.abort(); compressionRequests.clear(); });
   scope.defer(store.subscribe(() => {
@@ -223,12 +235,14 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
     if (!conversation || state().route.name !== "chat") return null;
     const current = () => state().conversations.some(item => item.id === conversation.id);
     const validProvider = conversationProvider(conversation);
-    const busy = Boolean(streamOf(conversation.id) || compressingIds.has(conversation.id) || preparingIds.has(conversation.id));
+    const busy = Boolean(streamOf(conversation.id) || operationPreparations.has(conversation.id) || compressingIds.has(conversation.id) || preparingIds.has(conversation.id));
     const unavailable = busy ? "当前会话正在回复、准备发送或压缩，请等待完成后再压缩。"
       : !validProvider || validProvider.enabled === false || !validProvider.models.includes(conversation.model) ? "请选择可用模型后再压缩。"
       : !compressionPrefix(getMessagesAfterCompression(conversation)).length ? "没有可压缩的已完成历史。" : null;
     const missing = { status: 'unavailable', message: '会话已不存在。' };
     return {
+      store,
+      submitContent: text => submitComposer(text),
       conversationId: conversation.id,
       mutationUnavailable: isConversationLocked(conversation) ? FIRST_RESPONSE_LOCK_REASON : null,
       models: state().providers.filter(p => p.enabled !== false).flatMap(p => p.models.map(model => ({ providerId: p.id, providerName: p.displayName, model, selected: p.id === conversation.providerId && model === conversation.model }))),
@@ -330,7 +344,8 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
     });
 
     scope.listen(els.sendBtn, "click", () => {
-      if (activeStream()) stopStream(activeStream());
+      if (operationPreparations.has(activeConversation()?.id)) operationPreparations.get(activeConversation().id).abort.abort();
+      else if (activeStream()) stopStream(activeStream());
       else submitComposer();
     });
     scope.listen(els.attachBtn, "click", () => els.attachmentInput.click());
@@ -1076,6 +1091,7 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
 
   /** 追加单条消息节点（发送后的助手占位）：不重建整列，长对话发送不再出现整列重绘停顿。 */
   function appendMessageEntry(conversation, message) {
+    if (message.outputSurface === 'workspace') return true;
     if (!els) return false;
     if (els.messageList.dataset.conversationId !== conversation.id) return false;
     const index = conversation.messages.indexOf(message);
@@ -1343,7 +1359,7 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
 
   function refreshSendButton() {
     if (!els) return;
-    if (activeStream()) {
+    if (activeStream() || operationPreparations.has(activeConversation()?.id)) {
       els.sendBtn.classList.add("stop-mode");
       els.sendBtn.title = "停止生成";
       els.sendBtn.setAttribute("aria-label", "停止生成");
@@ -1390,6 +1406,7 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
     return computeContextUsage(conversation, request.provider ? modelConfig.contextWindow : contextWindowOf(conversation), {
       config: { ...request.config, systemPrompt: request.baseSystemPrompt },
       fixedContext: request.fixedContext,
+      contextGroups: request.contextGroups,
       contextErrors: request.contextErrors,
       draft,
       maxTokens: modelConfig.maxTokens,
@@ -1400,8 +1417,9 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
   function composerContextUsage(conversation) {
     const request = resolveRequestParts(conversation);
     const { text, pending } = composerPayload();
-    const parsed = parseCommandInput(text);
-    const draft = (text || pending.length) && parsed.kind !== 'command' ? { role: 'user', content: parsed.text,
+    const parsed = commands?.parseInput(text) || parseCommandInput(text);
+    const content = commands ? commands.contentOfInput(text) : parsed.kind === 'message' ? parsed.text : null;
+    const draft = content !== null && (content || pending.length) ? { role: 'user', content,
       files: pending.filter(item => item.kind === 'file').map(item => ({ name: item.name, text: item.text })),
       parts: pending.filter(item => item.kind !== 'file').map(item => ({ type: item.kind === 'image' ? 'image' : 'file', source: item.source, size: item.size })) } : null;
     return requestContextUsage(conversation, request, draft);
@@ -1424,20 +1442,20 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
     }
   }
 
-  async function submitComposer() {
-    if (commands?.isCommand()) { await commands.submit(); return; }
+  async function submitComposer(contentOverride) {
+    if (contentOverride === undefined && commands?.isCommand()) { await commands.submit(); return; }
     const conversation = activeConversation();
     if (!conversation) return;
     if (streamOf(conversation.id)) {
       toast("本对话正在生成回复，请先停止或等待完成", { tone: "danger" });
       return;
     }
-    if (compressingIds.has(conversation.id) || preparingIds.has(conversation.id)) {
+    if (compressingIds.has(conversation.id) || preparingIds.has(conversation.id) || operationPreparations.has(conversation.id)) {
       toast("正在准备或压缩上下文，请稍候", { tone: "danger" });
       return;
     }
     const { text: rawText, pending, hasContent } = composerPayload();
-    const text = parseCommandInput(rawText).text;
+    const text = contentOverride ?? (commands?.parseInput(rawText) || parseCommandInput(rawText)).text;
     if (!hasContent) return;
 
     const provider = conversationProvider(conversation);
@@ -1459,6 +1477,7 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
       toast("请先选择模型", { tone: "danger" });
       return;
     }
+    if (text.length > LIMITS.messageChars) { toast('本次输入超过长度限制，请缩短后重试；内容未截断。', { tone: 'danger' }); return false; }
     const images = pending.filter((item) => item.kind === "image");
     const media = pending.filter((item) => item.kind === "media");
     if (images.length && capabilityOf(conversation, "visionInput") === false) {
@@ -1469,7 +1488,7 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
     const userMessage = {
       id: `msg-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`,
       role: "user",
-      content: text.slice(0, LIMITS.messageChars),
+      content: text,
       files: pending.filter((item) => item.kind === "file").map((item) => ({ name: item.name, text: item.text })),
       parts: [
         ...images.map((item) => ({ type: "image", source: item.source, mimeType: item.mimeType, alt: item.name })),
@@ -1480,24 +1499,51 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
     const config = resolveChatConfig(state(), conversation);
     const request = captureRequest(conversation, config);
     if (!(await prepareContext(conversation, config, userMessage, request))) return;
-    // A compression request may outlive a navigation or further typing. Never erase newer input.
-    if (scope.disposed || activeConversation()?.id !== conversation.id || state().route.name !== "chat" || composerPayload().text !== rawText || JSON.stringify(state().pendingAttachments) !== JSON.stringify(pending)) {
-      toast("输入或会话已变化，内容已保留，请再次发送。", { tone: "danger" });
-      return;
-    }
-    const firstResponse = beginFirstResponse(conversation);
-    const titleInput = firstInputDescription(userMessage, pending);
-    if (firstResponse && !conversation.title) conversation.title = truncateText(titleInput, LIMITS.titleLength);
-    conversation.draft = "";
-    state().pendingAttachments = [];
-    els.composerInput.value = "";
-    autoGrow(els.composerInput);
-    store.actions.appendMessage(conversation.id, userMessage);
-    store.touchConversation(conversation);
+    const operations = [];
+    const abort = new AbortController();
+    let operationStarted = false;
+    try {
+      for (const entry of requestContexts?.list() || []) {
+        const op = entry.createOperation?.({ store, conversation });
+        if (op) operations.push(op);
+      }
+      if (operations.length) {
+        operationPreparations.set(conversation.id, { abort, operations }); renderComposerControls();
+        for (const op of operations) await op.prepare({ request, message: userMessage, signal: abort.signal,
+          complete: suffix => completeRequestCheck(request, [...requestMessages(conversation), userMessage], suffix, abort.signal) });
+      }
+      if (abort.signal.aborted) throw new DOMException('已停止', 'AbortError');
+      // A compression request may outlive a navigation or further typing. Never erase newer input.
+      if (scope.disposed || activeConversation()?.id !== conversation.id || state().route.name !== "chat" || composerPayload().text !== rawText || JSON.stringify(state().pendingAttachments) !== JSON.stringify(pending)) {
+        toast("输入或会话已变化，内容已保留，请再次发送。", { tone: "danger" });
+        return;
+      }
+      for (const op of operations) op.validate();
+      for (const op of operations) op.start();
+      operationStarted = true;
+      const firstResponse = beginFirstResponse(conversation);
+      const titleInput = firstInputDescription(userMessage, pending);
+      if (firstResponse && !conversation.title) conversation.title = truncateText(titleInput, LIMITS.titleLength);
+      conversation.draft = "";
+      state().pendingAttachments = [];
+      els.composerInput.value = "";
+      autoGrow(els.composerInput);
+      if (operations.some(op => op.outputSurface === 'workspace')) userMessage.outputSurface = 'workspace';
+      store.actions.appendMessage(conversation.id, userMessage);
+      store.touchConversation(conversation);
 
-    closeActivePopover();
-    void startStream(conversation, config, true, request);
-    if (firstResponse) void titleGeneration.generate(conversation, titleInput, request.titleTarget);
+      closeActivePopover();
+      void startStream(conversation, config, true, request, operations);
+      if (firstResponse) void titleGeneration.generate(conversation, titleInput, request.titleTarget);
+      return true;
+    } catch (error) {
+      if (!scope.disposed) toast(abort.signal.aborted ? '已停止检查，输入已保留。' : error.message, { tone: 'danger' });
+      return false;
+    } finally {
+      operationPreparations.delete(conversation.id);
+      if (!operationStarted) operations.forEach(op => op.dispose());
+      if (!scope.disposed) renderComposerControls();
+    }
   }
 
   const requestMessages = contextMessages;
@@ -1513,8 +1559,9 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
     });
     const fixedContext = contexts.map(entry => entry.text).join('');
     return {
-      fixedContext, contextErrors: contexts.map(entry => entry.error).filter(Boolean),
+      fixedContext, contextGroups: contexts.flatMap((entry, i) => entry.groups || (entry.text ? [{ id: String(i), label: '固定上下文', text: entry.text }] : [])), contextErrors: contexts.map(entry => entry.error).filter(Boolean),
       baseSystemPrompt: config.systemPrompt,
+      contextSummary: (getValidContextCompression(conversation) || {}).compression?.summary || "",
       provider, header: providerHeader(conversation), model: conversation.model,
       compressionTarget: captureAuxiliaryModel(state(), config.compressionModel, provider, conversation.model),
       titleTarget: captureAuxiliaryModel(state(), config.titleModel, provider, conversation.model),
@@ -1537,6 +1584,7 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
       if (!provider || provider.enabled === false || !provider.models.includes(request.model)) throw new Error("请选择可用模型后重试。");
       const budget = resolveInputBudget(resolveEffectiveModelConfig(provider, request.model), config);
       if (request.contextErrors.length) throw new Error(request.contextErrors.join(' '));
+      if (request.config.systemPrompt.length > LIMITS.requestSystemPromptChars) throw new Error('固定上下文超过请求传输上限，请减少资料后重试；正文未截断。');
       const pending = extra || requestMessages(conversation).filter(message => message.role === 'user').at(-1);
       const fixed = estimateContextTokens({ systemPrompt: request.config.systemPrompt, messages: pending ? [pending] : [], extensions: request.extensions });
       if (fixed > budget) throw new Error('固定资料、系统提示词与本次输入已超过输入预算；请精简资料或选择更大窗口的模型。资料不会被压缩或截断。');
@@ -1549,16 +1597,39 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
       return false;
     } finally { preparingIds.delete(conversation.id); }
   }
-  async function startStream(conversation, config = resolveChatConfig(state(), conversation), prepared = false, request = captureRequest(conversation, config)) {
-    if (streams.has(conversation.id)) return;
-    if (!prepared && !(await prepareContext(conversation, config, null, request))) return;
+  async function startStream(conversation, config = resolveChatConfig(state(), conversation), prepared = false, request = captureRequest(conversation, config), operations = []) {
+    if (streams.has(conversation.id) || operationPreparations.has(conversation.id) && !prepared) return;
+    if (!prepared) {
+      if (!(await prepareContext(conversation, config, null, request))) return;
+      const abort = new AbortController();
+      try {
+        for (const entry of requestContexts?.list() || []) {
+          const op = entry.createOperation?.({ store, conversation });
+          if (op) operations.push(op);
+        }
+        if (operations.length) {
+          operationPreparations.set(conversation.id, { abort, operations }); renderComposerControls();
+          for (const op of operations) await op.prepare({ request, message: requestMessages(conversation).at(-1), signal: abort.signal,
+            complete: suffix => completeRequestCheck(request, requestMessages(conversation), suffix, abort.signal) });
+          if (abort.signal.aborted || scope.disposed) throw new Error('请求已停止。');
+          for (const op of operations) op.validate();
+          for (const op of operations) op.start();
+        }
+      } catch (error) {
+        operations.forEach(op => op.dispose());
+        if (!scope.disposed) toast(error.message, { tone: 'danger' });
+        return;
+      } finally { operationPreparations.delete(conversation.id); if (!scope.disposed) renderComposerControls(); }
+    }
     const provider = request.provider;
     const streamEnabled = request.config.streaming;
 
     const assistantMessage = {
       id: `msg-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`,
       role: "assistant",
+      ...(operations.some(op => op.outputSurface === 'workspace') ? { outputSurface: 'workspace' } : {}),
       content: "",
+      ...(operations.some(op => op.historyText) ? { contextText: operations.map(op => op.historyText || '').join('\n') } : {}),
       reasoning: "",
       reasoningKind: "thinking",
       parts: [],
@@ -1586,6 +1657,7 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
       reasoningAutoCollapsed: false,
       expectsImage: request.imageOutput,
       request,
+      operations,
       placeholder: assistantMessage
     });
     // 思考计时不能依赖数据帧到达（长思考期间可能长时间无输出），用定时器驱动刷新
@@ -1608,7 +1680,7 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
           reasoningEffort: request.config.reasoningEffort,
           chatConfig: { ...request.config, inputBudget: null, version: 1 },
           stream: streamEnabled,
-          contextSummary: (getValidContextCompression(conversation) || {}).compression?.summary || "",
+          contextSummary: request.contextSummary,
           extensions: request.extensions,
           messages: requestMessages(conversation).filter((message) => !(message.role === "assistant" && !message.content))
         })
@@ -1629,6 +1701,7 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
         acc = {
           ...acc,
           status: "completed",
+          finishReason: payload.finishReason || payload.choices?.[0]?.finish_reason || payload.stop_reason || '',
           reasoning: normalized.reasoning,
           content: normalized.content,
           images: normalized.images,
@@ -1660,6 +1733,7 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
           else schedulePaint(stream);
         }
       });
+      stream.protocolCompleted = acc.completed;
       acc = finalizeAppStreamState(acc);
       stream.state = acc;
       schedulePaint(stream);
@@ -1842,6 +1916,7 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
 
   /** 每帧只更新当前助手消息的节点（AGENTS.md 硬约束）；不在视图内时仅同步数据。 */
   function paint(stream) {
+    for (const op of stream?.operations || []) op.update(stream.state.content);
     if (!els || !stream || streams.get(stream.conversationId) !== stream) return;
     const { state: acc, messageId, startedAt } = stream;
     const viewing = stream.conversationId === state().activeConversationId && state().route.name === "chat";
@@ -1945,6 +2020,10 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
     streams.finish(conversation.id, { flush: false });
     const { state: acc, messageId, startedAt, contentStartedAt, timer } = stream;
     if (timer) clearInterval(timer);
+    for (const op of stream.operations || []) {
+      op.finish({ text: acc.content, complete: !acc.error && !acc.stopped && !acc.skippedAttachments?.length && acc.completed && stream.protocolCompleted !== false && ['', 'stop', 'end_turn', 'stop_sequence', 'completed', 'STOP'].includes(acc.finishReason || '') });
+      op.dispose();
+    }
     const message = conversation.messages.find((item) => item.id === messageId);
     if (message) {
       message.content = acc.content;
@@ -2014,7 +2093,7 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
   // 圆环、tooltip 与展开面板共用同一结果，消息范围与 requestMessages 一致。
 
   async function compressContext(conversation, options = {}) {
-    if (compressingIds.has(conversation.id) || streamOf(conversation.id)) return;
+    if (compressingIds.has(conversation.id) || streamOf(conversation.id) || operationPreparations.has(conversation.id)) return;
     if (!getActivePath(conversation).length) {
       toast("没有可压缩的上下文", { tone: "danger" });
       return;
@@ -2046,6 +2125,7 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
     const notice = {
       id: `msg-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`,
       role: "assistant",
+      ...(operations.some(op => op.outputSurface === 'workspace') ? { outputSurface: 'workspace' } : {}),
       content: "",
       reasoning: "",
       noticeKind: "context-compress",
@@ -2067,7 +2147,7 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
     }
     try {
       const contextSummary = (getValidContextCompression(conversation) || {}).compression?.summary || "";
-      const messages = prefix.filter(m => !m.noticeKind).map(m => ({ role: m.role, content: m.content, files: m.files || [], parts: (m.parts || []).filter(p => ["image", "text", "file"].includes(p.type)) }));
+      const messages = prefix.filter(m => !m.noticeKind).map(m => ({ role: m.role, content: m.contextText ?? m.content, files: m.files || [], parts: (m.parts || []).filter(p => ["image", "text", "file"].includes(p.type)) }));
       validateAuxiliaryInput(target, { contextSummary, messages });
       const response = await apiFetch(AUXILIARY_CHAT_ROUTES.compress, {
         method: "POST",

@@ -12,3 +12,5 @@ userdata/
 release/
 server/.data/
 .zcode/
+prompts/.backups/
+prompts/.*.tmp

@@ -1,0 +1,2709 @@
+{
+  "config": {
+    "argv": [
+      "/opt/homebrew/Cellar/node/26.5.0/bin/node",
+      "/Users/qxc/Desktop/ai/coding-project/ChenTako/node_modules/.bin/playwright",
+      "test",
+      "e2e/writing.spec.js",
+      "e2e/commands.spec.js",
+      "e2e/knowledge.spec.js",
+      "--reporter=json"
+    ],
+    "configFile": "/Users/qxc/Desktop/ai/coding-project/ChenTako/playwright.config.js",
+    "rootDir": "/Users/qxc/Desktop/ai/coding-project/ChenTako/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/qxc/Desktop/ai/coding-project/ChenTako/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Users/qxc/Desktop/ai/coding-project/ChenTako/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.1",
+    "workers": 1,
+    "webServer": {
+      "command": "FRONTEND_E2E=1 npm run dev -- --port 5198 --strictPort",
+      "url": "http://127.0.0.1:5198",
+      "reuseExistingServer": false,
+      "timeout": 30000
+    }
+  },
+  "suites": [
+    {
+      "title": "commands.spec.js",
+      "file": "commands.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "聊天区域显示切换标签 light 1280",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1132,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:01:03.249Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8723787925d711410ac6-2cce676e3228d70f1773",
+          "file": "commands.spec.js",
+          "line": 37,
+          "column": 5
+        },
+        {
+          "title": "聊天区域显示切换标签 light 1024",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1358,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:01:04.811Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8723787925d711410ac6-58bbe8d10bac3a9b9964",
+          "file": "commands.spec.js",
+          "line": 37,
+          "column": 5
+        },
+        {
+          "title": "聊天区域显示切换标签 light 390",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1160,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:01:06.177Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8723787925d711410ac6-6685d80f2c3bfe461ad2",
+          "file": "commands.spec.js",
+          "line": 37,
+          "column": 5
+        },
+        {
+          "title": "聊天区域显示切换标签 dark 1280",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 758,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:01:07.345Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8723787925d711410ac6-2a1ef27be6de050467b6",
+          "file": "commands.spec.js",
+          "line": 37,
+          "column": 5
+        },
+        {
+          "title": "聊天区域显示切换标签 dark 1024",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1335,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:01:08.112Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8723787925d711410ac6-9dbe806f737d543d01c7",
+          "file": "commands.spec.js",
+          "line": 37,
+          "column": 5
+        },
+        {
+          "title": "聊天区域显示切换标签 dark 390",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1142,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:01:09.455Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8723787925d711410ac6-c1b3706ed4d2d46b4ce6",
+          "file": "commands.spec.js",
+          "line": 37,
+          "column": 5
+        },
+        {
+          "title": "无模型也能使用帮助，未知指令不会发送，附件保留",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 747,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:01:10.604Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8723787925d711410ac6-9befaf90c6531338c0a3",
+          "file": "commands.spec.js",
+          "line": 64,
+          "column": 1
+        },
+        {
+          "title": "补全、中文搜索、参数选择、恢复跟随配置",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1087,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:01:11.362Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8723787925d711410ac6-1b3364b60937060b3047",
+          "file": "commands.spec.js",
+          "line": 80,
+          "column": 1
+        },
+        {
+          "title": "模型重名要求选择供应商，禁用模型隐藏，快捷参数与按钮一致",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1463,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:01:12.456Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8723787925d711410ac6-9913c64c1b3dc65d3cd9",
+          "file": "commands.spec.js",
+          "line": 93,
+          "column": 1
+        },
+        {
+          "title": "部分模型名不会自动执行，无效参数保持输入",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 628,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:01:13.926Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8723787925d711410ac6-f09b4b3942d860bcfe7f",
+          "file": "commands.spec.js",
+          "line": 111,
+          "column": 1
+        },
+        {
+          "title": "压缩首次补全不执行，重复请求受阻，新草稿不会被清除",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 876,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:01:14.563Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8723787925d711410ac6-53730061cbc423c4ef13",
+          "file": "commands.spec.js",
+          "line": 122,
+          "column": 1
+        },
+        {
+          "title": "空历史保留指令",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 485,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:01:15.447Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8723787925d711410ac6-8574284bc6cdfeed96f6",
+          "file": "commands.spec.js",
+          "line": 138,
+          "column": 1
+        },
+        {
+          "title": "字面量、多行和正文斜杠进入普通消息，指令不进入 Prompt 或标题",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1126,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:01:15.942Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8723787925d711410ac6-48d2dec34e3482905ef5",
+          "file": "commands.spec.js",
+          "line": 144,
+          "column": 1
+        },
+        {
+          "title": "首次响应之后的生成期间配置修改只影响下一次请求，停止按钮保持原行为",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 710,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:01:17.075Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8723787925d711410ac6-729e0ae7c4b227055fee",
+          "file": "commands.spec.js",
+          "line": 160,
+          "column": 1
+        },
+        {
+          "title": "输入法确认不会执行指令，关闭和会话切换保留草稿",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 970,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:01:17.797Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8723787925d711410ac6-2f0eeb328e3e7c21faad",
+          "file": "commands.spec.js",
+          "line": 178,
+          "column": 1
+        },
+        {
+          "title": "指令面板 light 1280 无溢出且 panel 悬停稳定",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1696,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:01:18.778Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8723787925d711410ac6-f7089a9ccd7f452b5b7b",
+          "file": "commands.spec.js",
+          "line": 192,
+          "column": 3
+        },
+        {
+          "title": "指令面板 light 1024 无溢出且 panel 悬停稳定",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1667,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:01:20.487Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8723787925d711410ac6-76d32bbbb359b875324b",
+          "file": "commands.spec.js",
+          "line": 192,
+          "column": 3
+        },
+        {
+          "title": "指令面板 light 390 无溢出且 panel 悬停稳定",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 1570,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m391.171875\u001b[39m\nReceived:    \u001b[31m422\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m391.171875\u001b[39m\nReceived:    \u001b[31m422\u001b[39m\n    at /Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/commands.spec.js:205:34",
+                    "location": {
+                      "file": "/Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/commands.spec.js",
+                      "column": 34,
+                      "line": 205
+                    },
+                    "snippet": "  203 |     const rect = await panel.boundingBox(); const input = await page.locator('#composerInput').boundingBox();\n  204 |     expect(rect.x).toBeGreaterThanOrEqual(0); expect(rect.x + rect.width).toBeLessThanOrEqual(width);\n> 205 |     expect(rect.y + rect.height).toBeLessThanOrEqual(input.y);\n      |                                  ^\n  206 |     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);\n  207 |     await page.mouse.move(0, 0);\n  208 |     await page.screenshot({ path: testInfo.outputPath(`commands-${scheme}-${width}.png`) });"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/commands.spec.js",
+                        "column": 34,
+                        "line": 205
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m391.171875\u001b[39m\nReceived:    \u001b[31m422\u001b[39m\n\n  203 |     const rect = await panel.boundingBox(); const input = await page.locator('#composerInput').boundingBox();\n  204 |     expect(rect.x).toBeGreaterThanOrEqual(0); expect(rect.x + rect.width).toBeLessThanOrEqual(width);\n> 205 |     expect(rect.y + rect.height).toBeLessThanOrEqual(input.y);\n      |                                  ^\n  206 |     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);\n  207 |     await page.mouse.move(0, 0);\n  208 |     await page.screenshot({ path: testInfo.outputPath(`commands-${scheme}-${width}.png`) });\n    at /Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/commands.spec.js:205:34"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:01:22.165Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/qxc/Desktop/ai/coding-project/ChenTako/test-results/commands-指令面板-light-390-无溢出且-panel-悬停稳定-chromium/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/commands.spec.js",
+                    "column": 34,
+                    "line": 205
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "8723787925d711410ac6-419d649094d87673d95d",
+          "file": "commands.spec.js",
+          "line": 192,
+          "column": 3
+        },
+        {
+          "title": "指令面板 dark 1280 无溢出且 panel 悬停稳定",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 856,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:01:28.794Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8723787925d711410ac6-9fdda1f4198ae0b31adf",
+          "file": "commands.spec.js",
+          "line": 192,
+          "column": 3
+        },
+        {
+          "title": "指令面板 dark 1024 无溢出且 panel 悬停稳定",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 764,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:01:29.965Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8723787925d711410ac6-c8162f2fa3ca805a5254",
+          "file": "commands.spec.js",
+          "line": 192,
+          "column": 3
+        },
+        {
+          "title": "指令面板 dark 390 无溢出且 panel 悬停稳定",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 559,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m391.171875\u001b[39m\nReceived:    \u001b[31m422\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m391.171875\u001b[39m\nReceived:    \u001b[31m422\u001b[39m\n    at /Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/commands.spec.js:205:34",
+                    "location": {
+                      "file": "/Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/commands.spec.js",
+                      "column": 34,
+                      "line": 205
+                    },
+                    "snippet": "  203 |     const rect = await panel.boundingBox(); const input = await page.locator('#composerInput').boundingBox();\n  204 |     expect(rect.x).toBeGreaterThanOrEqual(0); expect(rect.x + rect.width).toBeLessThanOrEqual(width);\n> 205 |     expect(rect.y + rect.height).toBeLessThanOrEqual(input.y);\n      |                                  ^\n  206 |     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);\n  207 |     await page.mouse.move(0, 0);\n  208 |     await page.screenshot({ path: testInfo.outputPath(`commands-${scheme}-${width}.png`) });"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/commands.spec.js",
+                        "column": 34,
+                        "line": 205
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m391.171875\u001b[39m\nReceived:    \u001b[31m422\u001b[39m\n\n  203 |     const rect = await panel.boundingBox(); const input = await page.locator('#composerInput').boundingBox();\n  204 |     expect(rect.x).toBeGreaterThanOrEqual(0); expect(rect.x + rect.width).toBeLessThanOrEqual(width);\n> 205 |     expect(rect.y + rect.height).toBeLessThanOrEqual(input.y);\n      |                                  ^\n  206 |     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);\n  207 |     await page.mouse.move(0, 0);\n  208 |     await page.screenshot({ path: testInfo.outputPath(`commands-${scheme}-${width}.png`) });\n    at /Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/commands.spec.js:205:34"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:01:30.738Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/qxc/Desktop/ai/coding-project/ChenTako/test-results/commands-指令面板-dark-390-无溢出且-panel-悬停稳定-chromium/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/commands.spec.js",
+                    "column": 34,
+                    "line": 205
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "8723787925d711410ac6-47e960d185fd40ef8cdb",
+          "file": "commands.spec.js",
+          "line": 192,
+          "column": 3
+        },
+        {
+          "title": "响应后压缩期间切换按钮模型，已发送请求和压缩仍使用原快照",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1077,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:01:31.747Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8723787925d711410ac6-b05884334355b32f9ef9",
+          "file": "commands.spec.js",
+          "line": 213,
+          "column": 1
+        },
+        {
+          "title": "压缩失败保留指令和附件且不创建普通指令消息",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 505,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:01:33.124Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8723787925d711410ac6-b578f2f7a9abb4242d10",
+          "file": "commands.spec.js",
+          "line": 234,
+          "column": 1
+        },
+        {
+          "title": "异步压缩完成后不修改其他会话草稿",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 925,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:01:33.637Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8723787925d711410ac6-eedd0eca786ecb8ca01f",
+          "file": "commands.spec.js",
+          "line": 245,
+          "column": 1
+        },
+        {
+          "title": "参数 Tab 只补全，方向键 Enter 选择，点击外部保留输入",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 492,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:01:34.570Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8723787925d711410ac6-2322c5ac46d3b6e97457",
+          "file": "commands.spec.js",
+          "line": 257,
+          "column": 1
+        },
+        {
+          "title": "空状态 offline 准确引导",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 5399,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('.empty-title')\nExpected: \u001b[32m\"本地服务未连接\"\u001b[39m\nReceived: \u001b[31m\"欢迎回来，随时开始吧\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.empty-title')\u001b[22m\n\u001b[2m    14 × locator resolved to <h2 class=\"empty-title\">欢迎回来，随时开始吧</h2>\u001b[22m\n\u001b[2m       - unexpected value \"欢迎回来，随时开始吧\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('.empty-title')\nExpected: \u001b[32m\"本地服务未连接\"\u001b[39m\nReceived: \u001b[31m\"欢迎回来，随时开始吧\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.empty-title')\u001b[22m\n\u001b[2m    14 × locator resolved to <h2 class=\"empty-title\">欢迎回来，随时开始吧</h2>\u001b[22m\n\u001b[2m       - unexpected value \"欢迎回来，随时开始吧\"\u001b[22m\n\n    at /Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/commands.spec.js:275:48",
+                    "location": {
+                      "file": "/Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/commands.spec.js",
+                      "column": 48,
+                      "line": 275
+                    },
+                    "snippet": "  273 |   test(`空状态 ${kind} 准确引导`, async ({ page }) => {\n  274 |     await load(page, { providers, offline });\n> 275 |     await expect(page.locator('.empty-title')).toHaveText(title);\n      |                                                ^\n  276 |     await expect(page.locator('.suggestion-card')).toHaveCount(kind === 'ready' ? 3 : 0);\n  277 |     if (kind !== 'ready') await expect(page.locator('.empty-setup-link')).toHaveAttribute('href', '#/settings/providers');\n  278 |   });"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/commands.spec.js",
+                        "column": 48,
+                        "line": 275
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('.empty-title')\nExpected: \u001b[32m\"本地服务未连接\"\u001b[39m\nReceived: \u001b[31m\"欢迎回来，随时开始吧\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.empty-title')\u001b[22m\n\u001b[2m    14 × locator resolved to <h2 class=\"empty-title\">欢迎回来，随时开始吧</h2>\u001b[22m\n\u001b[2m       - unexpected value \"欢迎回来，随时开始吧\"\u001b[22m\n\n\n  273 |   test(`空状态 ${kind} 准确引导`, async ({ page }) => {\n  274 |     await load(page, { providers, offline });\n> 275 |     await expect(page.locator('.empty-title')).toHaveText(title);\n      |                                                ^\n  276 |     await expect(page.locator('.suggestion-card')).toHaveCount(kind === 'ready' ? 3 : 0);\n  277 |     if (kind !== 'ready') await expect(page.locator('.empty-setup-link')).toHaveAttribute('href', '#/settings/providers');\n  278 |   });\n    at /Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/commands.spec.js:275:48"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:01:35.071Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/qxc/Desktop/ai/coding-project/ChenTako/test-results/commands-空状态-offline-准确引导-chromium/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/commands.spec.js",
+                    "column": 48,
+                    "line": 275
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "8723787925d711410ac6-2ffd986d63bf83ace372",
+          "file": "commands.spec.js",
+          "line": 273,
+          "column": 3
+        },
+        {
+          "title": "空状态 unconfigured 准确引导",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 5505,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('.empty-title')\nExpected: \u001b[32m\"先连接一个模型\"\u001b[39m\nReceived: \u001b[31m\"欢迎回来，随时开始吧\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.empty-title')\u001b[22m\n\u001b[2m    14 × locator resolved to <h2 class=\"empty-title\">欢迎回来，随时开始吧</h2>\u001b[22m\n\u001b[2m       - unexpected value \"欢迎回来，随时开始吧\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('.empty-title')\nExpected: \u001b[32m\"先连接一个模型\"\u001b[39m\nReceived: \u001b[31m\"欢迎回来，随时开始吧\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.empty-title')\u001b[22m\n\u001b[2m    14 × locator resolved to <h2 class=\"empty-title\">欢迎回来，随时开始吧</h2>\u001b[22m\n\u001b[2m       - unexpected value \"欢迎回来，随时开始吧\"\u001b[22m\n\n    at /Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/commands.spec.js:275:48",
+                    "location": {
+                      "file": "/Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/commands.spec.js",
+                      "column": 48,
+                      "line": 275
+                    },
+                    "snippet": "  273 |   test(`空状态 ${kind} 准确引导`, async ({ page }) => {\n  274 |     await load(page, { providers, offline });\n> 275 |     await expect(page.locator('.empty-title')).toHaveText(title);\n      |                                                ^\n  276 |     await expect(page.locator('.suggestion-card')).toHaveCount(kind === 'ready' ? 3 : 0);\n  277 |     if (kind !== 'ready') await expect(page.locator('.empty-setup-link')).toHaveAttribute('href', '#/settings/providers');\n  278 |   });"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/commands.spec.js",
+                        "column": 48,
+                        "line": 275
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('.empty-title')\nExpected: \u001b[32m\"先连接一个模型\"\u001b[39m\nReceived: \u001b[31m\"欢迎回来，随时开始吧\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.empty-title')\u001b[22m\n\u001b[2m    14 × locator resolved to <h2 class=\"empty-title\">欢迎回来，随时开始吧</h2>\u001b[22m\n\u001b[2m       - unexpected value \"欢迎回来，随时开始吧\"\u001b[22m\n\n\n  273 |   test(`空状态 ${kind} 准确引导`, async ({ page }) => {\n  274 |     await load(page, { providers, offline });\n> 275 |     await expect(page.locator('.empty-title')).toHaveText(title);\n      |                                                ^\n  276 |     await expect(page.locator('.suggestion-card')).toHaveCount(kind === 'ready' ? 3 : 0);\n  277 |     if (kind !== 'ready') await expect(page.locator('.empty-setup-link')).toHaveAttribute('href', '#/settings/providers');\n  278 |   });\n    at /Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/commands.spec.js:275:48"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:01:40.933Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/qxc/Desktop/ai/coding-project/ChenTako/test-results/commands-空状态-unconfigured-准确引导-chromium/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/commands.spec.js",
+                    "column": 48,
+                    "line": 275
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "8723787925d711410ac6-630d1b4663f9bfc37f28",
+          "file": "commands.spec.js",
+          "line": 273,
+          "column": 3
+        },
+        {
+          "title": "空状态 ready 准确引导",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 5524,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('.empty-title')\nExpected: \u001b[32m\"今天想聊点什么？\"\u001b[39m\nReceived: \u001b[31m\"欢迎回来，随时开始吧\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.empty-title')\u001b[22m\n\u001b[2m    14 × locator resolved to <h2 class=\"empty-title\">欢迎回来，随时开始吧</h2>\u001b[22m\n\u001b[2m       - unexpected value \"欢迎回来，随时开始吧\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('.empty-title')\nExpected: \u001b[32m\"今天想聊点什么？\"\u001b[39m\nReceived: \u001b[31m\"欢迎回来，随时开始吧\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.empty-title')\u001b[22m\n\u001b[2m    14 × locator resolved to <h2 class=\"empty-title\">欢迎回来，随时开始吧</h2>\u001b[22m\n\u001b[2m       - unexpected value \"欢迎回来，随时开始吧\"\u001b[22m\n\n    at /Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/commands.spec.js:275:48",
+                    "location": {
+                      "file": "/Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/commands.spec.js",
+                      "column": 48,
+                      "line": 275
+                    },
+                    "snippet": "  273 |   test(`空状态 ${kind} 准确引导`, async ({ page }) => {\n  274 |     await load(page, { providers, offline });\n> 275 |     await expect(page.locator('.empty-title')).toHaveText(title);\n      |                                                ^\n  276 |     await expect(page.locator('.suggestion-card')).toHaveCount(kind === 'ready' ? 3 : 0);\n  277 |     if (kind !== 'ready') await expect(page.locator('.empty-setup-link')).toHaveAttribute('href', '#/settings/providers');\n  278 |   });"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/commands.spec.js",
+                        "column": 48,
+                        "line": 275
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('.empty-title')\nExpected: \u001b[32m\"今天想聊点什么？\"\u001b[39m\nReceived: \u001b[31m\"欢迎回来，随时开始吧\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('.empty-title')\u001b[22m\n\u001b[2m    14 × locator resolved to <h2 class=\"empty-title\">欢迎回来，随时开始吧</h2>\u001b[22m\n\u001b[2m       - unexpected value \"欢迎回来，随时开始吧\"\u001b[22m\n\n\n  273 |   test(`空状态 ${kind} 准确引导`, async ({ page }) => {\n  274 |     await load(page, { providers, offline });\n> 275 |     await expect(page.locator('.empty-title')).toHaveText(title);\n      |                                                ^\n  276 |     await expect(page.locator('.suggestion-card')).toHaveCount(kind === 'ready' ? 3 : 0);\n  277 |     if (kind !== 'ready') await expect(page.locator('.empty-setup-link')).toHaveAttribute('href', '#/settings/providers');\n  278 |   });\n    at /Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/commands.spec.js:275:48"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:01:47.214Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/qxc/Desktop/ai/coding-project/ChenTako/test-results/commands-空状态-ready-准确引导-chromium/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/commands.spec.js",
+                    "column": 48,
+                    "line": 275
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "8723787925d711410ac6-3bbfa72ccc046777767e",
+          "file": "commands.spec.js",
+          "line": 273,
+          "column": 3
+        },
+        {
+          "title": "重名模型的显式选择列表可按 Enter 确认",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 552,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:01:53.482Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8723787925d711410ac6-7105ab20a34e8b199ab4",
+          "file": "commands.spec.js",
+          "line": 281,
+          "column": 1
+        },
+        {
+          "title": "帮助支持键盘滚动并在 Escape 后恢复输入焦点",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 543,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:01:54.368Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8723787925d711410ac6-ea33686ba1f26ddb83bd",
+          "file": "commands.spec.js",
+          "line": 289,
+          "column": 1
+        },
+        {
+          "title": "输入指令时点击停止按钮只停止回复，不执行指令",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 571,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:01:54.918Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8723787925d711410ac6-bc78702b447e875abf31",
+          "file": "commands.spec.js",
+          "line": 297,
+          "column": 1
+        },
+        {
+          "title": "默认 light 辅助文字与选择项对比度至少 4.5",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 421,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "{\"scheme\":\"light\",\"minimumContrast\":8.652224631782333,\"samples\":[{\"element\":\"composer-hint\",\"ratio\":13.897011733645405,\"size\":12},{\"element\":\"command-option-detail\",\"ratio\":8.652224631782333,\"size\":13.5},{\"element\":\"command-option-detail\",\"ratio\":11.034009670687219,\"size\":13.5},{\"element\":\"command-option-detail\",\"ratio\":11.034009670687219,\"size\":13.5},{\"element\":\"command-option-detail\",\"ratio\":11.034009670687219,\"size\":13.5},{\"element\":\"command-option-detail\",\"ratio\":11.034009670687219,\"size\":13.5},{\"element\":\"command-option-detail\",\"ratio\":11.034009670687219,\"size\":13.5},{\"element\":\"command-option-detail\",\"ratio\":11.034009670687219,\"size\":13.5},{\"element\":\"command-option-detail\",\"ratio\":11.034009670687219,\"size\":13.5}]}\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:01:55.496Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8723787925d711410ac6-a648095324b1324e7b89",
+          "file": "commands.spec.js",
+          "line": 309,
+          "column": 3
+        },
+        {
+          "title": "默认 dark 辅助文字与选择项对比度至少 4.5",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 429,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "{\"scheme\":\"dark\",\"minimumContrast\":8.159081668453405,\"samples\":[{\"element\":\"composer-hint\",\"ratio\":15.884046092080768,\"size\":12},{\"element\":\"command-option-detail\",\"ratio\":8.159081668453405,\"size\":13.5},{\"element\":\"command-option-detail\",\"ratio\":11.085042502115115,\"size\":13.5},{\"element\":\"command-option-detail\",\"ratio\":11.085042502115115,\"size\":13.5},{\"element\":\"command-option-detail\",\"ratio\":11.085042502115115,\"size\":13.5},{\"element\":\"command-option-detail\",\"ratio\":11.085042502115115,\"size\":13.5},{\"element\":\"command-option-detail\",\"ratio\":11.085042502115115,\"size\":13.5},{\"element\":\"command-option-detail\",\"ratio\":11.085042502115115,\"size\":13.5},{\"element\":\"command-option-detail\",\"ratio\":11.085042502115115,\"size\":13.5}]}\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:01:55.927Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8723787925d711410ac6-54a26b8330e99b01d457",
+          "file": "commands.spec.js",
+          "line": 309,
+          "column": 3
+        },
+        {
+          "title": "录屏对齐：鼠标和键盘共用唯一活动行，二级当前值用勾选表达",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 786,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:01:56.363Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8723787925d711410ac6-72d917d8f6768576d6dc",
+          "file": "commands.spec.js",
+          "line": 334,
+          "column": 1
+        },
+        {
+          "title": "欢迎页指令菜单不透字 light 1280",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 611,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:01:57.157Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8723787925d711410ac6-7766b3dd4273f0f0b96f",
+          "file": "commands.spec.js",
+          "line": 366,
+          "column": 3
+        },
+        {
+          "title": "欢迎页指令菜单不透字 light 1024",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 596,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:01:57.776Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8723787925d711410ac6-a5cfb621cdf4f4f4fb6a",
+          "file": "commands.spec.js",
+          "line": 366,
+          "column": 3
+        },
+        {
+          "title": "欢迎页指令菜单不透字 light 390",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 616,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:01:58.380Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8723787925d711410ac6-5928ba48ef3c4da003b0",
+          "file": "commands.spec.js",
+          "line": 366,
+          "column": 3
+        },
+        {
+          "title": "欢迎页指令菜单不透字 dark 1280",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 612,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:01:59.003Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8723787925d711410ac6-f51068d437d212b0b5d7",
+          "file": "commands.spec.js",
+          "line": 366,
+          "column": 3
+        },
+        {
+          "title": "欢迎页指令菜单不透字 dark 1024",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 602,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:01:59.622Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8723787925d711410ac6-ab71e9bbb1b011b37bfa",
+          "file": "commands.spec.js",
+          "line": 366,
+          "column": 3
+        },
+        {
+          "title": "欢迎页指令菜单不透字 dark 390",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 632,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:02:00.231Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8723787925d711410ac6-8a08fc8c2f2bd0a29221",
+          "file": "commands.spec.js",
+          "line": 366,
+          "column": 3
+        }
+      ]
+    },
+    {
+      "title": "knowledge.spec.js",
+      "file": "knowledge.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "大资料用量刷新不重复编码全文或复制请求，输入保持可用",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 548,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:02:00.879Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "dc0c250b3669de3c8ea7-002a44595322795ac1a2",
+          "file": "knowledge.spec.js",
+          "line": 36,
+          "column": 1
+        },
+        {
+          "title": "资料备份可恢复；取消恢复不改变项目资料",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2078,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:02:01.433Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "dc0c250b3669de3c8ea7-0d7251a1cff7d6aca8c1",
+          "file": "knowledge.spec.js",
+          "line": 61,
+          "column": 1
+        },
+        {
+          "title": "全文预览安全，项目隔离，上传替换删除和刷新恢复",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2253,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:02:03.520Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "dc0c250b3669de3c8ea7-324c9cb47a883c91701b",
+          "file": "knowledge.spec.js",
+          "line": 80,
+          "column": 1
+        },
+        {
+          "title": "每次正式请求完整注入，历史压缩请求不含项目资料",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 661,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:02:05.779Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "dc0c250b3669de3c8ea7-eb6d6bd39403ed852c16",
+          "file": "knowledge.spec.js",
+          "line": 101,
+          "column": 1
+        },
+        {
+          "title": "缺失资料阻止发送且草稿保留",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 451,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:02:06.451Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "dc0c250b3669de3c8ea7-637e191ccd80150a18a9",
+          "file": "knowledge.spec.js",
+          "line": 123,
+          "column": 38
+        },
+        {
+          "title": "固定资料超预算不发起自动压缩，附件和草稿保留",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 478,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:02:06.907Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "dc0c250b3669de3c8ea7-e0d6ca8fe800dfd3f085",
+          "file": "knowledge.spec.js",
+          "line": 123,
+          "column": 38
+        },
+        {
+          "title": "资料界面 light 1280 无横向溢出",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 654,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:02:07.394Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "dc0c250b3669de3c8ea7-19050b7e99acd64a9252",
+          "file": "knowledge.spec.js",
+          "line": 135,
+          "column": 80
+        },
+        {
+          "title": "资料界面 light 1024 无横向溢出",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 888,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:02:08.054Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "dc0c250b3669de3c8ea7-1f43fa080a6dca639275",
+          "file": "knowledge.spec.js",
+          "line": 135,
+          "column": 80
+        },
+        {
+          "title": "资料界面 light 390 无横向溢出",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 958,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:02:08.949Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "dc0c250b3669de3c8ea7-01282a51d550715c3c29",
+          "file": "knowledge.spec.js",
+          "line": 135,
+          "column": 80
+        },
+        {
+          "title": "资料界面 dark 1280 无横向溢出",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 628,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:02:09.915Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "dc0c250b3669de3c8ea7-8038a8788263980a8c60",
+          "file": "knowledge.spec.js",
+          "line": 135,
+          "column": 80
+        },
+        {
+          "title": "资料界面 dark 1024 无横向溢出",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 879,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:02:10.551Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "dc0c250b3669de3c8ea7-e8d99955ab78c2d4d13f",
+          "file": "knowledge.spec.js",
+          "line": 135,
+          "column": 80
+        },
+        {
+          "title": "资料界面 dark 390 无横向溢出",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 974,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:02:11.438Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "dc0c250b3669de3c8ea7-512b718379362a73e124",
+          "file": "knowledge.spec.js",
+          "line": 135,
+          "column": 80
+        },
+        {
+          "title": "项目浮窗键盘、名称校验、删除取消和设置入口清理",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1277,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:02:12.418Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "dc0c250b3669de3c8ea7-4ac2e4f5cf4c280e3dd3",
+          "file": "knowledge.spec.js",
+          "line": 143,
+          "column": 1
+        },
+        {
+          "title": "读取中关闭并打开其他项目，迟到的文件结果不能写入任何项目",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1528,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:02:13.702Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "dc0c250b3669de3c8ea7-84dad5f3bc1b06a067d7",
+          "file": "knowledge.spec.js",
+          "line": 176,
+          "column": 1
+        },
+        {
+          "title": "文件错误和双存储失败明确提示，当前资料仍可备份",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 998,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:02:15.240Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "dc0c250b3669de3c8ea7-2d3bfde8c4a2055513e4",
+          "file": "knowledge.spec.js",
+          "line": 197,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "writing.spec.js",
+      "file": "writing.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "整章创建、连续编辑、采纳、恢复与刷新；指令不进入模型和历史",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1524,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:02:16.261Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "abfdf4cdd2afe67b6f29-2e12def888131eb91cc1",
+          "file": "writing.spec.js",
+          "line": 32,
+          "column": 1
+        },
+        {
+          "title": "检查冲突和错误保留输入及原稿，明确接受变化后可重试",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 782,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:02:17.790Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "abfdf4cdd2afe67b6f29-de8df221302f29ccfb8e",
+          "file": "writing.spec.js",
+          "line": 63,
+          "column": 1
+        },
+        {
+          "title": "检查阶段停止并保留输入；未知章节和编辑空章不发请求",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 667,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:02:18.581Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "abfdf4cdd2afe67b6f29-d380b2e32d16b59caa6c",
+          "file": "writing.spec.js",
+          "line": 75,
+          "column": 1
+        },
+        {
+          "title": "选章补全、附件保留与对话隔离",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 708,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:02:19.254Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "abfdf4cdd2afe67b6f29-217a616e4ed303573408",
+          "file": "writing.spec.js",
+          "line": 89,
+          "column": 1
+        },
+        {
+          "title": "流式候选按原章节写回，切换会话不会串稿",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 677,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:02:19.970Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "abfdf4cdd2afe67b6f29-17b51e5e34424a746266",
+          "file": "writing.spec.js",
+          "line": 101,
+          "column": 1
+        },
+        {
+          "title": "不完整 SSE 不能采纳：missing",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 590,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:02:20.655Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "abfdf4cdd2afe67b6f29-f9b91929cef9acbc2575",
+          "file": "writing.spec.js",
+          "line": 127,
+          "column": 47
+        },
+        {
+          "title": "不完整 SSE 不能采纳：length",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 604,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:02:21.251Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "abfdf4cdd2afe67b6f29-a0e6c3985b9012f5b1ab",
+          "file": "writing.spec.js",
+          "line": 127,
+          "column": 47
+        },
+        {
+          "title": "独立作品备份恢复和损坏备份拒绝",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 734,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:02:21.861Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "abfdf4cdd2afe67b6f29-4bf8bbecaf99ea99647b",
+          "file": "writing.spec.js",
+          "line": 141,
+          "column": 1
+        },
+        {
+          "title": "全部正文超预算时不调用检查模型且不截断作品",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 980,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:02:22.602Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "abfdf4cdd2afe67b6f29-8fa498fc203528e22ea0",
+          "file": "writing.spec.js",
+          "line": 152,
+          "column": 1
+        },
+        {
+          "title": "持久化失败明确显示未保存，内存正文可导出",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 684,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:02:23.590Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "abfdf4cdd2afe67b6f29-454d222d35156b18de37",
+          "file": "writing.spec.js",
+          "line": 162,
+          "column": 1
+        },
+        {
+          "title": "手动草稿随原对话保存，模式不能打断尚未提交的编辑",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 660,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:02:24.280Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "abfdf4cdd2afe67b6f29-7c95f84daa9370bb3681",
+          "file": "writing.spec.js",
+          "line": 175,
+          "column": 1
+        },
+        {
+          "title": "章节面板布局、焦点和状态 light 1280",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 714,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:02:24.946Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "abfdf4cdd2afe67b6f29-697d4820ea001aa96a02",
+          "file": "writing.spec.js",
+          "line": 184,
+          "column": 3
+        },
+        {
+          "title": "章节面板布局、焦点和状态 light 1024",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 947,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:02:25.666Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "abfdf4cdd2afe67b6f29-2e226944eead997c72fc",
+          "file": "writing.spec.js",
+          "line": 184,
+          "column": 3
+        },
+        {
+          "title": "章节面板布局、焦点和状态 light 390",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 734,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:02:26.621Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "abfdf4cdd2afe67b6f29-d42c02769cc410271fcc",
+          "file": "writing.spec.js",
+          "line": 184,
+          "column": 3
+        },
+        {
+          "title": "章节面板布局、焦点和状态 dark 1280",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 692,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:02:27.362Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "abfdf4cdd2afe67b6f29-da050f2f618ce7d446da",
+          "file": "writing.spec.js",
+          "line": 184,
+          "column": 3
+        },
+        {
+          "title": "章节面板布局、焦点和状态 dark 1024",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 925,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:02:28.061Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "abfdf4cdd2afe67b6f29-9df394c394f423985726",
+          "file": "writing.spec.js",
+          "line": 184,
+          "column": 3
+        },
+        {
+          "title": "章节面板布局、焦点和状态 dark 390",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 5,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 755,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:02:28.993Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "abfdf4cdd2afe67b6f29-47adab9adcc01f6ad34a",
+          "file": "writing.spec.js",
+          "line": 184,
+          "column": 3
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-13T06:01:01.906Z",
+    "duration": 88050.146,
+    "expected": 67,
+    "skipped": 0,
+    "unexpected": 5,
+    "flaky": 0
+  }
+}

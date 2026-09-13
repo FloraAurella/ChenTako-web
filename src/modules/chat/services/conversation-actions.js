@@ -107,7 +107,7 @@ export function createConversationActions({
     const items = [
       { action: "pin", icon: "pin", label: conversation.pinned ? "取消置顶" : "置顶" },
       { action: "rename", icon: "edit", label: "重命名" },
-      { action: "export", icon: "download", label: "导出 .ai-chatbox.zip" },
+      { action: "export", icon: "download", label: "导出 .ChenTako.zip" },
       { action: "move", icon: "folder", label: "移至项目" },
       { action: "delete", icon: "trash", label: "删除对话", danger: true }
     ];
@@ -197,7 +197,7 @@ export function createConversationActions({
     try {
       const { bytes, filename } = exportConversationArchive(conversation);
       downloadBlob(new Blob([bytes], { type: "application/zip" }), filename);
-      toast("已导出 .ai-chatbox.zip", { tone: "ok" });
+      toast("已导出 .ChenTako.zip", { tone: "ok" });
     } catch (error) {
       toast(`导出失败：${error.message}`, { tone: "danger" });
     }

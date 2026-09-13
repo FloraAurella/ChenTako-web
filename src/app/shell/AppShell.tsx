@@ -1,6 +1,6 @@
 import { Button, TextField } from "../../shared/ui/primitives";
 import { icon, pearLogo } from "../../resources/icons/index.js";
-import { useContributions } from "../../shared/state/contributions";
+import { ExtensionSlot, useContributions } from "../../shared/state/contributions";
 import { DialogLayer } from "../../shared/overlays/DialogLayer";
 import { ConversationList } from "../../modules/chat/public/ui_ConversationList";
 import type { ExternalStore } from "../../shared/state/react";
@@ -74,14 +74,14 @@ export function AppShell({ route, sidebar, conversationTitle, store, settings }:
       >
         <aside className={`archive-drawer${sidebar.drawerOpen ? " drawer-open" : ""}`} id="archiveDrawer" aria-label="对话" inert={!drawerVisible}>
           <div className="drawer-head">
-            <div className="drawer-brand"><span className="rail-brand" aria-hidden="true" dangerouslySetInnerHTML={html(pearLogo(18))} /><h2 className="drawer-title">ai-chatbox</h2></div>
+            <div className="drawer-brand"><span className="rail-brand" aria-hidden="true" dangerouslySetInnerHTML={html(pearLogo(18))} /><h2 className="drawer-title">ChenTako</h2></div>
             <div className="drawer-tools">
               <IconButton id="archivesCollapseBtn" name="sidebarClose" size={20} className="icon-btn" title="收起侧栏" label="收起侧栏" expanded={drawerVisible} controls="archiveDrawer" />
             </div>
           </div>
           <Button type="button" id="newConversationBtn" className="sidebar-new" dangerouslySetInnerHTML={html(`${icon("newChat", 19)}<span>新建对话</span>`)} />
           <div className="sidebar-list-heading"><span className="sidebar-search-label">查找聊天</span><IconButton id="sidebarSearchBtn" name="search" size={18} title="搜索对话" /><IconButton id="importConversationBtn" name="import" size={18} title="导入对话" /></div>
-          <div className="drawer-search"><TextField id="searchInput" className="field" type="search" placeholder="搜索对话 ⌘K" autoComplete="off" /></div>
+          <div className="drawer-search"><TextField id="searchInput" className="field ui-input--quiet-focus" type="search" placeholder="搜索对话 ⌘K" autoComplete="off" /></div>
           <div className="conversation-scroll" id="conversationList"><ConversationList store={store} /></div>
           <nav className="sidebar-footer" aria-label="应用导航">
             <Button type="button" className="sidebar-settings" data-nav="settings" dangerouslySetInnerHTML={html(`${icon("settings", 17)}<span>设置</span>`)} />
@@ -110,7 +110,7 @@ export function AppShell({ route, sidebar, conversationTitle, store, settings }:
                 <div className="stage-title" id="stageTitle">{stageMeta.title}</div>
               </div>
             </div>
-            <div className="stage-trailing"><div className="stage-actions" id="stageActions" /></div>
+            <div className="stage-trailing"><div className="stage-actions" id="stageActions" />{route.name === "chat" && <ExtensionSlot name="chat.header.actions" store={store} />}</div>
           </header>
           <div className="stage-body">
             {contributions.pages.list().map(page => { const Page = page.component; return <section key={page.id} id={`page-${page.id}`} className={`page ${page.id}-page${route.name === page.id ? " page-active" : ""}`} aria-label={page.label}><Page store={store} route={route} settings={settings} active={route.name === page.id} /></section>; })}

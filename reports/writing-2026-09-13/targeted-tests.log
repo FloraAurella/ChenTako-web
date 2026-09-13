@@ -1,0 +1,60 @@
+
+ RUN  v3.2.7 /Users/qxc/Desktop/ai/coding-project/ChenTako
+
+ ✓ test/server/writing-transport.test.ts (2 tests) 3ms
+ ✓ test/server/contracts-sync.test.ts (5 tests) 4ms
+stdout | test/server/chat.test.ts > /api/chat 集成 > 流式：经前端 consumeAppStreamFrame 状态机验收事件顺序与最终状态
+ChenTako 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/chat.test.ts > /api/chat 集成 > 非流式：返回与前端 normalizeProviderResponse 对齐的 JSON
+ChenTako 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/chat.test.ts > /api/chat 集成 > 压缩：使用固定内置指令（不含人格提示词），返回摘要与用量
+ChenTako 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/chat.test.ts > /api/chat 集成 > 校验与错误路径：400/401/404/409 与上游状态码转发
+ChenTako 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/chat.test.ts > /api/chat 集成 > 流式请求上游返回非 SSE 时 502；预算冲突返回 400
+ChenTako 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/chat.test.ts > /api/chat 集成 > 客户端取消会中止上游请求；上游中断经 chat.stream.error 收尾
+ChenTako 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/chat.test.ts > /api/chat/title 辅助任务 > 标题四协议适配：openai-compatible，仅概括首次输入
+ChenTako 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/chat.test.ts > /api/chat/title 辅助任务 > 标题四协议适配：responses，仅概括首次输入
+ChenTako 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/chat.test.ts > /api/chat/title 辅助任务 > 标题四协议适配：anthropic，仅概括首次输入
+ChenTako 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/chat.test.ts > /api/chat/title 辅助任务 > 标题四协议适配：google，仅概括首次输入
+ChenTako 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/chat.test.ts > /api/chat/title 辅助任务 > 校验空输入、扩展执行、窗口不足和空模型输出，均明确失败
+ChenTako 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stderr | test/server/chat.test.ts > /api/chat/title 辅助任务 > 校验空输入、扩展执行、窗口不足和空模型输出，均明确失败
+[gateway] HttpError: 标题模型没有返回有效标题
+    at handleAuxiliary (/Users/qxc/Desktop/ai/coding-project/ChenTako/server/modules/chat/services/chat-routes.ts:256:29)
+    at processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at HttpGateway.handle (/Users/qxc/Desktop/ai/coding-project/ChenTako/server/modules/gateway/services/http-server.ts:116:7) {
+  status: 502,
+  code: ''
+}
+
+stdout | test/server/chat.test.ts > 压缩拒绝模型无法携带的历史附件，不生成不完整摘要
+ChenTako 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+ ✓ test/server/chat.test.ts (12 tests) 493ms
+ ✓ test/commands.test.ts (23 tests) 32ms
+ ✓ test/writing.test.ts (16 tests) 72ms
+ ✓ test/knowledge.test.ts (9 tests) 172ms
+
+ Test Files  6 passed (6)
+      Tests  67 passed (67)
+   Start at  13:58:41
+   Duration  2.80s (transform 1.53s, setup 58ms, collect 5.02s, tests 777ms, environment 2.68s, prepare 631ms)
+

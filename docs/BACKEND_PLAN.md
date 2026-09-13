@@ -55,3 +55,8 @@ server/
 ## 2026-09-13 响应后任务更新
 
 后端已新增 POST /api/chat/title，经既有四协议公共适配生成标题；与 compress 共用辅助请求校验、取消及窗口检查，不新增会话持久化。 规则与兼容性详见 [响应上下文策略](RESPONSE_CONTEXT_POLICY.md)，验证见 [本次验证记录](RESPONSE_CONTEXT_VALIDATION.md)。
+
+
+## 2026-09-13：写作请求兼容增量
+
+写作检查与正式生成复用 `/api/chat`，不增加 Agent 执行或服务端作品持久化。非流式 JSON 响应额外返回上游公共协议服务提供的 `finishReason`，以区分正常完成与输出额度／内容过滤中断。请求级 systemPrompt 可包含设置提示词与全文固定资料，其限额改用前后端同步的 `LIMITS.requestSystemPromptChars = 16 * 1024 * 1024`；用户设置字段自身仍保留原有 102400 字符限制。请求模型预算仍独立校验，不静默截断资料。测试使用本地模拟上游，不能代表真实模型写作质量。

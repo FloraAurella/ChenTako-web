@@ -1,0 +1,14 @@
+
+> chentako@1.1.5 test
+> vitest run test/theme-artwork.test.js
+
+
+ RUN  v3.2.7 /Users/qxc/Desktop/ai/coding-project/ChenTako
+
+ ✓ test/theme-artwork.test.js (4 tests) 31ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  12:31:22
+   Duration  528ms (transform 65ms, setup 6ms, collect 92ms, tests 31ms, environment 182ms, prepare 50ms)
+

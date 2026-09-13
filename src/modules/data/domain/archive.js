@@ -195,7 +195,7 @@ function dataUrlToPart(source) {
   return { mime, bytes, ext: Object.keys(EXT_MIME).find((ext) => EXT_MIME[ext] === mime) || "png" };
 }
 
-/** 导出为 .ai-chatbox.zip 条目列表（conversation.json + media/*）。 */
+/** 导出为 .ChenTako.zip 条目列表（conversation.json + media/*）。 */
 export function exportConversationArchive(conversation) {
   const encoder = new TextEncoder();
   const media = [];
@@ -205,6 +205,7 @@ export function exportConversationArchive(conversation) {
     kind: EXPORT_ARCHIVE_KIND,
     version: EXPORT_ARCHIVE_VERSION,
     exportedAt: Date.now(),
+    ...(conversation.writing ? { requiredFeatures: ['chentako-writing-v1', ...(conversation.writing.workspaceVersion === 2 ? ['chentako-writing-workspace-v2'] : [])], compatibilityNotice: '作品需支持当前写入工作区版本才能完整恢复正文版本、回档及左右显示归属；旧版可能丢失新增字段。' } : {}),
     conversation: {
       ...conversation,
       messages: (conversation.messages || []).map((message) => ({
@@ -236,7 +237,7 @@ export function exportConversationArchive(conversation) {
   return {
     entries,
     bytes: buildStoredZip(entries),
-    filename: `${safeArchiveTitle(conversation.title)}.ai-chatbox.zip`
+    filename: `${safeArchiveTitle(conversation.title)}.ChenTako.zip`
   };
 }
 
@@ -301,7 +302,7 @@ async function readFileText(file) {
 }
 
 /**
- * 导入 .ai-chatbox.zip 或导出的 JSON 文件。
+ * 导入 .ChenTako.zip 或导出的 JSON 文件。
  * @returns {Promise<object>} 归一化后的会话（标题追加“（导入）”）
  */
 export async function importConversationArchive(file, providers = []) {

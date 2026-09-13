@@ -1,5 +1,5 @@
 import { APP_STREAM_EVENTS, type NormalizedResponse } from '../../../contracts/protocol.ts';
-import { TITLE_GENERATION_PROMPT } from '../domain/title.ts';
+import { taskPrompt } from './prompt-files.ts';
 import { LIMITS, STREAM_TIMEOUT_MS } from '../../../contracts/limits.ts';
 import type { ChatConfig, ProviderHeader, WireMessage } from '../../../contracts/types.ts';
 import { HttpError, SseWriter, sendJson, readJsonBody, type RequestContext } from '../../../core/router.ts';
@@ -8,7 +8,7 @@ import { resolveProviderModelConfig } from '../../providers/public/domain_regist
 import type { UpstreamService } from '../../upstream/public/module.ts';
 import { ContextBudgetError, type MergedProvider } from '../../upstream/public/domain_request-builder.ts';
 import { parseChatConfig } from '../domain/chat-config.ts';
-import { validateMessages, validateContextSummary, hasExecutableExtensions, EXTENSIONS_UNSUPPORTED_ERROR, CONTEXT_COMPRESSION_PROMPT } from '../domain/validation.ts';
+import { validateMessages, validateContextSummary, hasExecutableExtensions, EXTENSIONS_UNSUPPORTED_ERROR } from '../domain/validation.ts';
 
 /** chat 路由共享的依赖句柄。 */
 export interface ChatDeps {
@@ -154,7 +154,7 @@ export async function handleChat(deps: ChatDeps, { req, res }: RequestContext): 
         throw new HttpError('上游返回了无法解析的 JSON', 502);
       }
       const normalized: NormalizedResponse = deps.upstream.normalizeJson(payload, request.merged.responseFormat);
-      sendJson(res, 200, { ...normalized, skippedAttachments: built.skippedFiles });
+      sendJson(res, 200, { ...normalized, finishReason: deps.upstream.finishReason(payload as Record<string, unknown>, request.merged.responseFormat), skippedAttachments: built.skippedFiles });
       return;
     }
 
@@ -223,7 +223,7 @@ async function handleAuxiliary(deps: ChatDeps, { req, res }: RequestContext, pur
     const merged: MergedProvider = {
       ...request.merged,
       temperature: 0.7, topP: 1, userId: '',
-      systemPrompt: title ? TITLE_GENERATION_PROMPT : CONTEXT_COMPRESSION_PROMPT,
+      systemPrompt: taskPrompt(title ? 'title' : 'summary'),
       chatConfigVersion: 1, inputBudget: null
     };
     const built = deps.upstream.buildRequest(merged, {

@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" fill="none">
+<title>炭火夜摊：灯笼、烟气与余烬深色边缘画作</title>
+<defs>
+ <radialGradient id="glow"><stop stop-color="#FF8A3D" stop-opacity=".13"/><stop offset="1" stop-color="#FF8A3D" stop-opacity="0"/></radialGradient>
+ <linearGradient id="lantern" x2="1" y2=".25"><stop stop-color="#A84623"/><stop offset=".45" stop-color="#FFAF57"/><stop offset="1" stop-color="#CA552D"/></linearGradient>
+ <linearGradient id="smoke" x2="0" y2="1"><stop stop-color="#F0A665" stop-opacity="0"/><stop offset=".55" stop-color="#F0A665" stop-opacity=".2"/><stop offset="1" stop-color="#F0A665" stop-opacity="0"/></linearGradient>
+</defs>
+<ellipse cx="1515" cy="147" rx="250" ry="310" fill="url(#glow)"/>
+<g stroke="#FFBD79" opacity=".24"><path d="M1180-30q195 123 440 49" stroke-width="1.2"/><path d="M1438 38v51m114-55v120" stroke-width="1"/></g>
+<g transform="translate(1438 145) rotate(6)" opacity=".29">
+ <path d="M-27-56C-68-40-70 37-28 56H28C69 38 68-39 27-56Z" fill="url(#lantern)" fill-opacity=".42" stroke="#FFB36B" stroke-width="1.2"/>
+ <path d="M-27-56H27V-48H-27ZM-28 48H28V56H-28Z" fill="#C48C5E"/>
+ <g stroke="#FFC57E" stroke-width=".7"><path d="M-27-48C-51-15-51 20-28 48M-13-48C-26-15-26 20-14 48M0-48V48M13-48C26-15 26 20 14 48M27-48C51-15 51 20 28 48"/><path d="M-43-34H43M-52-17H52M-54 0H54M-51 18H51M-43 35H43"/></g>
+ <path d="M-12 59 0 69 12 59M0 69v31m-6-6-2 34m8-27v36m6-42 3 31" stroke="#F8A159" stroke-width="1.1" stroke-linecap="round"/>
+</g>
+<g transform="translate(1552 234) scale(.7) rotate(-8)" opacity=".2">
+ <path d="M-30-59C-80-40-77 40-30 61H30C78 41 78-40 30-59Z" fill="#C9582C" fill-opacity=".3" stroke="#FFB16D"/>
+ <path d="M-30-55H30M-30 56H30M-53-32H53M-63-12H63M-63 12H63M-53 33H53M0-54V55M-20-54Q-43 0-20 55M20-54Q43 0 20 55M0 64v36m-7-4v36m7-31v35m7-40v34" stroke="#FFB16D"/>
+</g>
+<g stroke="url(#smoke)" stroke-linecap="round">
+ <path d="M1572 970c-150-87-145-183-30-253s-161-90-93-227 137-104 81-219" stroke-width="1.4"/>
+ <path d="M1583 985c-170-95-146-188-35-260s-158-95-87-228 134-106 80-225" stroke-width=".6"/>
+ <path d="M1485 1008c-140-123 5-148 26-244s-158-109-66-183" stroke-width=".8"/>
+</g>
+<g transform="translate(1531 988) rotate(-18)" stroke="#E18B48" opacity=".2">
+ <ellipse rx="234" ry="107" stroke-width="1.2"/><ellipse rx="219" ry="96" stroke-width=".6"/><ellipse rx="198" ry="82" stroke-dasharray="2 8"/>
+ <path d="M-160-45Q0-120 160-45M-167-26Q0-98 167-26M-169-8Q0-76 169-8" stroke-width=".7"/>
+</g>
+<g transform="translate(60 985) rotate(-35)" stroke="#FFAA62" opacity=".15">
+ <path d="M-180 0Q0-70 180 0M-160 12Q0-46 160 12M-139 24Q0-22 139 24"/>
+ <path d="M-60-39q-28-27-7-62t-8-59M-10-46q-32-43-7-78t-7-61M45-44q-27-32-5-63" stroke-width="1.2"/>
+</g>
+<g fill="#FFA359" opacity=".3"><circle cx="1388" cy="331" r="1.8"/><circle cx="1534" cy="466" r="2.4"/><circle cx="1451" cy="743" r="1.5"/><circle cx="1367" cy="879" r="2"/><circle cx="1577" cy="770" r="2.8"/></g>
+<g stroke="#FFC67E" opacity=".25"><path d="m1510 366 2 7 7 2-7 2-2 7-2-7-7-2 7-2ZM1390 782l2 6 6 2-6 2-2 6-2-6-6-2 6-2Z"/></g>
+<g stroke="#F28C62" stroke-linecap="round" opacity=".23"><path d="m1464 915 3-8m-30-49 4-6m113-212 2-6m-191 298 2-8m163-628 2-6"/></g>
+</svg>

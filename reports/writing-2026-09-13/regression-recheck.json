@@ -1,0 +1,471 @@
+{
+  "config": {
+    "argv": [
+      "/opt/homebrew/Cellar/node/26.5.0/bin/node",
+      "/Users/qxc/Desktop/ai/coding-project/ChenTako/node_modules/.bin/playwright",
+      "test",
+      "e2e/commands.spec.js",
+      "e2e/knowledge.spec.js",
+      "e2e/response-policy.spec.js",
+      "--grep",
+      "指令面板|帮助支持|大资料用量|上下文策略三个控件与模型继承 1024 light",
+      "--reporter=json"
+    ],
+    "configFile": "/Users/qxc/Desktop/ai/coding-project/ChenTako/playwright.config.js",
+    "rootDir": "/Users/qxc/Desktop/ai/coding-project/ChenTako/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/qxc/Desktop/ai/coding-project/ChenTako/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Users/qxc/Desktop/ai/coding-project/ChenTako/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.1",
+    "workers": 1,
+    "webServer": {
+      "command": "FRONTEND_E2E=1 npm run dev -- --port 5198 --strictPort",
+      "url": "http://127.0.0.1:5198",
+      "reuseExistingServer": false,
+      "timeout": 30000
+    }
+  },
+  "suites": [
+    {
+      "title": "commands.spec.js",
+      "file": "commands.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "指令面板 light 1280 无溢出且 panel 悬停稳定",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 843,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:06:04.283Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8723787925d711410ac6-f7089a9ccd7f452b5b7b",
+          "file": "commands.spec.js",
+          "line": 192,
+          "column": 3
+        },
+        {
+          "title": "指令面板 light 1024 无溢出且 panel 悬停稳定",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 760,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:06:05.578Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8723787925d711410ac6-76d32bbbb359b875324b",
+          "file": "commands.spec.js",
+          "line": 192,
+          "column": 3
+        },
+        {
+          "title": "指令面板 light 390 无溢出且 panel 悬停稳定",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 5630,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('option').last()\nExpected: \u001b[32m\"\u001b[7mtru\u001b[27me\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mfals\u001b[27me\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('option').last()\u001b[22m\n\u001b[2m    14 × locator resolved to <button type=\"button\" role=\"option\" tabindex=\"-1\" id=\"command-option-7\" aria-selected=\"false\" aria-disabled=\"false\" data-surface=\"interactive\" class=\"ui-button ui-menu-item command-option \">…</button>\u001b[22m\n\u001b[2m       - unexpected value \"false\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('option').last()\nExpected: \u001b[32m\"\u001b[7mtru\u001b[27me\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mfals\u001b[27me\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('option').last()\u001b[22m\n\u001b[2m    14 × locator resolved to <button type=\"button\" role=\"option\" tabindex=\"-1\" id=\"command-option-7\" aria-selected=\"false\" aria-disabled=\"false\" data-surface=\"interactive\" class=\"ui-button ui-menu-item command-option \">…</button>\u001b[22m\n\u001b[2m       - unexpected value \"false\"\u001b[22m\n\n    at /Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/commands.spec.js:211:53",
+                    "location": {
+                      "file": "/Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/commands.spec.js",
+                      "column": 53,
+                      "line": 211
+                    },
+                    "snippet": "  209 |     if (width === 390) {\n  210 |       for (let i = 0; i < 7; i++) await page.locator('#composerInput').press('ArrowDown');\n> 211 |       await expect(page.getByRole('option').last()).toHaveAttribute('aria-selected', 'true');\n      |                                                     ^\n  212 |       expect(await viewport.evaluate(el => el.scrollTop)).toBeGreaterThan(0);\n  213 |     }\n  214 |     await page.mouse.move(0, 0);"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/commands.spec.js",
+                        "column": 53,
+                        "line": 211
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('option').last()\nExpected: \u001b[32m\"\u001b[7mtru\u001b[27me\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mfals\u001b[27me\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('option').last()\u001b[22m\n\u001b[2m    14 × locator resolved to <button type=\"button\" role=\"option\" tabindex=\"-1\" id=\"command-option-7\" aria-selected=\"false\" aria-disabled=\"false\" data-surface=\"interactive\" class=\"ui-button ui-menu-item command-option \">…</button>\u001b[22m\n\u001b[2m       - unexpected value \"false\"\u001b[22m\n\n\n  209 |     if (width === 390) {\n  210 |       for (let i = 0; i < 7; i++) await page.locator('#composerInput').press('ArrowDown');\n> 211 |       await expect(page.getByRole('option').last()).toHaveAttribute('aria-selected', 'true');\n      |                                                     ^\n  212 |       expect(await viewport.evaluate(el => el.scrollTop)).toBeGreaterThan(0);\n  213 |     }\n  214 |     await page.mouse.move(0, 0);\n    at /Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/commands.spec.js:211:53"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:06:06.345Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/qxc/Desktop/ai/coding-project/ChenTako/test-results/commands-指令面板-light-390-无溢出且-panel-悬停稳定-chromium/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/commands.spec.js",
+                    "column": 53,
+                    "line": 211
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "8723787925d711410ac6-419d649094d87673d95d",
+          "file": "commands.spec.js",
+          "line": 192,
+          "column": 3
+        },
+        {
+          "title": "指令面板 dark 1280 无溢出且 panel 悬停稳定",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 789,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:06:12.401Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8723787925d711410ac6-9fdda1f4198ae0b31adf",
+          "file": "commands.spec.js",
+          "line": 192,
+          "column": 3
+        },
+        {
+          "title": "指令面板 dark 1024 无溢出且 panel 悬停稳定",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 697,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:06:13.499Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8723787925d711410ac6-c8162f2fa3ca805a5254",
+          "file": "commands.spec.js",
+          "line": 192,
+          "column": 3
+        },
+        {
+          "title": "指令面板 dark 390 无溢出且 panel 悬停稳定",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 5602,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('option').last()\nExpected: \u001b[32m\"\u001b[7mtru\u001b[27me\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mfals\u001b[27me\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('option').last()\u001b[22m\n\u001b[2m    14 × locator resolved to <button type=\"button\" role=\"option\" tabindex=\"-1\" id=\"command-option-7\" aria-selected=\"false\" aria-disabled=\"false\" data-surface=\"interactive\" class=\"ui-button ui-menu-item command-option \">…</button>\u001b[22m\n\u001b[2m       - unexpected value \"false\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('option').last()\nExpected: \u001b[32m\"\u001b[7mtru\u001b[27me\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mfals\u001b[27me\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('option').last()\u001b[22m\n\u001b[2m    14 × locator resolved to <button type=\"button\" role=\"option\" tabindex=\"-1\" id=\"command-option-7\" aria-selected=\"false\" aria-disabled=\"false\" data-surface=\"interactive\" class=\"ui-button ui-menu-item command-option \">…</button>\u001b[22m\n\u001b[2m       - unexpected value \"false\"\u001b[22m\n\n    at /Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/commands.spec.js:211:53",
+                    "location": {
+                      "file": "/Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/commands.spec.js",
+                      "column": 53,
+                      "line": 211
+                    },
+                    "snippet": "  209 |     if (width === 390) {\n  210 |       for (let i = 0; i < 7; i++) await page.locator('#composerInput').press('ArrowDown');\n> 211 |       await expect(page.getByRole('option').last()).toHaveAttribute('aria-selected', 'true');\n      |                                                     ^\n  212 |       expect(await viewport.evaluate(el => el.scrollTop)).toBeGreaterThan(0);\n  213 |     }\n  214 |     await page.mouse.move(0, 0);"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/commands.spec.js",
+                        "column": 53,
+                        "line": 211
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveAttribute\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('option').last()\nExpected: \u001b[32m\"\u001b[7mtru\u001b[27me\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mfals\u001b[27me\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveAttribute\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('option').last()\u001b[22m\n\u001b[2m    14 × locator resolved to <button type=\"button\" role=\"option\" tabindex=\"-1\" id=\"command-option-7\" aria-selected=\"false\" aria-disabled=\"false\" data-surface=\"interactive\" class=\"ui-button ui-menu-item command-option \">…</button>\u001b[22m\n\u001b[2m       - unexpected value \"false\"\u001b[22m\n\n\n  209 |     if (width === 390) {\n  210 |       for (let i = 0; i < 7; i++) await page.locator('#composerInput').press('ArrowDown');\n> 211 |       await expect(page.getByRole('option').last()).toHaveAttribute('aria-selected', 'true');\n      |                                                     ^\n  212 |       expect(await viewport.evaluate(el => el.scrollTop)).toBeGreaterThan(0);\n  213 |     }\n  214 |     await page.mouse.move(0, 0);\n    at /Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/commands.spec.js:211:53"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:06:14.205Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/qxc/Desktop/ai/coding-project/ChenTako/test-results/commands-指令面板-dark-390-无溢出且-panel-悬停稳定-chromium/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/commands.spec.js",
+                    "column": 53,
+                    "line": 211
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "8723787925d711410ac6-47e960d185fd40ef8cdb",
+          "file": "commands.spec.js",
+          "line": 192,
+          "column": 3
+        },
+        {
+          "title": "帮助支持键盘滚动并在 Escape 后恢复输入焦点",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 586,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:06:20.230Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "8723787925d711410ac6-ea33686ba1f26ddb83bd",
+          "file": "commands.spec.js",
+          "line": 296,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "knowledge.spec.js",
+      "file": "knowledge.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "大资料用量刷新不重复编码全文或复制请求，输入保持可用",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 525,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:06:21.081Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "dc0c250b3669de3c8ea7-002a44595322795ac1a2",
+          "file": "knowledge.spec.js",
+          "line": 36,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "response-policy.spec.js",
+      "file": "response-policy.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "上下文策略三个控件与模型继承 1024 light",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1791,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T06:06:21.622Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "de1c7efddccf9e0b1e66-3f74028d16c142ac47b6",
+          "file": "response-policy.spec.js",
+          "line": 102,
+          "column": 80
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-13T06:06:03.536Z",
+    "duration": 20073.579999999998,
+    "expected": 7,
+    "skipped": 0,
+    "unexpected": 2,
+    "flaky": 0
+  }
+}

@@ -8,7 +8,7 @@
 import { test, expect } from "@playwright/test";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { writeFileSync, rmSync, readFileSync } from "node:fs";
+import { writeFileSync, rmSync, readFileSync, mkdirSync } from "node:fs";
 import os from "node:os";
 import { CURRENT_RELEASE, RELEASE_NOTES } from "../src/modules/data/domain/changelog.js";
 import { APP_SETTINGS_VERSION, APP_VERSION } from "../src/contracts/constants.js";
@@ -49,8 +49,8 @@ const SEED_STATE = {
 
 test("首次启动引导：展示全新开始、迁移导入与 128 位封套说明", async ({ page }) => {
   await page.goto("/onboarding.html");
-  await expect(page.locator("#onboardingTitle")).toContainText("欢迎使用 ai-chatbox");
-  await expect(page.locator("#onboardingFreshBtn")).toContainText("启动全新 ai-chatbox");
+  await expect(page.locator("#onboardingTitle")).toContainText("欢迎使用 ChenTako");
+  await expect(page.locator("#onboardingFreshBtn")).toContainText("启动全新 ChenTako");
   await expect(page.locator("#onboardingImportBtn")).toContainText("从迁移包导入");
   await expect(page.locator(".migration-seal")).toContainText("AES · 128 BIT");
   await expect(page.locator(".migration-seal")).toContainText("KEY.MD");
@@ -84,7 +84,7 @@ async function seedAndLoad(page, { state = SEED_STATE, hash = "#/chat", themeId 
 async function mockBackend(page) {
   await page.route("**/api/health", (route) => route.fulfill({
     contentType: "application/json",
-    body: JSON.stringify({ ok: true, service: "ai-chatbox-server" })
+    body: JSON.stringify({ ok: true, service: "ChenTako-server" })
   }));
   await page.route("**/api/providers", (route) => route.fulfill({
     contentType: "application/json",
@@ -96,7 +96,7 @@ async function mockBackend(page) {
     body: [
       "event: chat.stream.started\ndata: {\"version\":1,\"providerId\":\"p-demo\",\"reasoningKind\":\"thinking\"}\n\n",
       "event: chat.reasoning.delta\ndata: {\"delta\":\"先想一下用户要什么。\",\"kind\":\"thinking\"}\n\n",
-      "event: chat.content.delta\ndata: {\"delta\":\"你好，这是一段 **ai-chatbox** 风格的回复。\"}\n\n",
+      "event: chat.content.delta\ndata: {\"delta\":\"你好，这是一段 **ChenTako** 风格的回复。\"}\n\n",
       "event: chat.usage\ndata: {\"inputTokens\":8,\"outputTokens\":6,\"totalTokens\":14,\"estimated\":false}\n\n",
       "event: chat.stream.completed\ndata: {\"finishReason\":\"stop\"}\n\n"
     ].join("")
@@ -185,9 +185,9 @@ test("外壳与空状态扉页", async ({ page }) => {
   await page.goto("/");
   await expect(page.locator('[data-section="projects"]')).toBeVisible();
   await expect(page.locator('[data-section="chats"]')).toBeVisible();
-  await expect(page.locator(".empty-stage .empty-title")).toContainText("今天想聊点什么");
+  await expect(page.locator(".empty-stage .empty-title")).toContainText("欢迎回来，随时开始吧");
   await expect(page.locator(".composer-input")).toBeVisible();
-  await expect(page.locator(".suggestion-card")).toHaveCount(3);
+  await expect(page.locator(".suggestion-card")).toHaveCount(0);
   await expect(page.locator("#stageActions > *")).toHaveCount(1);
   await expect(page.locator("#stageActions > .status-pill")).toContainText("本地服务正常");
 });
@@ -210,14 +210,12 @@ test("侧栏移除外观切换与版本号，保留设置入口", async ({ page 
   await expect(page.locator("html")).toHaveAttribute("data-theme", "everforest");
 });
 
-test("空状态灵感卡之间无游离逗号", async ({ page }) => {
+test("开始页使用品牌欢迎行，不再展示推荐卡片", async ({ page }) => {
   await seedAndLoad(page);
   await page.goto("/");
-  await expect(page.locator(".suggestion-card")).toHaveCount(3);
-  const strayTextNodes = await page.locator(".suggestion-list").evaluate((el) =>
-    [...el.childNodes].filter((node) => node.nodeType === Node.TEXT_NODE && node.textContent.trim()).length
-  );
-  expect(strayTextNodes).toBe(0);
+  await expect(page.locator(".suggestion-card, .empty-card")).toHaveCount(0);
+  await expect(page.locator(".welcome-logo svg")).toHaveCount(1);
+  await expect(page.locator(".welcome-heading")).toHaveText("欢迎回来，随时开始吧");
 });
 
 test("流式对话：思考面板 + Markdown 正文 + 元数据", async ({ page }) => {
@@ -242,8 +240,8 @@ test("流式对话：思考面板 + Markdown 正文 + 元数据", async ({ page 
   await expect(page.locator(".reasoning-body")).toContainText("先想一下用户要什么");
   await reasoningToggle.click();
   await expect.poll(() => page.locator(".reasoning-content").evaluate(el => el.getBoundingClientRect().height)).toBe(0);
-  await expect(page.locator(".message-entry.assistant .message-body .markdown-body")).toContainText("ai-chatbox");
-  await expect(page.locator(".message-entry.assistant .message-body .markdown-body strong")).toHaveText("ai-chatbox");
+  await expect(page.locator(".message-entry.assistant .message-body .markdown-body")).toContainText("ChenTako");
+  await expect(page.locator(".message-entry.assistant .message-body .markdown-body strong")).toHaveText("ChenTako");
   await expect(page.locator(".message-entry.assistant")).toContainText("tokens");
   // 自动生成标题（取前 18 字）
   await expect(page.locator("#stageTitle")).toContainText("打个招呼");
@@ -905,7 +903,7 @@ test("消息编辑：保存并重新发送创建会话内分支", async ({ page 
   await page.click('[data-editor="resend"]');
   // 新路径显示修改后的问题与新回复，旧路径保留在同一会话内
   await expect(page.locator(".message-entry.user .markdown-body").first()).toContainText("换个问法");
-  await expect(page.locator(".message-entry.assistant .message-body .markdown-body").last()).toContainText("ai-chatbox", { timeout: 8000 });
+  await expect(page.locator(".message-entry.assistant .message-body .markdown-body").last()).toContainText("ChenTako", { timeout: 8000 });
   await expect(page.locator(".message-entry")).toHaveCount(2);
   await expect(page.locator(".message-branch-switcher .branch-count")).toHaveText("2 / 2");
   await page.click('.message-branch-switcher [data-message-branch="previous"]');
@@ -1097,7 +1095,7 @@ test("思考强度单轨五档交互", async ({ page }) => {
   await expect(page.locator(".effort-rail-dots i.is-past")).toHaveCount(5);
 });
 
-test("Everforest：主题包令牌与纯色外观完整生效", async ({ page }) => {
+test("Tako Festival · 章鱼烧祭：主题包令牌与纯色外观完整生效", async ({ page }) => {
   await seedAndLoad(page, { themeId: "everforest" });
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");
@@ -1110,16 +1108,16 @@ test("Everforest：主题包令牌与纯色外观完整生效", async ({ page })
       "--canvas-mid", "--surface-content", "--label", "--accent", "--send-btn", "--font-body"
     ].map((token) => [token, style.getPropertyValue(token).trim()]));
   });
-  // 以当前主题包（resources/themes/everforest-ai-chatbox-theme-v1.json）为权威，
-  // 不复制旧 Everforest 色值。
+  // 以当前主题包（resources/themes/tako-festival-theme-v1.json）为权威，
+  // 不复制旧 Tako Festival · 章鱼烧祭 色值。
   expect(tokens).toMatchObject({
-    "--canvas-mid": "#F7F5EC",
-    "--surface-content": "#FCFBF6",
-    "--label": "#46534D",
-    "--accent": "#93B259",
-    "--send-btn": "#617D43"
+    "--canvas-mid": "#FFF8E7",
+    "--surface-content": "#FFFEFA",
+    "--label": "#4A180C",
+    "--accent": "#FF3B1F",
+    "--send-btn": "#FF3B1F"
   });
-  expect(tokens["--font-body"]).toContain("New York");
+  expect(tokens["--font-body"]).toContain("Avenir Next");
 });
 
 test("后台流式：切换会话不打断生成，切回原会话进度不丢", async ({ page }) => {
@@ -1338,35 +1336,35 @@ test("主题明暗切换自动换色", async ({ page }) => {
   await seedAndLoad(page, { hash: "#/settings/appearance" });
   await page.goto("/");
   const pear = await page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue("--pear").trim());
-  expect(pear).toBe("#93B259");
+  expect(pear).toBe("#FF3B1F");
   const light = await page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue("--accent").trim());
-  expect(light).toBe("#93B259");
+  expect(light).toBe("#FF3B1F");
   // 默认主题为双态，明暗由 appearanceMode 切换。
   await page.locator(".appearance-mode-option").filter({ hasText: "深色" }).click();
   await expect(page.locator("html")).toHaveAttribute("data-scheme", "dark");
   const dark = await page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue("--accent").trim());
-  expect(dark).toBe("#A7C080");
+  expect(dark).toBe("#FF8A3D");
   const pearDark = await page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue("--pear").trim());
-  expect(pearDark).toBe("#A7C080");
+  expect(pearDark).toBe("#FF8A3D");
   // 代码框令牌也随明暗切换（独立暖调家族色）
   const codeBg = await page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue("--code-bg").trim());
-  expect(codeBg).toBe("#202629");
+  expect(codeBg).toBe("#211510");
 });
 
 test("设置：外观主题卡与自定义导入入口", async ({ page }) => {
   await seedAndLoad(page, { hash: "#/settings/appearance" });
   await page.goto("/");
   await expect(page.locator(".settings-pane-title")).toContainText("外观");
-  // 首启种子只包含 Everforest。
+  // 首启种子只包含 Tako Festival · 章鱼烧祭。
   await expect(page.locator(".theme-card")).toHaveCount(1);
   await expect(page.locator(".theme-card").nth(0)).toHaveAttribute("data-theme-id", "everforest");
   // 稳定语义内容与选中状态（不依赖已删除的装饰性内部标签）
   const everforestCard = page.locator('[data-theme-id="everforest"]');
   await expect(everforestCard).toHaveAttribute("aria-pressed", "true");
   await expect(everforestCard).toHaveClass(/is-active/);
-  await expect(everforestCard.locator(".theme-strip-name")).toHaveText("Everforest");
+  await expect(everforestCard.locator(".theme-strip-name")).toHaveText("Tako Festival · 章鱼烧祭");
   await expect(everforestCard.locator(".theme-strip-status")).toContainText("当前主题");
-  await expect(everforestCard).toHaveAttribute("aria-label", "Everforest，当前主题");
+  await expect(everforestCard).toHaveAttribute("aria-label", "Tako Festival · 章鱼烧祭，当前主题");
   await expect(page.locator("#themePackageImportBtn")).toHaveText(/导入主题/);
   await expect(page.locator("#themePackageExportBtn")).toHaveText(/导出/);
   // 明暗模式切换不改变当前主题 ID。
@@ -1380,7 +1378,7 @@ test("设置：外观主题卡与自定义导入入口", async ({ page }) => {
   await expect(page.locator(".motion-layer")).toHaveCount(0);
   const everforestCanvas = await page.evaluate(() =>
     getComputedStyle(document.documentElement).getPropertyValue("--canvas-mid").trim());
-  expect(everforestCanvas).toBe("#232A2E");
+  expect(everforestCanvas).toBe("#1A1210");
   await page.reload();
   await expect(page.locator("html")).toHaveAttribute("data-theme", "everforest");
 });
@@ -1396,7 +1394,7 @@ test("主题背景动效已停用", async ({ page }) => {
   await expect(page.locator(".app-canvas")).toHaveCSS("background-image", "none");
 });
 
-test("Everforest 在减少动态模式下完全不创建动效层", async ({ page }) => {
+test("Tako Festival · 章鱼烧祭 在减少动态模式下完全不创建动效层", async ({ page }) => {
   await seedAndLoad(page, { themeId: "everforest" });
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");
@@ -1404,7 +1402,7 @@ test("Everforest 在减少动态模式下完全不创建动效层", async ({ pag
   await expect(page.locator(".motion-layer")).toHaveCount(0);
 });
 
-test("Everforest 窄屏安全回退：无横向溢出或素材遮挡", async ({ page }) => {
+test("Tako Festival · 章鱼烧祭 窄屏安全回退：无横向溢出或素材遮挡", async ({ page }) => {
   await seedAndLoad(page, { themeId: "everforest" });
   await page.setViewportSize({ width: 390, height: 844 });
   await page.emulateMedia({ reducedMotion: "reduce" });
@@ -1462,26 +1460,26 @@ test("主题 JSON：更新默认主题、重启恢复并删除自定义变体", 
   await expect(page.locator("#themePackageImportBtn")).toBeVisible();
   await expect(page.locator(".theme-card")).toHaveCount(1);
 
-  const examplePath = path.resolve(__dirname, "../src/resources/themes/everforest-ai-chatbox-theme-v1.json");
+  const examplePath = path.resolve(__dirname, "../src/resources/themes/tako-festival-theme-v1.json");
   const [fileChooser] = await Promise.all([
     page.waitForEvent("filechooser"),
     page.locator("#themePackageImportBtn").click()
   ]);
   await fileChooser.setFiles(examplePath);
 
-  // Everforest 已是种子主题：同 ID 重新导入 = 更新（替换），卡数不变。
+  // Tako Festival · 章鱼烧祭 已是种子主题：同 ID 重新导入 = 更新（替换），卡数不变。
   await expect(page.locator(".theme-card")).toHaveCount(1);
   await expect(page.locator("html")).toHaveAttribute("data-theme", "everforest");
   const accent = await page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue("--accent").trim());
-  expect(accent).toBe("#93B259");
+  expect(accent).toBe("#FF3B1F");
   const separator = await page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue("--separator").trim());
-  expect(separator).toBe("rgba(92,106,114,0.18)");
+  expect(separator).toBe("rgba(122,30,14,0.26)");
   const effectTokens = await page.evaluate(() => ({
     overlay: getComputedStyle(document.documentElement).getPropertyValue("--overlay-scrim").trim(),
     group: getComputedStyle(document.documentElement).getPropertyValue("--group-color-5").trim()
   }));
-  expect(effectTokens.overlay).toBe("#000000");
-  expect(effectTokens.group).toBe("#000000");
+  expect(effectTokens.overlay).toBe("rgba(40,20,27,0.45)");
+  expect(effectTokens.group).toBe("#7A1E0E");
 
   // buttons 模块：三类按钮令牌生效，主题包主操作底色跟随主题
   const buttonTokens = await page.evaluate(() => ({
@@ -1490,14 +1488,14 @@ test("主题 JSON：更新默认主题、重启恢复并删除自定义变体", 
     logo: getComputedStyle(document.documentElement).getPropertyValue("--brand-logo").trim(),
     icon: getComputedStyle(document.documentElement).getPropertyValue("--icon-btn-ink").trim()
   }));
-  // 主题包 JSON 明确为按钮定义更深的绿色（#617D43 系列）保证白字对比度；
-  // 主色 #93B259 只用于品牌标识与强调色。次要按钮背景跟随 surface-elevated。
-  expect(buttonTokens.send).toBe("#617D43");
-  expect(buttonTokens.primary).toBe("#617D43");
-  expect(buttonTokens.logo).toBe("#93B259");
-  expect(buttonTokens.icon).toBe("#73848A");
+  // 主题包 JSON 明确为按钮定义朱橙色（#FF3B1F）配深棕文字保证对比度；
+  // 主色 #FF3B1F 同时用于品牌标识与强调色。次要按钮背景跟随 surface-elevated。
+  expect(buttonTokens.send).toBe("#FF3B1F");
+  expect(buttonTokens.primary).toBe("#FF3B1F");
+  expect(buttonTokens.logo).toBe("#FF3B1F");
+  expect(buttonTokens.icon).toBe("#7A1E0E");
   await page.mouse.move(0, 0);
-  await expect(page.locator("#themePackageImportBtn")).toHaveCSS("background-color", "rgb(240, 240, 232)");
+  await expect(page.locator("#themePackageImportBtn")).toHaveCSS("background-color", "rgb(255, 228, 187)");
 
   // 重启后从本机存储恢复
   await page.reload();
@@ -1508,7 +1506,7 @@ test("主题 JSON：更新默认主题、重启恢复并删除自定义变体", 
   const variantPath = path.join(os.tmpdir(), `everforest-variant-${Date.now()}.json`);
   const variant = JSON.parse(readFileSync(examplePath, "utf8"));
   variant.theme.id = "everforest-variant";
-  variant.theme.label = "Everforest · 变体";
+  variant.theme.label = "Tako Festival · 章鱼烧祭 · 变体";
   writeFileSync(variantPath, JSON.stringify(variant));
   const [variantChooser] = await Promise.all([
     page.waitForEvent("filechooser"),
@@ -1517,7 +1515,7 @@ test("主题 JSON：更新默认主题、重启恢复并删除自定义变体", 
   await variantChooser.setFiles(variantPath);
   await expect(page.locator(".theme-card")).toHaveCount(2);
 
-  // 删除变体主题：回落到 Everforest 默认主题。
+  // 删除变体主题：回落到 Tako Festival · 章鱼烧祭 默认主题。
   await page.locator('[data-theme-remove="everforest-variant"]').click();
   await expect(page.locator(".dialog-backdrop")).toBeVisible();
   await page.locator(".dialog-backdrop [data-role='confirm']").click();
@@ -1528,7 +1526,7 @@ test("主题 JSON：更新默认主题、重启恢复并删除自定义变体", 
 test("主题界面字体：导入 typefaces 主题后字体令牌生效，删除后恢复默认", async ({ page }) => {
   await seedAndLoad(page, { hash: "#/settings/appearance" });
   await page.goto("/");
-  const fontThemePath = path.join(os.tmpdir(), `ai-chatbox-font-theme-${Date.now()}.json`);
+  const fontThemePath = path.join(os.tmpdir(), `ChenTako-font-theme-${Date.now()}.json`);
   const fontTheme = {
     format: "clawbox-theme",
     version: 2,
@@ -1555,13 +1553,13 @@ test("主题界面字体：导入 typefaces 主题后字体令牌生效，删除
   expect(fontTokens.body).toContain("Yuanti SC");
   expect(fontTokens.display).toContain("Songti SC");
   expect(fontTokens.mono).toContain("SF Mono");
-  // 删除主题回落 Everforest，字体回到默认衬线体系。
+  // 删除主题回落 Tako Festival · 章鱼烧祭，字体回到主题的人文无衬线体系。
   await page.locator('[data-theme-remove="fonttrial"]').click();
   await page.locator(".dialog-backdrop [data-role='confirm']").click();
   await expect(page.locator("html")).toHaveAttribute("data-theme", "everforest");
   const restored = await page.evaluate(() =>
     getComputedStyle(document.documentElement).getPropertyValue("--font-body").trim());
-  expect(restored).toContain("New York");
+  expect(restored).toContain("Avenir Next");
 });
 
 test("外观：纯色背景、对比度与透景模式", async ({ page }) => {
@@ -2006,7 +2004,7 @@ test("数据迁移：浏览器环境显示明确的不可用状态", async ({ pa
   // 版本与运行环境信息归“关于与更新”页：数据页只验证迁移、导入与兼容行为
   await expect(page.locator(".migration-card")).toBeVisible();
   await expect(page.locator(".migration-status-badge")).toHaveText("不可用");
-  await expect(page.locator(".migration-card")).toContainText("迁移仅适用于打包后的 ai-chatbox macOS 桌面版");
+  await expect(page.locator(".migration-card")).toContainText("迁移仅适用于打包后的 ChenTako macOS 桌面版");
   await expect(page.locator("#migrationCreateBtn")).toBeDisabled();
 });
 
@@ -2505,3 +2503,35 @@ test("未知旧路由安全回退 Chat", async ({ page }) => {
   await expect(page).toHaveURL(/#\/chat$/);
   await expect(page.locator("#page-chat")).toHaveClass(/page-active/);
 });
+
+for (const scheme of ["light", "dark"]) for (const width of [1280, 1024, 390]) {
+  test(`居中欢迎页与附件 ${scheme} ${width}`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.emulateMedia({ colorScheme: scheme, reducedMotion: "reduce" });
+    await seedAndLoad(page);
+    await page.goto("/");
+    await page.evaluate(mode => window.ClawboxThemeAPI.setAppearance(mode), scheme);
+    await expect(page.locator(".welcome-heading")).toBeVisible();
+    const heading = await page.locator(".welcome-heading").boundingBox();
+    const composer = await page.locator("#composerPaper").boundingBox();
+    expect(heading.y + heading.height).toBeLessThan(composer.y);
+    expect(composer.y).toBeLessThan(600);
+    await expect(page.locator("#composerInput")).toHaveCSS("min-height", width === 390 ? "72px" : "96px");
+    await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    const chooser = page.waitForEvent("filechooser");
+    await page.locator("#attachBtn").click();
+    await (await chooser).setFiles([]);
+    mkdirSync("reports/welcome-page-2026-09-13", { recursive: true });
+    await page.screenshot({ path: `reports/welcome-page-2026-09-13/${scheme}-${width}.png`, fullPage: true });
+    await page.locator("#composerInput").fill("开始新的对话");
+    await page.locator("#sendBtn").click();
+    await expect(page.locator(".message-entry.assistant")).toBeVisible();
+    await expect(page.locator(".welcome-heading")).toHaveCount(0);
+    await expect(page.locator("#composerInput")).toHaveCSS("min-height", "44px");
+    if (width === 1280) {
+      await page.locator("#newConversationBtn").click();
+      await expect(page.locator(".welcome-heading")).toBeVisible();
+      await expect(page.locator("#composerInput")).toHaveValue("");
+    }
+  });
+}

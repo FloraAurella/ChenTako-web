@@ -1,6 +1,6 @@
 import { isConversationLocked, FIRST_RESPONSE_LOCK_REASON } from '../domain/first-response.js';
 import { renderMarkdown } from "../../../shared/markdown.js";
-import { icon } from "../../../resources/icons/index.js";
+import { icon, pearLogo } from "../../../resources/icons/index.js";
 import { formatBytes, formatDuration, formatTime, formatTokenCount } from "../../../shared/utils.js";
 import { TEXT_FILE_EXTENSIONS } from "../../../contracts/constants.js";
 import { imageGenerationSlotHtml } from "./stream-images.ts";
@@ -370,18 +370,11 @@ export function preloadConversationMessageHtml(conversation, { providerName = ""
 }
 
 export function renderEmptyStageHtml(providerName, backendStatus = "ok") {
-  const suggestions = [
-    "帮我给一份周报拟三个清晰的小标题",
-    "把这段思路整理成一份可执行的清单",
-    "用一段话解释这个概念，像写给同事的信"
-  ];
   const configured = Boolean(providerName);
-  const ready = configured && backendStatus === "ok";
-  const title = backendStatus === "down" ? "本地服务未连接" : backendStatus === "checking" ? "正在检查连接" : configured ? "今天想聊点什么？" : "先连接一个模型";
-  const description = backendStatus === "down" ? "请启动本地服务，或检查连接设置。"
-    : backendStatus === "checking" ? "请稍候…"
-    : configured ? "输入问题，开始对话。" : "添加供应商并选择模型后即可聊天。";
+  const description = backendStatus === "down" ? "本地服务未连接，请检查连接设置。"
+    : backendStatus === "checking" ? "正在检查连接…"
+    : !configured ? "添加供应商并选择模型后即可聊天。" : "";
   const link = backendStatus === "down" ? '<a class="empty-setup-link" href="#/settings/providers">查看连接设置</a>'
     : backendStatus === "ok" && !configured ? '<a class="empty-setup-link" href="#/settings/providers">配置模型</a>' : '';
-  return `<div class="empty-stage"><div class="paper-panel empty-card"><div class="empty-eyebrow">${escapeHtml(providerName || "ai-chatbox")}</div><h2 class="empty-title">${title}</h2><p class="empty-lede">${description}</p>${link}${ready ? '<div class="empty-divider"></div>' : ""}<div class="suggestion-list">${(ready ? suggestions : []).map((text, index) => `<button type="button" class="suggestion-card" data-suggestion="${index}"><span class="suggestion-index">0${index + 1}</span><span class="suggestion-text">${escapeHtml(text)}</span></button>`).join("")}</div></div></div>`;
+  return `<div class="empty-stage"><div class="welcome-heading"><span class="welcome-logo" aria-hidden="true">${pearLogo(36)}</span><h2 class="empty-title">欢迎回来，随时开始吧</h2></div>${description ? `<p class="empty-lede">${description}</p>` : ""}${link}</div>`;
 }

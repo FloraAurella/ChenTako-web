@@ -217,7 +217,7 @@ describe("createStateArchive", () => {
     const archiveErrors = [];
     const originalError = console.error;
     const errorSpy = vi.spyOn(console, "error").mockImplementation((...args) => {
-      if (args[0] === "[ai-chatbox] 本地归档写入失败（配置依赖轻量备份恢复）" && args[1] instanceof Error) {
+      if (args[0] === "[ChenTako] 本地归档写入失败（配置依赖轻量备份恢复）" && args[1] instanceof Error) {
         archiveErrors.push(args[1]);
       } else {
         originalError(...args);

@@ -95,7 +95,7 @@ export function OnboardingApp() {
       }
       setTone("success");
       setMessageIcon("check");
-      setMessage("已完成，ai-chatbox 正在打开…");
+      setMessage("已完成，ChenTako 正在打开…");
     } catch (error) {
       setBusy(false);
       setTone("error");
@@ -117,13 +117,13 @@ export function OnboardingApp() {
       >
         <header className="onboarding-brand">
           <TrustedLogo size={21} className="onboarding-logo" />
-          <span>ai-chatbox</span>
+          <span>ChenTako</span>
           <span className="onboarding-local-label">LOCAL FIRST</span>
         </header>
         <div className="onboarding-grid">
           <div className="onboarding-copy">
             <p className="onboarding-eyebrow">首次使用</p>
-            <h1 id="onboardingTitle">欢迎使用 ai-chatbox</h1>
+            <h1 id="onboardingTitle">欢迎使用 ChenTako</h1>
             <p className="onboarding-lede">全新开始，或导入已有数据。数据保存在本机。</p>
             <div className="onboarding-actions">
               <Button
@@ -135,7 +135,7 @@ export function OnboardingApp() {
                 onClick={() => void runAction("fresh")}
               >
                 <TrustedIcon name="spark" size={19} className="choice-icon" />
-                <span className="choice-copy"><strong>启动全新 ai-chatbox</strong><small>创建本机数据。</small></span>
+                <span className="choice-copy"><strong>启动全新 ChenTako</strong><small>创建本机数据。</small></span>
                 <TrustedIcon name="chevronRight" size={17} className="choice-arrow" />
               </Button>
               <Button
@@ -161,7 +161,7 @@ export function OnboardingApp() {
               <div className="seal-file seal-data">
                 <TrustedIcon name="database" size={22} className="seal-file-icon" />
                 <span className="seal-file-type">ENCRYPTED DATA</span>
-                <strong>ai-chatbox-Data</strong>
+                <strong>ChenTako-Data</strong>
                 <small>对话 · 附件 · 主题 · 设置</small>
               </div>
               <div className="seal-file seal-key">

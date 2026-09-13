@@ -1,4 +1,5 @@
 import { Scope } from "../../core/scope";
+import { themeArtworkBackground } from "../../resources/artworks/index.js";
 "use strict";
 
 /**
@@ -30,8 +31,9 @@ import { readUiPreferences, writeUiPreferences } from "./services/preferences.js
 import { applySurfaceAppearance } from "./surface.js";
 
 const APPEARANCE_MODES = ["system", "light", "dark"];
-const DEFAULT_THEME_ID = "everforest";
+const DEFAULT_THEME_ID = "tako-festival";
 const RETIRED_THEME_IDS = Object.freeze([
+  "everforest",
   "embroidered-starlight",
   "seaside",
   "juicy-pear",
@@ -56,6 +58,7 @@ const BUILTIN_PRESENTATION = {
 
 /** 旧版多主题 ID → 浅色 / 深色基础主题映射。 */
 const LEGACY_THEME_MAP = {
+  everforest: { themeId: DEFAULT_THEME_ID, mode: "light" },
   "embroidered-starlight": { themeId: DEFAULT_THEME_ID, mode: "light" },
   seaside: { themeId: DEFAULT_THEME_ID, mode: "light" },
   cream: { themeId: DEFAULT_THEME_ID, mode: "light" },
@@ -104,6 +107,7 @@ export function createThemeController() {
   const scope = new Scope();
   let installedApi = null;
   const doc = typeof document !== "undefined" ? document : null;
+  scope.defer(() => doc?.documentElement.style.removeProperty("--theme-artwork"));
   const listeners = new Set();
   let prefs = { themeId: "", appearanceMode: "system", drawerCollapsed: false };
   let activeThemeId = DEFAULT_THEME_ID;
@@ -152,7 +156,7 @@ export function createThemeController() {
       try {
         listener(detail());
       } catch (error) {
-        console.error("[ai-chatbox Theme] listener error", error);
+        console.error("[ChenTako Theme] listener error", error);
       }
     }
   }
@@ -179,6 +183,7 @@ export function createThemeController() {
     root.dataset.theme = theme.id;
     root.dataset.themeBase = theme.fixedScheme || theme.id;
     root.dataset.scheme = scheme;
+    root.style.setProperty("--theme-artwork", themeArtworkBackground(theme.id, scheme));
 
     let meta = doc.querySelector('meta[name="theme-color"]');
     if (!meta) {
@@ -198,7 +203,7 @@ export function createThemeController() {
       ));
     }
 
-    // 画布保持纯色；对比度与透景材质在主题令牌就位后统一派生。
+    // 画作独立于纯色基底；对比度与透景材质在主题令牌就位后统一派生。
     applySurfaceAppearance(doc);
 
     if (!silent) publish();
@@ -342,7 +347,7 @@ export function createThemeController() {
     }
     const errors = validateThemeDefinition(definition);
     if (errors.length) {
-      console.warn(`[ai-chatbox Theme] 主题包文件 ${String(file.path || file.id || "(unknown)")} 无法恢复：${errors.join("；")}`);
+      console.warn(`[ChenTako Theme] 主题包文件 ${String(file.path || file.id || "(unknown)")} 无法恢复：${errors.join("；")}`);
       return null;
     }
     return {
@@ -381,7 +386,7 @@ export function createThemeController() {
       return archiveLocation;
     });
     archiveWriteChain = task.catch((error) => {
-      console.warn("[ai-chatbox Theme] 主题包保存失败", error);
+      console.warn("[ChenTako Theme] 主题包保存失败", error);
     });
     return task;
   }
@@ -412,7 +417,7 @@ export function createThemeController() {
     try {
       loaded = await archiveStore.load();
     } catch (error) {
-      console.warn("[ai-chatbox Theme] 主题包存储不可用，继续使用内存主题", error);
+      console.warn("[ChenTako Theme] 主题包存储不可用，继续使用内存主题", error);
       loaded = { payload: null, location: archiveLocation };
     }
     archiveLocation = loaded.location || archiveLocation;
@@ -496,7 +501,7 @@ export function createThemeController() {
             await persistThemeArchive({ force: true });
             archivePersisted = true;
           } catch (error) {
-            console.warn("[ai-chatbox Theme] 种子主题写入主题包失败", error);
+            console.warn("[ChenTako Theme] 种子主题写入主题包失败", error);
           }
         }
         if (archivePersisted) clearUserThemeFiles();
@@ -508,7 +513,8 @@ export function createThemeController() {
     // 从此档案成为唯一真源。
     // 已退役主题自动加入 removedIds，防止用户旧档案复活。
     archiveRemovedIds = [...RETIRED_THEME_IDS];
-    const existing = listThemes().length ? listThemes() : getBuiltInThemeDefinitions();
+    const available = listThemes().filter(theme => !RETIRED_THEME_IDS.includes(theme.id));
+    const existing = available.length ? available : getBuiltInThemeDefinitions();
     const files = existing.map((theme) => ({
       path: `themes/${theme.id}.theme.json`,
       id: theme.id,
@@ -528,7 +534,7 @@ export function createThemeController() {
       await persistThemeArchive({ force: true });
       clearUserThemeFiles();
     } catch (error) {
-      console.warn("[ai-chatbox Theme] 首次主题包迁移失败，保留兼容存储", error);
+      console.warn("[ChenTako Theme] 首次主题包迁移失败，保留兼容存储", error);
     }
     return restored;
   }

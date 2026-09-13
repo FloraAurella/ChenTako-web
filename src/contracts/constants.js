@@ -1,13 +1,13 @@
 "use strict";
 
-/** ai-chatbox core 层常量：存储键、限额、思考强度、供应商预设。 */
+/** ChenTako core 层常量：存储键、限额、思考强度、供应商预设。 */
 
-export const APP_NAME = "ai-chatbox";
+export const APP_NAME = "ChenTako";
 export const APP_VERSION = "1.1.5";
 export const APP_SETTINGS_VERSION = APP_VERSION;
 
 // 持久化键是已发布的数据协议，不随产品品牌改名。继续使用旧命名空间可让
-// ai-chatbox 原地读取升级前的对话、草稿、主题与界面偏好。
+// ChenTako 原地读取升级前的对话、草稿、主题与界面偏好。
 export const STORAGE_KEYS = {
   state: "tribblebook-v6-state",
   drafts: "tribblebook-drafts-v1", // 草稿轻量存储：击键只写这里，不触发全量状态序列化
@@ -47,6 +47,7 @@ export const LIMITS = {
   filesPerMessage: 8,
   filesTotalBytes: 80 * 1024 * 1024,
   messageChars: 100 * 1024,
+  requestSystemPromptChars: 16 * 1024 * 1024,
   draftChars: 100 * 1024,
   summaryChars: 2 * 1024 * 1024,
   importBytes: 130 * 1024 * 1024,

@@ -1,0 +1,191 @@
+
+> chentako@1.1.5 test:e2e
+> playwright test e2e/chentako-brand.spec.js e2e/app.spec.js --grep ChenTako 品牌|首次启动引导|外壳与空状态|主题切换不产生|侧栏移除
+
+[WebServer] (node:95703) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 10 tests using 1 worker
+
+(node:95705) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [chromium] › e2e/app.spec.js:50:1 › 首次启动引导：展示全新开始、迁移导入与 128 位封套说明 (399ms)
+  ✓   2 [chromium] › e2e/app.spec.js:183:1 › 外壳与空状态扉页 (460ms)
+  ✓   3 [chromium] › e2e/app.spec.js:195:1 › 主题切换不产生全局通知 (323ms)
+  ✓   4 [chromium] › e2e/app.spec.js:205:1 › 侧栏移除外观切换与版本号，保留设置入口 (319ms)
+  ✘   5 [chromium] › e2e/chentako-brand.spec.js:7:5 › ChenTako 品牌 light 1280 (5.3s)
+(node:95740) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   6 [chromium] › e2e/chentako-brand.spec.js:7:5 › ChenTako 品牌 light 1024 (5.5s)
+(node:95771) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   7 [chromium] › e2e/chentako-brand.spec.js:7:5 › ChenTako 品牌 light 390 (5.4s)
+(node:95784) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   8 [chromium] › e2e/chentako-brand.spec.js:7:5 › ChenTako 品牌 dark 1280 (5.4s)
+(node:95805) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘   9 [chromium] › e2e/chentako-brand.spec.js:7:5 › ChenTako 品牌 dark 1024 (5.4s)
+(node:95822) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  10 [chromium] › e2e/chentako-brand.spec.js:7:5 › ChenTako 品牌 dark 390 (5.4s)
+
+
+  1) [chromium] › e2e/chentako-brand.spec.js:7:5 › ChenTako 品牌 light 1280 ──────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('#root')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator('#root')
+
+
+      18 |         await page.goto(url);
+      19 |         await expect(page).toHaveTitle('ChenTako');
+    > 20 |         await expect(page.locator(name === 'onboarding' ? '#onboardingTitle' : '#root')).toBeVisible();
+         |                                                                                          ^
+      21 |         await expect(page.locator('body')).not.toContainText('ai-chatbox');
+      22 |         await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+      23 |         if (name === 'onboarding') {
+        at /Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/chentako-brand.spec.js:20:90
+
+    Error Context: test-results/chentako-brand-ChenTako-品牌-light-1280-chromium/error-context.md
+
+  2) [chromium] › e2e/chentako-brand.spec.js:7:5 › ChenTako 品牌 light 1024 ──────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('#root')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator('#root')
+
+
+      18 |         await page.goto(url);
+      19 |         await expect(page).toHaveTitle('ChenTako');
+    > 20 |         await expect(page.locator(name === 'onboarding' ? '#onboardingTitle' : '#root')).toBeVisible();
+         |                                                                                          ^
+      21 |         await expect(page.locator('body')).not.toContainText('ai-chatbox');
+      22 |         await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+      23 |         if (name === 'onboarding') {
+        at /Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/chentako-brand.spec.js:20:90
+
+    Error Context: test-results/chentako-brand-ChenTako-品牌-light-1024-chromium/error-context.md
+
+  3) [chromium] › e2e/chentako-brand.spec.js:7:5 › ChenTako 品牌 light 390 ───────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('#root')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator('#root')
+
+
+      18 |         await page.goto(url);
+      19 |         await expect(page).toHaveTitle('ChenTako');
+    > 20 |         await expect(page.locator(name === 'onboarding' ? '#onboardingTitle' : '#root')).toBeVisible();
+         |                                                                                          ^
+      21 |         await expect(page.locator('body')).not.toContainText('ai-chatbox');
+      22 |         await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+      23 |         if (name === 'onboarding') {
+        at /Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/chentako-brand.spec.js:20:90
+
+    Error Context: test-results/chentako-brand-ChenTako-品牌-light-390-chromium/error-context.md
+
+  4) [chromium] › e2e/chentako-brand.spec.js:7:5 › ChenTako 品牌 dark 1280 ───────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('#root')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator('#root')
+
+
+      18 |         await page.goto(url);
+      19 |         await expect(page).toHaveTitle('ChenTako');
+    > 20 |         await expect(page.locator(name === 'onboarding' ? '#onboardingTitle' : '#root')).toBeVisible();
+         |                                                                                          ^
+      21 |         await expect(page.locator('body')).not.toContainText('ai-chatbox');
+      22 |         await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+      23 |         if (name === 'onboarding') {
+        at /Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/chentako-brand.spec.js:20:90
+
+    Error Context: test-results/chentako-brand-ChenTako-品牌-dark-1280-chromium/error-context.md
+
+  5) [chromium] › e2e/chentako-brand.spec.js:7:5 › ChenTako 品牌 dark 1024 ───────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('#root')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator('#root')
+
+
+      18 |         await page.goto(url);
+      19 |         await expect(page).toHaveTitle('ChenTako');
+    > 20 |         await expect(page.locator(name === 'onboarding' ? '#onboardingTitle' : '#root')).toBeVisible();
+         |                                                                                          ^
+      21 |         await expect(page.locator('body')).not.toContainText('ai-chatbox');
+      22 |         await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+      23 |         if (name === 'onboarding') {
+        at /Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/chentako-brand.spec.js:20:90
+
+    Error Context: test-results/chentako-brand-ChenTako-品牌-dark-1024-chromium/error-context.md
+
+  6) [chromium] › e2e/chentako-brand.spec.js:7:5 › ChenTako 品牌 dark 390 ────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('#root')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator('#root')
+
+
+      18 |         await page.goto(url);
+      19 |         await expect(page).toHaveTitle('ChenTako');
+    > 20 |         await expect(page.locator(name === 'onboarding' ? '#onboardingTitle' : '.app-shell')).toBeVisible();
+         |                                                                                          ^
+      21 |         await expect(page.locator('body')).not.toContainText('ai-chatbox');
+      22 |         await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+      23 |         if (name === 'onboarding') {
+        at /Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/chentako-brand.spec.js:20:90
+
+    Error Context: test-results/chentako-brand-ChenTako-品牌-dark-390-chromium/error-context.md
+
+  6 failed
+    [chromium] › e2e/chentako-brand.spec.js:7:5 › ChenTako 品牌 light 1280 ───────────────────────────
+    [chromium] › e2e/chentako-brand.spec.js:7:5 › ChenTako 品牌 light 1024 ───────────────────────────
+    [chromium] › e2e/chentako-brand.spec.js:7:5 › ChenTako 品牌 light 390 ────────────────────────────
+    [chromium] › e2e/chentako-brand.spec.js:7:5 › ChenTako 品牌 dark 1280 ────────────────────────────
+    [chromium] › e2e/chentako-brand.spec.js:7:5 › ChenTako 品牌 dark 1024 ────────────────────────────
+    [chromium] › e2e/chentako-brand.spec.js:7:5 › ChenTako 品牌 dark 390 ─────────────────────────────
+  4 passed (39.2s)

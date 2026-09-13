@@ -37,7 +37,7 @@ export const ChatSurface = memo(function ChatSurface({ store, active = true }: {
             <TextArea id="composerInput" className="composer-input" rows={1} placeholder="输入消息，/ 打开指令" disabled />
           </div>
           <div className="composer-controls">
-            <Button type="button" className="composer-attach-btn" id="attachBtn" title="添加附件" aria-label="添加附件" dangerouslySetInnerHTML={trusted(icon("plus", 20))} />
+            <Button type="button" className="composer-attach-btn" id="attachBtn" title="添加附件" aria-label="添加附件" dangerouslySetInnerHTML={trusted(icon("paperclip", 20))} />
             <div className="runtime-cluster" id="runtimeCluster">
               <Button
                 type="button"
@@ -79,6 +79,7 @@ export const ChatSurface = memo(function ChatSurface({ store, active = true }: {
         <div className="composer-hint">Enter 发送 · Shift + Enter 换行</div>
       </div>
     </div>
+    <ExtensionSlot name="chat.auxiliary" store={store} />
     <TextField type="file" id="attachmentInput" multiple hidden accept={accept} />
   </>;
 });

@@ -70,7 +70,7 @@ function persist() {
 
 export function resolveActiveThemeId(doc = typeof document !== "undefined" ? document : null) {
   const id = doc?.documentElement?.dataset?.theme || "";
-  return isValidThemeId(id) ? id : "everforest";
+  return isValidThemeId(id) ? id : "tako-festival";
 }
 
 export function resolveActiveScheme(doc = typeof document !== "undefined" ? document : null) {

@@ -1,8 +1,8 @@
 "use strict";
 
 /**
- * 主题注册表。默认主题 Everforest 由
- * custom/everforest.theme.js 注册，
+ * 主题注册表。默认主题 Tako Festival 由
+ * custom/tako-festival.theme.js 注册，
  * 运行时可经 AiChatboxThemeAPI 或其他 custom/*.theme.js 注册新主题。
  * 色板与 tokens.css 保持一致；未钉入的令牌回落到样式表基线。
  * 内置色板的数值定义统一在 ./base-themes.js（唯一色板数据源）。
@@ -17,7 +17,7 @@ const BUILT_IN_THEMES = [];
  * 产品随附主题的稳定顺序。默认回退、外观卡片与快速换肤都经 listThemes() 读取，
  * 因此不能把顺序交给 import.meta.glob、档案文件或用户导入时机决定。
  */
-export const SOURCE_THEME_ORDER = Object.freeze(["everforest"]);
+export const SOURCE_THEME_ORDER = Object.freeze(["tako-festival"]);
 const SOURCE_THEME_RANK = new Map(SOURCE_THEME_ORDER.map((id, index) => [id, index]));
 
 const registry = new Map();
@@ -28,7 +28,7 @@ function notifyRegistry(detail) {
     try {
       listener(detail);
     } catch (error) {
-      console.error("[ai-chatbox Theme] registry listener error", error);
+      console.error("[ChenTako Theme] registry listener error", error);
     }
   }
 }
@@ -43,14 +43,14 @@ export function registerTheme(definition, {
   forceBuiltinChange = false
 } = {}) {
   if (!definition || typeof definition !== "object") {
-    throw new Error("[ai-chatbox Theme] 主题定义缺失");
+    throw new Error("[ChenTako Theme] 主题定义缺失");
   }
   if (!isValidThemeId(definition.id)) {
-    throw new Error(`[ai-chatbox Theme] 非法主题 ID：${definition.id}`);
+    throw new Error(`[ChenTako Theme] 非法主题 ID：${definition.id}`);
   }
   const existing = registry.get(definition.id);
   if (existing && !(replace || definition.replace)) {
-    throw new Error(`[ai-chatbox Theme] 主题 ${definition.id} 已注册；如需覆盖请声明 replace`);
+    throw new Error(`[ChenTako Theme] 主题 ${definition.id} 已注册；如需覆盖请声明 replace`);
   }
   const nextBuiltin = forceBuiltinChange
     ? builtin
@@ -92,7 +92,7 @@ export function unregisterTheme(id, { force = false } = {}) {
   const theme = registry.get(String(id || ""));
   if (!theme) return false;
   if (theme.builtin && !force) {
-    throw new Error(`[ai-chatbox Theme] 内置主题 ${theme.id} 不能注销`);
+    throw new Error(`[ChenTako Theme] 内置主题 ${theme.id} 不能注销`);
   }
   registry.delete(theme.id);
   notifyRegistry({ type: "remove", id: theme.id });

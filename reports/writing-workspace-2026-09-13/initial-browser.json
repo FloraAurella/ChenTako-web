@@ -1,0 +1,474 @@
+{
+  "config": {
+    "argv": [
+      "/opt/homebrew/Cellar/node/26.5.0/bin/node",
+      "/Users/qxc/Desktop/ai/coding-project/ChenTako/node_modules/.bin/playwright",
+      "test",
+      "--config",
+      "reports/writing-workspace-2026-09-13/playwright.config.mjs",
+      "e2e/writing-workspace.spec.js",
+      "--reporter=json"
+    ],
+    "configFile": "/Users/qxc/Desktop/ai/coding-project/ChenTako/reports/writing-workspace-2026-09-13/playwright.config.mjs",
+    "rootDir": "/Users/qxc/Desktop/ai/coding-project/ChenTako/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/qxc/Desktop/ai/coding-project/ChenTako/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Users/qxc/Desktop/ai/coding-project/ChenTako/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "writing-workspace.spec.js",
+      "file": "writing-workspace.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "直接模式切换、持续写作、左右分流、回档和刷新",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "timedOut",
+                  "duration": 30039,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "/Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/writing-workspace.spec.js",
+                        "column": 98,
+                        "line": 23
+                      },
+                      "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: /\\/write/ })\u001b[22m\n\n\n  21 |  const requests=[];await page.route('**/api/chat',r=>{requests.push(r.request().postDataJSON());return r.fulfill({json:reply(`结果${requests.length}`)});});\n  22 |  await load(page);await send(page,'/create Chapter6');\n> 23 |  await page.locator('#composerInput').fill('/w');await page.getByRole('button',{name:/\\/write/}).click();\n     |                                                                                                  ^\n  24 |  await expect(page.locator('#composerInput')).toHaveValue('');await expect(page.locator('.writing-status')).toContainText('写作');expect(requests).toHaveLength(0);\n  25 |  await send(page,'随便写个章节');await expect(page.getByTestId('writing-body')).toHaveText('结果1');\n  26 |  await send(page,'再改一稿');await expect(page.getByTestId('writing-body')).toHaveText('结果2');expect(requests).toHaveLength(2);\n    at /Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/writing-workspace.spec.js:23:98"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T07:22:49.592Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/qxc/Desktop/ai/coding-project/ChenTako/test-results/writing-workspace-直接模式切换、持续写作、左右分流、回档和刷新-chromium/error-context.md"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "039c6cbe60b0c6252889-820407ae8e91bdc3eaea",
+          "file": "writing-workspace.spec.js",
+          "line": 20,
+          "column": 1
+        },
+        {
+          "title": "全文上下文只改目标章、保留附件和宽松正文格式",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1038,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T07:23:20.544Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "039c6cbe60b0c6252889-fc1a2a768e362502b436",
+          "file": "writing-workspace.spec.js",
+          "line": 36,
+          "column": 1
+        },
+        {
+          "title": "停止保留部分正文和历史版本，正文不进入左侧",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 5600,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByTestId('writing-body')\nExpected: \u001b[32m\"部分正文\"\u001b[39m\nReceived: \u001b[31m\"上一版本\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('writing-body')\u001b[22m\n\u001b[2m    14 × locator resolved to <pre data-testid=\"writing-body\">上一版本</pre>\u001b[22m\n\u001b[2m       - unexpected value \"上一版本\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByTestId('writing-body')\nExpected: \u001b[32m\"部分正文\"\u001b[39m\nReceived: \u001b[31m\"上一版本\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('writing-body')\u001b[22m\n\u001b[2m    14 × locator resolved to <pre data-testid=\"writing-body\">上一版本</pre>\u001b[22m\n\u001b[2m       - unexpected value \"上一版本\"\u001b[22m\n\n    at /Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/writing-workspace.spec.js:50:78",
+                    "location": {
+                      "file": "/Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/writing-workspace.spec.js",
+                      "column": 78,
+                      "line": 50
+                    },
+                    "snippet": "  48 |  await load(page,'light',true);await send(page,'/create 一章');await manual(page,'上一版本');\n  49 |  await page.route('**/api/chat',r=>r.fulfill({contentType:'text/event-stream',body:'data: {\"choices\":[{\"delta\":{\"content\":\"部分正文\"}}]}\\n\\n'}));\n> 50 |  await send(page,'/write 新写');await expect(page.getByTestId('writing-body')).toHaveText('部分正文');await expect(page.locator('.writing-document')).toContainText('未完整结束');\n     |                                                                              ^\n  51 |  await page.getByRole('button',{name:'上一版本',exact:true}).click();await expect(page.getByTestId('writing-body')).toHaveText('上一版本');await expect(page.locator('#messageList')).not.toContainText('部分正文');\n  52 |  await expect(page.locator('.writing-status')).toContainText('写作');\n  53 | });"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/writing-workspace.spec.js",
+                        "column": 78,
+                        "line": 50
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByTestId('writing-body')\nExpected: \u001b[32m\"部分正文\"\u001b[39m\nReceived: \u001b[31m\"上一版本\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('writing-body')\u001b[22m\n\u001b[2m    14 × locator resolved to <pre data-testid=\"writing-body\">上一版本</pre>\u001b[22m\n\u001b[2m       - unexpected value \"上一版本\"\u001b[22m\n\n\n  48 |  await load(page,'light',true);await send(page,'/create 一章');await manual(page,'上一版本');\n  49 |  await page.route('**/api/chat',r=>r.fulfill({contentType:'text/event-stream',body:'data: {\"choices\":[{\"delta\":{\"content\":\"部分正文\"}}]}\\n\\n'}));\n> 50 |  await send(page,'/write 新写');await expect(page.getByTestId('writing-body')).toHaveText('部分正文');await expect(page.locator('.writing-document')).toContainText('未完整结束');\n     |                                                                              ^\n  51 |  await page.getByRole('button',{name:'上一版本',exact:true}).click();await expect(page.getByTestId('writing-body')).toHaveText('上一版本');await expect(page.locator('#messageList')).not.toContainText('部分正文');\n  52 |  await expect(page.locator('.writing-status')).toContainText('写作');\n  53 | });\n    at /Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/writing-workspace.spec.js:50:78"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T07:23:21.975Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/qxc/Desktop/ai/coding-project/ChenTako/test-results/writing-workspace-停止保留部分正文和历史版本，正文不进入左侧-chromium/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/qxc/Desktop/ai/coding-project/ChenTako/e2e/writing-workspace.spec.js",
+                    "column": 78,
+                    "line": 50
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "039c6cbe60b0c6252889-eab15bc47af629c08fb3",
+          "file": "writing-workspace.spec.js",
+          "line": 47,
+          "column": 1
+        },
+        {
+          "title": "请求切换会话后仍归原作品，返回后版本可恢复",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 806,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T07:23:28.000Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "039c6cbe60b0c6252889-8bf91af17fcdb7dc8b31",
+          "file": "writing-workspace.spec.js",
+          "line": 55,
+          "column": 1
+        },
+        {
+          "title": "工作区可收起 light 1280",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 877,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T07:23:29.092Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "039c6cbe60b0c6252889-ed1f07f335b9014e00ec",
+          "file": "writing-workspace.spec.js",
+          "line": 63,
+          "column": 73
+        },
+        {
+          "title": "工作区可收起 light 1024",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1285,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T07:23:29.978Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "039c6cbe60b0c6252889-820392d4c3f60cec576f",
+          "file": "writing-workspace.spec.js",
+          "line": 63,
+          "column": 73
+        },
+        {
+          "title": "工作区可收起 light 390",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 659,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T07:23:31.271Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "039c6cbe60b0c6252889-9806e80f6157e460040a",
+          "file": "writing-workspace.spec.js",
+          "line": 63,
+          "column": 73
+        },
+        {
+          "title": "工作区可收起 dark 1280",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 889,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T07:23:31.937Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "039c6cbe60b0c6252889-8ab3023b5fd763e92dce",
+          "file": "writing-workspace.spec.js",
+          "line": 63,
+          "column": 73
+        },
+        {
+          "title": "工作区可收起 dark 1024",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1354,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T07:23:32.832Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "039c6cbe60b0c6252889-78d5ce05fa99fdf5e456",
+          "file": "writing-workspace.spec.js",
+          "line": 63,
+          "column": 73
+        },
+        {
+          "title": "工作区可收起 dark 390",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 683,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-13T07:23:34.193Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "039c6cbe60b0c6252889-fef710f1e81a43eb2f6b",
+          "file": "writing-workspace.spec.js",
+          "line": 63,
+          "column": 73
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-13T07:22:49.305Z",
+    "duration": 45766.009,
+    "expected": 8,
+    "skipped": 0,
+    "unexpected": 2,
+    "flaky": 0
+  }
+}

@@ -151,17 +151,17 @@ async function focusOutlineCheck() {
 
 const focusLight = await focusOutlineCheck();
 const light = await collect();
-await page.screenshot({ path: "/tmp/ai-chatbox-light.png" });
+await page.screenshot({ path: "/tmp/ChenTako-light.png" });
 
 await page.click("#appearanceModeBtn");
 await page.waitForTimeout(400);
 const dark = await collect();
-await page.screenshot({ path: "/tmp/ai-chatbox-dark.png" });
+await page.screenshot({ path: "/tmp/ChenTako-dark.png" });
 
 await page.goto("http://127.0.0.1:5173/#/settings/appearance");
 await page.waitForTimeout(600);
 const themeCards = await page.locator(".theme-card").count();
-await page.screenshot({ path: "/tmp/ai-chatbox-settings.png" });
+await page.screenshot({ path: "/tmp/ChenTako-settings.png" });
 
 await page.setViewportSize({ width: 390, height: 844 });
 await page.goto("http://127.0.0.1:5173/#/chat");
@@ -172,7 +172,7 @@ const mobile = await page.evaluate(() => ({
   horizontalOverflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1
 }));
 const sendMobile = await page.locator("#sendBtn").boundingBox();
-await page.screenshot({ path: "/tmp/ai-chatbox-mobile.png" });
+await page.screenshot({ path: "/tmp/ChenTako-mobile.png" });
 
 await browser.close();
 

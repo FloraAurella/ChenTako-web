@@ -9,11 +9,15 @@ export function desktopBridge() {
   return typeof window !== "undefined" ? (window["ai-chatbox"] ?? window.clawbox) : undefined;
 }
 
+// GitHub Pages cannot proxy /api requests. A Pages build may inject the public
+// backend origin with VITE_API_BASE_URL; local development keeps relative URLs.
+const configuredApiBase = String(import.meta.env?.VITE_API_BASE_URL || "").replace(/\/+$/, "");
+
 export function apiFetch(path, options = {}) {
   const bridge = desktopBridge();
   const url = bridge && bridge.backendBase
     ? `${String(bridge.backendBase).replace(/\/+$/, "")}${path}`
-    : path;
+    : `${configuredApiBase}${path}`;
   const headers = new Headers(options.headers || {});
   if (bridge && bridge.apiToken) headers.set(window["ai-chatbox"] ? "x-ai-chatbox-token" : "x-clawbox-token", bridge.apiToken);
   if (options.body && !headers.has("Content-Type")) {

@@ -14,7 +14,7 @@ import {
 } from "../src/modules/appearance/domain/user-theme.js";
 import { getTheme, unregisterTheme, registerTheme } from "../src/modules/appearance/domain/registry.js";
 import { defineTheme } from "../src/modules/appearance/domain/contract.js";
-import everforestDefinition from "../src/modules/appearance/domain/custom/everforest.theme.js";
+import takoDefinition from "../src/modules/appearance/domain/custom/tako-festival.theme.js";
 import { parseThemePackage } from "../src/modules/appearance/domain/package.js";
 
 const FULL_THEME = {
@@ -411,12 +411,12 @@ describe("JSON 主题文件：解析与转换", () => {
     expect(errors.join("")).toMatch(/JSON/);
   });
 
-  it("仓库示例文件 examples/everforest-ai-chatbox-theme-v1.json 可直接导入", () => {
-    const examplePath = resolvePath(process.cwd(), "src", "resources", "themes", "everforest-ai-chatbox-theme-v1.json");
+  it("仓库示例文件 examples/tako-festival-theme-v1.json 可直接导入", () => {
+    const examplePath = resolvePath(process.cwd(), "src", "resources", "themes", "tako-festival-theme-v1.json");
     const { definition } = parseThemePackage(readFileSync(examplePath, "utf8"));
-    expect(definition.id).toBe("everforest");
-    expect(definition.label).toBe("Everforest");
-    expect(definition.typefaces).toEqual({ body: "serif", display: "serif", mono: "mono" });
+    expect(definition.id).toBe("tako-festival");
+    expect(definition.label).toBe("Tako Festival · 章鱼烧祭");
+    expect(definition.typefaces).toEqual({ body: "humanist", display: "rounded", mono: "mono" });
   });
 });
 
@@ -496,7 +496,7 @@ describe("用户主题本机持久化", () => {
     const restoreErrors = [];
     const originalError = console.error;
     const errorSpy = vi.spyOn(console, "error").mockImplementation((...args) => {
-      if (typeof args[0] === "string" && args[0].startsWith("[ai-chatbox Theme] 无法恢复自定义主题 broken：")) {
+      if (typeof args[0] === "string" && args[0].startsWith("[ChenTako Theme] 无法恢复自定义主题 broken：")) {
         restoreErrors.push(args[0]);
       } else {
         originalError(...args);
@@ -516,8 +516,8 @@ describe("用户主题本机持久化", () => {
   });
 
   it("注销：内置主题受保护，用户主题可移除", () => {
-    registerTheme(everforestDefinition, { builtin: true, sourceCustom: true, replace: true });
-    expect(() => unregisterTheme("everforest")).toThrow(/内置主题/);
+    registerTheme(takoDefinition, { builtin: true, sourceCustom: true, replace: true });
+    expect(() => unregisterTheme("tako-festival")).toThrow(/内置主题/);
     // 保存并恢复普通用户主题。
     const storage = memoryStorage();
     saveUserThemeFile({ id: "seaside", raw: FULL_THEME }, storage);

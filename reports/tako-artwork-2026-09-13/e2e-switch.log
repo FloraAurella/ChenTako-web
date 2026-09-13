@@ -1,0 +1,14 @@
+
+> chentako@1.1.5 test:e2e
+> playwright test e2e/tako-artwork.spec.js
+
+[WebServer] (node:3246) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:3248) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › e2e/tako-artwork.spec.js:3:1 › 画作跟随明暗切换，透景模式不改变画作且刷新恢复 (882ms)
+
+  1 passed (2.2s)

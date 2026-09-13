@@ -126,7 +126,7 @@ export async function copyText(text) {
   }
 }
 
-export function safeFilename(name, fallback = "ai-chatbox") {
+export function safeFilename(name, fallback = "ChenTako") {
   const cleaned = String(name || "").replace(/[\\/:*?"<>|]+/g, "-").replace(/\s+/g, "-").slice(0, 60);
   return cleaned || fallback;
 }

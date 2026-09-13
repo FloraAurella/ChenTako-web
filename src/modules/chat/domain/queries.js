@@ -46,7 +46,7 @@ export function contextMessages(conversation) {
       .filter((message) => message.content || (message.files && message.files.length) || (message.parts && message.parts.length))
       .map((message) => ({
         role: message.role,
-        content: message.content,
+        content: message.contextText ?? message.content,
         ...(message.files && message.files.length ? { files: message.files } : {}),
         ...(message.parts && message.parts.length ? { parts: message.parts.filter((part) => part.type === "image" || part.type === "text" || part.type === "file") } : {})
       }));

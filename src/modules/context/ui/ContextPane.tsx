@@ -1,8 +1,8 @@
 import { SettingsCard, SettingsGroup } from "../../../shared/ui/SettingsCard";
-import { Button, TextField, TextArea, SelectField } from "../../../shared/ui/primitives";
-import { useEffect, useState, type ReactNode } from "react";
+import { Button, TextField, SelectField } from "../../../shared/ui/primitives";
+import { useEffect, useState } from "react";
 import { useStoreValue, type ExternalStore } from "../../../shared/state/react";
-import { CHAT_CONFIG_DEFAULTS, normalizeChatConfig, modelCompatibility } from "../domain/config.js";
+import { normalizeChatConfig, modelCompatibility } from "../domain/config.js";
 import { resolveInputBudget } from "../domain/budget.js";
 import { resolveEffectiveModelConfig } from "../../connections/public/domain_models.js";
 import { EFFORT_LEVELS } from "../../../contracts/constants.js";
@@ -15,7 +15,6 @@ export function ContextPane({ store, service, projectId = "" }: { store: Externa
   useStoreValue(store, "chat-config");
   const state = useSettingsState(service);
   const editor = state.contextEditing;
-  const [expanded, setExpanded] = useState(false);
   const [modelKey, setModelKey] = useState("");
   const project = projects.find((p) => p.id === projectId);
   useEffect(() => { service.context.begin(projectId); return () => service.context.releaseEditor(); }, [service, projectId]);
@@ -23,7 +22,7 @@ export function ContextPane({ store, service, projectId = "" }: { store: Externa
   const inherited = normalizeChatConfig(store.state.chatConfig) as Record<string, any>;
   const values: Record<string, any> = editor.projectId ? { ...inherited, ...editor.values } : editor.values;
   const isProject = Boolean(editor.projectId);
-  const keys = Object.keys(editor.values);
+  const keys = Object.keys(editor.values).filter(key => key !== "systemPrompt");
   const models = providers.flatMap((p) => p.models.map((model: string) => ({ provider: p, model, key: JSON.stringify([p.id, model]) })));
   const selected = models.find((m) => m.key === modelKey) || models[0];
   const caps = selected ? modelCompatibility({ modelCompatibility: editor.compatibility }, selected.provider.id, selected.model) : {};
@@ -44,12 +43,10 @@ export function ContextPane({ store, service, projectId = "" }: { store: Externa
         {models.map(m => <option key={m.key} value={m.key} disabled={m.provider.enabled === false}>{m.provider.displayName} / {m.model}{m.provider.enabled === false ? "（已禁用）" : ""}</option>)}
       </SelectField>
       : type === "effort" ? <select id={id} className="field" value={values[key]} disabled={disabled} onChange={(e) => service.context.setField(key, e.target.value)}>{EFFORT_LEVELS.map((level) => <option key={level.key} value={level.key}>{level.label}</option>)}</select>
-      : type === "textarea" ? <TextArea id={id} className={`field prompt-editor${expanded ? " is-expanded" : ""}`} rows={expanded ? 20 : 7} value={values[key]} maxLength={102400} disabled={disabled} placeholder="助手角色、回答方式与要求…" onChange={(e) => service.context.setField(key, e.target.value)} />
       : <TextField id={id} className="field" type={type} {...range} value={values[key] ?? ""} placeholder="可选" maxLength={type === "text" ? 200 : undefined} disabled={disabled} onChange={(e) => service.context.setField(key, type === "number" ? (e.target.value === "" ? "" : Number(e.target.value)) : e.target.value)} />;
-    return <div className={`config-field${type === "textarea" ? " config-field-wide" : ""}`} key={key}>
+    return <div className="config-field" key={key}>
       <div className="config-field-heading"><label htmlFor={id}>{label}</label>{isProject ? <Button type="button" className={`inherit-chip${overridden ? " is-custom" : ""}`} onClick={() => overridden ? service.context.inherit(key) : service.context.setField(key, inherited[key])}>{overridden ? "自定义 · 恢复继承" : "继承聊天 · 自定义"}</Button> : null}</div>
       {control}{hint ? <p className="field-help">{hint}</p> : null}
-      {type === "textarea" ? <div className="prompt-tools"><span>{String(values[key]).length.toLocaleString()} / 102,400 字符</span><Button type="button" className="btn btn-ghost compact" onClick={() => setExpanded(!expanded)}>{expanded ? "收起编辑器" : "展开编辑器"}</Button><Button type="button" className="btn btn-ghost compact" disabled={disabled} onClick={() => service.context.setField(key, CHAT_CONFIG_DEFAULTS.systemPrompt)}>清空提示词</Button></div> : null}
     </div>;
   }
   return <div className="settings-pane context-pane" onCompositionStart={() => service.context.setComposing(true)} onCompositionEnd={() => service.context.setComposing(false)} onBlur={() => void service.context.save()}>
@@ -57,7 +54,6 @@ export function ContextPane({ store, service, projectId = "" }: { store: Externa
     <div className="context-auto-state" aria-live="polite">{editor.error ? <><p role="alert" className="provider-model-error">{editor.error}</p><Button type="button" className="btn btn-secondary compact" disabled={editor.saving} onClick={() => void service.context.save()}>重试</Button></> : <span>{editor.saving ? "保存中…" : editor.dirty ? "等待保存" : "已自动保存"}</span>}</div>
     <section className="config-scope" aria-label="配置作用范围"><div><span className="config-scope-label">当前作用范围</span><label className="visually-hidden" htmlFor="context-scope">选择配置范围</label><select id="context-scope" className="field" value={editor.projectId} onChange={(e) => { location.hash = `#/settings/context${e.target.value ? `/${encodeURIComponent(e.target.value)}` : ""}`; }}><option value="">聊天默认配置</option>{projects.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}</select></div><div className="config-scope-summary"><strong>{isProject ? `${keys.length} 项自定义` : "所有普通聊天"}</strong><span>{isProject ? "其余设置继承默认值" : "项目未自定义时跟随更新"}</span></div><Button type="button" className="btn btn-ghost compact" onClick={service.context.reset}>{isProject ? "全部恢复继承" : "恢复应用默认"}</Button></section>
     <SettingsGroup id="context-common" title="常用配置">
-    <SettingsCard id="context-prompt" title="系统提示词" description={isProject ? "覆盖默认提示词；留空则不使用。" : "下次发送生效，切换模型时保留。"}>{field("systemPrompt", "提示词内容", "", "textarea")}</SettingsCard>
     <SettingsCard id="context-budget" title="上下文策略"><div className="config-grid">{field("compressionThreshold", "压缩触发阈值（%）", "响应正常结束时达到此比例，自动压缩已完成历史。", "number", { min: 10, max: 95 })}{field("compressionModel", "压缩模型", "用于自动与手动压缩，项目资料不会进入摘要请求。", "model")}{field("titleModel", "标题模型", "首次发送时根据输入生成标题，每个对话仅尝试一次。", "model")}</div><p className="config-budget-note">{budgetText} 预算自动扣除最大输出与 5% 安全余量，用量为估算。</p></SettingsCard>
     </SettingsGroup>
     <SettingsGroup id="context-advanced" title="高级配置">

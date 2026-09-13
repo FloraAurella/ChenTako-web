@@ -72,7 +72,7 @@ export function computeContextUsage(conversation, contextWindow, options = null)
     let window = contextWindow;
     try { window = resolveInputBudget({ contextWindow, maxTokens: options.maxTokens }, options.config); } catch { /* Show exhausted budget; preflight supplies the actionable error. */ }
     const approximate = !hasMeasuredHistory || measuredHistory.approximate || breakdown.draft > 0 || estimatedCurrentContextIsHigher;
-    return { breakdown, contextErrors: options.contextErrors || [], window, used, remaining: Math.max(0, window - used), percent: Math.min(1, used / window), inputTokens: used, outputTokens: 0, summaryTokens: hasMeasuredHistory ? measuredHistory.summaryTokens : summaryTokens,
+    return { breakdown, fixedGroups: (options.contextGroups || []).map(group => ({ id: group.id, label: group.label, tokens: estimateContextTokens(group.text) })), contextErrors: options.contextErrors || [], window, used, remaining: Math.max(0, window - used), percent: Math.min(1, used / window), inputTokens: used, outputTokens: 0, summaryTokens: hasMeasuredHistory ? measuredHistory.summaryTokens : summaryTokens,
       approximate, approximateInput: approximate, approximateSummary: !hasMeasuredHistory && summaryTokens > 0, approximateOutput: false,
       measured: hasMeasuredHistory,
       compressed: Boolean(compression), compressedCount: compression?.compression.sourceMessageCount || 0 };

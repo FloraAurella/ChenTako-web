@@ -1,16 +1,16 @@
 import { resources, registerSystem } from '../registry.js';
-import aiChatboxLogoSvg from './ai-chatbox.svg?raw';
+import chenTakoLogoSvg from './ChenTako.svg?raw';
 "use strict";
 
 /**
- * 品牌 Logo 的可信源码注册表。ai-chatbox.svg 是默认标志唯一图形源：
+ * 品牌 Logo 的可信源码注册表。ChenTako.svg 是默认标志唯一图形源：
  * 应用内标志、HTML 首帧 favicon 与主题 favicon 都从它派生。
  * 后续换标只需替换该 SVG，并保持 24×24 viewBox、currentColor 与安全元素约束。
  */
 
 // paper-pen 是已存储的形状 ID；更换图形不使旧主题选择失效。
 export const LOGO_SHAPES = Object.freeze({
-  "paper-pen": aiChatboxLogoSvg
+  "paper-pen": chenTakoLogoSvg
 });
 
 export const DEFAULT_LOGO_SHAPE = "paper-pen";

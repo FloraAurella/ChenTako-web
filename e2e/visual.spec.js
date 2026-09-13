@@ -152,7 +152,7 @@ function artifactPreviewState() {
     "产物会留在创建位置；下面同时保留 HTML 源码。",
     "",
     "```html",
-    '<main class="preview-card"><h1>ai-chatbox</h1><p>一个受限沙箱中的页面预览。</p></main>',
+    '<main class="preview-card"><h1>ChenTako</h1><p>一个受限沙箱中的页面预览。</p></main>',
     "```"
   ].join("\n");
   return {

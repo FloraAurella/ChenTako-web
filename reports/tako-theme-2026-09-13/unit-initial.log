@@ -1,0 +1,67 @@
+
+> chentako@1.1.5 test
+> vitest run test/theme.test.js test/theme-loading.test.js test/theme-card.test.tsx test/user-theme.test.js test/theme-package.test.js test/theme-archive.test.js test/surface-appearance.test.js test/tokens-consistency.test.js test/logo-shapes.test.js test/seed.test.js
+
+
+ RUN  v3.2.7 /Users/qxc/Desktop/ai/coding-project/ChenTako
+
+ ✓ test/logo-shapes.test.js (7 tests) 5ms
+ ✓ test/theme-package.test.js (8 tests) 6ms
+ ✓ test/theme-archive.test.js (6 tests) 6ms
+ ✓ test/surface-appearance.test.js (4 tests) 7ms
+ ✓ test/tokens-consistency.test.js (6 tests) 20ms
+ ✓ test/user-theme.test.js (31 tests) 11ms
+ ❯ test/theme.test.js (16 tests | 1 failed) 12ms
+   ✓ 主题契约 > 版本为 1，白名单包含双主题色板、效果与代码令牌 1ms
+   ✓ 主题契约 > 合法定义通过并冻结 0ms
+   × 主题契约 > typefaces：缺省携带默认字体栈，合法值透传 7ms
+     → expected { body: 'serif', …(2) } to deeply equal { body: 'humanist', …(2) }
+   ✓ 主题契约 > typefaces：非法角色与非法字体栈被拒 1ms
+   ✓ 主题契约 > 未知令牌被拒绝 0ms
+   ✓ 主题契约 > 不安全 CSS 值被拒绝 0ms
+   ✓ 主题契约 > 非法 ID / 缺失 preview 被拒绝 0ms
+   ✓ 主题注册表 > 唯一默认主题是 Tako Festival · 章鱼烧祭，旧默认主题已不再注册 0ms
+   ✓ 主题注册表 > 默认主题与首帧基线的身份色、行动色与虹彩令牌一致 0ms
+   ✓ 主题注册表 > 源码主题顺序只包含 Tako Festival · 章鱼烧祭，用户主题排在其后 0ms
+   ✓ 主题注册表 > Tako Festival · 章鱼烧祭 是独立双态主题，并完整采用主题包字体与配色 0ms
+   ✓ 主题注册表 > Tako Festival · 章鱼烧祭 主正文在明暗两态保持可读对比度 0ms
+   ✓ 主题注册表 > 重复注册需 replace 0ms
+   ✓ 旧主题迁移 > 旧固定场景、纸本、海盐与原默认 ID 统一映射到 Tako Festival · 章鱼烧祭 0ms
+   ✓ 旧主题迁移 > 旧 appearanceMode 语义保留 0ms
+   ✓ 旧主题迁移 > 已是新主题 ID 时不迁移 0ms
+ ✓ test/seed.test.js (14 tests) 5ms
+ ✓ test/theme-loading.test.js (2 tests) 3ms
+ ✓ test/theme-card.test.tsx (3 tests) 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/theme.test.js > 主题契约 > typefaces：缺省携带默认字体栈，合法值透传
+AssertionError: expected { body: 'serif', …(2) } to deeply equal { body: 'humanist', …(2) }
+
+- Expected
++ Received
+
+  {
+-   "body": "humanist",
+-   "display": "rounded",
++   "body": "serif",
++   "display": "serif",
+    "mono": "mono",
+  }
+
+ ❯ test/theme.test.js:106:48
+    104| 
+    105|   it("typefaces：缺省携带默认字体栈，合法值透传", () => {
+    106|     expect(defineTheme(VALID_THEME).typefaces).toEqual({ body: "humani…
+       |                                                ^
+    107|     const styled = defineTheme({ ...VALID_THEME, typefaces: { body: "r…
+    108|     expect(styled.typefaces).toEqual({ body: "rounded", display: "song…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 9 passed (10)
+      Tests  1 failed | 96 passed (97)
+   Start at  11:42:41
+   Duration  1.44s (transform 347ms, setup 76ms, collect 779ms, tests 78ms, environment 4.64s, prepare 725ms)
+

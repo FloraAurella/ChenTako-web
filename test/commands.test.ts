@@ -30,7 +30,7 @@ describe('command parsing and ownership', () => {
     expect(parseCommandInput('///abc')).toEqual({ kind: 'message', text: '//abc' });
     expect(parseCommandInput('//a\nb')).toEqual({ kind: 'message', text: '//a\nb' });
   });
-  it('registers all four commands and disposes their contributions', () => {
+  it('registers only chat commands while writing is suspended and disposes contributions', () => {
     const composition = createComposition();
     expect(composition.contributions.commands.list().map(c => c.id).sort()).toEqual(['compact', 'effort', 'help', 'model']);
     composition.dispose(); expect(composition.contributions.commands.list()).toEqual([]);

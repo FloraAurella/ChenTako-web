@@ -293,7 +293,7 @@ export function createApp({
 export function bootApp(options) {
   const app = createApp(options);
   app.boot().catch((error) => {
-    console.error("[ai-chatbox] 启动失败", error);
+    console.error("[ChenTako] 启动失败", error);
     showInlineFeedback("应用启动失败，请刷新重试", { tone: "danger" });
   });
   return app;

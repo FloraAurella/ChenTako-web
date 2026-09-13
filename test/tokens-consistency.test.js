@@ -85,11 +85,11 @@ describe("色板一致性（tokens.css ↔ themes/base-themes.js）", () => {
     }
   });
 
-  it("默认主题预览四色与 Everforest 主题包一致", () => {
-    expect(BUILTIN_THEME_PREVIEWS.everforest).toEqual({
+  it("默认主题预览四色与 Tako Festival · 章鱼烧祭 主题包一致", () => {
+    expect(BUILTIN_THEME_PREVIEWS["tako-festival"]).toEqual({
       canvas: LIGHT_TOKENS["--canvas-mid"],
       paper: LIGHT_TOKENS["--surface-content"],
-      line: "#D8D0BD",
+      line: "#D98B3A",
       accent: LIGHT_TOKENS["--pear"]
     });
   });
@@ -106,13 +106,13 @@ describe("色板一致性（tokens.css ↔ themes/base-themes.js）", () => {
     // favicon 图形来自唯一 SVG，SVG 默认色与浅色身份色一致；theme-color 仍来自 HTML。
     const pear = LIGHT_TOKENS["--pear"].toLowerCase();
     const canvasMid = LIGHT_TOKENS["--canvas-mid"].toLowerCase();
-    const logo = readFileSync(resolve("src/resources/logos/ai-chatbox.svg"), "utf8").toLowerCase();
+    const logo = readFileSync(resolve("src/resources/logos/ChenTako.svg"), "utf8").toLowerCase();
     expect(logo).toContain(`color="${pear}"`);
     const html = readFileSync(resolve("index.html"), "utf8").toLowerCase();
-    expect(html).toContain('href="/src/resources/logos/ai-chatbox.svg"');
+    expect(html).toContain('href="/src/resources/logos/chentako.svg"');
     expect(html).toContain(canvasMid);
     const onboarding = readFileSync(resolve("onboarding.html"), "utf8").toLowerCase();
-    expect(onboarding).toContain('href="/src/resources/logos/ai-chatbox.svg"');
+    expect(onboarding).toContain('href="/src/resources/logos/chentako.svg"');
     expect(onboarding).toContain(canvasMid);
   });
 

@@ -151,7 +151,7 @@ export function createAppearanceSettingsService(
         if (listThemes().some((item: any) => item.id === activeBefore)) theme.activateTheme(activeBefore);
         applySurfaceAppearance();
       } catch (rollbackError) {
-        console.error("[ai-chatbox Theme] 主题 JSON 导入回滚失败", rollbackError);
+        console.error("[ChenTako Theme] 主题 JSON 导入回滚失败", rollbackError);
       }
       toast(`主题导入失败：${message(error)}`, { tone: "danger" });
     }

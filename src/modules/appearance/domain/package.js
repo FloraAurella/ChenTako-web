@@ -125,7 +125,7 @@ export function serializeThemePackage(payload) {
 
 export function themePackageFilename(theme) {
   const id = isValidThemeId(theme?.id) ? theme.id : "theme";
-  return `ai-chatbox-${id}.${THEME_PACKAGE_EXTENSION}`;
+  return `ChenTako-${id}.${THEME_PACKAGE_EXTENSION}`;
 }
 
 export function downloadThemePackage(text, filename) {

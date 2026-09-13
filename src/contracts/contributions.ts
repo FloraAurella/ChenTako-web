@@ -29,7 +29,7 @@ export interface ControllerContribution {
   create(dependencies: any): any;
 }
 export interface SlotContribution {
-  id: string; slot: 'composer.before' | 'composer.actions' | 'project.settings';
+  id: string; slot: 'composer.before' | 'composer.actions' | 'project.settings' | 'chat.auxiliary' | 'chat.header.actions';
   component: ComponentType<{ store: any; projectId?: string }>;
 }
 export interface FrontendContributions {

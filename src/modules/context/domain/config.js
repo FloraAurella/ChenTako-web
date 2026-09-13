@@ -1,3 +1,4 @@
+import { promptText } from "../../../resources/public/prompts.js";
 import { EFFORT_LEVELS } from "../../../contracts/constants.js";
 
 export const SETTINGS_SCHEMA_VERSION = 2;
@@ -43,7 +44,7 @@ export function resolveChatConfig(state, conversation = {}) {
   const project = state.projects?.find((entry) => entry.id === conversation.projectId);
   const overrides = normalizeChatConfig(project?.configOverrides, true);
   const config = { ...base, ...overrides };
-  return { ...config, reasoningEffort: efforts.includes(conversation.reasoningEffortOverride) ? conversation.reasoningEffortOverride : config.defaultReasoningEffort };
+  return { ...config, systemPrompt: promptText("system"), reasoningEffort: efforts.includes(conversation.reasoningEffortOverride) ? conversation.reasoningEffortOverride : config.defaultReasoningEffort };
 }
 export function normalizeCompatibility(value) {
   if (!value || typeof value !== "object") return {};

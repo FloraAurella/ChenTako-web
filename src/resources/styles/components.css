@@ -1,5 +1,5 @@
 /* ============================================================
-   ai-chatbox · 组件库（FRONTEND_REDESIGN.md）
+   ChenTako · 组件库（FRONTEND_REDESIGN.md）
    双强调色：pear（品牌身份：气泡/开关/选中/滑轨）
             accent（行动色：Send / CTA / 主按钮 = 阳光黄 / 暖金）
    context（链接 / 激活 / 状态 · 熟叶绿）承担全部语义细节。
@@ -5104,3 +5104,42 @@ body.prefers-reduced-motion .tool-result-chevron {
 .project-selector-btn:hover { background: var(--control-hover); }
 .project-picker .option-title { display: block; white-space: normal; overflow-wrap: anywhere; }
 .project-picker .option-item > svg { flex-shrink: 0; }
+
+/* 空会话欢迎页：原消息区和同一个输入框安全居中，不复制或重挂载编辑器。 */
+.chat-page:has(.empty-stage) {
+  justify-content: safe center;
+  overflow-y: auto;
+}
+.chat-page:has(.empty-stage) .message-scroll {
+  flex: 0 0 auto;
+  overflow: visible;
+}
+.chat-page:has(.empty-stage) #messageList { padding: 0; }
+.chat-page:has(.empty-stage) .empty-stage {
+  padding: 0 var(--space-4) var(--space-4);
+  overflow: visible;
+  text-align: center;
+}
+.welcome-heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+}
+.welcome-logo { flex: none; color: var(--pear); }
+.welcome-heading .empty-title {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: var(--size-title);
+  font-weight: 600;
+  line-height: var(--lh-title);
+  letter-spacing: var(--ls-title);
+}
+.chat-page:has(.empty-stage) .empty-lede { margin-top: var(--space-3); }
+.chat-page:has(.empty-stage) .composer-zone { flex: 0 0 auto; width: 100%; }
+.chat-page:has(.empty-stage) .composer-input { min-height: calc(var(--space-4) * 6); }
+@media (max-width: 720px) {
+  .chat-page:has(.empty-stage) .composer-input { min-height: calc(var(--space-4) * 4.5); }
+  .welcome-heading .empty-title { font-size: var(--size-title-sm); }
+  .welcome-logo svg { width: 28px; height: 28px; }
+}

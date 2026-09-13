@@ -43,8 +43,13 @@ export function contextTooltipLinesMarkup(usage) {
   const used = formatTokenCount(usage.used);
   const win = formatTokenCount(usage.window);
   const approximate = usage.approximate ? '约 ' : '';
-  const error = usage.contextErrors?.length ? '<span class="context-tooltip-line">项目资料不完整，请检查知识库</span>' : '';
-  return `<span class="context-tooltip-title" data-tooltip-title>上下文用量</span><span class="context-tooltip-line is-primary" data-tooltip-usage>${percent}% · ${approximate}${used} / ${win} Tokens</span>${error}<span class="context-tooltip-hint" data-tooltip-hint>点击压缩历史</span>`;
+  const error = usage.contextErrors?.length ? '<span class="context-tooltip-line">固定上下文不完整，请检查资料与作品</span>' : '';
+  const groups = usage.fixedGroups?.length ? [
+    { label: '系统提示词', tokens: usage.breakdown.system }, ...usage.fixedGroups,
+    { label: '历史与摘要', tokens: usage.breakdown.history }, { label: '本次输入／附件', tokens: usage.breakdown.draft },
+    { label: '输出预留', tokens: usage.breakdown.reserved }
+  ].map(group => `<span class="context-tooltip-line">${escape(group.label)} · 约 ${formatTokenCount(group.tokens)} Tokens</span>`).join('') : '';
+  return `<span class="context-tooltip-title" data-tooltip-title>上下文用量</span><span class="context-tooltip-line is-primary" data-tooltip-usage>${percent}% · ${approximate}${used} / ${win} Tokens</span>${error}${groups}<span class="context-tooltip-hint" data-tooltip-hint>点击压缩历史</span>`;
 }
 
 // @deprecated — 二级额度弹层已移除（点击改为一键压缩），保留导出以兼容历史引用

@@ -24,7 +24,7 @@ describe('gateway 集成', () => {
     expect(response.status).toBe(200);
     const payload = await response.json();
     // 前端 backend-sync 只认 payload.ok === true；e2e mock 同时断言 service 名。
-    expect(payload).toEqual({ ok: true, service: 'ai-chatbox-server' });
+    expect(payload).toEqual({ ok: true, service: 'ChenTako-server' });
     expect(response.headers.get('content-type')).toContain('application/json');
   });
 

@@ -178,7 +178,7 @@ export function validateThemeDefinition(definition) {
 export function defineTheme(definition) {
   const errors = validateThemeDefinition(definition);
   if (errors.length) {
-    throw new Error(`[ai-chatbox Theme] 主题定义不合法：${errors.join("；")}`);
+    throw new Error(`[ChenTako Theme] 主题定义不合法：${errors.join("；")}`);
   }
   const tokens = {};
   for (const scheme of ["light", "dark"]) {

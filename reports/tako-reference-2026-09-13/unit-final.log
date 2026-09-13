@@ -1,0 +1,15 @@
+
+> chentako@1.1.5 test
+> vitest run test/theme.test.js test/tokens-consistency.test.js
+
+
+ RUN  v3.2.7 /Users/qxc/Desktop/ai/coding-project/ChenTako
+
+ ✓ test/tokens-consistency.test.js (6 tests) 13ms
+ ✓ test/theme.test.js (16 tests) 5ms
+
+ Test Files  2 passed (2)
+      Tests  22 passed (22)
+   Start at  11:56:29
+   Duration  606ms (transform 88ms, setup 10ms, collect 137ms, tests 18ms, environment 591ms, prepare 101ms)
+

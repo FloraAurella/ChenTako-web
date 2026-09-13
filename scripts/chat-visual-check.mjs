@@ -113,7 +113,7 @@ const report = await page.evaluate(() => {
     metaText: meta ? meta.textContent : null
   };
 });
-await page.screenshot({ path: "/tmp/ai-chatbox-chat.png" });
+await page.screenshot({ path: "/tmp/ChenTako-chat.png" });
 
 await page.click("#appearanceModeBtn");
 await page.waitForTimeout(500);
@@ -126,6 +126,6 @@ const darkReport = await page.evaluate(() => {
     canvas: getComputedStyle(document.documentElement).getPropertyValue("--canvas-mid").trim()
   };
 });
-await page.screenshot({ path: "/tmp/ai-chatbox-chat-dark.png" });
+await page.screenshot({ path: "/tmp/ChenTako-chat-dark.png" });
 await browser.close();
 console.log(JSON.stringify({ ...report, dark: darkReport }, null, 2));

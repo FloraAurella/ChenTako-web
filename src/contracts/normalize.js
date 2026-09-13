@@ -1,3 +1,4 @@
+import { normalizeWork, migrateWritingMessages } from '../modules/writing/public/work';
 "use strict";
 
 /** 数据模型校验与归一化：所有持久化数据加载/导入都必须经过这里。 */
@@ -405,6 +406,8 @@ export function normalizeMessage(raw) {
     parentId: source.parentId == null || source.parentId === "" ? null : String(source.parentId),
     role,
     content: cleanString(source.content),
+    ...(typeof source.contextText === 'string' ? { contextText: source.contextText } : {}),
+    ...(source.outputSurface === 'workspace' ? { outputSurface: 'workspace' } : {}),
     reasoning: cleanString(source.reasoning),
     reasoningKind: source.reasoningKind === "summary" ? "summary" : "thinking",
     files: normalizeFiles(source.files),
@@ -494,6 +497,7 @@ export function normalizeConversation(raw) {
       message.parentId = index ? messages[index - 1].id : null;
     });
   }
+  if (source.writing) migrateWritingMessages(messages);
   const roots = messages.filter((message) => message.parentId == null);
   const rawSelections = source.activeChildByMessageId && typeof source.activeChildByMessageId === "object"
     ? source.activeChildByMessageId
@@ -523,7 +527,8 @@ export function normalizeConversation(raw) {
     createdAt,
     updatedAt: Number(source.updatedAt) > 0 ? Number(source.updatedAt) : createdAt,
     pinned: source.pinned === true,
-    isTemporary: source.isTemporary === true && !messages.some((message) => message.role === "user"),
+    writing: normalizeWork(source.writing),
+    isTemporary: source.isTemporary === true && !source.writing && !messages.some((message) => message.role === "user"),
     projectId: typeof source.projectId === "string" && source.projectId ? source.projectId : null,
     providerId: String(source.providerId || ""),
     providerSnapshot: source.providerSnapshot && typeof source.providerSnapshot === "object"

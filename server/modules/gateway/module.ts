@@ -24,7 +24,7 @@ export const module: BackendModule = {
       id: 'health',
       method: 'GET',
       pattern: '/api/health',
-      handler: ({ res }) => { sendJson(res, 200, { ok: true, service: 'ai-chatbox-server' }); }
+      handler: ({ res }) => { sendJson(res, 200, { ok: true, service: 'ChenTako-server' }); }
     });
     return () => services.services.removeOwner('gateway');
   }

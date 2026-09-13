@@ -1,5 +1,11 @@
 # ChenTako
 
+## 在线部署
+
+当前版本已发布到 [GitHub Pages](https://floraaurella.github.io/ChenTako-web/)。GitHub Actions 会在 `main` 推送后自动构建 `dist` 并发布。
+
+Pages 构建支持仓库变量 `CHENTAKO_API_BASE_URL`，通过 `VITE_API_BASE_URL` 注入前端 API 地址；未设置时仍使用相对 `/api`，适合本地开发。当前后端入口依赖 Node HTTP 与 SQLite，不能直接作为 Cloudflare Worker 上传；Worker 部署需要单独的 Worker/D1 适配层和 Cloudflare 登录授权。
+
 ## ChenTako-web 当前运行范围（2026-09-13）
 
 此副本暂时只启用普通聊天。writing 模块在应用装配时停用：不显示章节工作区、右侧栏按钮及写作模式状态，不注册 /create、/name、/write、/edit、/chat 和 @ 章节选择指令。/model、/effort、/compact、/help 保留。旧指令会报错并保留输入，不自动当作普通消息发送。

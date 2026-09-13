@@ -41,6 +41,13 @@ export function ProvidersPane({ store, state, service, route }: {
     window.dispatchEvent(new HashChangeEvent("hashchange"));
   }, [providers, route.name, route.settingsSection, routeProviderId]);
 
+  useEffect(() => () => service.providers.releaseEditor(), [service]);
+  useEffect(() => {
+    if (routeProviderId !== "new" || state.providerEditing?.mode !== "edit") return;
+    history.replaceState(null, "", providerHash(state.providerEditing.draft.id));
+    window.dispatchEvent(new HashChangeEvent("hashchange"));
+  }, [routeProviderId, state.providerEditing?.mode, state.providerEditing?.draft.id]);
+
   const selectProvider = async (providerId: string) => {
     if (await service.providers.select(providerId)) location.hash = providerHash(providerId);
   };
@@ -48,13 +55,6 @@ export function ProvidersPane({ store, state, service, route }: {
     setCreating(false);
     service.providers.beginNew(templateId);
     location.hash = providerHash("new");
-  };
-  const save = async () => {
-    const wasNew = state.providerEditing?.mode === "new";
-    if (await service.providers.save() && wasNew) {
-      const savedId = service.state.get().providerEditing?.draft.id;
-      if (savedId) history.replaceState(null, "", providerHash(savedId));
-    }
   };
   const remove = async () => {
     if (await service.providers.remove()) location.hash = providerHash();
@@ -64,7 +64,7 @@ export function ProvidersPane({ store, state, service, route }: {
     <div className="provider-registry-heading">
       <div>
         <h2 className="settings-pane-title">模型与供应商</h2>
-        <p className="settings-pane-lede">管理 API 连接、模型上下文窗口与最大输出额度。</p>
+
       </div>
       <Button type="button" className="btn btn-primary" id="newProviderBtn" onClick={() => setCreating(true)}>添加供应商</Button>
     </div>
@@ -74,7 +74,6 @@ export function ProvidersPane({ store, state, service, route }: {
       service={service}
       routeProviderId={routeProviderId}
       onSelect={selectProvider}
-      onSave={save}
       onRemove={remove}
     />
     {creating ? <ProviderCreateDialog onClose={() => setCreating(false)} onChoose={chooseTemplate} /> : null}

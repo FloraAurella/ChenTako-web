@@ -49,10 +49,10 @@ function useModalHost(onClose: () => void, initialFocusSelector: string) {
 
 const CREATE_TEMPLATES = [
   ...PROVIDER_PRESETS.map((preset: any) => ({ id: preset.id, code: "RSP", title: preset.label, description: "预填测试地址、test-1 与 test-2，无需 API Key。" })),
-  { id: "blank-responses", code: "RSP", title: "OpenAI Responses", description: "从空白 Responses 配置开始。" },
-  { id: "blank-openai-compatible", code: "OAI", title: "OpenAI Chat Completions", description: "适用于 OpenAI 兼容的 /chat/completions 端点。" },
-  { id: "blank-anthropic", code: "ANT", title: "Anthropic Messages", description: "预填 Anthropic 官方 Base URL，不预设模型。" },
-  { id: "blank-google", code: "GGL", title: "Google Gemini", description: "预填 Gemini v1beta Base URL，不预设模型。" }
+  { id: "blank-responses", code: "RSP", title: "OpenAI Responses", description: "自填 API 地址。" },
+  { id: "blank-openai-compatible", code: "OAI", title: "OpenAI Chat Completions", description: "兼容 OpenAI 接口。" },
+  { id: "blank-anthropic", code: "ANT", title: "Anthropic Messages", description: "预填官方地址。" },
+  { id: "blank-google", code: "GGL", title: "Google Gemini", description: "预填官方地址。" }
 ];
 
 export function ProviderCreateDialog({ onClose, onChoose }: { onClose: () => void; onChoose: (id: string) => void }) {
@@ -60,7 +60,7 @@ export function ProviderCreateDialog({ onClose, onChoose }: { onClose: () => voi
   if (!host) return null;
   return createPortal(<div className="dialog-backdrop provider-dialog-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}>
     <div ref={dialogRef} className="dialog-card provider-create-dialog" role="dialog" aria-modal="true" aria-labelledby="provider-create-title">
-      <div className="provider-dialog-head"><div><span className="provider-dialog-eyebrow">New connection</span><h3 className="dialog-title" id="provider-create-title">添加供应商</h3><p>选择供应商使用的 API 协议。</p></div><Button type="button" className="icon-btn" onClick={onClose} aria-label="关闭"><TrustedIcon name="close" size={17} /></Button></div>
+      <div className="provider-dialog-head"><div><h3 className="dialog-title" id="provider-create-title">添加供应商</h3><p>选择供应商使用的 API 协议。</p></div><Button type="button" className="icon-btn" onClick={onClose} aria-label="关闭"><TrustedIcon name="close" size={17} /></Button></div>
       <div className="provider-template-grid">{CREATE_TEMPLATES.map((template) => <Button type="button" className="provider-template-card preset-chip" data-preset={template.id} key={template.id} onClick={() => onChoose(template.id)}><span className="provider-template-code">{template.code}</span><span><strong>{template.title}</strong><small>{template.description}</small></span><TrustedIcon name="chevronRight" size={16} /></Button>)}</div>
     </div>
   </div>, host);
@@ -84,21 +84,22 @@ function InheritableField({ id, label, parameter, value, inherited, type = "numb
 export function ProviderModelDialog({ editing, service }: { editing: ProviderEditingState; service: SettingsService }) {
   const editor = editing.modelEditing!;
   const defaults = editor.mode === "defaults";
-  const close = () => service.providers.closeModel();
+  const close = () => { if (!editing.saving) service.providers.closeModel(); };
   const { host, dialogRef } = useModalHost(close, defaults ? "#model-contextWindow" : "#model-id");
   const draft = editor.draft;
   if (!host) return null;
-  const apply = () => service.providers.applyModel();
+  const apply = () => { void service.providers.applyModel(); };
   return createPortal(<div className="dialog-backdrop provider-dialog-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget) close(); }}>
     <div ref={dialogRef} className="dialog-card provider-model-dialog" role="dialog" aria-modal="true" aria-labelledby="provider-model-dialog-title">
-      <div className="provider-dialog-head"><div><span className="provider-dialog-eyebrow">{defaults ? "Model defaults" : "Model profile"}</span><h3 className="dialog-title" id="provider-model-dialog-title">{defaults ? "模型默认值" : editor.mode === "new" ? "添加模型" : "编辑模型配置"}</h3><p>{defaults ? "未单独配置的模型会继承这些参数。" : "仅配置模型的上下文窗口与最大输出额度。"}</p></div><Button type="button" className="icon-btn" onClick={close} aria-label="关闭"><TrustedIcon name="close" size={17} /></Button></div>
-      <div className="provider-model-dialog-scroll">
+      <div className="provider-dialog-head"><div><h3 className="dialog-title" id="provider-model-dialog-title">{defaults ? "模型默认值" : editor.mode === "new" ? "添加模型" : "编辑模型配置"}</h3><p>{defaults ? "未自定义的模型使用这些默认值。" : "设置上下文与输出限额。"}</p></div><Button type="button" className="icon-btn" onClick={close} aria-label="关闭"><TrustedIcon name="close" size={17} /></Button></div>
+      <fieldset className="provider-model-dialog-scroll" disabled={editing.saving}>
         {!defaults ? <div><label className="field-label" htmlFor="model-id">模型 ID</label><TextField id="model-id" className="field" value={draft.id} maxLength={200} autoComplete="off" onChange={(event) => service.providers.setModelField("id", event.currentTarget.value)} /></div> : null}
         {defaults ? <div className="provider-model-field"><label className="field-label" htmlFor="model-contextWindow">默认上下文窗口</label><TextField id="model-contextWindow" className="field" type="number" min={1} max={10000000} value={draft.contextWindow} onChange={(event) => service.providers.setModelField("contextWindow", event.currentTarget.value)} /></div> : <InheritableField id="model-contextWindow" label="上下文窗口" parameter="contextWindow" value={draft.contextWindow} inherited={draft.inherit.contextWindow} min={1} max={10000000} service={service} />}
         {defaults ? <div className="provider-model-field"><label className="field-label" htmlFor="model-maxTokens">默认最大输出 Token</label><TextField id="model-maxTokens" className="field" type="number" min={1} max={1000000} value={draft.maxTokens} onChange={(event) => service.providers.setModelField("maxTokens", event.currentTarget.value)} /></div> : <InheritableField id="model-maxTokens" label="最大输出 Token" parameter="maxTokens" value={draft.maxTokens} inherited={draft.inherit.maxTokens} min={1} max={1000000} service={service} />}
+        {!defaults ? <label className="provider-default-choice"><TextField type="checkbox" checked={Boolean(draft.isDefault)} disabled={editing.draft.defaultModel === editor.originalId} onChange={event => service.providers.setModelField("isDefault", event.currentTarget.checked)} />用作默认模型</label> : null}
         {editor.error ? <p className="provider-model-error" role="alert">{editor.error}</p> : null}
-      </div>
-      <div className="dialog-actions provider-dialog-actions"><Button type="button" className="btn btn-ghost" onClick={close}>取消</Button><Button type="button" className="btn btn-primary" onClick={apply}>应用更改</Button></div>
+      </fieldset>
+      <div className="dialog-actions provider-dialog-actions">{editor.mode === "edit" ? <Button type="button" className="btn btn-ghost danger" disabled={editing.saving} onClick={() => void service.providers.removeModel(editor.originalId)}>删除模型</Button> : null}<Button type="button" className="btn btn-ghost" disabled={editing.saving} onClick={close}>取消</Button><Button type="button" className="btn btn-primary" disabled={editing.saving} onClick={apply}>{editing.saving ? "保存中…" : "保存更改"}</Button></div>
     </div>
   </div>, host);
 }

@@ -74,7 +74,7 @@ export class HttpGateway {
         res.writeHead(204, {
           ...headers,
           'Access-Control-Allow-Methods': 'GET, PUT, POST, DELETE, OPTIONS',
-          'Access-Control-Allow-Headers': 'Content-Type, x-clawbox-token, x-tribblebook-token',
+          'Access-Control-Allow-Headers': 'Content-Type, x-ai-chatbox-token, x-clawbox-token, x-tribblebook-token',
           'Access-Control-Max-Age': '600'
         });
         res.end();
@@ -90,7 +90,7 @@ export class HttpGateway {
       }
       // 健康检查免令牌：前端以它区分「后端未启动」与「鉴权失败」。
       if (url.pathname !== '/api/health' && !tokenMatches(this.options.apiToken,
-        req.headers['x-clawbox-token'] ?? req.headers['x-tribblebook-token'])) {
+        req.headers['x-ai-chatbox-token'] ?? req.headers['x-clawbox-token'] ?? req.headers['x-tribblebook-token'])) {
         return sendJson(res, 401, { error: '本地 API 鉴权失败' });
       }
 
@@ -134,7 +134,7 @@ export class HttpGateway {
       this.server.once('error', onError);
       this.server.listen(port, host, () => {
         this.server.removeListener('error', onError);
-        console.log(`Clawbox 模块化后端已启动: http://${host}:${port}（仅本机回环）`);
+        console.log(`ai-chatbox 模块化后端已启动: http://${host}:${port}（仅本机回环）`);
         resolve();
       });
     });

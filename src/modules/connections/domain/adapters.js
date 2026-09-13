@@ -359,7 +359,7 @@ export function normalizeProviderResponse(payload, format = "openai-compatible")
   };
   if (!payload || typeof payload !== "object") return result;
 
-  // Clawbox 后端在非流式（以及 Tool 回合）返回的是统一载荷，不再是上游原始
+  // ai-chatbox 后端在非流式（以及 Tool 回合）返回的是统一载荷，不再是上游原始
   // Responses/Anthropic/OpenAI JSON。先识别它，避免被各协议解析器重新误读。
   if (!Array.isArray(payload.output) && !Array.isArray(payload.choices) &&
     typeof payload.content === "string" &&

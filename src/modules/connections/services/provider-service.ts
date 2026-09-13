@@ -68,6 +68,7 @@ function modelEditor(provider: any, modelId: string, mode: ProviderModelEditingS
     error: "",
     draft: {
       id: modelId,
+      isDefault: provider.defaultModel === modelId,
       contextWindow: String(isDefaults ? provider.contextWindow : effective.contextWindow),
       maxTokens: String(isDefaults ? provider.maxTokens : effective.maxTokens),
       inherit: Object.fromEntries(MODEL_PARAMETER_KEYS.map((key) => [
@@ -86,6 +87,28 @@ export function createProviderSettingsService(
   let apiKeySyncTimer: ReturnType<typeof setTimeout> | null = null;
   let apiKeySyncQueue: Promise<void> = Promise.resolve();
   let apiKeySyncRevision = 0;
+  let saveTimer: ReturnType<typeof setTimeout> | null = null;
+  let saveRunning: Promise<boolean> | null = null;
+  let saveController: AbortController | null = null;
+  let editorSession = 0;
+  let composing = false;
+  const attemptedRegistrations = new Set<string>();
+
+  function cancelSaveTimer() { if (saveTimer) clearTimeout(saveTimer); saveTimer = null; }
+  function scheduleSave(immediate = false) {
+    cancelSaveTimer();
+    if (composing) return;
+    if (immediate) { void save(); return; }
+    saveTimer = setTimeout(() => { saveTimer = null; void save(); }, 320);
+  }
+  function setComposing(value: boolean) { composing = value; if (value) cancelSaveTimer(); else scheduleSave(); }
+  function releaseEditor() {
+    composing = false;
+    cancelSaveTimer(); cancelScheduledApiKeySync();
+    editorSession += 1;
+    saveController?.abort();
+  }
+
 
   function editing(): ProviderEditingState | null {
     return stateBridge.get().providerEditing;
@@ -96,7 +119,7 @@ export function createProviderSettingsService(
     if (!current) return;
     const next: ProviderEditingState = clone(current);
     mutator(next);
-    if (!preserveDirty) next.dirty = !sameDraft(next.draft, next.originalDraft);
+    if (!preserveDirty) { next.dirty = !sameDraft(next.draft, next.originalDraft); next.saveError = ""; }
     stateBridge.patch({ providerEditing: next });
   }
 
@@ -223,6 +246,8 @@ export function createProviderSettingsService(
   }
 
   function startEditing(mode: "new" | "edit", draft: any): void {
+    cancelSaveTimer();
+    editorSession += 1;
     cancelScheduledApiKeySync();
     const normalized = normalizeProvider(clone(draft));
     stateBridge.patch({
@@ -247,6 +272,7 @@ export function createProviderSettingsService(
 
   function beginNew(templateId = "blank-openai-compatible"): void {
     startEditing("new", draftFromTemplate(templateId));
+    if (!validateProvider()) scheduleSave(true);
   }
 
   function beginEdit(providerId: string): void {
@@ -258,21 +284,16 @@ export function createProviderSettingsService(
     if (provider.hasKeyConfigured) void hydrateApiKey(provider.id);
   }
 
-  async function confirmDiscard(message = "放弃尚未保存的供应商修改？"): Promise<boolean> {
-    const current = editing();
-    if (!current || (!current.dirty && current.mode !== "new" && !current.modelEditing)) return true;
-    return dialogs.confirm({
-      title: "有未保存的修改",
-      message: `${message}${current.mode === "edit" ? " 已自动同步的 API Key 不会回滚。" : ""}`,
-      confirmLabel: "放弃修改",
-      danger: true
-    });
+  async function settleBeforeLeave(): Promise<boolean> {
+    if (!(await save())) return false;
+    if (!editing()?.modelEditing) return true;
+    return dialogs.confirm({ title: "模型参数尚未保存", message: "离开会放弃弹窗内尚未保存的模型参数。", confirmLabel: "放弃修改" });
   }
 
   async function select(providerId: string): Promise<boolean> {
     const current = editing();
     if (current?.mode === "edit" && current.draft.id === providerId) return true;
-    if (!(await confirmDiscard("切换供应商会放弃尚未保存的普通配置。"))) return false;
+    if (!(await settleBeforeLeave())) return false;
     if (!(await flushPendingApiKeySync())) return false;
     beginEdit(providerId);
     return true;
@@ -286,7 +307,7 @@ export function createProviderSettingsService(
       (current.mode === "edit" && target.settingsProviderId === current.draft.id)
     );
     if (sameProvider) return true;
-    if (!(await confirmDiscard("离开当前页面会放弃尚未保存的普通配置。"))) return false;
+    if (!(await settleBeforeLeave())) return false;
     // 编辑态由路由提交后的 resetNavigationState 统一清理。若在这里提前清空，
     // 旧路由仍挂载的 ProviderPane effect 会在 hash 更新前把旧供应商重新打开。
     // API Key 是独立的自动同步事务，普通导航也不应取消它。
@@ -328,10 +349,12 @@ export function createProviderSettingsService(
       next.draft[key] = value;
     }, { preserveDirty: key === "apiKey" });
     if (providerId) scheduleApiKeySync(providerId);
+    else scheduleSave(key === "responseFormat");
   }
 
   function toggleFlag(key: "enabled"): void {
     update((next) => { next.draft[key] = !next.draft[key]; });
+    scheduleSave(true);
   }
 
   async function toggleKeyVisibility(): Promise<void> {
@@ -400,25 +423,26 @@ export function createProviderSettingsService(
     return "";
   }
 
-  function applyModel(): boolean {
+  async function applyModel(): Promise<boolean> {
     const current = editing();
     const editor = current?.modelEditing;
-    if (!current || !editor) return false;
+    if (!current || !editor || current.saving) return false;
     const error = validateModel(editor, current.draft);
     if (error) {
       update((next) => { if (next.modelEditing) next.modelEditing.error = error; }, { preserveDirty: true });
       return false;
     }
+    const submittedEditor = clone(editor);
     update((next) => {
       const active = next.modelEditing!;
       const modelDraft = active.draft;
       if (active.mode === "defaults") {
         next.draft.contextWindow = Number(modelDraft.contextWindow);
         next.draft.maxTokens = Number(modelDraft.maxTokens);
-        next.modelEditing = null;
         return;
       }
       const modelId = modelDraft.id.trim();
+      if (modelDraft.isDefault) next.draft.defaultModel = modelId;
       const oldId = active.originalId;
       const oldOverride = next.draft.modelOverrides[oldId];
       const oldCapabilities = next.draft.modelCapabilities[oldId];
@@ -440,14 +464,18 @@ export function createProviderSettingsService(
       if (!modelDraft.inherit.maxTokens) override.maxTokens = Number(modelDraft.maxTokens);
       if (Object.keys(override).length) next.draft.modelOverrides[modelId] = override;
       else delete next.draft.modelOverrides[modelId];
-      next.modelEditing = null;
     });
-    return true;
+    const saved = await save();
+    if (!saved && editing()?.draft.id === current.draft.id) {
+      update(next => { next.draft = clone(current.draft); next.modelAliases = clone(current.modelAliases); next.modelEditing = { ...submittedEditor, error: next.saveError || "保存失败，请重试" }; }, { preserveDirty: true });
+    }
+    if (saved) closeModel();
+    return saved;
   }
 
-  async function removeModel(model: string): Promise<void> {
+  async function removeModel(model: string): Promise<boolean> {
     const current = editing();
-    if (!current || !current.draft.models.includes(model)) return;
+    if (!current || !current.draft.models.includes(model)) return false;
     const isDefault = current.draft.defaultModel === model;
     const confirmed = await dialogs.confirm({
       title: "删除模型",
@@ -457,17 +485,20 @@ export function createProviderSettingsService(
       confirmLabel: "删除",
       danger: true
     });
-    if (!confirmed) return;
+    if (!confirmed || editing()?.draft.id !== current.draft.id) return false;
     update((next) => {
       next.draft.models = next.draft.models.filter((item: string) => item !== model);
       delete next.draft.modelCapabilities[model];
       delete next.draft.modelOverrides[model];
       if (next.draft.defaultModel === model) next.draft.defaultModel = next.draft.models[0] || "";
+      next.modelEditing = null;
     });
+    return save();
   }
 
   function setDefaultModel(model: string): void {
     update((next) => { if (next.draft.models.includes(model)) next.draft.defaultModel = model; });
+    scheduleSave(true);
   }
 
   function validateProvider(): string {
@@ -489,6 +520,7 @@ export function createProviderSettingsService(
     }
     const current = editing();
     if (!current || current.testing) return;
+    const session = editorSession;
     update((next) => { next.testing = true; next.testResult = ""; next.testResultTone = ""; }, { preserveDirty: true });
     try {
       const response = await apiFetch("/api/providers/test", {
@@ -503,17 +535,22 @@ export function createProviderSettingsService(
       });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(payload.error || `HTTP ${response.status}`);
+      if (editorSession !== session || !editing()) return;
+      if (!sameDraft(editing()!.draft, current.draft)) {
+        update(next => { next.testing = false; next.testResult = "配置已变化，请重新读取模型"; }, { preserveDirty: true }); return;
+      }
       if (fetchModels && Array.isArray(payload.models) && payload.models.length) {
         const models = [...new Set<string>((payload.models as unknown[]).map(String))].sort((a, b) => a.localeCompare(b));
         update((next) => {
           next.testing = false;
-          next.testResult = `已读取 ${models.length} 个模型，保存后生效`;
+          next.testResult = `已读取 ${models.length} 个模型`;
           next.testResultTone = "success";
           next.draft.models = models;
           next.draft.modelCapabilities = Object.fromEntries(models.map((model) => [model, next.draft.modelCapabilities[model] || { visionInput: "auto", imageOutput: "auto" }]));
           next.draft.modelOverrides = Object.fromEntries(models.filter((model) => next.draft.modelOverrides[model]).map((model) => [model, next.draft.modelOverrides[model]]));
           if (!models.includes(next.draft.defaultModel)) next.draft.defaultModel = models[0] || "";
         });
+        scheduleSave(true);
         toast(`读取到 ${models.length} 个模型`, { tone: "ok" });
         return;
       }
@@ -522,8 +559,26 @@ export function createProviderSettingsService(
       toast(payload.message || "连接成功", { tone: "ok" });
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
+      if (editorSession !== session || !editing()) return;
       update((next) => { next.testing = false; next.testResult = `测试失败：${message}`; next.testResultTone = "error"; }, { preserveDirty: true });
     }
+  }
+
+  async function testModel(model: string, signal: AbortSignal): Promise<string> {
+    const error = validateProvider();
+    if (error) throw new Error(error);
+    const current = editing();
+    if (!current || !current.draft.models.includes(model)) throw new Error("模型不存在");
+    const response = await apiFetch("/api/providers/test", {
+      method: "POST", signal,
+      body: JSON.stringify({ id: current.mode === "edit" ? current.draft.id : "",
+        displayName: current.draft.displayName, baseUrl: current.draft.baseUrl,
+        responseFormat: current.draft.responseFormat, apiKey: current.apiKey, model })
+    });
+    const payload = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(payload.error || `HTTP ${response.status}`);
+    if (!payload.reply) throw new Error("接口未返回模型回复");
+    return `响应成功 · ${payload.latencyMs ?? "—"}ms · ${payload.reply}`;
   }
 
   function upsertLocalProvider(provider: any): void {
@@ -535,36 +590,48 @@ export function createProviderSettingsService(
   }
 
   async function save(): Promise<boolean> {
-    if (!(await flushPendingApiKeySync())) return false;
-    cancelScheduledApiKeySync();
-    await apiKeySyncQueue;
-    const validationError = validateProvider();
-    if (validationError) {
-      update((next) => { next.testResult = validationError; next.testResultTone = "error"; }, { preserveDirty: true });
-      return false;
+    cancelSaveTimer();
+    if (saveRunning) {
+      const session = editorSession;
+      const ok = await saveRunning;
+      if (!ok || session !== editorSession) return ok;
+      return editing()?.dirty ? save() : true;
     }
     const current = editing();
-    if (!current || current.modelEditing) {
-      if (current?.modelEditing) toast("请先应用或取消正在编辑的模型", { tone: "danger" });
-      return false;
+    if (!current || (!current.dirty && current.mode !== "new")) return true;
+    if (composing) return false;
+    saveRunning = persistProvider();
+    try { return await saveRunning; } finally { saveRunning = null; }
+  }
+
+  async function persistProvider(): Promise<boolean> {
+    const session = editorSession;
+    if (!(await flushPendingApiKeySync()) || session !== editorSession) return false;
+    const validationError = validateProvider();
+    if (validationError) {
+      update(next => { next.saveError = validationError; }, { preserveDirty: true }); return false;
     }
-    if (!current.draft.models.length) {
-      update((next) => { next.testResult = "至少添加一个模型，否则无法发起对话"; next.testResultTone = "error"; }, { preserveDirty: true });
-      return false;
-    }
+    const current = editing();
+    if (!current) return false;
     const draft = normalizeProvider(current.draft);
     draft.systemPrompt = ""; draft.userId = ""; draft.temperature = 0.7; draft.topP = 1;
     draft.defaultReasoningEffort = ""; draft.streaming = true; draft.saveChats = true;
     draft.modelCapabilities = {};
     draft.modelOverrides = Object.fromEntries(Object.entries(draft.modelOverrides).map(([id, values]: [string, any]) => [id, Object.fromEntries(Object.entries(values).filter(([key]) => ["contextWindow", "maxTokens"].includes(key)))]));
     const submittedKey = current.apiKeyDirty ? current.apiKey.trim() : "";
+    const controller = new AbortController();
+    saveController = controller;
+    const timeout = setTimeout(() => controller.abort(), 15000);
+    update(next => { next.saving = true; next.saveError = ""; }, { preserveDirty: true });
     try {
+      if (current.mode === "new") attemptedRegistrations.add(draft.id);
       const response = await apiFetch("/api/providers", {
-        method: "PUT",
-        body: JSON.stringify({ ...draft, settingsSchemaVersion: 1, id: current.mode === "edit" ? draft.id : "", apiKey: submittedKey || undefined })
+        method: "PUT", signal: controller.signal,
+        body: JSON.stringify({ ...draft, settingsSchemaVersion: 1, apiKey: submittedKey || undefined })
       });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok || !payload.provider) throw new Error(payload.error || `HTTP ${response.status}`);
+      if (session !== editorSession || !editing()) return false;
       const providerId = String(payload.provider.id || draft.id);
       const saved = normalizeProvider({ ...draft, ...payload.provider, id: providerId });
       upsertLocalProvider(saved);
@@ -578,36 +645,50 @@ export function createProviderSettingsService(
       store.notify("chat-config");
       if (submittedKey) {
         try { await providerKeyVault.save(providerId, submittedKey); } catch {
-          toast("已同步到后端，但前端加密副本保存失败", { tone: "danger" });
+          toast("后端已同步，前端 Key 加密副本保存失败", { tone: "danger" });
         }
       }
-      startEditing("edit", saved);
-      update((next) => {
-        next.apiKey = current.apiKey;
-        next.apiKeyVisible = current.apiKeyVisible;
-        next.apiKeyDirty = false;
-      }, { preserveDirty: true });
-      toast("供应商配置已保存", { tone: "ok" });
+      if (!(await store.persist())) throw new Error("后端已保存，本地存储写入失败，请释放空间后重试");
+      if (session !== editorSession || !editing()) return false;
+      update(next => {
+        next.mode = "edit";
+        next.originalDraft = clone(saved);
+        if (sameDraft(next.draft, current.draft)) { next.draft = clone(saved); next.modelAliases = {}; }
+        else next.draft.id = providerId;
+        if (next.apiKey === current.apiKey) next.apiKeyDirty = false;
+        next.saving = false; next.saveError = "";
+      });
       return true;
     } catch (error) {
-      update((next) => {
-        next.testResult = `保存失败：${error instanceof Error ? error.message : String(error)}`;
-        next.testResultTone = "error";
+      if (session === editorSession) update(next => {
+        next.saving = false;
+        next.saveError = `自动保存失败：${controller.signal.aborted ? "请求超时，请重试" : error instanceof Error ? error.message : String(error)}`;
       }, { preserveDirty: true });
       return false;
+    } finally {
+      clearTimeout(timeout);
+      if (saveController === controller) saveController = null;
     }
   }
 
   async function remove(): Promise<boolean> {
     const current = editing();
-    if (!current || current.mode === "new") return false;
+    if (!current) return false;
+    if (current.mode === "new" && validateProvider() && !attemptedRegistrations.has(current.draft.id)) {
+      if (!(await dialogs.confirm({ title: "取消添加供应商", message: "放弃尚未完成的供应商配置？", confirmLabel: "放弃添加" }))) return false;
+      cancelSaveTimer();
+      stateBridge.patch({ providerEditing: null });
+      return true;
+    }
     const confirmed = await dialogs.confirm({
       title: "删除供应商",
       message: `「${current.draft.displayName}」的配置与后端 Key 会被移除；已有对话保留只读快照。`,
       confirmLabel: "删除",
       danger: true
     });
-    if (!confirmed) return false;
+    if (!confirmed || editing()?.draft.id !== current.draft.id) return false;
+    cancelSaveTimer();
+    if (saveRunning) await saveRunning;
     cancelScheduledApiKeySync();
     await apiKeySyncQueue;
     try {
@@ -616,7 +697,7 @@ export function createProviderSettingsService(
         body: JSON.stringify({ displayName: current.draft.displayName, baseUrl: current.draft.baseUrl })
       });
       const payload = await response.json().catch(() => ({}));
-      if (!response.ok) throw new Error(payload.error || `HTTP ${response.status}`);
+      if (!response.ok && !(current.mode === "new" && response.status === 404)) throw new Error(payload.error || `HTTP ${response.status}`);
       store.actions.setProviders(store.state.providers.filter((item: any) => item.id !== current.draft.id));
       try { await providerKeyVault.remove(current.draft.id); } catch { /* 后端删除已完成 */ }
       stateBridge.patch({ providerEditing: null });
@@ -635,9 +716,9 @@ export function createProviderSettingsService(
   return {
     beginNew, beginEdit, select, beforeNavigate, discard,
     capabilities: (providerId: string, model: string) => modelCompatibility(store.state, providerId, model),
-    setField, toggleFlag, toggleKeyVisibility,
+    setField, toggleFlag, toggleKeyVisibility, setComposing, releaseEditor,
     openModel, openNewModel, openModelDefaults, closeModel,
     setModelField, toggleModelInheritance, applyModel,
-    removeModel, setDefaultModel, testConnection, save, remove
+    removeModel, setDefaultModel, testConnection, testModel, save, remove
   };
 }

@@ -89,7 +89,7 @@ export function createBackendSync({store,scope}) {
     } catch (error) {
       // 不打断界面，但留下可诊断的痕迹（静默吞错曾掩盖过代理故障）。
       if (scope.disposed) return;
-      console.warn("[Clawbox] 供应商状态同步失败", error);
+      console.warn("[ai-chatbox] 供应商状态同步失败", error);
     }
   }
 

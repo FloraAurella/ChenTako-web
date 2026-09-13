@@ -30,6 +30,8 @@ export interface ProviderEditingState {
   originalDraft: any;
   dirty: boolean;
   modelAliases: Record<string, string>;
+  saving?: boolean;
+  saveError?: string;
   apiKey: string;
   apiKeyVisible: boolean;
   apiKeyLoading: boolean;
@@ -49,6 +51,7 @@ export interface ProviderModelEditingState {
   error: string;
   draft: {
     id: string;
+    isDefault?: boolean;
     contextWindow: string;
     maxTokens: string;
     inherit: Record<ModelParameterKey, boolean>;
@@ -90,8 +93,8 @@ export interface MigrationBridge {
 }
 
 export function getMigrationBridge(): MigrationBridge | undefined {
-  return (window as unknown as { clawbox?: { migration?: MigrationBridge } })
-    .clawbox?.migration;
+  const bridges = window as unknown as { "ai-chatbox"?: { migration?: MigrationBridge }; clawbox?: { migration?: MigrationBridge } };
+  return (bridges["ai-chatbox"] ?? bridges.clawbox)?.migration;
 }
 
 export interface SettingsState {
@@ -133,7 +136,7 @@ export function createSettingsStateBridge(): SettingsStateBridge {
       ? null
       : {
           available: false,
-          reason: "迁移仅适用于打包后的 Clawbox macOS 桌面版。",
+          reason: "迁移仅适用于打包后的 ai-chatbox macOS 桌面版。",
           dataLocation: "",
           themeArchivePath: "",
           encryption: "",

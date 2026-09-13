@@ -4,7 +4,7 @@ import { ProvidersPane } from './ui/ProvidersPane';
 export const module: FrontendModule = {
  id: 'connections', setup({ services, scope }) {
   scope.defer(services.domains.register('connections', { id: 'providers', create: createProviderSettingsService,
-hasUnsaved: bridge => Boolean(bridge.get().providerEditing?.dirty || bridge.get().providerEditing?.modelEditing),
+hasUnsaved: bridge => Boolean(bridge.get().providerEditing?.dirty || bridge.get().providerEditing?.saving || bridge.get().providerEditing?.apiKeyDirty || bridge.get().providerEditing?.modelEditing),
 canLeave: (service, target) => service.beforeNavigate(target),
 reset: (bridge, route) => { if (!(route?.name === 'settings' && route.settingsSection === 'providers' && route.settingsProviderId) && bridge.get().providerEditing) bridge.patch({providerEditing:null}); },
 }));

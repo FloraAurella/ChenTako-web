@@ -30,3 +30,44 @@ describe("上下文设置事务", () => {
     expect(store.persist).not.toHaveBeenCalled(); expect(bridge.get().contextEditing?.error).not.toBe("");
   });
 });
+
+describe('上下文一级配置自动保存', () => {
+  it('连续输入期间保留最新草稿，串行写入后刷新原始基线', async () => {
+    let finish!: (value: boolean) => void;
+    const persist = vi.fn().mockImplementationOnce(() => new Promise<boolean>(resolve => { finish = resolve; })).mockResolvedValue(true);
+    const { service, bridge, store } = fixture(persist); service.begin();
+    service.setField('systemPrompt', 'first'); const first = service.save();
+    service.setField('systemPrompt', 'second'); const second = service.save();
+    expect(persist).toHaveBeenCalledTimes(1); finish(true);
+    await first; expect(bridge.get().contextEditing?.values.systemPrompt).toBe('second');
+    await second; expect(store.state.chatConfig.systemPrompt).toBe('second');
+    expect(bridge.get().contextEditing?.dirty).toBe(false); service.releaseEditor();
+  });
+  it('中文组合输入不提交中间拼音，完成输入自动提交', async () => {
+    vi.useFakeTimers();
+    const { service, store } = fixture(); service.begin();
+    try {
+      service.setComposing(true); service.setField('systemPrompt', 'zhong');
+      await vi.advanceTimersByTimeAsync(500); expect(store.persist).not.toHaveBeenCalled();
+      service.setField('systemPrompt', '中文'); service.setComposing(false);
+      await vi.advanceTimersByTimeAsync(320); expect(store.state.chatConfig.systemPrompt).toBe('中文');
+    } finally { service.releaseEditor(); vi.useRealTimers(); }
+  });
+  it('切换作用范围前提交即时编辑，错误时阻止丢弃输入', async () => {
+    const { service, store } = fixture(); service.begin();
+    service.setField('systemPrompt', 'saved on navigation');
+    expect(await service.beforeNavigate({ name: 'settings', settingsSection: 'context', settingsProjectId: 'p' })).toBe(true);
+    expect(store.state.chatConfig.systemPrompt).toBe('saved on navigation');
+    service.setField('temperature', '');
+    expect(await service.beforeNavigate({ name: 'chat' })).toBe(false); service.releaseEditor();
+  });
+  it('卸载取消尚未开始的写入，迟到的本地保存不重新创建编辑态', async () => {
+    vi.useFakeTimers();
+    const { service, store, bridge } = fixture(); service.begin();
+    try {
+      service.setField('systemPrompt', 'pending'); service.releaseEditor();
+      bridge.patch({ contextEditing: null }); await vi.advanceTimersByTimeAsync(500);
+      expect(store.persist).not.toHaveBeenCalled(); expect(bridge.get().contextEditing).toBeNull();
+    } finally { vi.useRealTimers(); }
+  });
+});

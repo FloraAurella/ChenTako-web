@@ -11,13 +11,20 @@ async function boot(overrides = {}) {
 afterAll(async () => { for (const server of servers.reverse()) await server.close(); });
 
 describe('gateway 集成', () => {
+  it('新品牌令牌头生效且旧令牌头继续兼容', async () => {
+    const server = await boot({ apiToken: 'test-brand-token' });
+    for (const header of ['x-ai-chatbox-token', 'x-clawbox-token']) {
+      expect((await fetch(`${server.baseUrl}/api/whatever`, { headers: { [header]: 'test-brand-token' } })).status).toBe(404);
+      expect((await fetch(`${server.baseUrl}/api/whatever`, { headers: { [header]: 'wrong' } })).status).toBe(401);
+    }
+  });
   it('health 返回前端要求的精确形状', async () => {
     const server = await boot();
     const response = await fetch(`${server.baseUrl}/api/health`);
     expect(response.status).toBe(200);
     const payload = await response.json();
     // 前端 backend-sync 只认 payload.ok === true；e2e mock 同时断言 service 名。
-    expect(payload).toEqual({ ok: true, service: 'clawbox-server' });
+    expect(payload).toEqual({ ok: true, service: 'ai-chatbox-server' });
     expect(response.headers.get('content-type')).toContain('application/json');
   });
 

@@ -3,7 +3,7 @@ import net from 'node:net';
 
 /**
  * SSRF 防护（原版 lib/upstream.ts 移植）：默认阻断 localhost/内网/链路本地地址，
- * 防止后端被当作跳板。允许列表由应用配置传入（CLAWBOX_SSRF_ALLOW）。
+ * 防止后端被当作跳板。允许列表由应用配置传入（AI_CHATBOX_SSRF_ALLOW）。
  */
 function isPrivateAddress(address: string): boolean {
   const ip = address.toLowerCase();
@@ -43,11 +43,11 @@ export async function validateUpstreamUrl(baseUrl: string, allowedHosts: readonl
   if (allowedHosts.includes(hostname)) return { ok: true };
 
   if (/^(localhost|.*\.local|.*\.internal)$/.test(hostname)) {
-    return { ok: false, reason: `不允许访问内部主机 ${hostname}（如需本地调试请配置 CLAWBOX_SSRF_ALLOW）` };
+    return { ok: false, reason: `不允许访问内部主机 ${hostname}（如需本地调试请配置 AI_CHATBOX_SSRF_ALLOW）` };
   }
   if (net.isIP(hostname) !== 0) {
     if (isPrivateAddress(hostname)) {
-      return { ok: false, reason: `不允许访问内网地址 ${hostname}（如需本地调试请配置 CLAWBOX_SSRF_ALLOW）` };
+      return { ok: false, reason: `不允许访问内网地址 ${hostname}（如需本地调试请配置 AI_CHATBOX_SSRF_ALLOW）` };
     }
     return { ok: true };
   }

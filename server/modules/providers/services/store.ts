@@ -49,10 +49,10 @@ export class ProviderStore {
   }
 
   private loadMasterKey(dataDir: string): Buffer {
-    const masterKeyEnv = process.env.CLAWBOX_MASTER_KEY ?? process.env.TRIBBLEBOOK_MASTER_KEY;
+    const masterKeyEnv = process.env.AI_CHATBOX_MASTER_KEY ?? process.env.CLAWBOX_MASTER_KEY ?? process.env.TRIBBLEBOOK_MASTER_KEY;
     if (masterKeyEnv) {
       const master = Buffer.from(String(masterKeyEnv), 'hex');
-      if (master.length !== 32) throw new Error('CLAWBOX_MASTER_KEY 必须是 64 位 hex（32 字节）');
+      if (master.length !== 32) throw new Error('AI_CHATBOX_MASTER_KEY 必须是 64 位 hex（32 字节）');
       return master;
     }
     const keyPath = join(dataDir, '.master-key');
@@ -229,7 +229,7 @@ export class ProviderStore {
   }
 
   private envKey(keyEnv: string): string {
-    return String((process.env[`CLAWBOX_API_KEY_${keyEnv}`] ?? process.env[`TRIBBLEBOOK_API_KEY_${keyEnv}`]) || '').trim();
+    return String((process.env[`AI_CHATBOX_API_KEY_${keyEnv}`] ?? process.env[`CLAWBOX_API_KEY_${keyEnv}`] ?? process.env[`TRIBBLEBOOK_API_KEY_${keyEnv}`]) || '').trim();
   }
 
   /** Key 来源优先级：加密库 > 环境变量。 */

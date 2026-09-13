@@ -2,8 +2,8 @@ import { test, expect } from "@playwright/test";
 const provider = { id: "settings-provider", displayName: "示例供应商", baseUrl: "https://example.com/v1", responseFormat: "openai-compatible", models: ["model-a", "model-b"], defaultModel: "model-a", contextWindow: 131072, maxTokens: 8192, hasKeyConfigured: true, systemPrompt: "obsolete-provider-prompt", temperature: 1.9 };
 const defaults = { systemPrompt: "聊天默认提示词", streaming: false, inputBudget: null, autoCompress: false, compressionThreshold: 80, defaultReasoningEffort: "medium", temperature: 0.7, topP: 1, saveChats: true, userId: "" };
 const saved = (page) => page.evaluate(() => JSON.parse(localStorage.getItem("tribblebook-v6-state")));
-async function load(page, { hash = "#/settings/context", config = {}, project = {}, conversation = {}, legacy = false, scheme = "light" } = {}) {
-  const seed = { settingsSchemaVersion: legacy ? undefined : 1, chatConfig: { ...defaults, ...config }, modelCompatibility: {}, providers: [provider], projects: [{ id: "p", name: "写作项目", createdAt: 1, configOverrides: project }], activeProviderId: provider.id, activeConversationId: "c", conversations: [{ id: "c", providerId: provider.id, model: "model-a", messages: [], saveChats: true, ...conversation }] };
+async function load(page, { hash = "#/settings/context", config = {}, project = {}, conversation = {}, legacy = false, scheme = "light", providerConfig = {} } = {}) {
+  const seed = { settingsSchemaVersion: legacy ? undefined : 1, chatConfig: { ...defaults, ...config }, modelCompatibility: {}, providers: [{ ...provider, ...providerConfig }], projects: [{ id: "p", name: "写作项目", createdAt: 1, configOverrides: project }], activeProviderId: provider.id, activeConversationId: "c", conversations: [{ id: "c", providerId: provider.id, model: "model-a", messages: [], saveChats: true, ...conversation }] };
   await page.addInitScript(({ seed, scheme }) => {
     if (!localStorage.getItem("settings-test-seeded")) {
       localStorage.setItem("settings-test-seeded", "1");
@@ -11,13 +11,14 @@ async function load(page, { hash = "#/settings/context", config = {}, project = 
       localStorage.setItem("tribblebook-ui-preferences-v1", JSON.stringify({ themeId: "everforest", appearanceMode: scheme }));
     }
   }, { seed, scheme });
+  await page.route("**/api/chat/title", r => r.fulfill({ json: { ok: true, title: "首次输入标题" } }));
   await page.route("**/api/health", (r) => r.fulfill({ json: { ok: true } }));
   await page.route("**/api/providers", (r) => r.fulfill({ json: { providers: [] } }));
   await page.route("**/api/providers/key*", (r) => r.fulfill({ json: { apiKey: "fixture" } }));
   await page.goto(`/${hash}`);
   await expect(page.locator("#appShell")).toBeVisible();
 }
-const save = async (page) => { await page.locator(".context-savebar").getByRole("button", { name: "保存更改" }).click(); await expect(page.locator(".context-savebar")).toContainText("配置已保存"); };
+const save = async (page) => { await expect(page.locator(".context-auto-state")).toContainText("已自动保存"); };
 
 test("聊天配置保存、项目空提示词覆盖与继承、重启", async ({ page }) => {
   await load(page, { config: { keepRecentTurns: 6 }, project: { keepRecentTurns: 2 } });
@@ -41,18 +42,14 @@ test("聊天配置保存、项目空提示词覆盖与继承、重启", async ({
   await save(page);
 });
 
-test("未保存的跨项目导航会询问，取消保留草稿", async ({ page }) => {
+test("一级配置跨项目导航前自动保存，项目继承最新配置", async ({ page }) => {
   await load(page);
-  await page.locator("#cc-systemPrompt").fill("未保存");
+  await page.locator("#cc-systemPrompt").fill("即时保存");
   await page.getByLabel("选择配置范围").selectOption("p");
-  await expect(page.locator(".dialog-card")).toContainText("有未保存的修改");
-  await page.locator('.dialog-card [data-role="cancel"]').click();
-  await expect(page).toHaveURL(/settings\/context$/);
-  await expect(page.locator("#cc-systemPrompt")).toHaveValue("未保存");
-  await page.getByLabel("选择配置范围").selectOption("p");
-  await page.locator('.dialog-card [data-role="confirm"]').click();
+  await expect(page.locator(".dialog-card")).toHaveCount(0);
   await expect(page.locator("#context-scope")).toHaveValue("p");
-  await expect(page.locator("#cc-systemPrompt")).toHaveValue("聊天默认提示词");
+  await expect(page.locator("#cc-systemPrompt")).toHaveValue("即时保存");
+  expect((await saved(page)).chatConfig.systemPrompt).toBe("即时保存");
 });
 
 test("新请求使用项目配置而非供应商提示词", async ({ page }) => {
@@ -69,31 +66,31 @@ test("新请求使用项目配置而非供应商提示词", async ({ page }) => 
   await expect(page.locator("#messageList")).toContainText("已完成");
 });
 
-test("达到预算阈值压缩全部已完成历史，保留待发送消息", async ({ page }) => {
+test("响应结束达到阈值压缩全部已完成历史，包含最新回答", async ({ page }) => {
   let sent = 0; let compressed;
   const messages = Array.from({ length: 4 }, (_, i) => [{ id: `u${i}`, role: "user", content: "历史内容".repeat(100) }, { id: `a${i}`, role: "assistant", content: "历史回复".repeat(100) }]).flat();
-  await load(page, { hash: "#/chat", config: { inputBudget: 1500, autoCompress: true }, conversation: { messages } });
+  await load(page, { hash: "#/chat", config: { compressionThreshold: 80 }, providerConfig: { contextWindow: 4000, maxTokens: 1000 }, conversation: { messages } });
   await page.route("**/api/chat/compress", async (r) => { compressed = r.request().postDataJSON(); await r.fulfill({ json: { summary: "此前讨论了项目计划。" } }); });
-  await page.route("**/api/chat", async (r) => { sent++; await r.fulfill({ json: { choices: [{ message: { role: "assistant", content: "继续" } }] } }); });
+  await page.route("**/api/chat", async (r) => { sent++; await r.fulfill({ json: { choices: [{ message: { role: "assistant", content: "继续".repeat(600) } }] } }); });
   await page.locator("#composerInput").fill("接着讲");
   await page.locator("#sendBtn").click();
   await expect.poll(() => sent).toBe(1);
-  expect(compressed.messages).toHaveLength(8);
-  expect(compressed.messages.every((m) => m.content !== "接着讲")).toBe(true);
+  await expect.poll(() => compressed?.messages?.length).toBe(10);
+  expect(compressed.messages.at(-2).content).toBe("接着讲");
   await expect(page.locator("#messageList")).toContainText("继续");
 });
 
-test("压缩失败保留草稿，不发送、不无限重试", async ({ page }) => {
+test("响应后压缩失败保留历史，不无限重试", async ({ page }) => {
   let attempts = 0; let sent = 0;
   const messages = Array.from({ length: 4 }, (_, i) => [{ id: `u${i}`, role: "user", content: "历史".repeat(500) }, { id: `a${i}`, role: "assistant", content: "回复".repeat(500) }]).flat();
-  await load(page, { hash: "#/chat", config: { inputBudget: 1000, autoCompress: true }, conversation: { messages } });
+  await load(page, { hash: "#/chat", config: { compressionThreshold: 80 }, providerConfig: { contextWindow: 6000, maxTokens: 1000 }, conversation: { messages } });
   await page.route("**/api/chat/compress", (r) => { attempts++; return r.fulfill({ status: 500, json: { error: "测试压缩失败" } }); });
-  await page.route("**/api/chat", (r) => { sent++; return r.abort(); });
+  await page.route("**/api/chat", (r) => { sent++; return r.fulfill({ json: { choices: [{ message: { content: "完成" } }] } }); });
   await page.locator("#composerInput").fill("保留这条输入");
   await page.locator("#sendBtn").click();
   await expect(page.locator("#page-chat")).toContainText("测试压缩失败");
-  await expect(page.locator("#composerInput")).toHaveValue("保留这条输入");
-  expect(attempts).toBe(1); expect(sent).toBe(0);
+  await expect(page.locator("#messageList")).toContainText("保留这条输入");
+  expect(attempts).toBe(1); expect(sent).toBe(1);
 });
 
 test("升级默认重置与无密钥备份；模型编辑仅有额度", async ({ page }) => {
@@ -105,7 +102,7 @@ test("升级默认重置与无密钥备份；模型编辑仅有额度", async ({
   await expect(page.locator(".settings-backup")).not.toContainText('"apiKey"');
   await page.locator('[data-section="providers"]').click();
   await page.locator('[data-edit-provider="settings-provider"]').click();
-  await page.locator('[data-model-row="model-a"] .provider-model-main').click();
+  await page.locator('[data-model-row="model-a"] .provider-model-edit').click();
   await expect(page.locator("#model-contextWindow")).toBeVisible();
   await expect(page.locator("#model-maxTokens")).toBeVisible();
   await expect(page.locator(".provider-model-advanced-toggle")).toHaveCount(0);
@@ -129,7 +126,7 @@ for (const width of [1024, 390]) {
   test(`设置分类 ${width} 宽度下分组、能力说明与页面宽度完整`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
     await load(page, { hash: "#/settings/appearance" });
-    for (const key of ["appearance", "providers", "context", "tools", "skills", "data", "about", "knowledge"]) {
+    for (const key of ["appearance", "providers", "context", "tools", "skills", "data", "about"]) {
       await page.goto(`/#/settings/${key}`);
       await expect(page.locator("#settingsContent .settings-pane").first()).toBeVisible();
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
@@ -156,7 +153,7 @@ for (const [width, scheme] of [[1280, "light"], [1024, "dark"], [390, "light"]])
   });
 }
 
-test("离开聊天后重新打开上下文页面，项目菜单与能力覆盖可用", async ({ page }) => {
+test("项目浮窗不导航，独立上下文设置保留能力覆盖", async ({ page }) => {
   await load(page);
   await page.locator("#cc-visionInput").selectOption("false");
   await save(page);
@@ -164,7 +161,10 @@ test("离开聊天后重新打开上下文页面，项目菜单与能力覆盖�
   await expect(page.locator("#composerInput")).toBeVisible();
   await page.locator('[data-project-id="p"] .project-row').hover();
   await page.locator('[data-project-id="p"] [data-project-action="menu"]').click();
-  await page.getByRole("menuitem", { name: "上下文与提示词" }).click();
+  await expect(page.getByRole("dialog", { name: "项目设置", exact: true })).toBeVisible();
+  await expect(page).toHaveURL(/#\/chat$/);
+  await page.getByRole("button", { name: "关闭项目设置", exact: true }).click();
+  await page.evaluate(() => { location.hash = "#/settings/context/p"; });
   await expect(page.locator("#context-scope")).toHaveValue("p");
   await expect(page.locator("#cc-visionInput")).toHaveValue("false");
   await page.evaluate(() => { location.hash = "#/chat"; });
@@ -172,9 +172,9 @@ test("离开聊天后重新打开上下文页面，项目菜单与能力覆盖�
   await expect(page.locator("#cc-systemPrompt")).toBeVisible();
 });
 
-test("自动压缩关闭时超预算保留输入，工具栏思考强度可恢复继承", async ({ page }) => {
+test("发送前超预算保留输入，工具栏思考强度可恢复继承", async ({ page }) => {
   let sent = 0;
-  await load(page, { hash: "#/chat", config: { inputBudget: 50, defaultReasoningEffort: "high" } });
+  await load(page, { hash: "#/chat", config: { defaultReasoningEffort: "high" }, providerConfig: { contextWindow: 1200, maxTokens: 1000 } });
   await page.route("**/api/chat", (r) => { sent++; return r.abort(); });
   await page.locator("#composerInput").fill("超出预算".repeat(100));
   await page.locator("#sendBtn").click();

@@ -2,6 +2,7 @@ import type { BackendContributions, BackendModule } from '../../contracts/contri
 import { serviceOf } from '../../contracts/contributions.ts';
 import { HttpError, readJsonBody, sendJson, type RouteContribution } from '../../core/router.ts';
 import type { UpstreamService } from '../upstream/public/module.ts';
+import { testModel } from './services/test-model.ts';
 import { ProviderStore } from './services/store.ts';
 import { publicView, validateApiKey, ProviderError } from './domain/registry-rules.ts';
 
@@ -129,9 +130,17 @@ export const module: BackendModule = {
         if (!apiKey && !upstream.isLoopbackBaseUrl(baseUrl)) {
           throw new HttpError('没有可用于测试的 API Key，请先填写 Key 或保存已有配置', 401);
         }
+        const model = body.model === undefined ? '' : String(body.model).trim();
+        if (body.model !== undefined && (typeof body.model !== 'string' || !model || model.length > 256)) throw new HttpError('模型 ID 必须为 1–256 字符', 400);
         const controller = new AbortController();
+        const disconnect = () => { if (!res.writableEnded) controller.abort(); };
+        res.on('close', disconnect);
         const timeout = setTimeout(() => controller.abort(), 15 * 1000);
         try {
+          if (model) {
+            sendJson(res, 200, await testModel(upstream, { baseUrl, responseFormat, apiKey, model, signal: controller.signal }));
+            return;
+          }
           const { models, latencyMs } = await upstream.listModels({ baseUrl, responseFormat, apiKey, signal: controller.signal });
           sendJson(res, 200, {
             ok: true,
@@ -142,11 +151,13 @@ export const module: BackendModule = {
         } catch (error) {
           const aborted = controller.signal.aborted || (error as Error).name === 'AbortError';
           if (aborted) throw new HttpError('连接测试超时（15 秒）', 504);
+          if (error instanceof HttpError) throw error;
           const upstreamStatus = (error as { upstreamStatus?: number }).upstreamStatus;
           const status = typeof upstreamStatus === 'number' && upstreamStatus >= 400 && upstreamStatus <= 599 ? upstreamStatus : 502;
           throw new HttpError((error as Error).message || '无法连接上游服务', status);
         } finally {
           clearTimeout(timeout);
+          res.off('close', disconnect);
         }
       }
     });

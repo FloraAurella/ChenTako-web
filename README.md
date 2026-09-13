@@ -302,6 +302,8 @@ VITE_DISABLED_MODULES=extensions,data npm run dev -- --port 5188 --strictPort
 
 指令菜单已按参考录屏校准为紧凑单行与唯一活动高亮，二级选项右侧标记当前值。键盘用法见 `/help`，录屏校准说明见 [品牌与指令改版](docs/BRAND_COMMANDS_UPDATE.md)。
 
+模型／思考强度等指令反馈在聊天滚动区显示为图标文字标签，复用压缩标记样式。`src/modules/chat/ui/ChatSurface.tsx` 提供反馈容器，`src/modules/commands/services/composer.tsx` 管理显示与清理，不写入聊天历史。
+
 新建对话先进入待发送界面，首次正式发言后才加入历史栏。同一项目反复新建会恢复已有待发送草稿。实现与兼容规则见 [待发送会话](docs/TEMPORARY_CONVERSATIONS.md)。
 
 聊天侧栏与设置目录统一使用 304px 宽度（共享样式令牌 `--sidebar-w`），较原聊天侧栏加宽 16px；手机保留抽屉与设置单列布局。

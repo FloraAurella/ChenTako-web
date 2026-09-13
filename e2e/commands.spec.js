@@ -31,6 +31,35 @@ async function command(page, text) {
   await page.locator('#sendBtn').click();
 }
 
+for (const scheme of ['light', 'dark']) {
+  for (const width of [1280, 1024, 390]) {
+    test(`聊天区域显示切换标签 ${scheme} ${width}`, async ({ page }, testInfo) => {
+      await page.setViewportSize({ width, height: 800 });
+      await load(page, { scheme, messages: history });
+      await command(page, '/model model-b');
+      const notice = page.locator('#messageScroll .command-feedback');
+      await expect(notice).toBeVisible();
+      await expect(notice).toContainText('模型已切换');
+      await expect(notice.locator('svg')).toHaveCount(1);
+      await expect(page.locator('.composer-inner .command-feedback')).toHaveCount(0);
+      const noticeBox = await notice.boundingBox();
+      const composerBox = await page.locator('.composer-zone').boundingBox();
+      expect(noticeBox.y + noticeBox.height).toBeLessThanOrEqual(composerBox.y);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+      await page.screenshot({ path: testInfo.outputPath('switch-notice.png') });
+      await command(page, '/effort high');
+      await expect(notice).toContainText('思考强度已设为');
+      await command(page, '/effort wrong');
+      await expect(notice).toHaveAttribute('data-tone', 'error');
+      await expect(page.locator('#composerInput')).toHaveValue('/effort wrong');
+      expect((await saved(page)).conversations.find(c => c.id === 'c').messages).toHaveLength(history.length);
+      if (await page.locator('#archiveDrawer').evaluate(el => el.inert)) await page.locator('#railExpandBtn:visible, #drawerToggleBtn:visible').first().click();
+      await page.locator('[data-conversation-id="other"]').first().click();
+      await expect(notice).toBeHidden();
+    });
+  }
+}
+
 test('无模型也能使用帮助，未知指令不会发送，附件保留', async ({ page }) => {
   let requests = 0;
   await page.route('**/api/chat', r => { requests++; return r.fulfill({ json: {} }); });

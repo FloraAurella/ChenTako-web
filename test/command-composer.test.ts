@@ -10,13 +10,13 @@ let current: CommandContext | null;
 let registry: Registry<CommandContribution>;
 const success = { status: 'success', message: '操作成功' } as const;
 beforeEach(() => {
-  document.body.innerHTML = '<div class="composer-inner"><textarea id="composerInput"></textarea></div>';
+  document.body.innerHTML = '<div id="commandNoticeHost"></div><div class="composer-inner"><textarea id="composerInput"></textarea></div>';
   input = document.querySelector('textarea')!;
   Element.prototype.scrollIntoView = vi.fn();
   current = { conversationId: 'one', models: [], effort: 'medium', followsConfig: true, busy: false, compactUnavailable: null,
     selectModel: () => success, selectEffort: () => success, compact: async () => success };
   registry = new Registry();
-  instance = createComposerCommands({ input, registry, context: () => current, beforeOpen: vi.fn() });
+  instance = createComposerCommands({ input, feedbackHost: document.querySelector('#commandNoticeHost')!, registry, context: () => current, beforeOpen: vi.fn() });
 });
 async function disposeInstance() {
   // dispose 将独立 React root 的卸载排在微任务里；act 必须等该微任务完成。

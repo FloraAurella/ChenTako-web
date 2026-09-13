@@ -11,8 +11,10 @@
 .command-option-check { margin-left: auto; }
 .command-panel-message, .command-help { color: var(--label-primary); font-size: 12px; line-height: 1.6; overflow-wrap: anywhere; padding: 8px; margin: 0; }
 .command-help p { margin: 0 0 12px; }
-.command-feedback { margin-top: 8px; font-size: 12px; line-height: 1.5; color: var(--label-primary); overflow-wrap: anywhere; }
-.command-feedback[data-tone="error"] { border-left: 2px solid var(--destructive); padding-left: 8px; }
+.command-notice-host { padding-top: 0; }
+.command-notice-host:not(:has(.command-feedback:not([hidden]))) { display: none; }
+.command-feedback { cursor: default; }
+.command-feedback .compress-notice-action { min-width: 0; color: var(--label); font-size: var(--size-body-sm); white-space: normal; overflow-wrap: anywhere; }
 .composer-hint { color: var(--label-primary); font-size: max(12px, var(--size-meta)); }
 .empty-lede, .empty-eyebrow, .sidebar-section .empty-list-note { color: var(--label-primary); }
 .sidebar-section .empty-list-note { padding-block: 4px; font-size: max(12px, var(--size-caption)); }

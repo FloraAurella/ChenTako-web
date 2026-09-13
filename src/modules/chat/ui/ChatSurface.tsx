@@ -18,6 +18,7 @@ export const ChatSurface = memo(function ChatSurface({ store, active = true }: {
   return <>
     <div className="message-scroll" id="messageScroll">
       <div className="message-list" id="messageList"><MessageList store={store} /></div>
+      <div className="message-list command-notice-host" id="commandNoticeHost" />
     </div>
     <div className="composer-zone">
       <div className="composer-inner">

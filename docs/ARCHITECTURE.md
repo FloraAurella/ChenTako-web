@@ -100,6 +100,8 @@ npm run test:e2e
 
 ## 指令系统扩展
 
+聊天视图提供独立于消息列表重渲染的反馈容器，经 commands 公共入口的 `feedbackHost` 契约注入。commands 使用共享 `StatusText` 与图标资源、压缩标记样式呈现通知，拥有计时器、输入／会话版本校验及 React root 释放；通知保持临时 UI 状态，不进入消息树、归档或模型请求。
+
 `FrontendContributions.commands` 注册指令。commands 模块负责解析、键盘及面板，chat 模块声明模型、强度和压缩操作，App 注入注册表。`contracts/commands.ts` 定义可用性检查、参数选项、执行结果和业务上下文。聊天按钮与指令共用运行配置服务；请求级快照隔离发送准备、自动压缩和配置变更。详见 [指令说明](COMMANDS.md)。
 
 ## 固定请求上下文

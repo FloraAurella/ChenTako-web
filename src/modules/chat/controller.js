@@ -280,7 +280,7 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
 
     bindMessageDelegation();
     bindComposerEvents();
-    if (commandRegistry) commands = createComposerCommands({ input: els.composerInput, registry: commandRegistry, context: commandContext, beforeOpen: closeActivePopover });
+    if (commandRegistry) commands = createComposerCommands({ input: els.composerInput, feedbackHost: page.querySelector("#commandNoticeHost"), registry: commandRegistry, context: commandContext, beforeOpen: closeActivePopover });
   }
 
   function bindComposerEvents() {

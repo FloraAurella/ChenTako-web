@@ -5,22 +5,26 @@ import type { Registry } from '../../../core/registry';
 import type { CommandContext, CommandContribution, CommandOption, CommandResult } from '../../../contracts/commands';
 import { parseCommandInput } from '../domain/parser';
 import { CommandPanel, type PanelView } from '../ui/CommandPanel';
+import { StatusText } from '../../../shared/ui/primitives';
+import { TrustedIcon } from '../../../shared/ui/Icon';
 
 interface ComposerBridge {
   input: HTMLTextAreaElement;
+  feedbackHost: HTMLElement;
   registry: Registry<CommandContribution>;
   context(): CommandContext | null;
   beforeOpen(): void;
 }
 /** Separate UI root: the legacy composer remains the owner of its textarea and draft. */
-export function createComposerCommands({ input, registry, context, beforeOpen }: ComposerBridge) {
+export function createComposerCommands({ input, feedbackHost, registry, context, beforeOpen }: ComposerBridge) {
   const scope = new Scope();
   const host = document.createElement('div');
   host.className = 'command-panel-host'; host.hidden = true; document.body.append(host);
   const feedback = document.createElement('div');
-  feedback.className = 'command-feedback'; feedback.setAttribute('role', 'status');
+  feedback.className = 'command-feedback compress-notice'; feedback.setAttribute('role', 'status');
   feedback.setAttribute('aria-live', 'polite'); feedback.hidden = true;
-  input.closest('.composer-inner')!.append(feedback);
+  feedbackHost.append(feedback);
+  const feedbackRoot = createRoot(feedback);
   const root = createRoot(host);
   let view: PanelView | null = null;
   let options: CommandOption[] = [];
@@ -81,8 +85,14 @@ export function createComposerCommands({ input, registry, context, beforeOpen }:
   }
   function report(message: string, error = false) {
     clearTimeout(feedbackTimer);
-    feedback.textContent = message; feedback.hidden = false;
+    flushSync(() => feedbackRoot.render(<>
+      <TrustedIcon name={error ? 'alert' : 'check'} size={14} className="compress-notice-icon" aria-hidden="true" />
+      <StatusText className="compress-notice-action">{message}</StatusText>
+    </>));
+    feedback.hidden = false;
     feedback.dataset.tone = error ? 'error' : 'success';
+    feedback.classList.toggle('is-error', error);
+    feedback.scrollIntoView({ block: 'nearest' });
     feedbackTimer = scope.timeout(() => { feedback.hidden = true; }, error ? 10000 : 6000);
   }
   function setText(text: string) {
@@ -215,7 +225,7 @@ export function createComposerCommands({ input, registry, context, beforeOpen }:
     dispose() {
       if (disposed) return;
       disposed = true;
-      scope.dispose(); close(); queueMicrotask(() => root.unmount()); host.remove(); feedback.remove();
+      scope.dispose(); close(); queueMicrotask(() => { root.unmount(); feedbackRoot.unmount(); }); host.remove(); feedback.remove();
     }
   };
 }

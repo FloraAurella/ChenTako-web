@@ -161,7 +161,7 @@ function reasoning(message, defaultOpen = false) {
   const duration = message.reasoningMs ? `（用时 ${formatDuration(message.reasoningMs)}）` : "";
   const open = message.reasoningOpen === true || (message.reasoningOpen === undefined && defaultOpen);
   const bodyId = reasoningBodyId(message.id);
-  return `<div class="reasoning-sheet" data-open="${open ? "true" : "false"}"><button type="button" class="reasoning-toggle" data-action="toggle-reasoning" aria-expanded="${open ? "true" : "false"}" aria-controls="${escapeAttr(bodyId)}"><span class="reasoning-mark">${icon("leaf", 16, "reasoning-icon")}</span><span class="reasoning-label">${label}</span><span class="reasoning-duration">${duration}</span><span class="chevron">${icon("chevronRight", 13)}</span></button><div class="reasoning-content"><div id="${escapeAttr(bodyId)}" class="reasoning-body markdown-body">${renderMarkdown(message.reasoning)}</div></div></div>`;
+  return `<div class="reasoning-sheet" data-open="${open ? "true" : "false"}"><button type="button" class="reasoning-toggle" data-action="toggle-reasoning" aria-expanded="${open ? "true" : "false"}" aria-controls="${escapeAttr(bodyId)}"><span class="reasoning-mark">${icon("leaf", 16, "reasoning-icon")}</span><span class="reasoning-label">${label}</span><span class="reasoning-duration">${duration}</span><span class="chevron">${icon("chevronRight", 13)}</span></button><div class="reasoning-content"><div class="reasoning-clip"><div id="${escapeAttr(bodyId)}" class="reasoning-body markdown-body">${renderMarkdown(message.reasoning)}</div></div></div></div>`;
 }
 
 function toolPart(part) {

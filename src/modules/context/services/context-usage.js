@@ -59,11 +59,22 @@ export function computeContextUsage(conversation, contextWindow, options = null)
       extensions: estimateContextTokens(options.extensions),
       reserved: options.maxTokens || 0
     };
+    const measuredHistory = computeContextUsage(conversation, contextWindow);
+    const hasMeasuredHistory = measuredHistory.measured === true;
+    // 最新供应商 totalTokens 已经包含该轮输入和输出，等价于下一轮历史上下文
+    // 的最佳快照；当前尚未发送的草稿再单独追加。没有真实快照时才退回字符估算。
+    const measuredUsed = measuredHistory.used + breakdown.draft;
+    const estimatedUsed = inputTokens + summaryTokens;
+    // 当前项目资料或提示词可能在真实快照之后增长；此时保留更高的当前估算，
+    // 避免为了匹配旧快照而放过已经超预算的新固定上下文。
+    const estimatedCurrentContextIsHigher = hasMeasuredHistory && estimatedUsed > measuredUsed;
+    const used = hasMeasuredHistory ? Math.max(measuredUsed, estimatedUsed) : estimatedUsed;
     let window = contextWindow;
     try { window = resolveInputBudget({ contextWindow, maxTokens: options.maxTokens }, options.config); } catch { /* Show exhausted budget; preflight supplies the actionable error. */ }
-    const used = inputTokens + summaryTokens;
-    return { breakdown, contextErrors: options.contextErrors || [], window, used, remaining: Math.max(0, window - used), percent: Math.min(1, used / window), inputTokens, outputTokens: 0, summaryTokens,
-      approximate: true, approximateInput: true, approximateSummary: true, approximateOutput: true,
+    const approximate = !hasMeasuredHistory || measuredHistory.approximate || breakdown.draft > 0 || estimatedCurrentContextIsHigher;
+    return { breakdown, contextErrors: options.contextErrors || [], window, used, remaining: Math.max(0, window - used), percent: Math.min(1, used / window), inputTokens: used, outputTokens: 0, summaryTokens: hasMeasuredHistory ? measuredHistory.summaryTokens : summaryTokens,
+      approximate, approximateInput: approximate, approximateSummary: !hasMeasuredHistory && summaryTokens > 0, approximateOutput: false,
+      measured: hasMeasuredHistory,
       compressed: Boolean(compression), compressedCount: compression?.compression.sourceMessageCount || 0 };
   }
   const window = contextWindow || LIMITS.defaultContextWindow;
@@ -109,6 +120,7 @@ export function computeContextUsage(conversation, contextWindow, options = null)
       approximateSummary: false,
       approximateOutput,
       approximate: approximateInput || approximateOutput,
+      measured: true,
       compressed: Boolean(compression),
       compressedCount: compression ? compression.compression.sourceMessageCount : 0
     };
@@ -149,6 +161,7 @@ export function computeContextUsage(conversation, contextWindow, options = null)
     approximateSummary: summaryTokens > 0,
     approximateOutput: !outputFromProvider,
     approximate: true,
+    measured: false,
     compressed: Boolean(compression),
     compressedCount: compression ? compression.compression.sourceMessageCount : 0
   };

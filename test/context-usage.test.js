@@ -61,6 +61,30 @@ describe("computeContextUsage", () => {
     expect(usage.approximate).toBe(false);
   });
 
+  it("带请求配置的圆环与压缩判断仍优先使用真实 totalTokens", () => {
+    const conversation = makeConversation([
+      userMessage("u1", "字符估算会明显偏小"),
+      assistantMessage("a1", "简短显示文本", {
+        inputTokens: 603,
+        outputTokens: 3104,
+        totalTokens: 3707,
+        estimated: false
+      })
+    ]);
+    const usage = computeContextUsage(conversation, 200000, {
+      config: { systemPrompt: "" }, fixedContext: "", maxTokens: 10000, extensions: { tools: [], skills: [] }
+    });
+    expect(usage.used).toBe(3707);
+    expect(usage.measured).toBe(true);
+    expect(usage.approximate).toBe(false);
+
+    const expanded = computeContextUsage(conversation, 200000, {
+      config: { systemPrompt: "" }, fixedContext: "资料".repeat(5000), maxTokens: 10000, extensions: { tools: [], skills: [] }
+    });
+    expect(expanded.used).toBeGreaterThan(3707);
+    expect(expanded.approximate).toBe(true);
+  });
+
   it("真实 usage 快照之后只估算新增消息，下一次真实 usage 到达前不重复历史", () => {
     const chars = LIMITS.estimateCharsPerToken;
     const conversation = makeConversation([

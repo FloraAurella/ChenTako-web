@@ -71,7 +71,7 @@ test("响应结束达到阈值压缩全部已完成历史，包含最新回答",
   const messages = Array.from({ length: 4 }, (_, i) => [{ id: `u${i}`, role: "user", content: "历史内容".repeat(100) }, { id: `a${i}`, role: "assistant", content: "历史回复".repeat(100) }]).flat();
   await load(page, { hash: "#/chat", config: { compressionThreshold: 80 }, providerConfig: { contextWindow: 4000, maxTokens: 1000 }, conversation: { messages } });
   await page.route("**/api/chat/compress", async (r) => { compressed = r.request().postDataJSON(); await r.fulfill({ json: { summary: "此前讨论了项目计划。" } }); });
-  await page.route("**/api/chat", async (r) => { sent++; await r.fulfill({ json: { choices: [{ message: { role: "assistant", content: "继续".repeat(600) } }] } }); });
+  await page.route("**/api/chat", async (r) => { sent++; await r.fulfill({ json: { choices: [{ message: { role: "assistant", content: "继续".repeat(300) } }], usage: { prompt_tokens: 3000, completion_tokens: 500, total_tokens: 3500 } } }); });
   await page.locator("#composerInput").fill("接着讲");
   await page.locator("#sendBtn").click();
   await expect.poll(() => sent).toBe(1);

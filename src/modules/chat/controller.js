@@ -77,7 +77,6 @@ import {
 import { icon } from "../../resources/icons/index.js";
 import {
   formatDuration,
-  formatTokenCount,
   truncateText,
   downloadBlob,
   copyText,
@@ -1386,6 +1385,18 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
   }
 
   /** 常驻圆环：只改弧线偏移与可访问名称，不重建 SVG。 */
+  function requestContextUsage(conversation, request, draft = null) {
+    const modelConfig = resolveEffectiveModelConfig(request.provider, request.model);
+    return computeContextUsage(conversation, request.provider ? modelConfig.contextWindow : contextWindowOf(conversation), {
+      config: { ...request.config, systemPrompt: request.baseSystemPrompt },
+      fixedContext: request.fixedContext,
+      contextErrors: request.contextErrors,
+      draft,
+      maxTokens: modelConfig.maxTokens,
+      extensions: request.extensions
+    });
+  }
+
   function composerContextUsage(conversation) {
     const request = resolveRequestParts(conversation);
     const { text, pending } = composerPayload();
@@ -1393,9 +1404,7 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
     const draft = (text || pending.length) && parsed.kind !== 'command' ? { role: 'user', content: parsed.text,
       files: pending.filter(item => item.kind === 'file').map(item => ({ name: item.name, text: item.text })),
       parts: pending.filter(item => item.kind !== 'file').map(item => ({ type: item.kind === 'image' ? 'image' : 'file', source: item.source, size: item.size })) } : null;
-    return computeContextUsage(conversation, contextWindowOf(conversation), { config: { ...request.config, systemPrompt: request.baseSystemPrompt },
-      fixedContext: request.fixedContext, contextErrors: request.contextErrors, draft,
-      maxTokens: resolveEffectiveModelConfig(request.provider, request.model).maxTokens, extensions: request.extensions });
+    return requestContextUsage(conversation, request, draft);
   }
 
   function refreshContextRing() {
@@ -1412,12 +1421,6 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
     els.usageBtn.classList.toggle("is-compressing", isCompressing);
     if (contextTooltipEl && contextTooltipEl.classList.contains("is-open") && usage) {
       contextTooltipEl.innerHTML = contextTooltipLinesMarkup(usage);
-      const percentLine = contextTooltipEl.querySelector("[data-tooltip-percent]");
-      const windowLine = contextTooltipEl.querySelector("[data-tooltip-window]");
-      if (percentLine) percentLine.textContent = `${percentText}% 已用`;
-      if (windowLine) {
-        windowLine.textContent = `已用 ${formatTokenCount(usage.used)} Tokens，预算 ${formatTokenCount(usage.window)}`;
-      }
     }
   }
 
@@ -1522,10 +1525,7 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
 
   const preparingIds = new Set();
   function contextEstimate(conversation, config, extra = null, request = captureRequest(conversation, config)) {
-    return estimateContextTokens({ systemPrompt: request.config.systemPrompt,
-      contextSummary: getValidContextCompression(conversation)?.compression.summary || "",
-      messages: [...requestMessages(conversation), ...(extra ? [extra] : [])],
-      extensions: request.extensions });
+    return requestContextUsage(conversation, request, extra).used;
   }
   async function prepareContext(conversation, config, extra = null, request = captureRequest(conversation, config)) {
     config = request.config;
@@ -1744,7 +1744,7 @@ export function createChatController({ store, theme, dialogs, shell, toast, back
       `<span class="reasoning-duration"></span>`,
       `<span class="chevron">${icon("chevronRight", 13)}</span>`,
       `</button>`,
-      `<div class="reasoning-content"><div id="${bodyId}" class="reasoning-body markdown-body"></div></div>`
+      `<div class="reasoning-content"><div class="reasoning-clip"><div id="${bodyId}" class="reasoning-body markdown-body"></div></div></div>`
     ].join("");
   }
 

@@ -42,13 +42,9 @@ export function contextTooltipLinesMarkup(usage) {
   const percent = Math.round(usage.percent * 100);
   const used = formatTokenCount(usage.used);
   const win = formatTokenCount(usage.window);
-  const breakdown = usage.breakdown ? [
-    ['指令 / 系统提示词', usage.breakdown.system], ['固定项目资料', usage.breakdown.fixed],
-    ['历史与摘要', usage.breakdown.history], ['本次输入与附件', usage.breakdown.draft],
-    ['扩展定义', usage.breakdown.extensions], ['输出预留（预算外）', usage.breakdown.reserved]
-  ].map(([label, value]) => `<span class="context-tooltip-line">${label}：约 ${formatTokenCount(value)}</span>`).join('') : '';
+  const approximate = usage.approximate ? '约 ' : '';
   const error = usage.contextErrors?.length ? '<span class="context-tooltip-line">项目资料不完整，请检查知识库</span>' : '';
-  return `<span class="context-tooltip-title" data-tooltip-title>上下文用量</span><span class="context-tooltip-line is-primary" data-tooltip-percent>${percent}% 已用</span><span class="context-tooltip-line" data-tooltip-window>已用 ${used} Tokens，预算 ${win}</span>${breakdown}${error}<span class="context-tooltip-hint" data-tooltip-hint>估算含请求开销 · 点击请求模型压缩历史</span>`;
+  return `<span class="context-tooltip-title" data-tooltip-title>上下文用量</span><span class="context-tooltip-line is-primary" data-tooltip-usage>${percent}% · ${approximate}${used} / ${win} Tokens</span>${error}<span class="context-tooltip-hint" data-tooltip-hint>点击压缩历史</span>`;
 }
 
 // @deprecated — 二级额度弹层已移除（点击改为一键压缩），保留导出以兼容历史引用

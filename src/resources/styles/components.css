@@ -1278,14 +1278,14 @@ body.prefers-reduced-motion .response-spinner {
 /* ---------------- 思考过程面板（reasoning sheet） ---------------- */
 
 .reasoning-sheet {
-  margin: 2px 0 16px;
+  margin: 0 0 8px;
   background: transparent;
   color: var(--label-secondary);
   overflow: visible;
 }
 
 .reasoning-toggle {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 6px;
   width: auto;
@@ -1356,6 +1356,12 @@ body.prefers-reduced-motion .response-spinner {
 .reasoning-sheet[data-open="true"] .reasoning-content {
   grid-template-rows: 1fr;
   opacity: 1;
+}
+
+/* 无内边距的折叠层才能真正收至 0，正文内边距留在内部。 */
+.reasoning-clip {
+  min-height: 0;
+  overflow: hidden;
 }
 
 .reasoning-body {

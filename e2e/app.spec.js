@@ -227,6 +227,21 @@ test("流式对话：思考面板 + Markdown 正文 + 元数据", async ({ page 
   await page.click("#sendBtn");
   await expect(page.locator(".message-entry.user .markdown-body")).toContainText("打个招呼");
   await expect(page.locator(".reasoning-sheet")).toContainText("已思考", { timeout: 8000 });
+  const reasoningToggle = page.locator(".reasoning-toggle");
+  if (await reasoningToggle.getAttribute("aria-expanded") === "true") await reasoningToggle.click();
+  await expect.poll(() => page.locator(".reasoning-content").evaluate(el => el.getBoundingClientRect().height)).toBe(0);
+  const gaps = await page.locator(".message-entry.assistant").evaluate(el => {
+    const head = el.querySelector(".assistant-head").getBoundingClientRect();
+    const toggle = el.querySelector(".reasoning-toggle").getBoundingClientRect();
+    const body = el.querySelector(".message-body").getBoundingClientRect();
+    return { above: toggle.top - head.bottom, below: body.top - toggle.bottom };
+  });
+  expect(gaps.above).toBe(gaps.below);
+  await reasoningToggle.click();
+  await expect.poll(() => page.locator(".reasoning-content").evaluate(el => el.getBoundingClientRect().height)).toBeGreaterThan(8);
+  await expect(page.locator(".reasoning-body")).toContainText("先想一下用户要什么");
+  await reasoningToggle.click();
+  await expect.poll(() => page.locator(".reasoning-content").evaluate(el => el.getBoundingClientRect().height)).toBe(0);
   await expect(page.locator(".message-entry.assistant .message-body .markdown-body")).toContainText("ai-chatbox");
   await expect(page.locator(".message-entry.assistant .message-body .markdown-body strong")).toHaveText("ai-chatbox");
   await expect(page.locator(".message-entry.assistant")).toContainText("tokens");
@@ -1240,15 +1255,17 @@ test("额度提示原位更新（tooltip 活更新，不重建）", async ({ pag
   await page.focus("#usageBtn");
   const tooltip = page.locator("#contextTooltip");
   await expect(tooltip).toHaveClass(/is-open/);
-  const before = await tooltip.locator("[data-tooltip-window]").textContent();
-  await expect.poll(() => tooltip.locator("[data-tooltip-window]").textContent(), { timeout: 8000 }).not.toBe(before);
+  const before = await tooltip.locator("[data-tooltip-usage]").textContent();
+  await expect.poll(() => tooltip.locator("[data-tooltip-usage]").textContent(), { timeout: 8000 }).not.toBe(before);
   await expect(tooltip).toHaveClass(/is-open/);
 });
 
-test("额度提示：悬停显示 3+1 行且单行不折行", async ({ page }) => {
+test("额度提示：真实 token 与消息脚注一致，悬停只显示精简信息", async ({ page }) => {
+  const conversation = seededConversation("conv-a", "对话甲");
+  conversation.messages[1].usage = { inputTokens: 603, outputTokens: 3104, totalTokens: 3707, estimated: false };
   const state = {
     ...SEED_STATE,
-    conversations: [seededConversation("conv-a", "对话甲")],
+    conversations: [conversation],
     activeConversationId: "conv-a"
   };
   await seedAndLoad(page, { state });
@@ -1256,23 +1273,31 @@ test("额度提示：悬停显示 3+1 行且单行不折行", async ({ page }) =
   await page.locator("#usageBtn").hover();
   const tooltip = page.locator("#contextTooltip");
   await expect(tooltip).toHaveClass(/is-open/);
-  // 标题、用量百分比与已用／预算 token（当前共享令牌实现为权威文案）
   await expect(tooltip.locator("[data-tooltip-title]")).toHaveText("上下文用量");
-  await expect(tooltip.locator("[data-tooltip-percent]")).toContainText(/%\s*已用/);
-  await expect(tooltip.locator("[data-tooltip-window]")).toContainText(/已用 .+ Tokens，预算 /);
-  // 分类明细行（指令／资料／历史／输入等占用可分别解释）
-  await expect(tooltip.locator(".context-tooltip-line").filter({ hasText: "历史与摘要" })).toHaveCount(1);
-  await expect(tooltip.locator(".context-tooltip-line").filter({ hasText: "本次输入与附件" })).toHaveCount(1);
-  // 估算说明与点击压缩入口
-  await expect(tooltip.locator("[data-tooltip-hint]")).toContainText("估算含请求开销");
-  await expect(tooltip.locator("[data-tooltip-hint]")).toContainText("点击压缩历史");
-  // 数值行保持单行不折行（旧版「剩余上下文」回归为 tooltip 次行）
-  const info = await tooltip.locator("[data-tooltip-window]").evaluate((el) => ({
+  await expect(tooltip.locator("[data-tooltip-usage]")).toContainText("3707");
+  await expect(page.locator('.message-entry.assistant .message-meta')).toContainText("3707 tokens");
+  await expect(tooltip.locator(".context-tooltip-line").filter({ hasText: "历史与摘要" })).toHaveCount(0);
+  await expect(tooltip.locator("[data-tooltip-hint]")).toHaveText("点击压缩历史");
+  const info = await tooltip.locator("[data-tooltip-usage]").evaluate((el) => ({
     whiteSpace: getComputedStyle(el).whiteSpace,
     height: Math.round(el.getBoundingClientRect().height)
   }));
   expect(info.whiteSpace).toBe("nowrap");
   expect(info.height).toBeLessThan(24);
+
+  for (const scheme of ["light", "dark"]) for (const width of [1280, 1024, 390]) {
+    await page.setViewportSize({ width, height: 800 });
+    await page.evaluate((appearanceMode) => localStorage.setItem("tribblebook-ui-preferences-v1", JSON.stringify({ themeId: "everforest", appearanceMode })), scheme);
+    await page.reload();
+    await page.locator("#usageBtn").hover();
+    const layout = await page.locator("#contextTooltip").evaluate((element) => {
+      const rect = element.getBoundingClientRect();
+      return { pageFits: document.documentElement.scrollWidth <= innerWidth, left: rect.left, right: rect.right, viewport: innerWidth };
+    });
+    expect(layout.pageFits).toBe(true);
+    expect(layout.left).toBeGreaterThanOrEqual(0);
+    expect(layout.right).toBeLessThanOrEqual(layout.viewport);
+  }
 });
 
 test("压缩上下文：点击直接压缩，按会话锁定发送，进度提示可回看", async ({ page }) => {

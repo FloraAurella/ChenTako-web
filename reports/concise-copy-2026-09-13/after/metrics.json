@@ -1,0 +1,590 @@
+[
+  {
+    "surface": "chat",
+    "scheme": "light",
+    "width": 1280,
+    "characters": 174,
+    "overflow": false
+  },
+  {
+    "surface": "project",
+    "scheme": "light",
+    "width": 1280,
+    "characters": 308,
+    "overflow": false
+  },
+  {
+    "surface": "appearance",
+    "scheme": "light",
+    "width": 1280,
+    "characters": 197,
+    "overflow": false
+  },
+  {
+    "surface": "providers",
+    "scheme": "light",
+    "width": 1280,
+    "characters": 375,
+    "overflow": false
+  },
+  {
+    "surface": "context",
+    "scheme": "light",
+    "width": 1280,
+    "characters": 515,
+    "overflow": false
+  },
+  {
+    "surface": "tools",
+    "scheme": "light",
+    "width": 1280,
+    "characters": 138,
+    "overflow": false
+  },
+  {
+    "surface": "tool-editor",
+    "scheme": "light",
+    "width": 1280,
+    "characters": 191,
+    "overflow": false
+  },
+  {
+    "surface": "skills",
+    "scheme": "light",
+    "width": 1280,
+    "characters": 140,
+    "overflow": false
+  },
+  {
+    "surface": "data",
+    "scheme": "light",
+    "width": 1280,
+    "characters": 166,
+    "overflow": false
+  },
+  {
+    "surface": "about",
+    "scheme": "light",
+    "width": 1280,
+    "characters": 125,
+    "overflow": false
+  },
+  {
+    "surface": "onboarding",
+    "scheme": "light",
+    "width": 1280,
+    "characters": 228,
+    "overflow": false
+  },
+  {
+    "surface": "provider-detail",
+    "scheme": "light",
+    "width": 1280,
+    "characters": 375,
+    "overflow": false
+  },
+  {
+    "surface": "provider-create",
+    "scheme": "light",
+    "width": 1280,
+    "characters": 504,
+    "overflow": false
+  },
+  {
+    "surface": "model-edit",
+    "scheme": "light",
+    "width": 1280,
+    "characters": 430,
+    "overflow": false
+  },
+  {
+    "surface": "chat",
+    "scheme": "light",
+    "width": 1024,
+    "characters": 132,
+    "overflow": false
+  },
+  {
+    "surface": "project",
+    "scheme": "light",
+    "width": 1024,
+    "characters": 308,
+    "overflow": false
+  },
+  {
+    "surface": "appearance",
+    "scheme": "light",
+    "width": 1024,
+    "characters": 197,
+    "overflow": false
+  },
+  {
+    "surface": "providers",
+    "scheme": "light",
+    "width": 1024,
+    "characters": 358,
+    "overflow": false
+  },
+  {
+    "surface": "context",
+    "scheme": "light",
+    "width": 1024,
+    "characters": 515,
+    "overflow": false
+  },
+  {
+    "surface": "tools",
+    "scheme": "light",
+    "width": 1024,
+    "characters": 138,
+    "overflow": false
+  },
+  {
+    "surface": "tool-editor",
+    "scheme": "light",
+    "width": 1024,
+    "characters": 191,
+    "overflow": false
+  },
+  {
+    "surface": "skills",
+    "scheme": "light",
+    "width": 1024,
+    "characters": 140,
+    "overflow": false
+  },
+  {
+    "surface": "data",
+    "scheme": "light",
+    "width": 1024,
+    "characters": 166,
+    "overflow": false
+  },
+  {
+    "surface": "about",
+    "scheme": "light",
+    "width": 1024,
+    "characters": 125,
+    "overflow": false
+  },
+  {
+    "surface": "onboarding",
+    "scheme": "light",
+    "width": 1024,
+    "characters": 228,
+    "overflow": false
+  },
+  {
+    "surface": "provider-detail",
+    "scheme": "light",
+    "width": 1024,
+    "characters": 375,
+    "overflow": false
+  },
+  {
+    "surface": "provider-create",
+    "scheme": "light",
+    "width": 1024,
+    "characters": 504,
+    "overflow": false
+  },
+  {
+    "surface": "model-edit",
+    "scheme": "light",
+    "width": 1024,
+    "characters": 430,
+    "overflow": false
+  },
+  {
+    "surface": "chat",
+    "scheme": "light",
+    "width": 390,
+    "characters": 138,
+    "overflow": false
+  },
+  {
+    "surface": "project",
+    "scheme": "light",
+    "width": 390,
+    "characters": 312,
+    "overflow": false
+  },
+  {
+    "surface": "appearance",
+    "scheme": "light",
+    "width": 390,
+    "characters": 199,
+    "overflow": false
+  },
+  {
+    "surface": "providers",
+    "scheme": "light",
+    "width": 390,
+    "characters": 84,
+    "overflow": false
+  },
+  {
+    "surface": "context",
+    "scheme": "light",
+    "width": 390,
+    "characters": 519,
+    "overflow": false
+  },
+  {
+    "surface": "tools",
+    "scheme": "light",
+    "width": 390,
+    "characters": 142,
+    "overflow": false
+  },
+  {
+    "surface": "tool-editor",
+    "scheme": "light",
+    "width": 390,
+    "characters": 195,
+    "overflow": false
+  },
+  {
+    "surface": "skills",
+    "scheme": "light",
+    "width": 390,
+    "characters": 144,
+    "overflow": false
+  },
+  {
+    "surface": "data",
+    "scheme": "light",
+    "width": 390,
+    "characters": 170,
+    "overflow": false
+  },
+  {
+    "surface": "about",
+    "scheme": "light",
+    "width": 390,
+    "characters": 129,
+    "overflow": false
+  },
+  {
+    "surface": "onboarding",
+    "scheme": "light",
+    "width": 390,
+    "characters": 220,
+    "overflow": false
+  },
+  {
+    "surface": "provider-detail",
+    "scheme": "light",
+    "width": 390,
+    "characters": 361,
+    "overflow": false
+  },
+  {
+    "surface": "provider-create",
+    "scheme": "light",
+    "width": 390,
+    "characters": 213,
+    "overflow": false
+  },
+  {
+    "surface": "model-edit",
+    "scheme": "light",
+    "width": 390,
+    "characters": 416,
+    "overflow": false
+  },
+  {
+    "surface": "chat",
+    "scheme": "dark",
+    "width": 1280,
+    "characters": 174,
+    "overflow": false
+  },
+  {
+    "surface": "project",
+    "scheme": "dark",
+    "width": 1280,
+    "characters": 308,
+    "overflow": false
+  },
+  {
+    "surface": "appearance",
+    "scheme": "dark",
+    "width": 1280,
+    "characters": 197,
+    "overflow": false
+  },
+  {
+    "surface": "providers",
+    "scheme": "dark",
+    "width": 1280,
+    "characters": 375,
+    "overflow": false
+  },
+  {
+    "surface": "context",
+    "scheme": "dark",
+    "width": 1280,
+    "characters": 515,
+    "overflow": false
+  },
+  {
+    "surface": "tools",
+    "scheme": "dark",
+    "width": 1280,
+    "characters": 138,
+    "overflow": false
+  },
+  {
+    "surface": "tool-editor",
+    "scheme": "dark",
+    "width": 1280,
+    "characters": 191,
+    "overflow": false
+  },
+  {
+    "surface": "skills",
+    "scheme": "dark",
+    "width": 1280,
+    "characters": 140,
+    "overflow": false
+  },
+  {
+    "surface": "data",
+    "scheme": "dark",
+    "width": 1280,
+    "characters": 166,
+    "overflow": false
+  },
+  {
+    "surface": "about",
+    "scheme": "dark",
+    "width": 1280,
+    "characters": 125,
+    "overflow": false
+  },
+  {
+    "surface": "onboarding",
+    "scheme": "dark",
+    "width": 1280,
+    "characters": 228,
+    "overflow": false
+  },
+  {
+    "surface": "provider-detail",
+    "scheme": "dark",
+    "width": 1280,
+    "characters": 375,
+    "overflow": false
+  },
+  {
+    "surface": "provider-create",
+    "scheme": "dark",
+    "width": 1280,
+    "characters": 504,
+    "overflow": false
+  },
+  {
+    "surface": "model-edit",
+    "scheme": "dark",
+    "width": 1280,
+    "characters": 430,
+    "overflow": false
+  },
+  {
+    "surface": "chat",
+    "scheme": "dark",
+    "width": 1024,
+    "characters": 132,
+    "overflow": false
+  },
+  {
+    "surface": "project",
+    "scheme": "dark",
+    "width": 1024,
+    "characters": 308,
+    "overflow": false
+  },
+  {
+    "surface": "appearance",
+    "scheme": "dark",
+    "width": 1024,
+    "characters": 197,
+    "overflow": false
+  },
+  {
+    "surface": "providers",
+    "scheme": "dark",
+    "width": 1024,
+    "characters": 375,
+    "overflow": false
+  },
+  {
+    "surface": "context",
+    "scheme": "dark",
+    "width": 1024,
+    "characters": 515,
+    "overflow": false
+  },
+  {
+    "surface": "tools",
+    "scheme": "dark",
+    "width": 1024,
+    "characters": 138,
+    "overflow": false
+  },
+  {
+    "surface": "tool-editor",
+    "scheme": "dark",
+    "width": 1024,
+    "characters": 191,
+    "overflow": false
+  },
+  {
+    "surface": "skills",
+    "scheme": "dark",
+    "width": 1024,
+    "characters": 140,
+    "overflow": false
+  },
+  {
+    "surface": "data",
+    "scheme": "dark",
+    "width": 1024,
+    "characters": 166,
+    "overflow": false
+  },
+  {
+    "surface": "about",
+    "scheme": "dark",
+    "width": 1024,
+    "characters": 125,
+    "overflow": false
+  },
+  {
+    "surface": "onboarding",
+    "scheme": "dark",
+    "width": 1024,
+    "characters": 228,
+    "overflow": false
+  },
+  {
+    "surface": "provider-detail",
+    "scheme": "dark",
+    "width": 1024,
+    "characters": 375,
+    "overflow": false
+  },
+  {
+    "surface": "provider-create",
+    "scheme": "dark",
+    "width": 1024,
+    "characters": 504,
+    "overflow": false
+  },
+  {
+    "surface": "model-edit",
+    "scheme": "dark",
+    "width": 1024,
+    "characters": 430,
+    "overflow": false
+  },
+  {
+    "surface": "chat",
+    "scheme": "dark",
+    "width": 390,
+    "characters": 138,
+    "overflow": false
+  },
+  {
+    "surface": "project",
+    "scheme": "dark",
+    "width": 390,
+    "characters": 312,
+    "overflow": false
+  },
+  {
+    "surface": "appearance",
+    "scheme": "dark",
+    "width": 390,
+    "characters": 199,
+    "overflow": false
+  },
+  {
+    "surface": "providers",
+    "scheme": "dark",
+    "width": 390,
+    "characters": 84,
+    "overflow": false
+  },
+  {
+    "surface": "context",
+    "scheme": "dark",
+    "width": 390,
+    "characters": 519,
+    "overflow": false
+  },
+  {
+    "surface": "tools",
+    "scheme": "dark",
+    "width": 390,
+    "characters": 142,
+    "overflow": false
+  },
+  {
+    "surface": "tool-editor",
+    "scheme": "dark",
+    "width": 390,
+    "characters": 195,
+    "overflow": false
+  },
+  {
+    "surface": "skills",
+    "scheme": "dark",
+    "width": 390,
+    "characters": 144,
+    "overflow": false
+  },
+  {
+    "surface": "data",
+    "scheme": "dark",
+    "width": 390,
+    "characters": 170,
+    "overflow": false
+  },
+  {
+    "surface": "about",
+    "scheme": "dark",
+    "width": 390,
+    "characters": 129,
+    "overflow": false
+  },
+  {
+    "surface": "onboarding",
+    "scheme": "dark",
+    "width": 390,
+    "characters": 220,
+    "overflow": false
+  },
+  {
+    "surface": "provider-detail",
+    "scheme": "dark",
+    "width": 390,
+    "characters": 361,
+    "overflow": false
+  },
+  {
+    "surface": "provider-create",
+    "scheme": "dark",
+    "width": 390,
+    "characters": 213,
+    "overflow": false
+  },
+  {
+    "surface": "model-edit",
+    "scheme": "dark",
+    "width": 390,
+    "characters": 416,
+    "overflow": false
+  }
+]

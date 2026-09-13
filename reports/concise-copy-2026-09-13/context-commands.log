@@ -1,0 +1,36 @@
+[WebServer] (node:57316) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+
+Running 19 tests using 1 worker
+
+(node:57318) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/19] [chromium] › e2e/commands.spec.js:204:1 › 压缩失败保留指令和附件且不创建普通指令消息
+[2/19] [chromium] › e2e/commands.spec.js:243:3 › 空状态 offline 准确引导
+[3/19] [chromium] › e2e/commands.spec.js:243:3 › 空状态 unconfigured 准确引导
+[4/19] [chromium] › e2e/commands.spec.js:243:3 › 空状态 ready 准确引导
+[5/19] [chromium] › e2e/commands.spec.js:259:1 › 帮助支持键盘滚动并在 Escape 后恢复输入焦点
+[6/19] [chromium] › e2e/commands.spec.js:279:3 › 默认 light 辅助文字与选择项对比度至少 4.5
+[chromium] › e2e/commands.spec.js:279:3 › 默认 light 辅助文字与选择项对比度至少 4.5
+{"scheme":"light","minimumContrast":4.939821813939516,"samples":[{"element":"empty-lede","ratio":7.7121110950021645,"size":16},{"element":"composer-hint","ratio":7.381139129902347,"size":12},{"element":"command-option-detail","ratio":4.939821813939516,"size":13.5},{"element":"command-option-detail","ratio":5.929444069809155,"size":13.5},{"element":"command-option-detail","ratio":5.929444069809155,"size":13.5},{"element":"command-option-detail","ratio":5.929444069809155,"size":13.5}]}
+
+[7/19] [chromium] › e2e/commands.spec.js:279:3 › 默认 dark 辅助文字与选择项对比度至少 4.5
+[chromium] › e2e/commands.spec.js:279:3 › 默认 dark 辅助文字与选择项对比度至少 4.5
+{"scheme":"dark","minimumContrast":4.931967581150413,"samples":[{"element":"empty-lede","ratio":7.584950914841423,"size":16},{"element":"composer-hint","ratio":8.617882355640903,"size":12},{"element":"command-option-detail","ratio":4.931967581150413,"size":13.5},{"element":"command-option-detail","ratio":6.467924965792657,"size":13.5},{"element":"command-option-detail","ratio":6.467924965792657,"size":13.5},{"element":"command-option-detail","ratio":6.467924965792657,"size":13.5}]}
+
+[8/19] [chromium] › e2e/settings-context.spec.js:22:1 › 聊天配置保存、项目空提示词覆盖与继承、重启
+[9/19] [chromium] › e2e/settings-context.spec.js:44:1 › 未保存的跨项目导航会询问，取消保留草稿
+[10/19] [chromium] › e2e/settings-context.spec.js:58:1 › 新请求使用项目配置而非供应商提示词
+[11/19] [chromium] › e2e/settings-context.spec.js:72:1 › 达到预算阈值压缩全部已完成历史，保留待发送消息
+[12/19] [chromium] › e2e/settings-context.spec.js:86:1 › 压缩失败保留草稿，不发送、不无限重试
+[13/19] [chromium] › e2e/settings-context.spec.js:99:1 › 升级默认重置与无密钥备份；模型编辑仅有额度
+[14/19] [chromium] › e2e/settings-context.spec.js:115:1 › 设置搜索定位与所有分类无横向溢出
+[15/19] [chromium] › e2e/settings-context.spec.js:129:3 › 设置分类 1024 宽度下分组、能力说明与页面宽度完整
+[16/19] [chromium] › e2e/settings-context.spec.js:129:3 › 设置分类 390 宽度下分组、能力说明与页面宽度完整
+[17/19] [chromium] › e2e/settings-context.spec.js:159:1 › 项目浮窗不导航，独立上下文设置保留能力覆盖
+[18/19] [chromium] › e2e/settings-context.spec.js:178:1 › 自动压缩关闭时超预算保留输入，工具栏思考强度可恢复继承
+[19/19] [chromium] › e2e/settings-context.spec.js:196:1 › 低于阈值保留全部历史，不因轮数触发压缩
+  19 passed (12.3s)

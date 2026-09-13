@@ -1,0 +1,68 @@
+[
+  {
+    "surface": "chat",
+    "before": 221,
+    "after": 174,
+    "reductionPercent": 21.3
+  },
+  {
+    "surface": "project",
+    "before": 474,
+    "after": 308,
+    "reductionPercent": 35.0
+  },
+  {
+    "surface": "appearance",
+    "before": 320,
+    "after": 197,
+    "reductionPercent": 38.4
+  },
+  {
+    "surface": "providers",
+    "before": 447,
+    "after": 375,
+    "reductionPercent": 16.1
+  },
+  {
+    "surface": "context",
+    "before": 782,
+    "after": 515,
+    "reductionPercent": 34.1
+  },
+  {
+    "surface": "tools",
+    "before": 303,
+    "after": 138,
+    "reductionPercent": 54.5
+  },
+  {
+    "surface": "tool-editor",
+    "before": 251,
+    "after": 191,
+    "reductionPercent": 23.9
+  },
+  {
+    "surface": "skills",
+    "before": 218,
+    "after": 140,
+    "reductionPercent": 35.8
+  },
+  {
+    "surface": "data",
+    "before": 233,
+    "after": 166,
+    "reductionPercent": 28.8
+  },
+  {
+    "surface": "about",
+    "before": 1651,
+    "after": 125,
+    "reductionPercent": 92.4
+  },
+  {
+    "surface": "onboarding",
+    "before": 351,
+    "after": 228,
+    "reductionPercent": 35.0
+  }
+]

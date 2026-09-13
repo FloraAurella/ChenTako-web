@@ -13,3 +13,5 @@
 .knowledge-feedback[role=alert] { color:var(--danger); }
 .knowledge-budget p { font-size:13px; margin-top:8px; }
 @media(max-width:700px) { .knowledge-grid { grid-template-columns:minmax(0,1fr); } .knowledge-list { max-height:240px; overflow:auto; } }
+.knowledge-title { font-size:var(--size-title-sm); line-height:var(--lh-title-sm); }
+.knowledge-description { color:var(--label-secondary); font-size:var(--text-sm,14px); line-height:1.6; }

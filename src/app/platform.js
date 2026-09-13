@@ -6,7 +6,7 @@ export function installPlatform({scope,store,chat}) {
   if (window.visualViewport) scope.listen(window.visualViewport, "resize", syncAppHeight);
   syncAppHeight();
 
-  if (window.clawbox) document.body.classList.add("desktop-embed");
+  if ((window["ai-chatbox"] ?? window.clawbox)) document.body.classList.add("desktop-embed");
 
   const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
   const syncReducedMotion = () => document.body.classList.toggle("prefers-reduced-motion", reducedMotionQuery.matches);

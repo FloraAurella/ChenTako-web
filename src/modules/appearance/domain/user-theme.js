@@ -22,7 +22,7 @@ import {
   applyTypefacesToTokens
 } from "../../../resources/fonts/stacks.js";
 
-export const USER_THEME_FORMAT = "clawbox-theme";
+export const USER_THEME_FORMAT = "ai-chatbox-theme";
 const LEGACY_USER_THEME_FORMAT = "tribblebook-theme";
 export const USER_THEME_FILE_VERSION = 1;
 export const USER_THEME_FILE_VERSION_V2 = 2;
@@ -271,7 +271,7 @@ export function buildUserThemeDefinition(raw) {
     return { errors: ["主题文件必须是 JSON 对象"], raw: null, definition: null };
   }
   const errors = [];
-  if (![USER_THEME_FORMAT, LEGACY_USER_THEME_FORMAT].includes(raw.format)) {
+  if (![USER_THEME_FORMAT, "clawbox-theme", LEGACY_USER_THEME_FORMAT].includes(raw.format)) {
     errors.push(`format 必须是 "${USER_THEME_FORMAT}"`);
   }
   const version = raw.version === USER_THEME_FILE_VERSION_V2 ? 2 : raw.version === USER_THEME_FILE_VERSION ? 1 : 0;
@@ -534,14 +534,14 @@ export function restoreUserThemes(safeStorage) {
   for (const entry of readStore(safeStorage).themes) {
     const { errors, definition } = buildUserThemeDefinition(entry.raw);
     if (errors.length || !definition) {
-      console.error(`[Clawbox Theme] 无法恢复自定义主题 ${entry.id}：${errors.join("；")}`);
+      console.error(`[ai-chatbox Theme] 无法恢复自定义主题 ${entry.id}：${errors.join("；")}`);
       continue;
     }
     try {
       registerTheme(definition, { replace: true });
       restored.push(definition.id);
     } catch (error) {
-      console.error(`[Clawbox Theme] 注册自定义主题 ${entry.id} 失败`, error);
+      console.error(`[ai-chatbox Theme] 注册自定义主题 ${entry.id} 失败`, error);
     }
   }
   return restored;

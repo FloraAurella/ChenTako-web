@@ -2,9 +2,9 @@ import { resolve } from 'node:path';
 import { mkdirSync } from 'node:fs';
 import type { ServerConfig } from '../contracts/contributions.ts';
 
-/** 与原版 clawbox-server 相同的环境变量命名空间（CLAWBOX_ 优先，TRIBBLEBOOK_ 兜底）。 */
+/** AI_CHATBOX_ 优先；CLAWBOX_ 与 TRIBBLEBOOK_ 为旧部署兼容入口。 */
 function env(name: string): string | undefined {
-  return process.env[`CLAWBOX_${name}`] ?? process.env[`TRIBBLEBOOK_${name}`];
+  return process.env[`AI_CHATBOX_${name}`] ?? process.env[`CLAWBOX_${name}`] ?? process.env[`TRIBBLEBOOK_${name}`];
 }
 
 function csv(name: string): string[] {
@@ -24,7 +24,7 @@ export function loadServerConfig(serverRoot: string): ServerConfig {
     dataDir,
     ssrfAllow: csv('SSRF_ALLOW').map((value) => value.toLowerCase()),
     bodyLimitBytes: Number(env('BODY_LIMIT')) || 130 * 1024 * 1024,
-    disabledModules: (process.env.CLAWBOX_DISABLED_MODULES ?? process.env.DISABLED_MODULES ?? '')
+    disabledModules: (process.env.AI_CHATBOX_DISABLED_MODULES ?? process.env.CLAWBOX_DISABLED_MODULES ?? process.env.DISABLED_MODULES ?? '')
       .split(',').map((value) => value.trim()).filter(Boolean)
   };
 }

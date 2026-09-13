@@ -1,7 +1,7 @@
 "use strict";
 
 /**
- * Clawbox 主题包：一个不依赖 ZIP 的小型二进制容器。
+ * ai-chatbox 主题包：一个不依赖 ZIP 的小型二进制容器。
  *
  * 文件布局（小端）：
  *   8 bytes  魔数 PBOXTHM1
@@ -187,7 +187,7 @@ export async function decodeThemeArchive(input) {
     throw new Error("主题包大小无效");
   }
   const magic = decoder.decode(bytes.subarray(0, 8));
-  if (magic !== THEME_ARCHIVE_MAGIC) throw new Error("不是 Clawbox 主题包");
+  if (magic !== THEME_ARCHIVE_MAGIC) throw new Error("不是 ai-chatbox 主题包");
   const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
   const version = view.getUint16(8, true);
   if (!SUPPORTED_ARCHIVE_VERSIONS.includes(version)) throw new Error("主题包版本不受支持");
@@ -239,7 +239,7 @@ function base64ToBytes(value) {
 }
 
 function desktopThemeArchiveApi() {
-  return globalThis.window?.clawbox?.themeArchive || null;
+  return (globalThis.window?.["ai-chatbox"] ?? globalThis.window?.clawbox)?.themeArchive || null;
 }
 
 let desktopArchivePath = "";
@@ -292,7 +292,7 @@ export function createThemeArchiveStore(safeStorage) {
       try {
         return { payload: await decodeThemeArchive(base64ToBytes(encoded)), location };
       } catch (error) {
-        console.warn("[Clawbox Theme] 主题包读取失败，将尝试从旧主题存储恢复", error);
+        console.warn("[ai-chatbox Theme] 主题包读取失败，将尝试从旧主题存储恢复", error);
         return { payload: null, location, error };
       }
     },

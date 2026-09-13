@@ -7,7 +7,7 @@ import { module as upstream } from '../modules/upstream/public/module.ts';
 import { module as providers } from '../modules/providers/public/module.ts';
 import { module as chat } from '../modules/chat/public/module.ts';
 
-/** 必需模块不可关闭；可选模块经 CLAWBOX_DISABLED_MODULES/DISABLED_MODULES 排除。 */
+/** 必需模块不可关闭；可选模块经 AI_CHATBOX_DISABLED_MODULES（兼容旧变量）/DISABLED_MODULES 排除。 */
 const REQUIRED_MODULE_IDS = ['gateway', 'upstream', 'chat'];
 
 const builtins: readonly BackendModule[] = [

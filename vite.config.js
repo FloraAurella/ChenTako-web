@@ -6,8 +6,8 @@ import { fileURLToPath } from "node:url";
 
 const rootFile = (name) => fileURLToPath(new URL(name, import.meta.url));
 
-// 生产构建默认不生成 source map；显式设置 CLAWBOX_SOURCEMAP=true 时才生成
-const enableSourceMap = (process.env.CLAWBOX_SOURCEMAP ?? process.env.TRIBBLEBOOK_SOURCEMAP) === "true";
+// 生产构建默认不生成 source map；显式设置 AI_CHATBOX_SOURCEMAP=true 时才生成
+const enableSourceMap = (process.env.AI_CHATBOX_SOURCEMAP ?? process.env.CLAWBOX_SOURCEMAP ?? process.env.TRIBBLEBOOK_SOURCEMAP) === "true";
 
 export default defineConfig({
   plugins: [react()],

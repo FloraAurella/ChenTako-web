@@ -1,3 +1,4 @@
+import { isConversationLocked, FIRST_RESPONSE_LOCK_REASON } from '../../chat/public/first-response.js';
 import { icon } from "../../../resources/icons/index.js";
 
 const escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
@@ -32,6 +33,7 @@ export function createProjectActions({ store, dialogs, toast, openPopover, creat
   async function createProject(conversationId = null) {
     const name = await askName("新建项目");
     if (name === null) return;
+    if (conversationId && isConversationLocked(store.state.conversations.find(c => c.id === conversationId))) { toast(FIRST_RESPONSE_LOCK_REASON, { tone: "danger" }); return; }
     const project = store.createProject(name);
     store.actions.setSidebar({
       collapsedSections: store.state.sidebar.collapsedSections.filter((key) => key !== "projects")
@@ -45,6 +47,7 @@ export function createProjectActions({ store, dialogs, toast, openPopover, creat
   function openProjectPicker(anchor, conversationId, { placement } = {}) {
     const conversation = store.state.conversations.find((item) => item.id === conversationId);
     if (!conversation) return;
+    if (isConversationLocked(conversation)) { toast(FIRST_RESPONSE_LOCK_REASON, { tone: "danger" }); return; }
     const options = [{ id: null, name: "无项目" }, ...store.state.projects];
     return openPopover({
       anchor, kind: "menu", cardClass: "menu-popover runtime-popover model-popover project-picker",
@@ -57,7 +60,7 @@ export function createProjectActions({ store, dialogs, toast, openPopover, creat
         card.querySelectorAll("[data-project-index]").forEach((button) => button.addEventListener("click", () => {
           const project = options[Number(button.dataset.projectIndex)];
           controller.close();
-          store.moveConversationToProject(conversationId, project.id);
+          try { store.moveConversationToProject(conversationId, project.id); } catch (error) { toast(error.message, { tone: "danger" }); return; }
           if (conversationId === store.state.activeConversationId) focusComposer();
         }));
         card.querySelector("[data-create-project]").addEventListener("click", () => {
@@ -68,28 +71,5 @@ export function createProjectActions({ store, dialogs, toast, openPopover, creat
     });
   }
 
-  function openProjectMenu(anchor, id) {
-    const project = store.state.projects.find((item) => item.id === id);
-    if (!project) return;
-    return openPopover({
-      anchor, kind: "menu", cardClass: "menu-popover runtime-popover model-popover",
-      html: `<div class="popover-scroll" role="menu"><button type="button" class="option-item" role="menuitem" data-project-context>${icon("settings", 16)}<span>上下文与提示词</span></button><button type="button" class="option-item" role="menuitem" data-project-rename>${icon("edit", 16)}<span>重命名项目</span></button><div class="menu-divider"></div><button type="button" class="option-item danger" role="menuitem" data-project-delete>${icon("trash", 16)}<span>删除项目</span></button></div>`,
-      bind(card, controller) {
-        bindMenuKeyboard(card, anchor);
-        card.querySelector("[data-project-context]").addEventListener("click", () => { controller.close(); location.hash = `#/settings/context/${encodeURIComponent(id)}`; });
-        card.querySelector("[data-project-rename]").addEventListener("click", async () => {
-          controller.close();
-          const name = await askName("重命名项目", project.name);
-          if (name !== null) store.renameProject(id, name);
-        });
-        card.querySelector("[data-project-delete]").addEventListener("click", async () => {
-          controller.close();
-          const confirmed = await dialogs.confirm({ title: "删除项目", message: `删除「${project.name}」后，其中的全部聊天会保留并移到“无项目”。`, confirmLabel: "删除项目", danger: true });
-          if (confirmed) store.deleteProject(id);
-        });
-      }
-    });
-  }
-
-  return { createProject, openProjectPicker, openProjectMenu };
+  return { createProject, openProjectPicker };
 }

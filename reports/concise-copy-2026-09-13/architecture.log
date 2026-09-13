@@ -1,0 +1,5 @@
+
+> ai-chatbox-structure-v2.0@1.1.5 check:architecture
+> node scripts/check-architecture.mjs
+
+Architecture boundaries passed: Core isolation, module ownership, public imports, resolved paths.

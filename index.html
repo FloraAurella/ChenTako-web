@@ -2,17 +2,17 @@
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <!-- 首帧 favicon / theme-color 回退：与 themes/base-themes.js 浅色基线一致（pear/canvas-mid）；主题激活后由 theme.js 按当前主题动态同步 -->
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2393B259' fill-rule='evenodd' clip-rule='evenodd' d='M9 3h2V2h4v2h2v1h2v7h3v8h-7v-1h-3v2h-2v-2H7v1H2v-8h3V5h2V4h2V3Z M8 8h2v2H8V8Z M14 8h2v2h-2V8Z M4 14h5v1H5v2h4v1H4v-4Z M20 14h-5v1h4v2h-4v1h5v-4Z'/%3E%3C/svg%3E" />
+    <!-- 首帧 favicon 与应用标志共用同一 SVG；主题激活后只替换 currentColor。 -->
+    <link rel="icon" href="/src/resources/logos/ai-chatbox.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#F7F5EC" />
     <meta name="color-scheme" content="light dark" />
-    <meta name="description" content="Clawbox — 本地优先的 AI 对话桌面" />
-    <title>Clawbox</title>
+    <meta name="description" content="ai-chatbox — 本地优先的 AI 对话桌面" />
+    <title>ai-chatbox</title>
   </head>
   <body>
     <div id="app"></div>
-    <noscript>Clawbox 需要 JavaScript 才能运行。请启用 JavaScript 后刷新页面。</noscript>
+    <noscript>ai-chatbox 需要 JavaScript 才能运行。请启用 JavaScript 后刷新页面。</noscript>
     <script type="module" src="/src/app/main.tsx"></script>
   </body>
 </html>

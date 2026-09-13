@@ -1,7 +1,7 @@
 import { resources, registerSystem } from '../registry.js';
 "use strict";
 
-/** 内联 SVG 图标集（24 视窗 · 描线风格 · currentColor）。品牌标剪影见 themes/logo-shapes.js。 */
+/** 内联 SVG 图标集（24 视窗 · 描线风格 · currentColor）。品牌标见 logos/ai-chatbox.svg。 */
 
 import { logoSvgPaths } from "../logos/shapes.js";
 
@@ -71,7 +71,7 @@ export function icon(name, size = 18, className = "") {
 }
 
 /**
- * 品牌标（Clawbox）。单色剪影继承 currentColor；品牌块在浅色主题
+ * 品牌标（ai-chatbox）。对话框与 AI图形继承 currentColor；品牌块在浅色主题
  * 使用亮色标、深色主题使用深色标，均由 --on-brand-logo 负责对比度。
  */
 export function pearLogo(size = 22) {

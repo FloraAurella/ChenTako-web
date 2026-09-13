@@ -1,0 +1,118 @@
+[WebServer] (node:56294) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+
+Running 40 tests using 1 worker
+
+(node:56354) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/40] [chromium] › e2e/app.spec.js:50:1 › 首次启动引导：展示全新开始、迁移导入与 128 位封套说明
+  1) [chromium] › e2e/app.spec.js:50:1 › 首次启动引导：展示全新开始、迁移导入与 128 位封套说明 ─────────────────────────────
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('#onboardingStatus')
+    Expected substring: "首次启动时使用"
+    Received string:    "仅在桌面应用首次启动时可用。"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toContainText" with timeout 5000ms
+      - waiting for locator('#onboardingStatus')
+        14 × locator resolved to <div role="status" data-tone="error" aria-live="polite" id="onboardingStatus" class="onboarding-status">仅在桌面应用首次启动时可用。</div>
+           - unexpected value "仅在桌面应用首次启动时可用。"
+
+
+      56 |   await expect(page.locator(".migration-seal")).toContainText("KEY.MD");
+      57 |   await expect(page.locator("#onboardingFreshBtn")).toBeDisabled();
+    > 58 |   await expect(page.locator("#onboardingStatus")).toContainText("首次启动时使用");
+         |                                                   ^
+      59 | });
+      60 |
+      61 | const testSeedRevisions = new WeakMap();
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/app.spec.js:58:51
+
+    Error Context: test-results/app-首次启动引导：展示全新开始、迁移导入与-128-位封套说明-chromium/error-context.md
+
+
+(node:56482) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[2/40] [chromium] › e2e/app.spec.js:195:1 › 主题切换不产生全局通知
+[3/40] [chromium] › e2e/app.spec.js:671:1 › 代码块按暖调主题配色渲染
+[4/40] [chromium] › e2e/app.spec.js:1085:1 › Everforest：主题包令牌与纯色外观完整生效
+[5/40] [chromium] › e2e/app.spec.js:1312:1 › 主题明暗切换自动换色
+[6/40] [chromium] › e2e/app.spec.js:1331:1 › 设置：外观主题卡与自定义导入入口
+[7/40] [chromium] › e2e/app.spec.js:1363:1 › 主题背景动效已停用
+[8/40] [chromium] › e2e/app.spec.js:1406:1 › JSON 主题文件：导出当前主题并重新导入应用
+[9/40] [chromium] › e2e/app.spec.js:1434:1 › 主题 JSON：更新默认主题、重启恢复并删除自定义变体
+[10/40] [chromium] › e2e/app.spec.js:1503:1 › 主题界面字体：导入 typefaces 主题后字体令牌生效，删除后恢复默认
+[11/40] [chromium] › e2e/app.spec.js:1577:1 › 设置：供应商表单与 Key 加密提示
+[12/40] [chromium] › e2e/app.spec.js:1589:1 › 设置：仅保存模型额度，模型改名迁移默认项
+[13/40] [chromium] › e2e/app.spec.js:1705:1 › 设置：新 Key 继续按原请求同步后端，并只留下前端密文
+[14/40] [chromium] › e2e/app.spec.js:1753:1 › 设置：Key 在防抖窗口内离开页面仍会先完成自动同步
+[15/40] [chromium] › e2e/app.spec.js:1774:1 › 设置：Key 强制同步失败时保留当前页面与未同步输入
+[16/40] [chromium] › e2e/app.spec.js:1794:1 › 设置：已保存 Key 进入即显示等长密文，变更自动同步且不再提供清除按钮
+[17/40] [chromium] › e2e/app.spec.js:1868:1 › 设置内部编辑页：离开设置后重新打开供应商时不恢复过期编辑层
+[18/40] [chromium] › e2e/app.spec.js:1895:1 › 设置内切换边栏条目：清理旧的二级编辑状态
+[19/40] [chromium] › e2e/app.spec.js:1913:1 › 移动端供应商导航：返回设置后停留在供应商一级列表
+[20/40] [chromium] › e2e/app.spec.js:1976:1 › 数据迁移：浏览器环境显示明确的不可用状态
+[21/40] [chromium] › e2e/app.spec.js:1986:1 › 数据迁移：桌面普通版创建前警告敏感数据并允许取消保存
+[22/40] [chromium] › e2e/app.spec.js:2024:1 › 更新日志时间线
+[23/40] [chromium] › e2e/app.spec.js:2081:1 › 移动端设置：离开二级页面后重新进入显示设置目录
+[24/40] [chromium] › e2e/app.spec.js:2193:1 › 旧主题偏好迁移：cream-night → 深色
+[25/40] [chromium] › e2e/app.spec.js:2293:1 › 设置：工具与 Skill 独立入口，启用后全局持续生效
+  2) [chromium] › e2e/app.spec.js:2293:1 › 设置：工具与 Skill 独立入口，启用后全局持续生效 ─────────────────────────────
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('[data-extension-capability]')
+    Expected substring: "不会静默忽略"
+    Received string:    "执行尚未开放；当前仅可管理配置，启用后相关请求会被拒绝。"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toContainText" with timeout 5000ms
+      - waiting for locator('[data-extension-capability]')
+        14 × locator resolved to <p data-extension-capability="true" class="settings-card-desc extension-capability-note">执行尚未开放；当前仅可管理配置，启用后相关请求会被拒绝。</p>
+           - unexpected value "执行尚未开放；当前仅可管理配置，启用后相关请求会被拒绝。"
+
+
+      2301 |   await expect(page.locator("[data-extension-capability]")).toContainText("当前仅可管理配置");
+      2302 |   await expect(page.locator("[data-extension-capability]")).toContainText("执行尚未开放");
+    > 2303 |   await expect(page.locator("[data-extension-capability]")).toContainText("不会静默忽略");
+           |                                                             ^
+      2304 |   await expect(page.locator("[data-extension-card='tool']")).toContainText("运行时沙箱（macOS）");
+      2305 |   await page.click("[data-sandbox-toggle]");
+      2306 |   await expect(page.locator("[data-sandbox-toggle]")).toHaveAttribute("aria-checked", "true");
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/app.spec.js:2303:61
+
+    Error Context: test-results/app-设置：工具与-Skill-独立入口，启用后全局持续生效-chromium/error-context.md
+
+
+(node:56728) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[26/40] [chromium] › e2e/knowledge.spec.js:36:1 › 大资料用量刷新不重复编码全文或复制请求，输入保持可用
+[27/40] [chromium] › e2e/knowledge.spec.js:61:1 › 资料备份可恢复；取消恢复不改变项目资料
+[28/40] [chromium] › e2e/knowledge.spec.js:101:1 › 每次正式请求完整注入，历史压缩请求不含项目资料
+[29/40] [chromium] › e2e/knowledge.spec.js:123:38 › 缺失资料阻止发送且草稿保留
+[30/40] [chromium] › e2e/knowledge.spec.js:123:38 › 固定资料超预算不发起自动压缩，附件和草稿保留
+[31/40] [chromium] › e2e/knowledge.spec.js:135:80 › 资料界面 light 1280 无横向溢出
+[32/40] [chromium] › e2e/knowledge.spec.js:135:80 › 资料界面 light 1024 无横向溢出
+[33/40] [chromium] › e2e/knowledge.spec.js:135:80 › 资料界面 light 390 无横向溢出
+[34/40] [chromium] › e2e/knowledge.spec.js:135:80 › 资料界面 dark 1280 无横向溢出
+[35/40] [chromium] › e2e/knowledge.spec.js:135:80 › 资料界面 dark 1024 无横向溢出
+[36/40] [chromium] › e2e/knowledge.spec.js:135:80 › 资料界面 dark 390 无横向溢出
+[37/40] [chromium] › e2e/knowledge.spec.js:143:1 › 项目浮窗键盘、名称校验、删除取消和设置入口清理
+[38/40] [chromium] › e2e/knowledge.spec.js:176:1 › 读取中关闭并打开其他项目，迟到的文件结果不能写入任何项目
+[39/40] [chromium] › e2e/knowledge.spec.js:197:1 › 文件错误和双存储失败明确提示，当前资料仍可备份
+[40/40] [chromium] › e2e/projects.spec.js:68:1 › 项目管理：创建、移动、重命名、删除及刷新保留
+  2 failed
+    [chromium] › e2e/app.spec.js:50:1 › 首次启动引导：展示全新开始、迁移导入与 128 位封套说明 ──────────────────────────────
+    [chromium] › e2e/app.spec.js:2293:1 › 设置：工具与 Skill 独立入口，启用后全局持续生效 ──────────────────────────────
+  38 passed (50.5s)

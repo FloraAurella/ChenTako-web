@@ -74,7 +74,7 @@ export function AppShell({ route, sidebar, conversationTitle, store, settings }:
       >
         <aside className={`archive-drawer${sidebar.drawerOpen ? " drawer-open" : ""}`} id="archiveDrawer" aria-label="对话" inert={!drawerVisible}>
           <div className="drawer-head">
-            <div className="drawer-brand"><span className="rail-brand" aria-hidden="true" dangerouslySetInnerHTML={html(pearLogo(18))} /><h2 className="drawer-title">Clawbox</h2></div>
+            <div className="drawer-brand"><span className="rail-brand" aria-hidden="true" dangerouslySetInnerHTML={html(pearLogo(18))} /><h2 className="drawer-title">ai-chatbox</h2></div>
             <div className="drawer-tools">
               <IconButton id="archivesCollapseBtn" name="sidebarClose" size={20} className="icon-btn" title="收起侧栏" label="收起侧栏" expanded={drawerVisible} controls="archiveDrawer" />
             </div>

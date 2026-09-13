@@ -1,5 +1,5 @@
 /* Settings workspace: theme colors stay inherited from the active appearance. */
-:root { --settings-index-w: 240px; --settings-max-w: 940px; --settings-control-radius: 12px; --settings-panel-radius: 16px; }
+:root { --settings-max-w: 1100px; --settings-control-radius: 12px; --settings-panel-radius: 16px; }
 .settings-index { padding: 24px 16px; }
 .settings-index-title { font-size: 12px; color: var(--label-secondary); letter-spacing: .03em; margin: 0 12px 16px; padding: 0; }
 .settings-search { display: flex; align-items: center; gap: 8px; padding: 10px 12px; margin-bottom: 24px; border: 1px solid var(--line); border-radius: var(--settings-control-radius); background: var(--surface-elevated); color: var(--label-secondary); }
@@ -99,7 +99,7 @@
 .settings-pane .field-label, .provider-field-label-row .field-label { font-family: var(--font-ui); letter-spacing: normal; text-transform: none; }
 
 /* Shared settings rhythm, with wider space reserved for the provider workbench. */
-.provider-registry-pane { max-width: 1100px; }
+.provider-registry-pane { max-width: var(--settings-max-w); }
 .settings-pane .btn, .provider-dialog-backdrop .btn { min-height: 40px; border-radius: var(--settings-control-radius); }
 .settings-pane .btn.compact { min-height: 34px; }
 .settings-pane .settings-card-desc { max-width: 64ch; }
@@ -187,3 +187,62 @@
 
 .settings-group-head { margin:24px 0 16px; }
 .settings-group-head .settings-card-desc { margin:6px 0 0; }
+
+/* Provider columns own their scrolling; settings sections share one width token. */
+.settings-content:has(.provider-registry-pane) { display: flex; flex-direction: column; overflow: hidden; }
+.provider-registry-pane { flex: 1; min-height: 0; display: flex; flex-direction: column; padding-bottom: var(--space-4); }
+.provider-registry-heading { flex-shrink: 0; }
+.provider-registry { flex: 1; min-height: 0; grid-template-columns: clamp(160px, 18vw, 232px) minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); }
+.provider-rail { min-height: 0; overflow: hidden; }
+.provider-rail-title { flex-shrink: 0; }
+.provider-rail-list { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior-y: contain; scrollbar-gutter: stable; }
+.provider-detail { container-type: inline-size; min-height: 0; overflow-y: auto; overscroll-behavior-y: contain; scrollbar-gutter: stable; padding-bottom: 0; }
+.provider-detail:focus-visible, .provider-rail-list:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: -3px; }
+.settings-page .provider-detail-head, .settings-page .provider-section { padding: var(--space-4); }
+.provider-registry-pane .provider-detail-head { min-height: 0; }
+.provider-detail-head > div { min-width: 0; }
+.provider-detail-title-row h3 { overflow-wrap: anywhere; }
+.provider-detail-head > .icon-btn { flex-shrink: 0; }
+.provider-registry-pane .provider-section-head { align-items: center; margin-bottom: var(--space-3); }
+.provider-registry-pane .provider-form-grid { gap: var(--space-3); }
+.provider-model-list { display: grid; gap: var(--space-3); background: transparent; border: 0; border-radius: 0; }
+.provider-model-row { grid-template-columns: minmax(0, 1fr) auto auto; min-height: 0; gap: var(--space-3); padding: 8px; border: 1px solid var(--separator); border-radius: var(--settings-control-radius); background: var(--surface-elevated); }
+.provider-model-row + .provider-model-row { border-top: 1px solid var(--separator); }
+.provider-model-summary[data-surface="panel"] { display: flex; align-items: center; gap: var(--space-3); min-width: 0; padding: 8px var(--space-3); border: 1px solid var(--separator); border-radius: var(--radius-sm); }
+.provider-model-summary .provider-model-id { flex: 1; min-width: 0; }
+.provider-model-summary .provider-model-badges { flex-shrink: 0; }
+.provider-model-row > .icon-btn { grid-column: 2; grid-row: 1; }
+.provider-model-row > .provider-model-edit { grid-column: 3; }
+.provider-model-badges .model-capability-badge { color: var(--label-secondary); background: transparent; border: 1px solid var(--separator); }
+.provider-model-test-result { grid-column: 1 / -1; color: var(--label-secondary); font-size: var(--size-meta); overflow-wrap: anywhere; }
+.provider-model-test-result[data-tone="error"], .provider-fetch-result[data-tone="error"] { color: var(--danger); }
+.provider-auto-state { font-size: var(--size-meta); color: var(--label-secondary); }
+.provider-auto-error { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-3); margin: var(--space-4); color: var(--danger); font-size: var(--size-caption); overflow-wrap: anywhere; }
+.provider-auto-error > span { flex: 1; min-width: 0; }
+.provider-fetch-result { margin: var(--space-4); font-size: var(--size-caption); color: var(--label-secondary); }
+.provider-model-dialog-scroll { margin: 0; border: 0; min-width: 0; }
+.provider-default-choice { display: flex; align-items: center; gap: var(--space-3); }
+.context-auto-state { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-3); color: var(--label-secondary); font-size: var(--size-caption); margin: var(--space-3) 0; }
+@media (max-width: 720px) {
+  .provider-registry-pane { padding-inline: var(--space-4); }
+  .provider-registry { display: flex; flex-direction: column; min-height: 0; }
+  .provider-rail { flex: 1; min-height: 0; }
+  .provider-detail { flex: 1; }
+  .provider-model-row { gap: 6px; padding: 8px; }
+  .provider-model-summary { gap: 6px; padding: 8px; }
+  .provider-model-summary .provider-model-badges { gap: 3px; }
+  .provider-model-id { font-size: var(--size-caption); }
+}
+
+@container (max-width: 480px) {
+  .provider-form-grid { grid-template-columns: minmax(0, 1fr); }
+  .provider-registry-pane .provider-model-section-head { align-items: stretch; flex-direction: column; }
+  .provider-model-section-head .provider-section-actions { width: 100%; }
+  .provider-model-section-head .provider-section-actions .btn { flex: 1; }
+}
+@media (min-width: 721px) and (max-width: 1040px) {
+  .settings-layout { grid-template-columns: 220px minmax(0, 1fr); }
+}
+.provider-back-to-list { display: none; }
+@media (max-width: 720px) { .provider-back-to-list { display: inline-flex; } }
+.provider-detail-head .toggle[aria-checked="false"]::after { background: var(--label-secondary); }

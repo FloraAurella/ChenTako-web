@@ -1,0 +1,28 @@
+ai-chatbox
+LOCAL FIRST
+
+FIRST OPEN · 第一次打开
+
+从这里，决定第一份记忆
+
+ai-chatbox 没有云端账户。请选择建立一套全新的本机数据，或把另一台设备的对话、主题与设置带到这里。
+
+启动全新 ai-chatbox
+创建空白的隐藏数据目录，从一段新对话开始。
+从迁移包导入
+选择 ai-chatbox Migration ZIP，验证后原子恢复本机数据。
+此页面只能在 ai-chatbox 首次启动时使用。
+迁移封套
+AES · 128 BIT
+ENCRYPTED DATA
+ai-chatbox-Data
+对话 · 附件 · 主题 · 设置
+KEY.MD
+128 位密钥
+随迁移 ZIP 一起保存
+VERIFIED
+
+导入前会检查文件路径、AES-GCM 完整性与逐文件 SHA-256 清单；失败不会创建半成品数据目录。
+
+数据只写入这台 Mac
+本机应用数据目录

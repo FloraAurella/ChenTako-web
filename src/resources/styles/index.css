@@ -1,4 +1,4 @@
-/* Clawbox · 纸本样式入口（导入顺序即依赖顺序） */
+/* ai-chatbox · 纸本样式入口（导入顺序即依赖顺序） */
 @import "./tokens.css";
 @import "./base.css";
 @import "./shell.css";
@@ -12,3 +12,5 @@
 @import "./commands.css";
 
 @import "./knowledge.css";
+
+@import "./projects.css";

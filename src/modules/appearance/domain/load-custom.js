@@ -37,7 +37,7 @@ export function loadCustomThemes() {
       loadedSources.add(path);
       loaded.push(definition.id);
     } catch (error) {
-      console.error(`[Clawbox Theme] 无法加载自定义主题 ${path}`, error);
+      console.error(`[ai-chatbox Theme] 无法加载自定义主题 ${path}`, error);
     }
   }
   return loaded;

@@ -1,0 +1,38 @@
+[WebServer] (node:41364) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+
+Running 27 tests using 1 worker
+
+(node:41366) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/27] [chromium] › e2e/app.spec.js:50:1 › 首次启动引导：展示全新开始、迁移导入与 128 位封套说明
+[2/27] [chromium] › e2e/app.spec.js:195:1 › 主题切换不产生全局通知
+[3/27] [chromium] › e2e/app.spec.js:205:1 › 侧栏移除外观切换与版本号，保留设置入口
+[4/27] [chromium] › e2e/app.spec.js:671:1 › 代码块按暖调主题配色渲染
+[5/27] [chromium] › e2e/app.spec.js:1085:1 › Everforest：主题包令牌与纯色外观完整生效
+[6/27] [chromium] › e2e/app.spec.js:1312:1 › 主题明暗切换自动换色
+[7/27] [chromium] › e2e/app.spec.js:1331:1 › 设置：外观主题卡与自定义导入入口
+[8/27] [chromium] › e2e/app.spec.js:1363:1 › 主题背景动效已停用
+[9/27] [chromium] › e2e/app.spec.js:1406:1 › JSON 主题文件：导出当前主题并重新导入应用
+[10/27] [chromium] › e2e/app.spec.js:1434:1 › 主题 JSON：更新默认主题、重启恢复并删除自定义变体
+[11/27] [chromium] › e2e/app.spec.js:1503:1 › 主题界面字体：导入 typefaces 主题后字体令牌生效，删除后恢复默认
+[12/27] [chromium] › e2e/app.spec.js:1577:1 › 设置：供应商表单与 Key 加密提示
+[13/27] [chromium] › e2e/app.spec.js:1589:1 › 设置：仅保存模型额度，模型改名迁移默认项
+[14/27] [chromium] › e2e/app.spec.js:1652:1 › 聊天模型选择器隐藏禁用供应商，但设置中仍显示其状态
+[15/27] [chromium] › e2e/app.spec.js:1705:1 › 设置：新 Key 继续按原请求同步后端，并只留下前端密文
+[16/27] [chromium] › e2e/app.spec.js:1753:1 › 设置：Key 在防抖窗口内离开页面仍会先完成自动同步
+[17/27] [chromium] › e2e/app.spec.js:1774:1 › 设置：Key 强制同步失败时保留当前页面与未同步输入
+[18/27] [chromium] › e2e/app.spec.js:1794:1 › 设置：已保存 Key 进入即显示等长密文，变更自动同步且不再提供清除按钮
+[19/27] [chromium] › e2e/app.spec.js:1868:1 › 设置内部编辑页：离开设置后重新打开供应商时不恢复过期编辑层
+[20/27] [chromium] › e2e/app.spec.js:1895:1 › 设置内切换边栏条目：清理旧的二级编辑状态
+[21/27] [chromium] › e2e/app.spec.js:1913:1 › 移动端供应商导航：返回设置后停留在供应商一级列表
+[22/27] [chromium] › e2e/app.spec.js:1976:1 › 数据迁移：浏览器环境显示明确的不可用状态
+[23/27] [chromium] › e2e/app.spec.js:1986:1 › 数据迁移：桌面普通版创建前警告敏感数据并允许取消保存
+[24/27] [chromium] › e2e/app.spec.js:2080:1 › 移动端设置：离开二级页面后重新进入显示设置目录
+[25/27] [chromium] › e2e/app.spec.js:2192:1 › 旧主题偏好迁移：cream-night → 深色
+[26/27] [chromium] › e2e/app.spec.js:2281:1 › 设置页隐藏「目录」归档边栏
+[27/27] [chromium] › e2e/app.spec.js:2292:1 › 设置：工具与 Skill 独立入口，启用后全局持续生效
+  27 passed (21.5s)

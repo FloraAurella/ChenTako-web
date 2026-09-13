@@ -14,3 +14,32 @@
 @media (prefers-reduced-motion:reduce) { .ui-button,.ui-input,.ui-surface { transition:none; animation:none; } }
 
 .composer-paper[data-surface="panel"] { border-radius:var(--radius-lg); }
+.ui-input.composer-input:focus-visible { outline: none; box-shadow: none; }
+
+/* Compact menus have a single controller-owned active row, shared by pointer and keyboard. */
+:root {
+  --ui-menu-row-height: 32px;
+  --ui-menu-padding: 4px;
+  --ui-menu-gap: 8px;
+  --ui-menu-radius: var(--radius-sm);
+  --ui-menu-active: color-mix(in srgb, var(--label-primary, var(--label)) 12%, var(--appearance-panel-bg, var(--surface-content)));
+  --ui-menu-detail: color-mix(in srgb, var(--label-primary, var(--label)) 90%, var(--appearance-panel-bg, var(--surface-content)));
+}
+.ui-menu-item[data-surface="interactive"], .ui-menu-item[data-surface="interactive"]:hover {
+  border-radius: var(--ui-menu-radius); background: transparent;
+}
+.ui-menu-item[data-surface="interactive"].is-active,
+.ui-menu-item[data-surface="interactive"].is-active:hover { background: var(--ui-menu-active); }
+
+/* Shared secondary workspace: stable panel, scrolling body and persistent close control. */
+.ui-modal { width:min(860px,100%); max-height:calc(100dvh - 44px); display:flex; flex-direction:column; padding:0; min-width:0; overflow:hidden; }
+.ui-modal-header { display:flex; align-items:center; justify-content:space-between; gap:var(--space-4); padding:var(--space-5); border-bottom:1px solid var(--separator); flex-shrink:0; }
+.ui-modal-header .dialog-title { margin:0; }
+.ui-modal-body { overflow:auto; min-height:0; padding:var(--space-5); overscroll-behavior:contain; }
+@media(max-width:720px) { .ui-modal-backdrop { padding:var(--space-3); } .ui-modal { max-height:calc(100dvh - 24px); } .ui-modal-header,.ui-modal-body { padding:var(--space-4); } }
+@media(prefers-reduced-motion:reduce) { .ui-modal-backdrop,.ui-modal { animation:none; } }
+
+.ui-disclosure > summary { padding:var(--space-3); border-radius:var(--radius-sm); color:var(--label); cursor:pointer; }
+.ui-disclosure > summary:hover { background:var(--control-hover); }
+.ui-disclosure > summary:focus-visible { outline:2px solid var(--ui-focus); outline-offset:3px; }
+.ui-disclosure[open] > summary { margin-bottom:var(--space-3); }

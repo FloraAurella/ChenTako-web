@@ -12,7 +12,7 @@ import { deriveThemeId, parseJsonThemeFile } from "./user-theme.js";
 import { normalizeThemeAppearance } from "./appearance-contract.js";
 
 export const THEME_PACKAGE_EXTENSION = "json";
-export const THEME_PACKAGE_KIND = "clawbox-theme-package";
+export const THEME_PACKAGE_KIND = "ai-chatbox-theme-package";
 export const THEME_PACKAGE_VERSION = 1;
 export const THEME_PACKAGE_MAX_BYTES = 512 * 1024;
 const encoder = new TextEncoder();
@@ -75,7 +75,7 @@ export function parseThemePackage(text) {
   const raw = parseJson(text);
   if (!raw || typeof raw !== "object" || Array.isArray(raw)) throw new Error("主题 JSON 必须是对象");
 
-  if (raw.kind === THEME_PACKAGE_KIND) {
+  if ([THEME_PACKAGE_KIND, "clawbox-theme-package"].includes(raw.kind)) {
     if (raw.version !== THEME_PACKAGE_VERSION) throw new Error("主题 JSON 版本不受支持");
     if ("background" in raw || "backgrounds" in raw || "files" in raw) {
       throw new Error("主题 JSON 不支持自定义背景或附件");
@@ -125,7 +125,7 @@ export function serializeThemePackage(payload) {
 
 export function themePackageFilename(theme) {
   const id = isValidThemeId(theme?.id) ? theme.id : "theme";
-  return `Clawbox-${id}.${THEME_PACKAGE_EXTENSION}`;
+  return `ai-chatbox-${id}.${THEME_PACKAGE_EXTENSION}`;
 }
 
 export function downloadThemePackage(text, filename) {

@@ -6,7 +6,7 @@
  */
 
 export function desktopBridge() {
-  return typeof window !== "undefined" ? window.clawbox : undefined;
+  return typeof window !== "undefined" ? (window["ai-chatbox"] ?? window.clawbox) : undefined;
 }
 
 export function apiFetch(path, options = {}) {
@@ -15,7 +15,7 @@ export function apiFetch(path, options = {}) {
     ? `${String(bridge.backendBase).replace(/\/+$/, "")}${path}`
     : path;
   const headers = new Headers(options.headers || {});
-  if (bridge && bridge.apiToken) headers.set("x-clawbox-token", bridge.apiToken);
+  if (bridge && bridge.apiToken) headers.set(window["ai-chatbox"] ? "x-ai-chatbox-token" : "x-clawbox-token", bridge.apiToken);
   if (options.body && !headers.has("Content-Type")) {
     headers.set("Content-Type", "application/json");
   }

@@ -411,8 +411,8 @@ describe("JSON 主题文件：解析与转换", () => {
     expect(errors.join("")).toMatch(/JSON/);
   });
 
-  it("仓库示例文件 examples/everforest-clawbox-theme-v1.json 可直接导入", () => {
-    const examplePath = resolvePath(process.cwd(), "src", "resources", "themes", "everforest-clawbox-theme-v1.json");
+  it("仓库示例文件 examples/everforest-ai-chatbox-theme-v1.json 可直接导入", () => {
+    const examplePath = resolvePath(process.cwd(), "src", "resources", "themes", "everforest-ai-chatbox-theme-v1.json");
     const { definition } = parseThemePackage(readFileSync(examplePath, "utf8"));
     expect(definition.id).toBe("everforest");
     expect(definition.label).toBe("Everforest");
@@ -496,7 +496,7 @@ describe("用户主题本机持久化", () => {
     const restoreErrors = [];
     const originalError = console.error;
     const errorSpy = vi.spyOn(console, "error").mockImplementation((...args) => {
-      if (typeof args[0] === "string" && args[0].startsWith("[Clawbox Theme] 无法恢复自定义主题 broken：")) {
+      if (typeof args[0] === "string" && args[0].startsWith("[ai-chatbox Theme] 无法恢复自定义主题 broken：")) {
         restoreErrors.push(args[0]);
       } else {
         originalError(...args);

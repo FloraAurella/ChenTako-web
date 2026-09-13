@@ -1,0 +1,542 @@
+[
+  {
+    "file": "src/modules/appearance/ui/AppearancePane.tsx",
+    "before": "<p className=\"settings-pane-lede\">选择喜欢的配色，让工作空间更适合你。</p>",
+    "after": ""
+  },
+  {
+    "file": "src/modules/data/ui/DataPane.tsx",
+    "before": "<p className=\"settings-pane-lede\">导入对话、迁移本机数据并查看旧配置。</p>",
+    "after": ""
+  },
+  {
+    "file": "src/modules/data/ui/DataPane.tsx",
+    "before": "<p className=\"settings-pane-lede\">查看当前版本的更新内容。</p>",
+    "after": ""
+  },
+  {
+    "file": "src/modules/data/ui/DataPane.tsx",
+    "before": "<p className=\"settings-pane-lede\">版本信息、运行环境与近期更新。</p>",
+    "after": ""
+  },
+  {
+    "file": "src/modules/context/ui/ContextPane.tsx",
+    "before": "<p className=\"settings-pane-lede\">统一设置聊天行为，让每个项目保留需要的差异。</p>",
+    "after": ""
+  },
+  {
+    "file": "src/modules/connections/ui/ProvidersPane.tsx",
+    "before": "<p className=\"settings-pane-lede\">管理 API 连接、模型上下文窗口与最大输出额度。</p>",
+    "after": ""
+  },
+  {
+    "file": "src/modules/appearance/ui/AppearancePane.tsx",
+    "before": "<SettingsGroup id=\"appearance-common\" title=\"常用配置\" description=\"先选明暗模式，再挑一套主题。\"",
+    "after": "<SettingsGroup id=\"appearance-common\" title=\"常用配置\""
+  },
+  {
+    "file": "src/modules/appearance/ui/AppearancePane.tsx",
+    "before": "<SettingsGroup id=\"appearance-advanced\" title=\"高级配置\" description=\"主题包管理与专业外观操作；保持默认即可获得推荐观感。\"",
+    "after": "<SettingsGroup id=\"appearance-advanced\" title=\"高级配置\""
+  },
+  {
+    "file": "src/modules/data/ui/DataPane.tsx",
+    "before": "<SettingsGroup id=\"data-common\" title=\"常用配置\" description=\"导出加密迁移包，或导入对话数据。\"",
+    "after": "<SettingsGroup id=\"data-common\" title=\"常用配置\""
+  },
+  {
+    "file": "src/modules/data/ui/DataPane.tsx",
+    "before": "<SettingsGroup id=\"data-advanced\" title=\"高级配置\" description=\"旧版配置备份与兼容行为；仅供查阅，不会自动生效。\"",
+    "after": "<SettingsGroup id=\"data-advanced\" title=\"高级配置\""
+  },
+  {
+    "file": "src/modules/context/ui/ContextPane.tsx",
+    "before": "<SettingsGroup id=\"context-common\" title=\"常用配置\" description=\"先确定助手指令与上下文策略。项目未覆盖的字段持续跟随聊天默认配置。\"",
+    "after": "<SettingsGroup id=\"context-common\" title=\"常用配置\""
+  },
+  {
+    "file": "src/modules/context/ui/ContextPane.tsx",
+    "before": "<SettingsGroup id=\"context-advanced\" title=\"高级配置\" description=\"按模型需要调整生成、输出和兼容性参数；无需修改时可保留默认值。\"",
+    "after": "<SettingsGroup id=\"context-advanced\" title=\"高级配置\""
+  },
+  {
+    "file": "src/shared/ui/SettingsCard.tsx",
+    "before": "description: string; children: ReactNode",
+    "after": "description?: string; children: ReactNode"
+  },
+  {
+    "file": "src/shared/ui/SettingsCard.tsx",
+    "before": "<p className=\"settings-card-desc\">{description}</p></header>",
+    "after": "{description ? <p className=\"settings-card-desc\">{description}</p> : null}</header>"
+  },
+  {
+    "file": "src/modules/appearance/ui/AppearancePane.tsx",
+    "before": "调整背景与卡片之间的明暗差异。",
+    "after": "背景与卡片的明暗差异。"
+  },
+  {
+    "file": "src/modules/appearance/ui/AppearancePane.tsx",
+    "before": "description={`选择浅色、深色或跟随系统${mode === \"system\" ? `（当前${scheme === \"dark\" ? \"深色\" : \"浅色\"}）` : \"\"}。`}",
+    "after": "description={mode === \"system\" ? `当前为${scheme === \"dark\" ? \"深色\" : \"浅色\"}` : undefined}"
+  },
+  {
+    "file": "src/modules/appearance/ui/AppearancePane.tsx",
+    "before": "<p className=\"settings-card-desc\">界面配色与思考强度，一览可见。</p>",
+    "after": ""
+  },
+  {
+    "file": "src/modules/appearance/ui/AppearancePane.tsx",
+    "before": "导入 ai-chatbox 主题 JSON，或把当前主题导出为可分享的文件。",
+    "after": "支持 ai-chatbox 主题 JSON。"
+  },
+  {
+    "file": "src/modules/appearance/ui/AppearancePane.tsx",
+    "before": "当前使用「${themeLabel}」${scheme === \"dark\" ? \"深色\" : \"浅色\"}配色，调整即时生效。",
+    "after": "${themeLabel} · ${scheme === \"dark\" ? \"深色\" : \"浅色\"} · 即时生效"
+  },
+  {
+    "file": "src/modules/appearance/ui/AppearancePane.tsx",
+    "before": "让卡片与对话框呈现柔和的毛玻璃效果。",
+    "after": "卡片与弹窗使用毛玻璃。"
+  },
+  {
+    "file": "src/modules/context/ui/ContextPane.tsx",
+    "before": "描述助手的角色、回答方式和需要遵守的要求…",
+    "after": "助手角色、回答方式与要求…"
+  },
+  {
+    "file": "src/modules/context/ui/ContextPane.tsx",
+    "before": "{control}<p className=\"field-help\">{hint}</p>",
+    "after": "{control}{hint ? <p className=\"field-help\">{hint}</p> : null}"
+  },
+  {
+    "file": "src/modules/context/ui/ContextPane.tsx",
+    "before": "其余项目设置持续继承聊天默认值",
+    "after": "其余设置继承默认值"
+  },
+  {
+    "file": "src/modules/context/ui/ContextPane.tsx",
+    "before": "项目未覆盖的设置也会跟随更新",
+    "after": "项目未自定义时跟随更新"
+  },
+  {
+    "file": "src/modules/context/ui/ContextPane.tsx",
+    "before": "项目提示词整体覆盖聊天提示词；自定义为空表示不使用提示词。",
+    "after": "覆盖默认提示词；留空则不使用。"
+  },
+  {
+    "file": "src/modules/context/ui/ContextPane.tsx",
+    "before": "从下一次发送起生效，切换模型时保留。",
+    "after": "下次发送生效，切换模型时保留。"
+  },
+  {
+    "file": "src/modules/context/ui/ContextPane.tsx",
+    "before": "\"技能和必要的工具运行指令由应用单独添加。\"",
+    "after": "\"\""
+  },
+  {
+    "file": "src/modules/context/ui/ContextPane.tsx",
+    "before": " description=\"控制发送多少上下文，保留模型窗口与输出额度的安全余量。\"",
+    "after": ""
+  },
+  {
+    "file": "src/modules/context/ui/ContextPane.tsx",
+    "before": "留空自动计算：模型窗口 − 最大输出 − 5% 窗口安全余量。",
+    "after": "留空 = 模型窗口 − 最大输出 − 5% 安全余量。"
+  },
+  {
+    "file": "src/modules/context/ui/ContextPane.tsx",
+    "before": "达到阈值时压缩已完成的历史，不按固定轮数保留；会产生额外模型请求，聊天记录不会删除。",
+    "after": "达阈值后额外请求模型压缩历史，保留聊天记录。"
+  },
+  {
+    "file": "src/modules/context/ui/ContextPane.tsx",
+    "before": "占用达到输入预算的此比例时，在发送前压缩一次。",
+    "after": "达到输入预算的此比例时压缩。"
+  },
+  {
+    "file": "src/modules/context/ui/ContextPane.tsx",
+    "before": "实际发送使用当前会话模型；附件与工具内容采用保守估算。",
+    "after": "按当前模型发送，用量为估算。"
+  },
+  {
+    "file": "src/modules/context/ui/ContextPane.tsx",
+    "before": "实际适用参数由模型与 API 协议决定。",
+    "after": "以模型和 API 支持为准。"
+  },
+  {
+    "file": "src/modules/context/ui/ContextPane.tsx",
+    "before": "聊天工具栏可临时覆盖，也可恢复跟随配置。",
+    "after": "可在聊天中临时调整。"
+  },
+  {
+    "file": "src/modules/context/ui/ContextPane.tsx",
+    "before": "控制采样随机性；部分推理模型不接受此参数。",
+    "after": "随机性；部分推理模型不支持。"
+  },
+  {
+    "file": "src/modules/context/ui/ContextPane.tsx",
+    "before": "控制采样候选范围；Gemini 思考模式不发送采样参数。",
+    "after": "采样范围；Gemini 思考模式不使用。"
+  },
+  {
+    "file": "src/modules/context/ui/ContextPane.tsx",
+    "before": "边生成边显示；关闭后等待完整响应。",
+    "after": "边生成边显示。"
+  },
+  {
+    "file": "src/modules/context/ui/ContextPane.tsx",
+    "before": "用于新建会话；已有会话保留原保存状态。",
+    "after": "仅影响新会话。"
+  },
+  {
+    "file": "src/modules/context/ui/ContextPane.tsx",
+    "before": "可选；Gemini 不发送此字段，其他协议按各自格式传递。",
+    "after": "可选；Gemini 不使用。"
+  },
+  {
+    "file": "src/modules/context/ui/ContextPane.tsx",
+    "before": "全局配置，不参与项目继承。用于纠正模型图片能力的自动识别。",
+    "after": "手动修正图片能力，对所有项目生效。"
+  },
+  {
+    "file": "src/modules/context/ui/ContextPane.tsx",
+    "before": "请先在“模型与供应商”中添加模型。",
+    "after": "请先添加模型。"
+  },
+  {
+    "file": "src/modules/connections/ui/provider-workspace.tsx",
+    "before": "还没有供应商，请添加一个 API 协议。",
+    "after": "暂无供应商"
+  },
+  {
+    "file": "src/modules/connections/ui/provider-workspace.tsx",
+    "before": "<p>设置 API 地址、协议和凭据。</p>",
+    "after": ""
+  },
+  {
+    "file": "src/modules/connections/ui/provider-workspace.tsx",
+    "before": "API Key 会立即同步，其他设置需手动保存。",
+    "after": "Key 自动同步，其他更改需保存。"
+  },
+  {
+    "file": "src/modules/connections/ui/provider-workspace.tsx",
+    "before": "禁用后不再出现在模型选择器中。",
+    "after": "禁用后不参与模型选择。"
+  },
+  {
+    "file": "src/modules/connections/ui/provider-workspace.tsx",
+    "before": "设置模型参数，未配置项继承默认值。",
+    "after": "未配置项继承默认值。"
+  },
+  {
+    "file": "src/modules/connections/ui/provider-workspace.tsx",
+    "before": "尚未添加模型，可手动添加或从接口读取。",
+    "after": "暂无模型，可添加或从接口读取。"
+  },
+  {
+    "file": "src/modules/connections/ui/provider-workspace.tsx",
+    "before": "提示词、生成参数与模型兼容性请前往“上下文与提示词”设置。",
+    "after": "生成参数见“上下文与提示词”。"
+  },
+  {
+    "file": "src/modules/connections/ui/provider-workspace.tsx",
+    "before": "连接配置有未保存的更改",
+    "after": "有未保存的更改"
+  },
+  {
+    "file": "src/modules/connections/ui/provider-workspace.tsx",
+    "before": "连接配置已保存",
+    "after": "已保存"
+  },
+  {
+    "file": "src/modules/connections/ui/provider-workspace.tsx",
+    "before": "<p>选择现有供应商或添加新供应商。</p>",
+    "after": ""
+  },
+  {
+    "file": "src/modules/connections/ui/provider-dialogs.tsx",
+    "before": "<span className=\"provider-dialog-eyebrow\">New connection</span>",
+    "after": ""
+  },
+  {
+    "file": "src/modules/connections/ui/provider-dialogs.tsx",
+    "before": "<span className=\"provider-dialog-eyebrow\">{defaults ? \"Model defaults\" : \"Model profile\"}</span>",
+    "after": ""
+  },
+  {
+    "file": "src/modules/connections/ui/provider-dialogs.tsx",
+    "before": "未单独配置的模型会继承这些参数。",
+    "after": "未自定义的模型使用这些默认值。"
+  },
+  {
+    "file": "src/modules/connections/ui/provider-dialogs.tsx",
+    "before": "仅配置模型的上下文窗口与最大输出额度。",
+    "after": "设置上下文与输出限额。"
+  },
+  {
+    "file": "src/modules/knowledge/ui/KnowledgePane.tsx",
+    "before": "资料不完整，发送已受阻",
+    "after": "资料缺失，无法发送"
+  },
+  {
+    "file": "src/modules/knowledge/ui/KnowledgePane.tsx",
+    "before": "${files.length} 份 · 下次请求完整携带 · 不参与压缩",
+    "after": "${files.length} 份 · 全文携带"
+  },
+  {
+    "file": "src/modules/knowledge/ui/KnowledgePane.tsx",
+    "before": "会话加入项目后携带资料",
+    "after": "加入项目后携带资料"
+  },
+  {
+    "file": "src/modules/knowledge/ui/KnowledgePane.tsx",
+    "before": "已取消，资料保持原状。",
+    "after": "已取消。"
+  },
+  {
+    "file": "src/modules/knowledge/ui/KnowledgePane.tsx",
+    "before": "已保存到本地。项目每次请求将完整携带最新资料。",
+    "after": "已保存到本地。"
+  },
+  {
+    "file": "src/modules/knowledge/ui/KnowledgePane.tsx",
+    "before": "已生成资料备份；包含完整正文，不包含供应商凭据。",
+    "after": "已导出完整资料备份。"
+  },
+  {
+    "file": "src/modules/knowledge/ui/KnowledgePane.tsx",
+    "before": "文件在项目每次请求中完整携带，不参与历史压缩。修改只影响尚未开始的请求。",
+    "after": "每次全文携带，不参与压缩；修改对后续请求生效。"
+  },
+  {
+    "file": "src/modules/knowledge/ui/KnowledgePane.tsx",
+    "before": "UTF-8 文本 / Markdown / 代码 · 单文件 1 MiB · 每项目 8 MiB / 64 份 · 不支持 PDF、Word 或二进制文件",
+    "after": "UTF-8 文本、Markdown、代码 · 单文件 1 MiB · 共 8 MiB / 64 份。不支持 PDF、Word、二进制。"
+  },
+  {
+    "file": "src/modules/knowledge/ui/KnowledgePane.tsx",
+    "before": "正文与文件名全部计入固定上下文。这里是字符估算；实际供应商用量可能不同，发送前会统一检查完整预算。",
+    "after": "含文件名与正文的估算值，发送前检查预算。"
+  },
+  {
+    "file": "src/modules/knowledge/ui/KnowledgePane.tsx",
+    "before": "尚未上传资料。项目聊天目前只使用已配置的指令与会话历史。",
+    "after": "尚未上传资料。"
+  },
+  {
+    "file": "src/modules/knowledge/ui/KnowledgePane.tsx",
+    "before": "正文不可用，请重新上传。系统不会忽略该文件继续发送。",
+    "after": "正文缺失，请替换或删除后发送。"
+  },
+  {
+    "file": "src/modules/knowledge/ui/KnowledgePane.tsx",
+    "before": "选择文件后，在此查看完整正文。",
+    "after": "选择文件查看全文。"
+  },
+  {
+    "file": "src/modules/knowledge/ui/KnowledgePane.tsx",
+    "before": "删除「${target.name}」后，后续请求不再携带此文件；已开始的请求继续使用原快照。",
+    "after": "删除「${target.name}」？已开始的请求不受影响。"
+  },
+  {
+    "file": "src/modules/knowledge/ui/KnowledgePane.tsx",
+    "before": "将用备份中的 ${restored.length} 份资料替换当前项目的全部资料。此操作不会更改聊天历史。",
+    "after": "用备份中的 ${restored.length} 份资料替换本项目全部资料？聊天记录不变。"
+  },
+  {
+    "file": "src/modules/projects/ui/ProjectSettingsButton.tsx",
+    "before": "删除「${project.name}」后，其中的全部聊天会保留并移到“无项目”，该项目的知识库资料将一并移除。",
+    "after": "删除「${project.name}」及其知识库？全部聊天会保留并移到“无项目”。"
+  },
+  {
+    "file": "src/modules/projects/ui/ProjectSettingsButton.tsx",
+    "before": "{feedback || '更改名称不会影响项目中的聊天与资料。'}",
+    "after": "{feedback}"
+  },
+  {
+    "file": "src/modules/settings/ui/SettingsIndex.tsx",
+    "before": "没有匹配设置，试试“提示词”或“主题”。",
+    "after": "没有匹配设置。"
+  },
+  {
+    "file": "src/modules/extensions/ui/ExtensionsPane.tsx",
+    "before": " lede: string;",
+    "after": ""
+  },
+  {
+    "file": "src/modules/extensions/ui/ExtensionsPane.tsx",
+    "before": " lede: \"保留自定义 HTTP 工具的配置入口；当前版本工具执行尚未开放。\",",
+    "after": ""
+  },
+  {
+    "file": "src/modules/extensions/ui/ExtensionsPane.tsx",
+    "before": " lede: \"导入并管理可复用的模型指令；当前版本执行尚未开放。\",",
+    "after": ""
+  },
+  {
+    "file": "src/modules/extensions/ui/ExtensionsPane.tsx",
+    "before": "设置工具地址、输入 Schema 和启用状态，供后续版本执行时使用。",
+    "after": ""
+  },
+  {
+    "file": "src/modules/extensions/ui/ExtensionsPane.tsx",
+    "before": "当前版本仅保留配置与导入入口：工具与技能的执行尚未开放，携带非空 <code className=\"inline-code\">extensions</code> 的请求会被本地服务明确拒绝，不会静默忽略。",
+    "after": "执行尚未开放；当前仅可管理配置，启用后相关请求会被拒绝。"
+  },
+  {
+    "file": "src/modules/extensions/ui/ExtensionsPane.tsx",
+    "before": "在无网络 Linux 虚拟机中运行 Python 的能力预留；本版本仅保留配置。",
+    "after": "仅配置，暂不执行。"
+  },
+  {
+    "file": "src/modules/extensions/ui/ExtensionsPane.tsx",
+    "before": "在无网络临时工作目录运行受控命令的能力预留；本版本仅保留配置。",
+    "after": "仅配置，暂不执行。"
+  },
+  {
+    "file": "src/modules/extensions/ui/ExtensionsPane.tsx",
+    "before": "<p className=\"settings-pane-lede\">{current.lede}</p>",
+    "after": ""
+  },
+  {
+    "file": "src/modules/extensions/ui/ExtensionsPane.tsx",
+    "before": "<p className=\"settings-card-desc\">{current.desc}</p>",
+    "after": "{current.desc ? <p className=\"settings-card-desc\">{current.desc}</p> : null}"
+  },
+  {
+    "file": "src/modules/extensions/ui/ExtensionsPane.tsx",
+    "before": "<p className=\"settings-pane-lede\">名称会作为模型函数名，输入 Schema 必须是 object。</p>",
+    "after": ""
+  },
+  {
+    "file": "src/modules/extensions/ui/ExtensionsPane.tsx",
+    "before": "启用后保留该配置；本版本不会实际调用。",
+    "after": "仅保存启用状态，暂不执行。"
+  },
+  {
+    "file": "src/modules/extensions/ui/ExtensionsPane.tsx",
+    "before": "保存后保留配置；工具执行待后续版本开放",
+    "after": "工具执行尚未开放"
+  },
+  {
+    "file": "src/modules/extensions/ui/ExtensionsPane.tsx",
+    "before": "还没有技能，上传 Markdown 或压缩包开始。",
+    "after": "暂无技能。"
+  },
+  {
+    "file": "src/modules/extensions/ui/ExtensionsPane.tsx",
+    "before": "还没有工具。",
+    "after": "暂无工具。"
+  },
+  {
+    "file": "src/modules/extensions/ui/ExtensionsPane.tsx",
+    "before": "使用 POST JSON 调用，仅支持 HTTPS 或本机回环 HTTP。",
+    "after": "POST JSON；仅支持 HTTPS 或本机 HTTP。"
+  },
+  {
+    "file": "src/modules/data/ui/DataPane.tsx",
+    "before": "正在检查数据位置和运行环境。",
+    "after": "检查中…"
+  },
+  {
+    "file": "src/modules/data/ui/DataPane.tsx",
+    "before": "将本机数据导出为加密迁移包。",
+    "after": "导出本机数据。"
+  },
+  {
+    "file": "src/modules/data/ui/DataPane.tsx",
+    "before": "<p className=\"migration-kicker\">完整快照 · 加密导出</p>",
+    "after": ""
+  },
+  {
+    "file": "src/modules/data/ui/DataPane.tsx",
+    "before": "迁移包包含密文和 key.md，请作为敏感文件保管。",
+    "after": "迁移包含密钥，请妥善保管。"
+  },
+  {
+    "file": "src/modules/data/ui/DataPane.tsx",
+    "before": "升级时保留的旧行为设置，仅供查阅，不再自动生效。备份不包含 API Key。",
+    "after": "仅供查阅，不自动生效；不含 API Key。"
+  },
+  {
+    "file": "src/modules/data/ui/DataPane.tsx",
+    "before": "没有需要迁移的旧配置。",
+    "after": "暂无旧配置。"
+  },
+  {
+    "file": "src/modules/onboarding/ui/OnboardingApp.tsx",
+    "before": "此页面只能在 ai-chatbox 首次启动时使用。",
+    "after": "仅在桌面应用首次启动时可用。"
+  },
+  {
+    "file": "src/modules/onboarding/ui/OnboardingApp.tsx",
+    "before": "已取消导入；你仍可以选择任一种启动方式。",
+    "after": "已取消导入。"
+  },
+  {
+    "file": "src/modules/onboarding/ui/OnboardingApp.tsx",
+    "before": "FIRST OPEN · 第一次打开",
+    "after": "首次使用"
+  },
+  {
+    "file": "src/modules/onboarding/ui/OnboardingApp.tsx",
+    "before": "从这里，决定第一份记忆",
+    "after": "欢迎使用 ai-chatbox"
+  },
+  {
+    "file": "src/modules/onboarding/ui/OnboardingApp.tsx",
+    "before": "ai-chatbox 没有云端账户。请选择建立一套全新的本机数据，或把另一台设备的对话、主题与设置带到这里。",
+    "after": "全新开始，或导入已有数据。数据保存在本机。"
+  },
+  {
+    "file": "src/modules/onboarding/ui/OnboardingApp.tsx",
+    "before": "创建空白的隐藏数据目录，从一段新对话开始。",
+    "after": "创建本机数据。"
+  },
+  {
+    "file": "src/modules/onboarding/ui/OnboardingApp.tsx",
+    "before": "选择 ai-chatbox Migration ZIP，验证后原子恢复本机数据。",
+    "after": "恢复对话、主题与设置。"
+  },
+  {
+    "file": "src/modules/onboarding/ui/OnboardingApp.tsx",
+    "before": "导入前会检查文件路径、AES-GCM 完整性与逐文件 SHA-256 清单；失败不会创建半成品数据目录。",
+    "after": "导入前校验文件，失败不写入数据。"
+  },
+  {
+    "file": "src/modules/chat/ui/ChatSurface.tsx",
+    "before": "输入消息，或输入 / 使用指令",
+    "after": "输入消息，/ 打开指令"
+  },
+  {
+    "file": "src/modules/chat/ui/ChatSurface.tsx",
+    "before": "Enter 发送 · Shift + Enter 换行 · / 指令",
+    "after": "Enter 发送 · Shift + Enter 换行"
+  },
+  {
+    "file": "src/modules/chat/services/message-rendering.js",
+    "before": "无法连接本地服务，请确认后端已启动。你仍可输入 /help 查看指令。",
+    "after": "请启动本地服务，或检查连接设置。"
+  },
+  {
+    "file": "src/modules/chat/services/message-rendering.js",
+    "before": "正在检查本地服务，稍后即可确认连接状态。",
+    "after": "请稍候…"
+  },
+  {
+    "file": "src/modules/chat/services/message-rendering.js",
+    "before": "直接写下问题，或输入 / 切换模型、调整强度和查看帮助。",
+    "after": "输入问题，开始对话。"
+  },
+  {
+    "file": "src/modules/chat/services/message-rendering.js",
+    "before": "请先在设置中配置并启用供应商，再使用 /model 选择模型。",
+    "after": "添加供应商并选择模型后即可聊天。"
+  },
+  {
+    "file": "src/modules/chat/services/popover-markup.js",
+    "before": "字符估算，含请求结构开销 · 点击压缩历史 · 将请求当前模型",
+    "after": "估算含请求开销 · 点击请求模型压缩历史"
+  }
+]

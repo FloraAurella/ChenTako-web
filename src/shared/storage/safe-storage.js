@@ -4,7 +4,7 @@ export const LEGACY_STORAGE_PREFIXES = Object.freeze([
   "perabox-"
 ]);
 
-export const STORAGE_PROBE_KEY = "__clawbox_probe__";
+export const STORAGE_PROBE_KEY = "__ai_chatbox_probe__";
 
 /** 移除历史项目遗留键，返回删除数量。只匹配明确的前身命名空间。 */
 export function evictLegacyStorage(storage) {

@@ -96,23 +96,23 @@ describe("色板一致性（tokens.css ↔ themes/base-themes.js）", () => {
 
   it("品牌 favicon 数据 URI 使用当前身份色", () => {
     const uri = decodeURIComponent(themeFaviconDataUri().replace(/^data:image\/svg\+xml,/, ""));
-    expect(uri).toContain(`fill='${LIGHT_TOKENS["--pear"]}'`);
+    expect(uri).toContain(`stroke="${LIGHT_TOKENS["--pear"]}"`);
+    expect(uri).toContain(`fill="${LIGHT_TOKENS["--pear"]}"`);
     expect(uri).not.toContain(LIGHT_TOKENS["--pear-hover"]);
-    expect(uri.match(/<path/g)).toHaveLength(1);
+    expect(uri.match(/<path/g)).toHaveLength(3);
   });
 
   it("HTML 首帧回退色与浅色基线一致", () => {
-    // favicon 内颜色为 URL 编码形式（%23RRGGBB）；theme-color 元信息为 #RRGGBB
+    // favicon 图形来自唯一 SVG，SVG 默认色与浅色身份色一致；theme-color 仍来自 HTML。
     const pear = LIGHT_TOKENS["--pear"].toLowerCase();
-    const pearHover = LIGHT_TOKENS["--pear-hover"].toLowerCase();
     const canvasMid = LIGHT_TOKENS["--canvas-mid"].toLowerCase();
+    const logo = readFileSync(resolve("src/resources/logos/ai-chatbox.svg"), "utf8").toLowerCase();
+    expect(logo).toContain(`color="${pear}"`);
     const html = readFileSync(resolve("index.html"), "utf8").toLowerCase();
-    expect(html).toContain(`%23${pear.slice(1)}`);
-    expect(html).not.toContain(`%23${pearHover.slice(1)}`);
+    expect(html).toContain('href="/src/resources/logos/ai-chatbox.svg"');
     expect(html).toContain(canvasMid);
     const onboarding = readFileSync(resolve("onboarding.html"), "utf8").toLowerCase();
-    expect(onboarding).toContain(`%23${pear.slice(1)}`);
-    expect(onboarding).not.toContain(`%23${pearHover.slice(1)}`);
+    expect(onboarding).toContain('href="/src/resources/logos/ai-chatbox.svg"');
     expect(onboarding).toContain(canvasMid);
   });
 

@@ -10,7 +10,7 @@ export const CURRENT_RELEASE = {
   isPatch: true,
   date: "2026-09-06",
   title: "v1.1.5：移动端网页适配",
-  summary: "这一版让 Clawbox 可以直接在手机浏览器中使用：补齐移动端布局与触控目标，修复窄屏下会话抽屉的交互闭环，核心功能（对话、供应商配置、设置管理）全部可用。",
+  summary: "这一版让 ai-chatbox 可以直接在手机浏览器中使用：补齐移动端布局与触控目标，修复窄屏下会话抽屉的交互闭环，核心功能（对话、供应商配置、设置管理）全部可用。",
   changes: [
     { tag: "ui", text: "移动端浏览器完整可用：底部主导航切换对话与设置，设置详情以推入式全屏呈现并自带返回，窄屏下无横向溢出。" },
     { tag: "fix", text: "修复移动端会话抽屉在新建对话或选择对话后不关闭的问题：窄屏下抽屉作为覆盖层，会话激活后自动收起回到对话。" },
@@ -53,10 +53,10 @@ export const RELEASE_NOTES = [
   {
     version: "1.0.0-exp",
     date: "2026-08-28",
-    title: "v1.0.0-exp：Clawbox 首个实验版本",
+    title: "v1.0.0-exp：ai-chatbox 首个实验版本",
     summary: "首个实验版本，聚焦桌面端 AI 对话、真实供应商接入与主题体验。",
     changes: [
-      { tag: "about", text: "基于 ai-chatbox-structure 完成 Clawbox 的首次客制化开发。" },
+      { tag: "about", text: "基于 ai-chatbox-structure 完成 ai-chatbox 的首次客制化开发。" },
       { tag: "theme", text: "启用 Everforest 明暗主题，并移除原默认主题及其专属视觉资源。" },
       { tag: "ui", text: "优化思考强度滑轨比例与端点留白；侧栏按钮改为浅色/深色快速切换，并暂时隐藏设置中的外观入口。" },
       { tag: "core", text: "完成品牌、本地存储、真实供应商与前后端开发环境的统一。" }

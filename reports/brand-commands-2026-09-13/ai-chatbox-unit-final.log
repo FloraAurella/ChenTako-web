@@ -1,0 +1,71 @@
+
+> ai-chatbox-structure-v2.0@1.1.5 test
+> vitest run --reporter=dot
+
+
+ RUN  v3.2.7 /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0
+
+······················································································································································································································································································································································································stdout | test/server/gateway.test.ts > gateway 集成 > 新品牌令牌头生效且旧令牌头继续兼容
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/providers-endpoints.test.ts > providers 端点集成 > PUT 创建 → GET 列表（无 keyEnv、hasKeyConfigured=false）→ PUT 带 Key → hasKeyConfigured=true
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/gateway.test.ts > gateway 集成 > health 返回前端要求的精确形状
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/chat.test.ts > /api/chat 集成 > 流式：经前端 consumeAppStreamFrame 状态机验收事件顺序与最终状态
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/gateway.test.ts > gateway 集成 > 未知接口 404，方法不匹配 405 并带 Allow
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/providers-endpoints.test.ts > providers 端点集成 > key 端点：保存/读取（no-store）/删除/404 语义
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/gateway.test.ts > gateway 集成 > 非 /api 路径一律 404，不暴露文件系统
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/gateway.test.ts > gateway 集成 > 跨站 Origin 被拒绝，vite 开发来源与健康检查无 Origin 请求被放行
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/providers-endpoints.test.ts > providers 端点集成 > 删除供应商带 body 回退匹配；不存在返回 404；同路径方法不匹配返回 405
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/gateway.test.ts > gateway 集成 > OPTIONS 预检放行允许来源并声明方法与头
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/gateway.test.ts > gateway 集成 > 配置 API_TOKEN 后：缺令牌 401，错误令牌 401，health 豁免，正确令牌放行
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+······stdout | test/server/chat.test.ts > /api/chat 集成 > 非流式：返回与前端 normalizeProviderResponse 对齐的 JSON
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+··stdout | test/server/gateway.test.ts > gateway 集成 > 畸形 JSON 请求体返回 400（走真实路由处理器之前的统一解析路径由后续路由验证）
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/providers-endpoints.test.ts > providers 端点集成 > 非法载荷：缺 displayName、坏覆盖、坏 Key 形态、超大 body 413
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/chat.test.ts > /api/chat 集成 > 压缩：使用固定内置指令（不含人格提示词），返回摘要与用量
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+····stdout | test/server/chat.test.ts > /api/chat 集成 > 校验与错误路径：400/401/404/409 与上游状态码转发
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+stdout | test/server/providers-endpoints.test.ts > providers 端点集成 > 连接测试：本地 mock 上游读取模型列表；无 Key 非回环 401；错误体转发状态码
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+······stdout | test/server/chat.test.ts > /api/chat 集成 > 流式请求上游返回非 SSE 时 502；预算冲突返回 400
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+·············stdout | test/server/chat.test.ts > /api/chat 集成 > 客户端取消会中止上游请求；上游中断经 chat.stream.error 收尾
+ai-chatbox 模块化后端已启动: http://127.0.0.1:0（仅本机回环）
+
+····
+
+ Test Files  49 passed (49)
+      Tests  409 passed (409)
+   Start at  02:02:53
+   Duration  4.58s (transform 1.59s, setup 183ms, collect 5.22s, tests 1.56s, environment 13.40s, prepare 2.63s)
+

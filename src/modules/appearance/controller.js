@@ -4,7 +4,7 @@ import { Scope } from "../../core/scope";
 /**
  * 主题控制器：解析外观偏好（含旧主题 ID 迁移）→ 把令牌写入
  * documentElement CSS 变量 → 同步 data-theme / data-scheme / theme-color，
- * 并对外发布 clawbox:themechange 与 window.ClawboxThemeAPI。
+ * 对外发布 ai-chatbox:themechange 与 window.AiChatboxThemeAPI，同时保留旧别名。
  */
 
 import { THEME_API_VERSION, SUPPORTED_THEME_TOKENS, validateThemeDefinition } from "./domain/contract.js";
@@ -145,13 +145,14 @@ export function createThemeController() {
 
   function publish() {
     if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("ai-chatbox:themechange", { detail: detail() }));
       window.dispatchEvent(new CustomEvent("clawbox:themechange", { detail: detail() }));
     }
     for (const listener of listeners) {
       try {
         listener(detail());
       } catch (error) {
-        console.error("[Clawbox Theme] listener error", error);
+        console.error("[ai-chatbox Theme] listener error", error);
       }
     }
   }
@@ -341,7 +342,7 @@ export function createThemeController() {
     }
     const errors = validateThemeDefinition(definition);
     if (errors.length) {
-      console.warn(`[Clawbox Theme] 主题包文件 ${String(file.path || file.id || "(unknown)")} 无法恢复：${errors.join("；")}`);
+      console.warn(`[ai-chatbox Theme] 主题包文件 ${String(file.path || file.id || "(unknown)")} 无法恢复：${errors.join("；")}`);
       return null;
     }
     return {
@@ -380,7 +381,7 @@ export function createThemeController() {
       return archiveLocation;
     });
     archiveWriteChain = task.catch((error) => {
-      console.warn("[Clawbox Theme] 主题包保存失败", error);
+      console.warn("[ai-chatbox Theme] 主题包保存失败", error);
     });
     return task;
   }
@@ -411,7 +412,7 @@ export function createThemeController() {
     try {
       loaded = await archiveStore.load();
     } catch (error) {
-      console.warn("[Clawbox Theme] 主题包存储不可用，继续使用内存主题", error);
+      console.warn("[ai-chatbox Theme] 主题包存储不可用，继续使用内存主题", error);
       loaded = { payload: null, location: archiveLocation };
     }
     archiveLocation = loaded.location || archiveLocation;
@@ -495,7 +496,7 @@ export function createThemeController() {
             await persistThemeArchive({ force: true });
             archivePersisted = true;
           } catch (error) {
-            console.warn("[Clawbox Theme] 种子主题写入主题包失败", error);
+            console.warn("[ai-chatbox Theme] 种子主题写入主题包失败", error);
           }
         }
         if (archivePersisted) clearUserThemeFiles();
@@ -527,7 +528,7 @@ export function createThemeController() {
       await persistThemeArchive({ force: true });
       clearUserThemeFiles();
     } catch (error) {
-      console.warn("[Clawbox Theme] 首次主题包迁移失败，保留兼容存储", error);
+      console.warn("[ai-chatbox Theme] 首次主题包迁移失败，保留兼容存储", error);
     }
     return restored;
   }
@@ -555,7 +556,7 @@ export function createThemeController() {
 
   function installPublicApi() {
     if (typeof window === "undefined") return;
-    window.ClawboxThemeAPI = installedApi = Object.freeze({
+    window.AiChatboxThemeAPI = window.ClawboxThemeAPI = installedApi = Object.freeze({
       version: THEME_API_VERSION,
       validate: (definition) => validateThemeDefinition(definition),
       register(definition, options = {}) {
@@ -584,7 +585,7 @@ export function createThemeController() {
   }
 
   return {
-    dispose() { scope.dispose(); listeners.clear(); if (typeof window !== "undefined" && window.ClawboxThemeAPI === installedApi) delete window.ClawboxThemeAPI; },
+    dispose() { scope.dispose(); listeners.clear(); if (typeof window !== "undefined" && window.ClawboxThemeAPI === installedApi) delete window.ClawboxThemeAPI; if (typeof window !== "undefined" && window.AiChatboxThemeAPI === installedApi) delete window.AiChatboxThemeAPI; },
     init,
     applyTheme,
     setAppearanceMode,

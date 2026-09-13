@@ -1,0 +1,57 @@
+Settings · 设置
+设置
+本地服务正常
+偏好设置
+外观
+模型与供应商
+上下文与提示词
+工具
+技能
+数据管理
+关于与更新
+无法读取已保存的 Key：HTTP 200
+模型与供应商
+添加供应商
+示例供应商
+已启用
+
+OpenAI Chat Completions · 1 个模型
+
+连接配置
+显示名称
+API 格式
+OpenAI Responses
+Anthropic Messages
+OpenAI Chat Completions
+Google Gemini
+API Base URL
+API Key
+Key 已配置
+
+Key 自动同步，其他更改需保存。
+
+允许用于聊天
+禁用后不参与模型选择。
+模型配置
+
+未配置项继承默认值。
+
+模型默认值
+从接口读取
+demo-model
+131.1K context
+8.2K output
+继承默认
+默认
+添加模型
+供应商管理
+
+生成参数见“上下文与提示词”。
+
+删除这个供应商
+已保存
+测试连接
+放弃更改
+保存更改
+对话
+设置

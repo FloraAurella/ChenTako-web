@@ -52,7 +52,7 @@ function safeArchivePath(name) {
 
 async function inflateRaw(bytes, maximum) {
   if (typeof DecompressionStream !== "function" || typeof ReadableStream !== "function") {
-    throw new Error("当前环境不支持读取压缩 Skill 包；请使用最新版 Clawbox");
+    throw new Error("当前环境不支持读取压缩 Skill 包；请使用最新版 ai-chatbox");
   }
   const source = new ReadableStream({
     start(controller) {

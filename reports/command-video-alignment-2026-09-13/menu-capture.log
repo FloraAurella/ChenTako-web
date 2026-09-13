@@ -1,0 +1,18 @@
+[WebServer] (node:49771) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+
+Running 7 tests using 1 worker
+
+(node:49773) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/7] [chromium] › e2e/commands.spec.js:162:3 › 指令面板 light 1280 无溢出且 panel 悬停稳定
+[2/7] [chromium] › e2e/commands.spec.js:162:3 › 指令面板 light 1024 无溢出且 panel 悬停稳定
+[3/7] [chromium] › e2e/commands.spec.js:162:3 › 指令面板 light 390 无溢出且 panel 悬停稳定
+[4/7] [chromium] › e2e/commands.spec.js:162:3 › 指令面板 dark 1280 无溢出且 panel 悬停稳定
+[5/7] [chromium] › e2e/commands.spec.js:162:3 › 指令面板 dark 1024 无溢出且 panel 悬停稳定
+[6/7] [chromium] › e2e/commands.spec.js:162:3 › 指令面板 dark 390 无溢出且 panel 悬停稳定
+[7/7] [chromium] › e2e/commands.spec.js:304:1 › 录屏对齐：鼠标和键盘共用唯一活动行，二级当前值用勾选表达
+  7 passed (6.0s)

@@ -1,0 +1,14 @@
+
+ RUN  v3.2.7 /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0
+
+ ✓ test/changelog.test.js (4 tests) 3ms
+ ✓ test/popover-markup.test.js (3 tests) 3ms
+ ✓ test/message-rendering.test.js (7 tests) 7ms
+ ✓ test/knowledge.test.ts (9 tests) 76ms
+ ✓ test/react-shell.test.tsx (2 tests) 99ms
+
+ Test Files  5 passed (5)
+      Tests  25 passed (25)
+   Start at  06:59:47
+   Duration  2.67s (transform 1.16s, setup 44ms, collect 3.20s, tests 188ms, environment 3.61s, prepare 814ms)
+

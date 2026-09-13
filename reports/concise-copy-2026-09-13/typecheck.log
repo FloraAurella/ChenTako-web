@@ -1,0 +1,4 @@
+
+> ai-chatbox-structure-v2.0@1.1.5 typecheck
+> node ./node_modules/typescript/bin/tsc --noEmit && node ./node_modules/typescript/bin/tsc -p tsconfig.server.json --noEmit
+

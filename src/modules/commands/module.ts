@@ -3,7 +3,7 @@ export const module: FrontendModule = {
   id: 'commands',
   setup({ services, scope }) {
     scope.defer(services.commands.register('commands', {
-      id: 'help', name: 'help', description: '查看指令帮助', parameters: '',
+      id: 'help', name: 'help', label: '帮助', icon: 'info', description: '查看指令帮助', parameters: '',
       available: () => null,
       execute: (_context, argument) => argument
         ? { status: 'error', message: '/help 不接受参数。' }

@@ -67,7 +67,7 @@ export function createDataSettingsService(
     if (!bridge || !status?.available || stateBridge.get().migrationBusy) return;
     const confirmed = await dialogs.confirm({
       title: "导出完整迁移包",
-      message: "Clawbox 会先让对话与本地服务数据全部落盘，然后重启一次完成压缩与 AES-128-GCM 加密。外层 ZIP 同时包含解密所需的 key.md，请把整个文件视为敏感数据。",
+      message: "保存本机数据并重启，生成 AES-128-GCM 加密迁移包。ZIP 含解密密钥 key.md，请妥善保管。",
       confirmLabel: "导出并重启"
     });
     if (!confirmed) return;
@@ -79,7 +79,7 @@ export function createDataSettingsService(
         stateBridge.patch({ migrationBusy: false });
         toast("已取消迁移");
       } else {
-        toast("数据已落盘，Clawbox 正在重启并导出迁移包", { tone: "ok" });
+        toast("数据已落盘，ai-chatbox 正在重启并导出迁移包", { tone: "ok" });
       }
     } catch (error) {
       stateBridge.patch({ migrationBusy: false });

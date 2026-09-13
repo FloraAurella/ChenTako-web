@@ -2,7 +2,7 @@
 
 /**
  * 自实现 ZIP（存储式，CRC32，手写二进制结构）：
- * 导出 conversation.json（clawbox-conversation v3，含会话内消息树）+ media/ 图片；
+ * 导出 conversation.json（ai-chatbox-conversation v3，含会话内消息树）+ media/ 图片；
  * 导入含路径穿越防护与 CRC 校验，图片恢复为 data URL。
  */
 
@@ -195,7 +195,7 @@ function dataUrlToPart(source) {
   return { mime, bytes, ext: Object.keys(EXT_MIME).find((ext) => EXT_MIME[ext] === mime) || "png" };
 }
 
-/** 导出为 .clawbox.zip 条目列表（conversation.json + media/*）。 */
+/** 导出为 .ai-chatbox.zip 条目列表（conversation.json + media/*）。 */
 export function exportConversationArchive(conversation) {
   const encoder = new TextEncoder();
   const media = [];
@@ -227,6 +227,8 @@ export function exportConversationArchive(conversation) {
     }
   };
 
+  delete exported.conversation.firstResponsePending;
+  delete exported.conversation.titleRevision;
   const entries = [
     { name: "conversation.json", data: encoder.encode(JSON.stringify(exported, null, 2)) },
     ...media
@@ -234,7 +236,7 @@ export function exportConversationArchive(conversation) {
   return {
     entries,
     bytes: buildStoredZip(entries),
-    filename: `${safeArchiveTitle(conversation.title)}.clawbox.zip`
+    filename: `${safeArchiveTitle(conversation.title)}.ai-chatbox.zip`
   };
 }
 
@@ -299,7 +301,7 @@ async function readFileText(file) {
 }
 
 /**
- * 导入 .clawbox.zip 或导出的 JSON 文件。
+ * 导入 .ai-chatbox.zip 或导出的 JSON 文件。
  * @returns {Promise<object>} 归一化后的会话（标题追加“（导入）”）
  */
 export async function importConversationArchive(file, providers = []) {

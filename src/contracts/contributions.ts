@@ -29,8 +29,8 @@ export interface ControllerContribution {
   create(dependencies: any): any;
 }
 export interface SlotContribution {
-  id: string; slot: 'composer.before' | 'composer.actions';
-  component: ComponentType<{ store: any }>;
+  id: string; slot: 'composer.before' | 'composer.actions' | 'project.settings';
+  component: ComponentType<{ store: any; projectId?: string }>;
 }
 export interface FrontendContributions {
   requestContexts: Registry<RequestContextContribution>;

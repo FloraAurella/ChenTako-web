@@ -45,27 +45,35 @@ export function createComposerCommands({ input, registry, context, beforeOpen }:
   function position() {
     if (!view) return;
     const rect = input.getBoundingClientRect();
+    const anchor = input.closest('.composer-paper')?.getBoundingClientRect() || rect;
     const viewport = window.visualViewport;
     const leftEdge = viewport?.offsetLeft || 0;
     const topEdge = viewport?.offsetTop || 0;
     const width = viewport?.width || window.innerWidth;
-    const available = Math.max(0, rect.top - topEdge - 16);
-    host.style.width = `${Math.min(480, width - 24)}px`;
-    host.style.left = `${Math.max(leftEdge + 12, Math.min(rect.left, leftEdge + width - Math.min(480, width - 24) - 12))}px`;
+    const available = Math.max(0, anchor.top - topEdge - 16);
+    const panelWidth = Math.min(anchor.width, width - 24);
+    host.style.width = `${panelWidth}px`;
+    host.style.left = `${Math.max(leftEdge + 12, Math.min(anchor.left, leftEdge + width - panelWidth - 12))}px`;
     host.style.maxHeight = `${Math.min(420, available)}px`;
-    host.style.top = `${Math.max(topEdge + 8, rect.top - Math.min(host.scrollHeight, 420, available) - 8)}px`;
+    host.style.top = `${Math.max(topEdge + 8, anchor.top - Math.min(host.scrollHeight, 420, available) - 8)}px`;
   }
-  function paint() {
+  function paint(scrollActive = true) {
     if (!view || scope.disposed) return;
     host.hidden = false;
-    flushSync(() => root.render(<CommandPanel view={view!} choose={index => void choose(index)} />));
+    flushSync(() => root.render(<CommandPanel view={view!} choose={index => void choose(index)} activate={activate} />));
     const list = !view.help;
     input.setAttribute('aria-expanded', 'true');
     if (list) input.setAttribute('aria-controls', 'command-options'); else input.removeAttribute('aria-controls');
     if (list && view.items[view.active]) input.setAttribute('aria-activedescendant', `command-option-${view.active}`);
     else input.removeAttribute('aria-activedescendant');
     position();
-    host.querySelector(`[id="command-option-${view.active}"]`)?.scrollIntoView({ block: 'nearest' });
+    if (scrollActive) host.querySelector(`[id="command-option-${view.active}"]`)?.scrollIntoView({ block: 'nearest' });
+  }
+  function activate(index: number) {
+    if (!view || view.active === index || !view.items[index]) return;
+    view.active = index;
+    navigated = true;
+    paint(false);
   }
   function show(next: PanelView, nextMode: typeof mode) {
     if (!view) beforeOpen();
@@ -86,8 +94,10 @@ export function createComposerCommands({ input, registry, context, beforeOpen }:
   }
   function showOptions(result: Extract<CommandResult, { status: 'select' }>, ctx: CommandContext, explicit = false) {
     selectionReady = explicit;
+    const parsed = parseCommandInput(input.value);
+    const commandIcon = parsed.kind === 'command' ? registry.get(parsed.name)?.icon : undefined;
     options = result.options;
-    show({ title: result.title, items: options, active: Math.max(0, options.findIndex(item => item.selected)), message: result.message || (!options.length ? '没有匹配项，请修改参数或在设置中配置模型。' : undefined), busy: ctx.busy }, 'options');
+    show({ title: result.title, items: options.map(item => ({ ...item, icon: commandIcon })), active: Math.max(0, options.findIndex(item => item.selected)), message: result.message || (!options.length ? '没有匹配项，请修改参数或在设置中配置模型。' : undefined), busy: ctx.busy }, 'options');
   }
   async function finish(action: () => CommandResult | Promise<CommandResult>, ctx: CommandContext) {
     const text = input.value; const revision = version;
@@ -142,8 +152,8 @@ export function createComposerCommands({ input, registry, context, beforeOpen }:
     if (command?.options && parsed.hasSeparator) {
       showOptions({ status: 'select', title: command.description, options: command.options(ctx, parsed.argument) }, ctx);
     } else if (!parsed.argument) {
-      suggestions = ordered().filter(item => `${item.name} ${item.description}`.toLowerCase().includes(parsed.name));
-      show({ title: '指令', items: suggestions.map(item => ({ id: item.id, label: `/${item.name}`, detail: [item.description, item.summary?.(ctx)].filter(Boolean).join(" · "), unavailable: item.available(ctx) })), active: 0,
+      suggestions = ordered().filter(item => `${item.name} ${item.label || ""} ${item.description}`.toLowerCase().includes(parsed.name));
+      show({ title: '指令', items: suggestions.map(item => ({ id: item.id, label: item.label || `/${item.name}`, icon: item.icon, command: `/${item.name}`, detail: [item.description, item.summary?.(ctx)].filter(Boolean).join(" · "), unavailable: item.available(ctx) })), active: 0,
         message: suggestions.length ? undefined : '没有匹配指令。输入 /help 查看帮助。', busy: ctx.busy }, 'suggestions');
     } else close();
   }
@@ -197,8 +207,8 @@ export function createComposerCommands({ input, registry, context, beforeOpen }:
         close(); feedback.hidden = true; version++; owner = '';
       } else if (view && next && view.busy !== next.busy) {
         view.busy = next.busy;
-        if (mode === 'suggestions') view.items = suggestions.map(item => ({ id: item.id, label: `/${item.name}`, detail: [item.description, item.summary?.(next)].filter(Boolean).join(' · '), unavailable: item.available(next) }));
-        scope.frame(paint);
+        if (mode === 'suggestions') view.items = suggestions.map(item => ({ id: item.id, label: item.label || `/${item.name}`, icon: item.icon, command: `/${item.name}`, detail: [item.description, item.summary?.(next)].filter(Boolean).join(' · '), unavailable: item.available(next) }));
+        scope.frame(() => paint());
       }
     },
     close,

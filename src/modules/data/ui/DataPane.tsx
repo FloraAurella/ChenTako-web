@@ -1,4 +1,4 @@
-import { Button } from "../../../shared/ui/primitives";
+import { Button, Disclosure } from "../../../shared/ui/primitives";
 import { SettingsCard, SettingsGroup } from "../../../shared/ui/SettingsCard";
 import { useEffect } from "react";
 import { APP_SETTINGS_VERSION, CURRENT_RELEASE, RELEASE_NOTES } from "../../../shared/settings/settings-view-model";
@@ -27,22 +27,22 @@ export function DataPane({ store, state, service }: { store: ExternalStore & { s
   const result = status?.lastResult;
   const resultPath = result?.outputPath || result?.backupPath || result?.dataPath || "";
   const description = !status
-    ? "正在检查数据位置和运行环境。"
+    ? "检查中…"
     : available
-      ? "将本机数据导出为加密迁移包。"
+      ? "导出本机数据。"
       : status.reason;
 
   return (
     <div className="settings-pane">
       <h2 className="settings-pane-title">数据管理</h2>
-      <p className="settings-pane-lede">导入对话、迁移本机数据并查看旧配置。</p>
 
-      <SettingsGroup id="data-common" title="常用配置" description="导出加密迁移包，或导入对话数据。">
+
+      <SettingsGroup id="data-common" title="常用配置">
         <div id="data-migration" tabIndex={-1} className="paper-panel settings-card migration-card" data-migration-mode="export">
         <div className="migration-card-head">
           <div>
             <h3 className="settings-card-title">迁移</h3>
-            <p className="migration-kicker">完整快照 · 加密导出</p>
+
           </div>
           <span className={`migration-status-badge ${available ? "is-ready" : ""}`}>
             {!status ? "检查中" : available ? "可以迁移" : "不可用"}
@@ -61,7 +61,7 @@ export function DataPane({ store, state, service }: { store: ExternalStore & { s
           <div className="migration-location"><span>主题包位置</span><code className="migration-path">{status.themeArchivePath}</code></div>
         ) : null}
         {available ? (
-          <div className="migration-secret-note"><TrustedIcon name="shield" size={14} /> 迁移包包含密文和 key.md，请作为敏感文件保管。</div>
+          <div className="migration-secret-note"><TrustedIcon name="shield" size={14} /> 迁移包含密钥，请妥善保管。</div>
         ) : null}
         <div className="migration-actions">
           <Button type="button" className="btn btn-primary" id="migrationCreateBtn" disabled={!available || state.migrationBusy} onClick={() => void service.data.createMigrationPackage()}>
@@ -83,20 +83,20 @@ export function DataPane({ store, state, service }: { store: ExternalStore & { s
 
         <div id="data-import" tabIndex={-1} className="paper-panel settings-card">
           <h3 className="settings-card-title">导入对话</h3>
-          <p className="settings-card-desc">导入 JSON 或 <code className="inline-code">.clawbox.zip</code> 对话文件（最大 130MB）。</p>
+          <p className="settings-card-desc">导入 JSON 或 <code className="inline-code">.ai-chatbox.zip</code> 对话文件（最大 130MB）。</p>
           <Button type="button" className="btn btn-primary" id="dataImportBtn" onClick={() => void service.data.importConversation()}>
             <TrustedIcon name="upload" size={15} /> 选择文件导入
           </Button>
         </div>
       </SettingsGroup>
 
-      <SettingsGroup id="data-advanced" title="高级配置" description="旧版配置备份与兼容行为；仅供查阅，不会自动生效。">
+      <SettingsGroup id="data-advanced" title="高级配置">
         <details className="settings-legacy-details"><summary>旧配置备份</summary>
-        <SettingsCard id="legacy-settings" title="旧配置备份" description="升级时保留的旧行为设置，仅供查阅，不再自动生效。备份不包含 API Key。">
+        <SettingsCard id="legacy-settings" title="旧配置备份" description="仅供查阅，不自动生效；不含 API Key。">
           {store.state.legacySettingsBackup ? <><pre className="settings-backup">{JSON.stringify(store.state.legacySettingsBackup, null, 2)}</pre><Button type="button" className="btn btn-secondary" onClick={() => {
             const url = URL.createObjectURL(new Blob([JSON.stringify(store.state.legacySettingsBackup, null, 2)], { type: "application/json" }));
-            const a = document.createElement("a"); a.href = url; a.download = "clawbox-legacy-settings.json"; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
-          }}>导出旧配置</Button></> : <p className="field-help">没有需要迁移的旧配置。</p>}
+            const a = document.createElement("a"); a.href = url; a.download = "ai-chatbox-legacy-settings.json"; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+          }}>导出旧配置</Button></> : <p className="field-help">暂无旧配置。</p>}
         </SettingsCard>
         </details>
       </SettingsGroup>
@@ -118,7 +118,7 @@ export function ChangelogPane() {
   return (
     <div className="settings-pane">
       <h2 className="settings-pane-title">更新日志</h2>
-      <p className="settings-pane-lede">查看当前版本的更新内容。</p>
+
       <div className="paper-panel settings-card release-card is-current">
         <div className="release-head">
           <span className="release-version">v{CURRENT_RELEASE.displayVersion}</span>
@@ -146,12 +146,12 @@ export function ChangelogPane() {
 
 export function AboutPane({ store, service }: { store: ExternalStore; service: SettingsService }) {
   const backend = useStoreValue<any>(store, "backend");
-  return <div className="settings-pane about-pane"><h2 className="settings-pane-title">关于与更新</h2><p className="settings-pane-lede">版本信息、运行环境与近期更新。</p>
+  return <div className="settings-pane about-pane"><h2 className="settings-pane-title">关于与更新</h2>
       <div id="about-runtime" tabIndex={-1} className="paper-panel settings-card">
         <h3 className="settings-card-title">版本与运行环境</h3>
         <dl className="usage-stats">
           <div className="usage-stat"><dt>版本</dt><dd>v{APP_SETTINGS_VERSION}{CURRENT_RELEASE.isPatch ? "（补丁包）" : ""}</dd></div>
-          <div className="usage-stat"><dt>运行环境</dt><dd>{window.clawbox ? "Electron 桌面" : "浏览器"}</dd></div>
+          <div className="usage-stat"><dt>运行环境</dt><dd>{(window["ai-chatbox"] ?? window.clawbox) ? "Electron 桌面" : "浏览器"}</dd></div>
           <div className="usage-stat"><dt>存储策略</dt><dd>数据保存在本机</dd></div>
           <div className="usage-stat"><dt>API Key</dt><dd>本机存储，加密备份</dd></div>
         </dl>
@@ -161,5 +161,5 @@ export function AboutPane({ store, service }: { store: ExternalStore; service: S
         </Button>
       </div>
 
-<ChangelogPane /></div>;
+<Disclosure label="更新日志"><ChangelogPane /></Disclosure></div>;
 }

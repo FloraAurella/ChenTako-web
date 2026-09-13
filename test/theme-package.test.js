@@ -22,6 +22,11 @@ const theme = {
 };
 
 describe("JSON 主题文件", () => {
+  it("新品牌导出仍可导入旧品牌主题包", () => {
+    const payload = createThemePackage(theme);
+    expect(payload.kind).toBe("ai-chatbox-theme-package");
+    expect(parseThemePackage(JSON.stringify({ ...payload, kind: "clawbox-theme-package" })).definition.id).toBe("studio");
+  });
   it("以可读 JSON 往返主题、对比度与透景偏好", () => {
     const payload = createThemePackage(theme, {
       light: { contrast: 72, transparent: true },
@@ -43,7 +48,7 @@ describe("JSON 主题文件", () => {
 
   it("扩展名和下载文件名只使用 json", () => {
     expect(THEME_PACKAGE_EXTENSION).toBe("json");
-    expect(themePackageFilename(theme)).toBe("Clawbox-studio.json");
+    expect(themePackageFilename(theme)).toBe("ai-chatbox-studio.json");
   });
 
   it("不导出主题动效，也不保留背景图片字段", () => {

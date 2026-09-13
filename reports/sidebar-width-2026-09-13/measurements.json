@@ -1,0 +1,50 @@
+[
+  {
+    "scheme": "light",
+    "width": 1280,
+    "chat": 304,
+    "settings": 304,
+    "chatOverflow": false,
+    "overflow": false
+  },
+  {
+    "scheme": "light",
+    "width": 1024,
+    "chat": 304,
+    "settings": 304,
+    "chatOverflow": false,
+    "overflow": false
+  },
+  {
+    "scheme": "light",
+    "width": 390,
+    "chat": 390,
+    "settings": 390,
+    "chatOverflow": false,
+    "overflow": false
+  },
+  {
+    "scheme": "dark",
+    "width": 1280,
+    "chat": 304,
+    "settings": 304,
+    "chatOverflow": false,
+    "overflow": false
+  },
+  {
+    "scheme": "dark",
+    "width": 1024,
+    "chat": 304,
+    "settings": 304,
+    "chatOverflow": false,
+    "overflow": false
+  },
+  {
+    "scheme": "dark",
+    "width": 390,
+    "chat": 390,
+    "settings": 390,
+    "chatOverflow": false,
+    "overflow": false
+  }
+]

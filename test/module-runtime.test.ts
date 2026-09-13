@@ -36,7 +36,7 @@ describe('module ownership and composition',()=>{
  });
  it('omits optional panes, domains and search; route falls back to an installed pane',()=>{
   const composition=createComposition(['extensions','data']);const c=composition.contributions;
-  expect(c.settings.list().map(p=>p.id)).toEqual(['appearance','providers','context','knowledge']);
+  expect(c.settings.list().map(p=>p.id)).toEqual(['appearance','providers','context']);
   expect(c.domains.get('extensions')).toBeUndefined();expect(c.controllers.get('chat')).toBeDefined();
   expect(c.slots.get('projects.selector')).toBeDefined();
   expect(parseRoute('#/settings/tools','tools',c.settings.list().map(p=>p.id)).settingsSection).toBe('providers');

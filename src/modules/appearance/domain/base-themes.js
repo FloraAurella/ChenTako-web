@@ -4,7 +4,7 @@
  * 默认主题运行时基线 —— Everforest。
  *
  * 本文件负责首帧、favicon、预览 iframe 和未覆盖令牌的稳定兜底；
- * examples/everforest-clawbox-theme-v1.json 是唯一色板数据源，tokens.css 是其
+ * examples/everforest-ai-chatbox-theme-v1.json 是唯一色板数据源，tokens.css 是其
  * 样式表镜像，保证 JavaScript 接管前不会闪现已退役主题。
  */
 

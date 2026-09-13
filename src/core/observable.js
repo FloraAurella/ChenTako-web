@@ -37,7 +37,7 @@ export function createObservable(snapshotValue) {
       if (!listeners) continue;
       for (const listener of listeners) {
         try { listener(); } catch (error) {
-          console.error("[Clawbox] keyed subscriber error", error);
+          console.error("[ai-chatbox] keyed subscriber error", error);
         }
       }
     }
@@ -48,7 +48,7 @@ function publish(reason,state) {
       try {
         listener(reason, state);
       } catch (error) {
-        console.error("[Clawbox] subscriber error", error);
+        console.error("[ai-chatbox] subscriber error", error);
       }
     }
   }

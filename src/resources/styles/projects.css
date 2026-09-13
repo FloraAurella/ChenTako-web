@@ -1,0 +1,9 @@
+.project-settings-form { display:grid; gap:var(--space-3); margin-bottom:var(--space-5); padding-bottom:var(--space-5); border-bottom:1px solid var(--separator); }
+.project-settings-name-row { display:flex; align-items:center; gap:var(--space-3); }
+.project-settings-name-row .field { flex:1; min-width:0; }
+.project-settings-name-row .btn { flex-shrink:0; }
+.project-settings-actions { display:flex; align-items:center; justify-content:space-between; gap:var(--space-3); }
+.project-settings-actions .btn { flex-shrink:0; }
+@media(max-width:720px) { .project-settings-actions { align-items:flex-start; flex-direction:column; } }
+
+@media(max-width:720px) { .project-row > .icon-btn { opacity:1; pointer-events:auto; } }

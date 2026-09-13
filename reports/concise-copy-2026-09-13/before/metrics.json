@@ -1,0 +1,156 @@
+[
+  {
+    "surface": "chat",
+    "scheme": "light",
+    "width": 1280,
+    "characters": 221,
+    "overflow": false
+  },
+  {
+    "surface": "project",
+    "scheme": "light",
+    "width": 1280,
+    "characters": 474,
+    "overflow": false
+  },
+  {
+    "surface": "appearance",
+    "scheme": "light",
+    "width": 1280,
+    "characters": 320,
+    "overflow": false
+  },
+  {
+    "surface": "providers",
+    "scheme": "light",
+    "width": 1280,
+    "characters": 447,
+    "overflow": false
+  },
+  {
+    "surface": "context",
+    "scheme": "light",
+    "width": 1280,
+    "characters": 782,
+    "overflow": false
+  },
+  {
+    "surface": "tools",
+    "scheme": "light",
+    "width": 1280,
+    "characters": 303,
+    "overflow": false
+  },
+  {
+    "surface": "tool-editor",
+    "scheme": "light",
+    "width": 1280,
+    "characters": 251,
+    "overflow": false
+  },
+  {
+    "surface": "skills",
+    "scheme": "light",
+    "width": 1280,
+    "characters": 218,
+    "overflow": false
+  },
+  {
+    "surface": "data",
+    "scheme": "light",
+    "width": 1280,
+    "characters": 233,
+    "overflow": false
+  },
+  {
+    "surface": "about",
+    "scheme": "light",
+    "width": 1280,
+    "characters": 1651,
+    "overflow": false
+  },
+  {
+    "surface": "onboarding",
+    "scheme": "light",
+    "width": 1280,
+    "characters": 351,
+    "overflow": false
+  },
+  {
+    "surface": "chat",
+    "scheme": "dark",
+    "width": 1280,
+    "characters": 154,
+    "overflow": false
+  },
+  {
+    "surface": "project",
+    "scheme": "dark",
+    "width": 1280,
+    "characters": 474,
+    "overflow": false
+  },
+  {
+    "surface": "appearance",
+    "scheme": "dark",
+    "width": 1280,
+    "characters": 320,
+    "overflow": false
+  },
+  {
+    "surface": "providers",
+    "scheme": "dark",
+    "width": 1280,
+    "characters": 430,
+    "overflow": false
+  },
+  {
+    "surface": "context",
+    "scheme": "dark",
+    "width": 1280,
+    "characters": 782,
+    "overflow": false
+  },
+  {
+    "surface": "tools",
+    "scheme": "dark",
+    "width": 1280,
+    "characters": 303,
+    "overflow": false
+  },
+  {
+    "surface": "tool-editor",
+    "scheme": "dark",
+    "width": 1280,
+    "characters": 251,
+    "overflow": false
+  },
+  {
+    "surface": "skills",
+    "scheme": "dark",
+    "width": 1280,
+    "characters": 218,
+    "overflow": false
+  },
+  {
+    "surface": "data",
+    "scheme": "dark",
+    "width": 1280,
+    "characters": 233,
+    "overflow": false
+  },
+  {
+    "surface": "about",
+    "scheme": "dark",
+    "width": 1280,
+    "characters": 1651,
+    "overflow": false
+  },
+  {
+    "surface": "onboarding",
+    "scheme": "dark",
+    "width": 1280,
+    "characters": 351,
+    "overflow": false
+  }
+]

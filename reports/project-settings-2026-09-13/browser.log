@@ -1,0 +1,106 @@
+[WebServer] (node:53556) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+
+Running 37 tests using 1 worker
+
+(node:53558) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/37] [chromium] › e2e/knowledge.spec.js:36:1 › 大资料用量刷新不重复编码全文或复制请求，输入保持可用
+[2/37] [chromium] › e2e/knowledge.spec.js:61:1 › 资料备份可恢复；取消恢复不改变项目资料
+[3/37] [chromium] › e2e/knowledge.spec.js:80:1 › 全文预览安全，项目隔离，上传替换删除和刷新恢复
+[4/37] [chromium] › e2e/knowledge.spec.js:101:1 › 每次正式请求完整注入，历史压缩请求不含项目资料
+[5/37] [chromium] › e2e/knowledge.spec.js:123:38 › 缺失资料阻止发送且草稿保留
+[6/37] [chromium] › e2e/knowledge.spec.js:123:38 › 固定资料超预算不发起自动压缩，附件和草稿保留
+[7/37] [chromium] › e2e/knowledge.spec.js:135:80 › 资料界面 light 1280 无横向溢出
+[8/37] [chromium] › e2e/knowledge.spec.js:135:80 › 资料界面 light 1024 无横向溢出
+[9/37] [chromium] › e2e/knowledge.spec.js:135:80 › 资料界面 light 390 无横向溢出
+[10/37] [chromium] › e2e/knowledge.spec.js:135:80 › 资料界面 dark 1280 无横向溢出
+[11/37] [chromium] › e2e/knowledge.spec.js:135:80 › 资料界面 dark 1024 无横向溢出
+[12/37] [chromium] › e2e/knowledge.spec.js:135:80 › 资料界面 dark 390 无横向溢出
+[13/37] [chromium] › e2e/knowledge.spec.js:143:1 › 项目浮窗键盘、名称校验、删除取消和设置入口清理
+[14/37] [chromium] › e2e/knowledge.spec.js:176:1 › 读取中关闭并打开其他项目，迟到的文件结果不能写入任何项目
+[15/37] [chromium] › e2e/knowledge.spec.js:197:1 › 文件错误和双存储失败明确提示，当前资料仍可备份
+[16/37] [chromium] › e2e/projects.spec.js:43:1 › 项目分类：分区、五条限制、搜索与折叠恢复
+[17/37] [chromium] › e2e/projects.spec.js:68:1 › 项目管理：创建、移动、重命名、删除及刷新保留
+[18/37] [chromium] › e2e/projects.spec.js:108:1 › 新建继承当前项目、显式跨项目及无项目；草稿和附件留在原聊天
+[19/37] [chromium] › e2e/projects.spec.js:135:1 › 项目选择器键盘、长名称和移动端不溢出
+[20/37] [chromium] › e2e/projects.spec.js:160:1 › 项目移动期间保留输入节点、附件、消息节点与正在生成的回复
+[21/37] [chromium] › e2e/projects.spec.js:207:1 › 聊天菜单移动、项目内置顶与活动聊天超过五条时可见
+[22/37] [chromium] › e2e/projects.spec.js:224:1 › 空白聊天带附件时不得复用，桌面和移动端项目列表布局
+[23/37] [chromium] › e2e/settings-context.spec.js:22:1 › 聊天配置保存、项目空提示词覆盖与继承、重启
+[24/37] [chromium] › e2e/settings-context.spec.js:44:1 › 未保存的跨项目导航会询问，取消保留草稿
+[25/37] [chromium] › e2e/settings-context.spec.js:58:1 › 新请求使用项目配置而非供应商提示词
+[26/37] [chromium] › e2e/settings-context.spec.js:72:1 › 达到预算阈值压缩全部已完成历史，保留待发送消息
+[27/37] [chromium] › e2e/settings-context.spec.js:86:1 › 压缩失败保留草稿，不发送、不无限重试
+[28/37] [chromium] › e2e/settings-context.spec.js:99:1 › 升级默认重置与无密钥备份；模型编辑仅有额度
+[29/37] [chromium] › e2e/settings-context.spec.js:115:1 › 设置搜索定位与所有分类无横向溢出
+[30/37] [chromium] › e2e/settings-context.spec.js:129:3 › 设置分类 1024 宽度下分组、能力说明与页面宽度完整
+[31/37] [chromium] › e2e/settings-context.spec.js:129:3 › 设置分类 390 宽度下分组、能力说明与页面宽度完整
+[32/37] [chromium] › e2e/settings-context.spec.js:147:3 › 上下文设置视觉 1280 light
+[33/37] [chromium] › e2e/settings-context.spec.js:147:3 › 上下文设置视觉 1024 dark
+  1) [chromium] › e2e/settings-context.spec.js:147:3 › 上下文设置视觉 1024 dark ───────────────────────────
+
+    Error: expect(locator).toHaveScreenshot(expected) failed
+
+    Locator: locator('#context-budget')
+      Expected an image 724px by 424px, received 660px by 459px. 56353 pixels (ratio 0.17 of all image pixels) are different.
+
+      Snapshot: context-budget-1024-dark.png
+
+    Call log:
+      - Expect "toHaveScreenshot(context-budget-1024-dark.png)" with timeout 5000ms
+        - verifying given screenshot expectation
+      - waiting for locator('#context-budget')
+        - locator resolved to <section tabindex="-1" id="context-budget" data-surface="panel" aria-labelledby="context-budget-title" class="ui-surface paper-panel settings-card">…</section>
+      - taking element screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - attempting scroll into view action
+        - waiting for element to be stable
+      - Expected an image 724px by 424px, received 660px by 459px. 56353 pixels (ratio 0.17 of all image pixels) are different.
+      - waiting 100ms before taking screenshot
+      - waiting for locator('#context-budget')
+        - locator resolved to <section tabindex="-1" id="context-budget" data-surface="panel" aria-labelledby="context-budget-title" class="ui-surface paper-panel settings-card">…</section>
+      - taking element screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - attempting scroll into view action
+        - waiting for element to be stable
+      - captured a stable screenshot
+      - Expected an image 724px by 424px, received 660px by 459px. 56353 pixels (ratio 0.17 of all image pixels) are different.
+
+
+      153 |     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+      154 |     await page.locator("#context-budget").scrollIntoViewIfNeeded();
+    > 155 |     await expect(page.locator("#context-budget")).toHaveScreenshot(`context-budget-${width}-${scheme}.png`, { animations: "disabled", caret: "hide" });
+          |                                                   ^
+      156 |   });
+      157 | }
+      158 |
+        at /Users/qxc/Desktop/ai/coding-project/ai-chatbox-structure/v2.0/e2e/settings-context.spec.js:155:51
+
+    attachment #1: context-budget-1024-dark (image/png) ────────────────────────────────────────────
+    Expected: e2e/settings-context.spec.js-snapshots/context-budget-1024-dark-chromium-darwin.png
+    Received: test-results/settings-context-上下文设置视觉-1024-dark-chromium/context-budget-1024-dark-actual.png
+    Diff:     test-results/settings-context-上下文设置视觉-1024-dark-chromium/context-budget-1024-dark-diff.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/settings-context-上下文设置视觉-1024-dark-chromium/error-context.md
+
+
+(node:53685) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[34/37] [chromium] › e2e/settings-context.spec.js:147:3 › 上下文设置视觉 390 light
+[35/37] [chromium] › e2e/settings-context.spec.js:159:1 › 项目浮窗不导航，独立上下文设置保留能力覆盖
+[36/37] [chromium] › e2e/settings-context.spec.js:178:1 › 自动压缩关闭时超预算保留输入，工具栏思考强度可恢复继承
+[37/37] [chromium] › e2e/settings-context.spec.js:196:1 › 低于阈值保留全部历史，不因轮数触发压缩
+  1 failed
+    [chromium] › e2e/settings-context.spec.js:147:3 › 上下文设置视觉 1024 dark ────────────────────────────
+  36 passed (36.1s)

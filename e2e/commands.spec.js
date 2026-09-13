@@ -127,13 +127,13 @@ test('字面量、多行和正文斜杠进入普通消息，指令不进入 Prom
   await expect.poll(async () => (await saved(page)).conversations.find(c => c.id === 'c').title).toBe('/model');
 });
 
-test('生成期间配置修改只影响下一次请求，停止按钮保持原行为', async ({ page }) => {
+test('首次响应之后的生成期间配置修改只影响下一次请求，停止按钮保持原行为', async ({ page }) => {
   const bodies = []; let release;
   const gate = new Promise(resolve => { release = resolve; });
   await page.route('**/api/chat', async r => { bodies.push(r.request().postDataJSON()); if (bodies.length === 1) await gate; await r.fulfill({ json: { choices: [{ message: { content: '完成' } }] } }); });
-  await load(page);
+  await load(page, { messages: history });
   const input = page.locator('#composerInput');
-  await input.fill('第一轮'); await page.locator('#sendBtn').click(); await expect.poll(() => bodies.length).toBe(1);
+  await input.fill('已有历史后的第一轮'); await page.locator('#sendBtn').click(); await expect.poll(() => bodies.length).toBe(1);
   await input.fill('/model model-b'); await input.press('Enter');
   await expect(page.locator('#modelValue')).toHaveText('model-b');
   await input.fill('/effort high'); await input.press('Enter');
@@ -163,17 +163,24 @@ for (const scheme of ['light', 'dark']) for (const width of [1280, 1024, 390]) {
     await page.setViewportSize({ width, height: 840 }); await load(page, { scheme });
     await page.locator('#composerInput').fill('/');
     const panel = page.locator('.command-panel'); await expect(panel).toBeVisible();
+    await expect(page.locator('.command-option-title')).toHaveText(['模型', '思考强度', '压缩历史', '帮助']);
+    await expect(page.locator('.command-option-icon svg')).toHaveCount(4);
+    await expect(page.locator('#composerInput')).toBeFocused();
+    expect(await page.locator('#composerInput').evaluate(el => getComputedStyle(el).outlineStyle)).toBe('none');
+    expect(await page.locator('#composerInput').evaluate(el => getComputedStyle(el).boxShadow)).toBe('none');
     const paint = el => { const s = getComputedStyle(el); return [s.backgroundColor, s.borderColor]; };
     const before = await panel.evaluate(paint); await panel.hover(); expect(await panel.evaluate(paint)).toEqual(before);
     const rect = await panel.boundingBox(); const input = await page.locator('#composerInput').boundingBox();
     expect(rect.x).toBeGreaterThanOrEqual(0); expect(rect.x + rect.width).toBeLessThanOrEqual(width);
     expect(rect.y + rect.height).toBeLessThanOrEqual(input.y);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    await page.mouse.move(0, 0);
     await page.screenshot({ path: testInfo.outputPath(`commands-${scheme}-${width}.png`) });
+    await panel.screenshot({ path: testInfo.outputPath(`menu-${scheme}-${width}.png`) });
   });
 }
 
-test('发送准备时切换按钮模型，自动压缩和随后发送仍使用原请求快照', async ({ page }) => {
+test('响应后压缩期间切换按钮模型，已发送请求和压缩仍使用原快照', async ({ page }) => {
   const messages = Array.from({ length: 4 }, (_, i) => [
     { id: `u${i}`, role: 'user', content: '历史内容'.repeat(100) },
     { id: `a${i}`, role: 'assistant', content: '历史回复'.repeat(100) }
@@ -182,7 +189,7 @@ test('发送准备时切换按钮模型，自动压缩和随后发送仍使用�
   const gate = new Promise(resolve => { release = resolve; });
   await page.route('**/api/chat/compress', async r => { compressed = r.request().postDataJSON(); await gate; await r.fulfill({ json: { summary: '简短历史摘要' } }); });
   await page.route('**/api/chat', async r => { sent = r.request().postDataJSON(); await r.fulfill({ json: { choices: [{ message: { content: '继续' } }] } }); });
-  await load(page, { messages, config: { inputBudget: 1500, autoCompress: true } });
+  await load(page, { providers: [{ ...provider, contextWindow: 6000, maxTokens: 1000 }, second, disabled], messages, config: { compressionThreshold: 10 } });
   await page.locator('#composerInput').fill('接着讲'); await page.locator('#sendBtn').click();
   await expect.poll(() => Boolean(compressed)).toBe(true);
   await page.locator('#runtimeBtn').click(); await page.locator('[data-runtime-open="model"]').click();
@@ -292,3 +299,35 @@ for (const scheme of ['light', 'dark']) {
     for (const sample of ratios) { expect(sample.ratio).toBeGreaterThanOrEqual(4.5); expect(sample.size).toBeGreaterThanOrEqual(12); }
   });
 }
+
+
+test('录屏对齐：鼠标和键盘共用唯一活动行，二级当前值用勾选表达', async ({ page }, testInfo) => {
+  await load(page);
+  const input = page.locator('#composerInput');
+  await input.fill('/');
+  const options = page.getByRole('option');
+  await expect(page.locator('.command-panel-hint')).toHaveCount(0);
+  await expect(page.locator('.command-panel-heading')).toHaveCount(0);
+  expect((await options.first().boundingBox()).height).toBeLessThanOrEqual(34);
+  await options.nth(1).hover();
+  await expect(options.nth(1)).toHaveAttribute('aria-selected', 'true');
+  await expect(page.locator('.command-option.is-active')).toHaveCount(1);
+  await input.press('ArrowDown');
+  await expect(options.nth(2)).toHaveAttribute('aria-selected', 'true');
+  // The stationary pointer must not leave a second CSS-only highlight behind.
+  const backgrounds = await options.evaluateAll(rows => rows.map(row => getComputedStyle(row).backgroundColor));
+  expect(backgrounds.filter(color => color !== 'rgba(0, 0, 0, 0)')).toHaveLength(1);
+  await options.nth(1).hover();
+  await options.nth(1).click();
+  await expect(page.locator('.command-option-check')).toHaveCount(1);
+  await expect(page.locator('.command-panel-heading')).toHaveCount(0);
+  await expect(input).toBeFocused();
+  await page.mouse.move(0, 0);
+  await page.screenshot({ path: testInfo.outputPath('command-effort-submenu.png') });
+  await page.locator('.command-panel').screenshot({ path: testInfo.outputPath('effort-menu.png') });
+  await page.getByRole('option', { name: /高 high/ }).click();
+  await expect(page.locator('#effortValue')).toHaveText('高');
+  await expect(page.locator('.command-panel-host')).toBeHidden();
+  await expect(input).toHaveValue('');
+  await expect(input).toBeFocused();
+});

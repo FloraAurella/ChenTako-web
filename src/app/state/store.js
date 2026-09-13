@@ -1,3 +1,4 @@
+import { isConversationLocked } from '../../modules/chat/public/first-response.js';
 import { createChatStateActions } from "../../modules/chat/public/state_actions.js";
 import { createProjectState } from "../../modules/projects/public/state_actions.js";
 import { sortConversations } from "../../modules/chat/public/domain_queries.js";
@@ -121,7 +122,7 @@ export function createStore() {
       payload = buildPersistentPayload(state);
     } catch (error) {
       // 载荷构建失败（历史数据混入无法序列化的内容）绝不能静默中断整条持久化链路。
-      console.error("[Clawbox] 构建持久化载荷失败", error);
+      console.error("[ai-chatbox] 构建持久化载荷失败", error);
       archiveFailed = true;
       notify("archive-error");
       return false;
@@ -158,7 +159,7 @@ export function createStore() {
     } catch (error) {
       archiveFailed = true;
       // 持久化层记录诊断；界面层同时把 archive-error 显示为内联错误。
-      console.error("[Clawbox] 本地归档写入失败（配置依赖轻量备份恢复）", error);
+      console.error("[ai-chatbox] 本地归档写入失败（配置依赖轻量备份恢复）", error);
       notify("archive-error");
     }
     return !archiveFailed || fullBackupSaved;
@@ -195,12 +196,13 @@ export function createStore() {
     return state.providers.find((item) => item.id === state.activeProviderId && item.enabled !== false) || null;
   }
 
-  function createConversation({ silent = false, projectId = activeConversation()?.projectId ?? null } = {}) {
+  function createConversation({ silent = false, isTemporary = false, projectId = activeConversation()?.projectId ?? null } = {}) {
     const provider = activeProvider() || state.providers.find((item) => item.enabled !== false) || null;
 
     const conversation = normalizeConversation({
       id: createId(),
       title: "",
+      isTemporary,
       projectId: validProjectId(projectId),
       createdAt: Date.now(),
       updatedAt: Date.now(),
@@ -235,7 +237,7 @@ export function createStore() {
     });
   }
 
-  const {createProject,renameProject,moveConversationToProject,deleteProject} = createProjectState({state,persistSoon,notify,validProjectId,revealConversation,activeConversation});
+  const {createProject,renameProject,moveConversationToProject,deleteProject} = createProjectState({state,persistSoon,notify,validProjectId,revealConversation,activeConversation,canModifyConversation: conversation => !isConversationLocked(conversation)});
 
   function touchConversation(conversation, { silent = false } = {}) {
     conversation.updatedAt = Date.now();
@@ -278,7 +280,7 @@ export function createStore() {
     if (!state.conversations.length || !state.conversations.some((item) => item.id === state.activeConversationId)) {
       const existing = state.conversations[0];
       state.activeConversationId = existing ? existing.id : "";
-      if (!existing) createConversation({ silent: true });
+      if (!existing) actions.openTemporaryConversation({ silent: true });
     }
     state.loaded = true;
     if (!persisted || shouldPersistProviderMigration) {
@@ -307,7 +309,7 @@ export function createStore() {
   }
 
   const actions = Object.freeze({
-    ...createChatStateActions({state,conversationById,notify,notifyKeys,persistSoon,touchConversation}),
+    ...createChatStateActions({state,conversationById,notify,notifyKeys,persistSoon,touchConversation,createConversation}),
     setSidebar(patch) {
       state.sidebar = { ...state.sidebar, ...patch };
       if ("collapsedSections" in patch || "collapsedProjectIds" in patch) persistSoon();

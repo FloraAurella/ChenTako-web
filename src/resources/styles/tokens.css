@@ -1,14 +1,20 @@
 /**
- * Clawbox 设计令牌定义（布局度量 + Everforest 默认主题首帧基线）。
- * 色板与 themes/base-themes.js 均镜像自 examples/everforest-clawbox-theme-v1.json。
+ * ai-chatbox 设计令牌定义（布局度量 + Everforest 默认主题首帧基线）。
+ * 色板与 themes/base-themes.js 均镜像自 examples/everforest-ai-chatbox-theme-v1.json。
  */
 
 :root {
+  /* 共享间距 */
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+
   /* 布局协议：主题不得覆盖 */
   --motion-sidebar: 240ms;
   --font-ui: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
-  --archive-w: 288px;
-  --settings-index-w: 264px;
+  --sidebar-w: 304px;
+  --archive-w: var(--sidebar-w);
+  --settings-index-w: var(--sidebar-w);
   --toolbar-h: 64px;
   --message-max-w: 800px;
   --settings-max-w: 940px;

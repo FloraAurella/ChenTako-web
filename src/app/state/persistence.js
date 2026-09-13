@@ -227,7 +227,7 @@ export async function loadPersistedState() {
   ]);
 
   if (idbResult.error) {
-    console.warn("[Clawbox] IndexedDB 归档读取失败，回退本地备份", idbResult.error);
+    console.warn("[ai-chatbox] IndexedDB 归档读取失败，回退本地备份", idbResult.error);
   }
   const idbPayload = idbResult.payload;
   const lsPayload = lsResult.payload && typeof lsResult.payload === "object" ? lsResult.payload : null;
@@ -280,6 +280,8 @@ export function buildPersistentPayload(state) {
     if (conversation.saveChats == null && provider?.saveChats === false) return false;
     return true;
   });
+  // Runtime request locks and local title revisions must not survive persistence.
+  const persistedConversations = conversations.map(({ firstResponsePending, titleRevision, ...conversation }) => conversation);
   const keptIds = new Set(conversations.map((conversation) => conversation.id));
   const activeConversationId = keptIds.has(state.activeConversationId)
     ? state.activeConversationId
@@ -294,7 +296,7 @@ export function buildPersistentPayload(state) {
     projects: normalizeProjects(state.projects),
     projectKnowledge: normalizeLibraries(state.projectKnowledge, state.projects),
     projectSidebar: normalizeProjectSidebar(state.sidebar),
-    conversations,
+    conversations: persistedConversations,
     providers: state.providers.map((provider) => ({ ...provider })),
     extensions: normalizeExtensions(state.extensions),
     activeConversationId,

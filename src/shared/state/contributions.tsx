@@ -10,7 +10,7 @@ export function useContributions() {
   if (!context) throw new Error('ContributionsProvider is required');
   return context;
 }
-export function ExtensionSlot({ name, store }: { name: 'composer.before' | 'composer.actions'; store: any }) {
+export function ExtensionSlot({ name, store, projectId }: { name: 'composer.before' | 'composer.actions' | 'project.settings'; store: any; projectId?: string }) {
   const { slots } = useContributions();
-  return <>{slots.list().filter(entry => entry.slot === name).map(entry => { const Component = entry.component; return <Component key={entry.id} store={store} />; })}</>;
+  return <>{slots.list().filter(entry => entry.slot === name).map(entry => { const Component = entry.component; return <Component key={entry.id} store={store} projectId={projectId} />; })}</>;
 }

@@ -1,0 +1,18 @@
+
+> ai-chatbox-structure-v2.0@1.1.5 build
+> vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 195 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/assets/ai-chatbox-XBrB2eKs.svg    0.47 kB │ gzip:   0.26 kB
+dist/index.html                        0.96 kB │ gzip:   0.60 kB
+dist/onboarding.html                   1.02 kB │ gzip:   0.58 kB
+dist/assets/onboarding-D6ukPRXK.css    7.04 kB │ gzip:   1.88 kB
+dist/assets/Icon-DjEFQEtf.css        142.43 kB │ gzip:  24.02 kB
+dist/assets/onboarding-C80HDYGd.js     4.92 kB │ gzip:   2.04 kB
+dist/assets/Icon-BHabnzfM.js         202.95 kB │ gzip:  64.25 kB
+dist/assets/app-Bvvy4XUV.js          388.86 kB │ gzip: 124.79 kB
+✓ built in 888ms

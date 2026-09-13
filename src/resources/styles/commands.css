@@ -1,15 +1,15 @@
 /* Command surfaces reuse shared templates; existing action buttons are untouched. */
 .command-panel-host { position: fixed; z-index: 1200; overflow: auto; overscroll-behavior: contain; }
 .command-panel-host[hidden], .command-feedback[hidden] { display: none; }
-.command-panel { padding: 10px; color: var(--label-primary); box-shadow: var(--paper-shadow-raised); }
-.command-panel-heading { padding: 6px 8px 10px; font-size: 14px; font-weight: 600; }
-.command-option { display: flex; flex-direction: column; gap: 4px; width: 100%; padding: 10px; text-align: left; color: inherit; background: transparent; cursor: pointer; }
-.command-option.is-active { background: var(--fill-selected); }
-.command-option-title { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; font-size: 14px; overflow-wrap: anywhere; }
-.command-option-detail, .command-panel-hint, .command-panel-message, .command-help, .command-option .ui-status { color: var(--label-primary); font-size: 12px; line-height: 1.6; overflow-wrap: anywhere; }
-.command-panel-message, .command-panel-hint { padding: 8px; margin: 0; }
-.command-panel-hint { border-top: 1px solid var(--separator); margin-top: 6px; }
-.command-help { padding: 0 8px; }
+.command-panel[data-surface="panel"] { padding: var(--ui-menu-padding); color: var(--label-primary); border-radius: var(--ui-menu-radius); box-shadow: none; }
+.command-panel-heading { padding: 6px 8px; font-size: var(--size-body-sm); font-weight: 500; }
+.command-option { display: flex; align-items: center; gap: var(--ui-menu-gap); width: 100%; min-height: var(--ui-menu-row-height); padding: 5px 10px; text-align: left; color: inherit; cursor: pointer; }
+.command-option-copy { display: flex; align-items: baseline; gap: var(--ui-menu-gap); flex: 1; min-width: 0; }
+.command-option-title { flex: 0 1 auto; font-size: var(--size-body-sm); line-height: 1.5; font-weight: 400; overflow-wrap: anywhere; }
+.command-option-detail { flex: 0 1 auto; min-width: 0; color: var(--ui-menu-detail); font-size: var(--size-body-sm); line-height: 1.5; overflow-wrap: anywhere; }
+.command-option-icon, .command-option-check { display: flex; flex: 0 0 16px; color: var(--ui-menu-detail); }
+.command-option-check { margin-left: auto; }
+.command-panel-message, .command-help { color: var(--label-primary); font-size: 12px; line-height: 1.6; overflow-wrap: anywhere; padding: 8px; margin: 0; }
 .command-help p { margin: 0 0 12px; }
 .command-feedback { margin-top: 8px; font-size: 12px; line-height: 1.5; color: var(--label-primary); overflow-wrap: anywhere; }
 .command-feedback[data-tone="error"] { border-left: 2px solid var(--destructive); padding-left: 8px; }
@@ -27,4 +27,10 @@
   .composer-hint { letter-spacing: 0; }
 }
 
-.command-option.is-active .command-option-title { font-weight: 600; }
+@media (max-width: 480px), (pointer: coarse) {
+  .command-option { min-height: 44px; }
+}
+@media (max-width: 480px) {
+  .command-option-copy { flex-wrap: wrap; column-gap: var(--ui-menu-gap); row-gap: 0; }
+  .command-option-detail { flex-basis: 100%; }
+}

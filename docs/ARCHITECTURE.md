@@ -2,7 +2,7 @@
 
 ## 当前边界
 
-这是 Clawbox 前端的源码重构，保留现有业务行为及兼容格式。`package.json` 使用项目名称 `ai-chatbox-structure-v2.0`；界面品牌、归档格式、浏览器存储键、Electron `window.clawbox` 桥与 HTTP 协议仍保持兼容。原 Clawbox 目录没有改动。
+这是 ai-chatbox 前端的源码重构，保留现有业务行为及兼容格式。`package.json` 使用项目名称 `ai-chatbox-structure-v2.0`；界面品牌更新为 ai-chatbox，归档读取、浏览器存储、旧 Electron 桥与 HTTP 认证头保持向后兼容。仓库外参考目录没有改动。
 
 已接入前端项目知识库，经请求上下文贡献组合到现有 chatConfig.systemPrompt；历史压缩请求不携带项目资料。2026-09-12 起本仓库新增模块化后端 `server/`（见 [后端计划](BACKEND_PLAN.md)），前端契约与后端实现同仓对齐；Agent 权限与工具／沙箱执行系统仍不在范围。模拟 HTTP 验证不等于真实后端联调。
 
@@ -33,7 +33,7 @@
 | `server/modules/upstream` | 四协议适配：请求构造、思考强度映射、SSRF 防护、流累积与投影、归一化、模型列表 |
 | `server/modules/providers` | 供应商注册表（node:sqlite）与 AES-GCM 密钥保险库及对应端点 |
 | `server/modules/chat` | `/api/chat` 编排（SSE v1）与 `/api/chat/compress` |
-| `server/app` | 后端环境配置（`CLAWBOX_*` 命名空间）与模块组合装配 |
+| `server/app` | 后端环境配置（`AI_CHATBOX_*` 命名空间）与模块组合装配 |
 
 `contracts/normalize.js` 保留旧数据规范化规则，经公开接口调用各领域的规范化函数。它属于兼容契约层，不能视作完全独立于业务的 Core。`app/state/store.js` 仍提供统一 store 门面，避免破坏原控制器和持久化结构；项目操作和聊天流操作已经从门面拆出。
 
@@ -65,7 +65,9 @@ VITE_DISABLED_MODULES=extensions,data npm run dev -- --port 5188
 
 ## 资源库
 
-`resources/registry.js` 提供拥有者与优先级：`user > module > system`。注销上层资源后，下层恢复。图标生成、字体 token 应用、logo 剪影与默认主题读取已通过资源解析；主题编辑和持久化继续由 appearance 模块负责。
+`resources/registry.js` 提供拥有者与优先级：`user > module > system`。注销上层资源后，下层恢复。图标生成、字体 token 应用、Logo 与默认主题读取已通过资源解析；主题编辑和持久化继续由 appearance 模块负责。
+
+`resources/logos/ai-chatbox.svg` 是默认品牌图形唯一源，固定使用 `24×24` 视窗与 `currentColor`。应用内标志、两个 HTML 首帧 favicon 和 appearance 生成的主题 favicon 都从该文件派生；替换品牌图形不得在调用方复制 SVG path。`logos/shapes.js` 只负责可信源码注册、安全子集解析与主题色注入，不拥有第二份图形数据。
 
 源码模块可以注册可信图标/字体资源；用户主题文件继续经过已有数据格式校验，不接收可执行 JS 或用户 SVG 图标注册。用户资源仅允许 `theme/` 名称空间。注册库本身不是文件上传解析器，调用者不能跳过主题导入校验。
 
@@ -110,4 +112,39 @@ npm run test:e2e
 
 后端沿用与前端相同的模块纪律：`server/core/` 不含业务；`server/modules/<feature>/` 按 `domain/`（纯规则）、`services/`（I/O）、`public/`（按职责小入口）组织；`server/app/composition.ts` 是唯一装配入口；跨模块只能经 `public/`，由 `npm run check:architecture:server` 强制。业务模块把 HTTP 端点注册进 `routes` 注册表、把能力句柄注册进 `services` 注册表（如 `providers.store`、`upstream`、`http-server`），gateway 请求时动态查询路由，装配顺序不影响可用性；全部注册经 `scope.defer`，模块释放自动注销。
 
-线上契约以 `src/contracts/` 与 `src/modules/chat/stream/protocol.ts` 为权威，`server/contracts/` 镜像并由 `test/server/contracts-sync.test.ts` 全等断言防漂移。后端持久化仅限供应商注册表与加密 API Key（`server/.data/`，gitignore，目录 0700、主密钥 0600）；会话与项目资料留在浏览器存储。安全基线：仅回环监听、Origin 白名单、可选 `CLAWBOX_API_TOKEN` 时序比对、SSRF 防护（`CLAWBOX_SSRF_ALLOW` 白名单）。启动与脚本见 [README](../README.md)，验证证据见 [后端验证](BACKEND_VALIDATION.md)。
+线上契约以 `src/contracts/` 与 `src/modules/chat/stream/protocol.ts` 为权威，`server/contracts/` 镜像并由 `test/server/contracts-sync.test.ts` 全等断言防漂移。后端持久化仅限供应商注册表与加密 API Key（`server/.data/`，gitignore，目录 0700、主密钥 0600）；会话与项目资料留在浏览器存储。安全基线：仅回环监听、Origin 白名单、可选 `AI_CHATBOX_API_TOKEN` 时序比对、SSRF 防护（`AI_CHATBOX_SSRF_ALLOW` 白名单）。启动与脚本见 [README](../README.md)，验证证据见 [后端验证](BACKEND_VALIDATION.md)。
+
+指令贡献契约新增可选 `label` / `icon` 展示元数据，由功能拥有者提供；通用面板经统一图标资源入口渲染，不按功能 ID 分支。业务执行和快照逻辑不变。详见 [品牌与指令改版](BRAND_COMMANDS_UPDATE.md)。
+
+指令浮层的鼠标和键盘共用协调器 `active` 状态，渲染层仅报告真实指针移动。紧凑菜单的尺寸与中性选中材质归共享 `ui-menu-item` 模板与令牌所有，其他交互表面不受影响。二级图标从注册贡献继承。
+
+聊天模块通过 `openTemporaryConversation` 管理待发送会话，首次用户消息追加操作原子转正并通知历史订阅。Store 注入记录创建能力，历史渲染经领域查询过滤。持久化 `isTemporary` 缺省兼容旧数据；详见 [待发送会话](TEMPORARY_CONVERSATIONS.md)。
+
+侧栏布局度量由 `src/resources/styles/tokens.css` 的 `--sidebar-w: 304px` 统一拥有；`--archive-w` 与 `--settings-index-w` 作为兼容别名引用它，设置样式不再覆盖目录宽度。响应式断点与模块边界不变。
+
+## 项目设置悬浮窗（2026-09-13）
+
+`projects/ui/ProjectSettingsButton.tsx` 拥有项目设置界面，聊天列表只经 `projects/public/settings.ts` 使用入口。名称与删除仍调用项目状态操作。知识库通过有拥有者的 `project.settings` 插槽接入，由 `SlotContribution` 显式传递固定的 `projectId`；项目模块不依赖知识库私有实现，关闭可选 knowledge 模块后不残留设置分类、搜索项或资料编辑区。
+
+共享 `ui/Modal.tsx` 只负责二级窗口的门户、滚动、键盘、焦点和关闭生命周期；嵌套确认时挂起下层窗口。知识库继续经 `services/library.ts` 保存资料，窗口卸载使异步读取版本失效。线上协议与持久化格式未变化。
+
+## 前端文案与渐进展示（2026-09-13）
+
+精简发生在各功能拥有的 UI 与展示文案源中，未采用全局 CSS 隐藏描述。共享 `SettingsGroup` 的描述改为可选，缺省不渲染空说明；`primitives.tsx` 新增原生 details/summary 封装 `Disclosure`，关于页更新记录按需展开。知识库无资料且无异常时不渲染聊天状态，文件预览只在有文件时显示。系统提示词、用户内容、协议、持久化和请求快照均未改变。
+
+### 2026-09-13：模型逐项响应测试
+
+connections 的 provider-service 提供 `testModel(model, signal)`，固定当前编辑配置发起请求；模型行只管理瞬态反馈、取消与卸载释放。供应商或端点切换会卸载对应测试组件，旧请求不能更新新模型的结果。后端 `/api/providers/test` 新增可选 `model`：未传时保留读取模型列表的行为；传入时由 providers/services/test-model 通过 upstream/public 契约构造四协议的最小非流式文字请求。共用现有 URL 校验、密钥解析与 15 秒超时，客户端断连释放请求；拒绝空回复、无效 JSON 与失败状态。测试不会创建聊天记录或持久化测试结果，返回的回复预览最多 160 字符。
+
+
+### 一级设置即时保存与独立滚动
+
+connections/provider-service 与 context/context-service 分别拥有保存调度、验证及状态提交；共享 settings 装配器仍只调用注入的导航契约。文本防抖和输入法组合状态由所属服务管理，切换前排空保存队列；视图 effect 释放定时器，供应商网络任务用 AbortController 和编辑会话版本隔离迟到结果。保存串行化，旧请求只推进对应原始基线，不覆盖更新的草稿；本地写入失败保留草稿并显示重试。
+
+二级模型参数留在独立 modelEditing 草稿，点击保存才提交；失败保留弹窗、参数与错误，模型改名/default/能力别名一致迁移。新供应商使用稳定 ID 注册，重试不重复创建；允许先保存空模型列表。共享宽度由 --settings-max-w 决定，provider-rail-list 与 provider-detail 是两个独立滚动容器。共享 Core、服务端线上契约及持久化格式未改变。
+
+## 响应结束任务与首次响应状态（2026-09-13）
+
+聊天业务在网络响应终态写入完整内容后判断压缩，不再由发送准备流程执行。业务收尾不受滚动期间增量绘制节流影响。`chat/domain/first-response.js` 拥有一次性机会与运行锁规则；`chat/services/title-generation.js` 管理标题请求、取消和晚到结果保护，`auxiliary-models.js` 解析固定模型快照。项目移动/删除通过 App 注入的公共权限规则校验，UI 通过聊天 public 入口读取锁定原因。运行状态不持久化；一次性标记由既有会话兼容契约与归档保存。
+
+圆环和压缩判断共用 `chat/public/domain_queries.js` 的实际消息投影。上下文模块提供阈值、自动预算、专用模型配置与项目继承。后端聊天模块新增 title 路由，和 compress 共用辅助生命周期；前后端辅助接口契约同步测试阻止路由漂移。详见 [响应上下文策略](RESPONSE_CONTEXT_POLICY.md)。

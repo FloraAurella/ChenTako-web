@@ -1,8 +1,8 @@
 # ai-chatbox-structure-v2.0
 
-基于复制的 Clawbox 前端进行模块化重构的 AI 聊天应用。当前保留原有界面和业务行为，将聊天、项目、连接、上下文、外观等功能分开组织，方便后续逐模块修改。
+基于复制的 ai-chatbox 前端进行模块化重构的 AI 聊天应用。当前保留原有界面和业务行为，将聊天、项目、连接、上下文、外观等功能分开组织，方便后续逐模块修改。
 
-使用 React、Vite 和 TypeScript，同时保留部分 JavaScript 实现。界面品牌、浏览器存储键、归档格式、HTTP 协议及 `window.clawbox` 桌面桥仍保留兼容约定。
+使用 React、Vite 和 TypeScript，同时保留部分 JavaScript 实现。界面品牌统一为 `ai-chatbox`；浏览器存储、旧归档与旧桌面桥保留向后兼容。品牌迁移规则见 [品牌与指令改版](docs/BRAND_COMMANDS_UPDATE.md)。
 
 仓库内已包含模块化 Node 后端（`server/`，零运行时依赖）：四协议上游适配、应用层 SSE v1 流式协议、供应商注册表与加密 API Key 存储。项目知识库在前端完成上传、全文携带、压缩隔离和本地备份；真实供应商联调、Agent 权限与工具／沙箱执行系统、Electron 桌面主进程尚未实施。下文的 `resources/` 是界面资源库，不是用户上传资料的项目知识库。
 
@@ -18,7 +18,7 @@ npm run dev -- --host 127.0.0.1 --port 5188 --strictPort
 
 主页面：<http://127.0.0.1:5188/#/chat>；独立引导页面：<http://127.0.0.1:5188/onboarding.html>。直接运行 `npm run dev` 的配置默认端口为 5173。
 
-开发服务器默认把 `/api` 请求代理到 `http://127.0.0.1:3000`，即 `npm run dev:server` 启动的后端。后端未运行时前端显示连接不可用；能打开前端不代表已经连通真实模型——需要先在设置中配置供应商与 API Key。后端环境变量使用 `CLAWBOX_*` 命名空间（`PORT`、`HOST`、`API_TOKEN`、`DATA_DIR`、`SSRF_ALLOW`、`CORS_ORIGIN`、`DISABLED_MODULES`），只监听本机回环；供应商与加密 Key 保存在 `server/.data/`（不入库）。仅运行前端、用浏览器 mock 验证时可跳过后端。桌面专属行为还需要外部 Electron 主进程提供桥接口。详见 [后端计划](docs/BACKEND_PLAN.md)。
+开发服务器默认把 `/api` 请求代理到 `http://127.0.0.1:3000`，即 `npm run dev:server` 启动的后端。后端未运行时前端显示连接不可用；能打开前端不代表已经连通真实模型——需要先在设置中配置供应商与 API Key。后端环境变量使用 `AI_CHATBOX_*` 命名空间（`PORT`、`HOST`、`API_TOKEN`、`DATA_DIR`、`SSRF_ALLOW`、`CORS_ORIGIN`、`DISABLED_MODULES`），只监听本机回环；供应商与加密 Key 保存在 `server/.data/`（不入库）。仅运行前端、用浏览器 mock 验证时可跳过后端。桌面专属行为还需要外部 Electron 主进程提供桥接口。详见 [后端计划](docs/BACKEND_PLAN.md)。
 
 ```bash
 npm run build
@@ -29,7 +29,7 @@ npm run preview -- --host 127.0.0.1 --port 5188
 
 ## 项目资料入口
 
-聊天输入区上方的“项目知识库”，或设置中的“项目知识库”，可管理项目资料。UTF-8 文本、Markdown 和代码保留全文；单文件 1 MiB、每项目 8 MiB / 64 份。支持预览、替换、删除、独立资料备份和恢复。详情见 [项目知识库](docs/KNOWLEDGE.md)。
+点击聊天侧栏中项目右侧的“三个点”，直接打开项目设置悬浮窗，在原聊天页面内重命名、删除项目或管理该项目资料。设置页不再提供“项目知识库”分类；输入区仅显示资料携带状态。UTF-8 文本、Markdown 和代码保留全文；单文件 1 MiB、每项目 8 MiB / 64 份。支持预览、替换、删除、独立资料备份和恢复。详情见 [项目知识库](docs/KNOWLEDGE.md)。
 
 安装使用锁文件，前端开发可加 `--ignore-scripts` 避免执行未使用的桌面安装脚本；本轮不提供 Electron 打包。独立安装验证结果见 [前端阶段验证](docs/FRONTEND_VALIDATION.md)。
 
@@ -129,12 +129,12 @@ v2.0/
 
 | 模块 | 功能范围 | 当前子目录如何分工 |
 |---|---|---|
-| [knowledge/](src/modules/knowledge/) | 项目资料全文上下文及本地管理 | `domain/`：文件读取、校验、完整文本捕获和备份；`services/`：唯一资料保存操作；`ui/`：资料详情与聊天状态；`public/`：持久化规范化与模块入口；`module.tsx`：注册设置、插槽和请求上下文 |
+| [knowledge/](src/modules/knowledge/) | 项目资料全文上下文及本地管理 | `domain/`：文件读取、校验、完整文本捕获和备份；`services/`：唯一资料保存操作；`ui/`：资料详情与聊天状态；`public/`：持久化规范化与模块入口；`module.tsx`：注册项目设置插槽、聊天状态和请求上下文 |
 | [commands/](src/modules/commands/) | 独立斜杠指令系统：补全、参数选择、执行协调和帮助 | `domain/`：输入解析；`services/`：键盘、面板、执行与草稿隔离；`ui/`：共享模板组成的指令面板；`public/`：公开接口；`module.ts`：注册帮助指令 |
 | [chat/](src/modules/chat/) | 聊天页面、历史会话、消息分支、发送与流式展示 | `domain/`：会话树与查询；`services/`：会话操作、消息渲染、流图片和运行事件；`state/`：消息与流状态操作；`stream/`：流协议、SSE 传输、会话、调度与注册；`ui/`：聊天区、历史和消息列表；`public/`：公开接口 |
-| [projects/](src/modules/projects/) | 项目创建、重命名、删除与选择 | `domain/`：项目模型；`services/`：项目操作；`state/`：项目状态变更；`ui/`：项目选择器；`public/`：公开接口 |
+| [projects/](src/modules/projects/) | 项目创建、重命名、删除与选择 | `domain/`：项目模型；`services/`：项目操作；`state/`：项目状态变更；`ui/`：项目选择器与项目设置悬浮窗；`public/`：操作接口与 `settings.ts` 悬浮窗入口 |
 | [connections/](src/modules/connections/) | 供应商、模型、API 配置与后端连接状态 | `domain/`：模型规则与适配器；`services/`：供应商服务、密钥接口与后端同步；`ui/`：连接设置、编辑对话框和工作区；`public/`：公开接口 |
-| [context/](src/modules/context/) | 提示词、上下文预算、用量与压缩配置 | `domain/`：配置和预算规则；`services/`：配置服务与用量计算；`ui/`：上下文设置页；`public/`：公开接口 |
+| [context/](src/modules/context/) | 提示词、自动预算、用量与压缩/标题模型配置 | `domain/`：配置和预算规则；`services/`：配置服务与用量计算；`ui/`：上下文设置页；`public/`：公开接口 |
 | [appearance/](src/modules/appearance/) | 主题、外观设置、主题导入导出及偏好保存 | `domain/`：主题定义、校验、包与归档；`domain/custom/`：内置自定义主题定义；`services/`：外观设置与偏好持久化；`ui/`：外观设置页和主题卡片；`public/`：公开接口。根部 `controller.js`、`surface.js` 负责主题应用与表面外观 |
 | [extensions/](src/modules/extensions/) | 原有工具、技能设置及技能包解析；当前版本保留配置与导入入口，工具／技能执行尚未开放，非空 `extensions` 请求由后端明确拒绝 | `domain/`：扩展模型和技能包；`services/`：扩展设置服务；`ui/`：工具与技能设置（含能力预留说明）；`public/`：公开接口。这里不代表已实现新的 Agent 权限系统 |
 | [data/](src/modules/data/) | 对话归档、迁移、备份与版本信息 | `domain/`：归档与更新记录；`services/`：数据设置服务；`ui/`：数据及关于页面；`public/`：公开接口 |
@@ -160,7 +160,7 @@ VITE_DISABLED_MODULES=extensions,data npm run dev -- --port 5188 --strictPort
 
 | 目录或文件 | 用途 |
 |---|---|
-| `ui/` | `primitives.tsx` 提供 Surface、Button、IconButton、TextField、TextArea、ListItem、FieldGroup、StatusText；`SettingsCard.tsx` 提供统一设置卡片与"常用／高级配置"分组（`SettingsGroup`）；`Icon.tsx` 提供图标组件 |
+| `ui/` | `primitives.tsx` 提供 Surface、Button、IconButton、TextField、TextArea、ListItem、FieldGroup、StatusText 和按需展开的 Disclosure；`SettingsCard.tsx` 提供统一设置卡片与"常用／高级配置"分组（`SettingsGroup`）；`Icon.tsx` 提供图标组件；`Modal.tsx` 提供二级悬浮窗、焦点约束、关闭与嵌套确认行为 |
 | `overlays/` | 对话框层、对话框服务、Popover 控制器及行内错误展示与服务 |
 | `settings/` | 多个设置模块共用的界面辅助组件与视图模型 |
 | `state/` | React 状态订阅适配与模块贡献的 Context Provider |
@@ -180,7 +180,7 @@ VITE_DISABLED_MODULES=extensions,data npm run dev -- --port 5188 --strictPort
 |---|---|
 | `icons/` | 图标定义及读取入口 |
 | `fonts/` | 字体栈定义与字体令牌，不是下载字体的缓存目录 |
-| `logos/` | 品牌图形与剪影定义 |
+| `logos/` | `ai-chatbox.svg` 是品牌图形唯一源；应用标志与首帧／主题 favicon 均从它派生 |
 | `themes/` | 内置默认主题 JSON 和默认主题读取入口 |
 | `styles/` | 全局设计令牌、基础样式、外壳、组件、响应式、设置、引导页及共享模板样式 |
 | `registry.js` | 按资源拥有者与优先级注册、解析和注销资源 |
@@ -188,6 +188,8 @@ VITE_DISABLED_MODULES=extensions,data npm run dev -- --port 5188 --strictPort
 资源优先级为 `user > module > system`；上层注销后恢复下层资源。用户层仅开放 `theme/` 名称空间，主题文件仍需经过外观模块校验。
 
 样式入口是 `styles/index.css`，主应用经 `app/styles/main.css` 导入；引导入口另外加载 `styles/onboarding.css`。调整颜色、间距、圆角等先查看 `styles/tokens.css`，共享控件规则查看 `styles/primitives.css`。主题编辑、校验和持久化属于 `modules/appearance/`，界面资源定义属于这里。
+
+更换品牌标只编辑 `src/resources/logos/ai-chatbox.svg`：保持 `viewBox="0 0 24 24"`，用 `currentColor` 描述可换色图形，并保留根元素的默认 `color` 作为 JavaScript 接管前的 favicon 回退色。资源适配器会把同一份 SVG 用于侧栏、引导页和随主题变化的 favicon；不要在组件或 HTML 中复制路径。
 
 ## `server/`：模块化 Node 后端
 
@@ -220,7 +222,7 @@ VITE_DISABLED_MODULES=extensions,data npm run dev -- --port 5188 --strictPort
 | [BACKEND_PLAN.md](docs/BACKEND_PLAN.md) | 模块化后端的目标、决策与契约来源 |
 | [BACKEND_VALIDATION.md](docs/BACKEND_VALIDATION.md) | 后端实现范围、测试证据与尚未完成项 |
 | [MODULAR_REFACTOR_PLAN.md](docs/MODULAR_REFACTOR_PLAN.md) | 模块化重构计划与完成范围 |
-| [source-migration-map.json](docs/source-migration-map.json) | 查询原 Clawbox 源文件迁移到了哪里 |
+| [source-migration-map.json](docs/source-migration-map.json) | 查询原 ai-chatbox 源文件迁移到了哪里 |
 | [VALIDATION.md](docs/VALIDATION.md) | 已执行验证、历史失败基线和证据范围 |
 | [REVIEW.md](docs/REVIEW.md) | 重构交付时的自审及后续改进建议 |
 
@@ -272,7 +274,7 @@ VITE_DISABLED_MODULES=extensions,data npm run dev -- --port 5188 --strictPort
 
 截至 [2026-09-12 的验证记录](docs/VALIDATION.md)，架构检查、类型检查和构建通过，单元测试 306 项通过；完整旧浏览器套件在重构前后均为 90 项通过、53 项失败，失败标题集合一致。以上是重构当时的留存记录，不是当前状态。
 
-**当前基线（2026-09-13 前端收口复验，见 [前端验证记录](docs/FRONTEND_VALIDATION.md)）**：架构检查（前端与 server）、TypeScript 类型检查、生产构建通过；单元测试 49 个文件 406 / 406 通过（无 `act(...)`、localStorage 实验警告与预期错误 stderr 噪声）；浏览器回归 187 / 187 通过（无跳过或删除用例），其中 29 个视觉失败所涉及的快照已经逐项审核。历史阶段数字（306、345、406 混杂时期）仅作为各阶段证据保留在对应验证文档中，不代表当前状态。
+**当前基线（2026-09-13 品牌资源复验，见 [前端验证记录](docs/FRONTEND_VALIDATION.md)）**：架构检查（前端与 server）、TypeScript 类型检查、生产构建通过；单元测试 49 个文件 407 / 407 通过（无 `act(...)`、localStorage 实验警告与预期错误 stderr 噪声）；浏览器回归 187 / 187 通过（无跳过或删除用例），其中受本轮 Logo 影响的 13 张视觉快照已经逐项审核。历史阶段数字（306、345、406 混杂时期）仅作为各阶段证据保留在对应验证文档中，不代表当前状态。
 
 ## 修改功能时从哪里开始
 
@@ -294,4 +296,21 @@ VITE_DISABLED_MODULES=extensions,data npm run dev -- --port 5188 --strictPort
 
 修改前阅读 [AGENTS.md](AGENTS.md) 和 [架构约定](docs/ARCHITECTURE.md)。保持原有存储键、DOM 契约和外部接口兼容；新增模块按归属注册功能，复用共享组件，并根据改动范围选择验证。
 
-原 Clawbox 目录未因本次重构修改。重构前源码备份保存在项目父目录的 `v2.0-before-modular-refactor.tar.gz`，不属于应用运行所需文件。
+原 ai-chatbox 目录未因本次重构修改。重构前源码备份保存在项目父目录的 `v2.0-before-modular-refactor.tar.gz`，不属于应用运行所需文件。
+
+当前品牌 SVG 位于 `src/resources/logos/ai-chatbox.svg`，默认主题源位于 `src/resources/themes/everforest-ai-chatbox-theme-v1.json`。输入 `/` 打开紧凑指令列表；模型、思考强度、压缩历史和帮助支持中文搜索及原有英文指令。
+
+指令菜单已按参考录屏校准为紧凑单行与唯一活动高亮，二级选项右侧标记当前值。键盘用法见 `/help`，录屏校准说明见 [品牌与指令改版](docs/BRAND_COMMANDS_UPDATE.md)。
+
+新建对话先进入待发送界面，首次正式发言后才加入历史栏。同一项目反复新建会恢复已有待发送草稿。实现与兼容规则见 [待发送会话](docs/TEMPORARY_CONVERSATIONS.md)。
+
+聊天侧栏与设置目录统一使用 304px 宽度（共享样式令牌 `--sidebar-w`），较原聊天侧栏加宽 16px；手机保留抽屉与设置单列布局。
+
+界面文案采用简短标题和就近提示，更新日志按需展开；具体规则与验证范围见 [前端文案](docs/FRONTEND_COPY.md)。
+
+模型与供应商设置采用紧凑布局：标题旁可切换“允许用于聊天”，右侧可删除供应商（仍需确认）；每个模型行可测试或取消响应，显示简短回复与延迟。“从接口读取”用于获取模型列表。模型响应探测由 `server/modules/providers/services/test-model.ts` 实现，使用四协议公共适配能力，不携带会话或项目资料。详见 [设置验证记录](docs/FRONTEND_VALIDATION.md)。
+
+
+设置交互：一级设置项直接修改后自动保存（文本输入停顿约 320ms 后提交，中文输入法组合期间不提交）。模型编辑、模型默认值及工具编辑等二级界面仍显式保存。模型行采用名称、能力/上下文徽标、测试与编辑的单行布局，默认模型与删除入口位于编辑弹窗。桌面和平板中的供应商列表与详情独立滚动；手机可通过详情标题的返回按钮进入供应商列表。所有一级设置页共用 1100px 最大宽度。见 [即时保存说明](docs/SETTINGS_IMMEDIATE_SAVE.md)。
+
+2026-09-13 上下文策略更新：正常响应结束达到阈值后自动压缩，发送前仅校验预算；标题在首次发送时并行生成且每个对话只尝试一次。首次响应结束前锁定会话修改，停止或失败同样解锁。可独立配置压缩模型和标题模型。实现分别位于 `src/modules/chat/services/title-generation.js`、`src/modules/chat/services/auxiliary-models.js`、`src/modules/context/` 与 `server/modules/chat/`；详见 [使用与兼容规则](docs/RESPONSE_CONTEXT_POLICY.md) 和 [本次验证](docs/RESPONSE_CONTEXT_VALIDATION.md)。

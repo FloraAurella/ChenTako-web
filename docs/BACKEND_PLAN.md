@@ -6,7 +6,7 @@
 
 - **位置／形态**：本仓库 `server/` 目录，零运行时依赖（`node:http` + `node:sqlite`，Node 26 自带），TypeScript 由 node 直接运行（type stripping），测试并入现有 vitest。
 - **一期范围**：核心闭环——前端已有的全部 7 个 `/api` 端点 + 四协议适配 + SSE v1 应用流协议 + 密钥存储。`extensions` 字段接受并校验，但工具／技能／沙箱／代码解释器**执行**明确返回不支持（属暂缓的 Agent 执行系统）。
-- **安全基线**（与原版一致）：只监听 `127.0.0.1:3000`（匹配现有 vite 代理目标）；可选 `API_TOKEN` 环境变量，时序安全比对（对应前端 `x-clawbox-token` 桥头）；API 密钥 AES-256-GCM 加密落盘 SQLite，数据目录 0700。
+- **安全基线**（与原版一致）：只监听 `127.0.0.1:3000`（匹配现有 vite 代理目标）；可选 `API_TOKEN` 环境变量，时序安全比对（对应前端 `x-ai-chatbox-token`（兼容旧认证头） 桥头）；API 密钥 AES-256-GCM 加密落盘 SQLite，数据目录 0700。
 - **数据边界**：providers + API 密钥是唯一服务端持久化数据；会话／项目资料继续留在浏览器存储。
 
 ## 契约权威来源
@@ -28,7 +28,7 @@ server/
                  非流式归一化、模型列表
     providers/   注册表 CRUD + AES 密钥保险库 + providers/key/test 端点
     chat/        /api/chat 编排与 /api/chat/compress
-  app/           环境配置（CLAWBOX_* 命名空间）与组合装配
+  app/           环境配置（AI_CHATBOX_* 命名空间）与组合装配
 ```
 
 模块布局沿用前端约定：`domain/`（纯规则）、`services/`（I/O）、`public/`（按职责的小入口）。跨模块访问只经 `public/`；core 不依赖业务；`scripts/check-architecture-server.mjs` 强制同一套边界。
@@ -51,3 +51,7 @@ server/
 3. `aea3266` providers 模块（SQLite/AES 保险库/端点）+ 集成测试
 4. `416adf1` chat 模块（SSE v1 + compress）+ 断连/错误集成测试
 5. 文档同步 + 完整验证记录（本文与 [后端验证](BACKEND_VALIDATION.md)）
+
+## 2026-09-13 响应后任务更新
+
+后端已新增 POST /api/chat/title，经既有四协议公共适配生成标题；与 compress 共用辅助请求校验、取消及窗口检查，不新增会话持久化。 规则与兼容性详见 [响应上下文策略](RESPONSE_CONTEXT_POLICY.md)，验证见 [本次验证记录](RESPONSE_CONTEXT_VALIDATION.md)。

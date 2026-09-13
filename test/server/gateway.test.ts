@@ -45,12 +45,20 @@ describe('gateway 集成', () => {
     }
   });
 
-  it('跨站 Origin 被拒绝，vite 开发来源与健康检查无 Origin 请求被放行', async () => {
+  it('跨站 Origin 被拒绝，vite 默认与文档开发来源及健康检查无 Origin 请求被放行', async () => {
     const server = await boot();
     const evil = await fetch(`${server.baseUrl}/api/health`, { headers: { Origin: 'https://evil.example' } });
     expect(evil.status).toBe(403);
-    const dev = await fetch(`${server.baseUrl}/api/health`, { headers: { Origin: 'http://127.0.0.1:5173' } });
-    expect(dev.status).toBe(200);
+    for (const origin of [
+      'http://127.0.0.1:5173',
+      'http://localhost:5173',
+      'http://127.0.0.1:5188',
+      'http://localhost:5188'
+    ]) {
+      const dev = await fetch(`${server.baseUrl}/api/health`, { headers: { Origin: origin } });
+      expect(dev.status).toBe(200);
+      expect(dev.headers.get('access-control-allow-origin')).toBe(origin);
+    }
     const noOrigin = await fetch(`${server.baseUrl}/api/health`);
     expect(noOrigin.status).toBe(200);
   });

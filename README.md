@@ -18,7 +18,7 @@ npm run dev -- --host 127.0.0.1 --port 5188 --strictPort
 
 主页面：<http://127.0.0.1:5188/#/chat>；独立引导页面：<http://127.0.0.1:5188/onboarding.html>。直接运行 `npm run dev` 的配置默认端口为 5173。
 
-开发服务器默认把 `/api` 请求代理到 `http://127.0.0.1:3000`，即 `npm run dev:server` 启动的后端。后端未运行时前端显示连接不可用；能打开前端不代表已经连通真实模型——需要先在设置中配置供应商与 API Key。后端环境变量使用 `AI_CHATBOX_*` 命名空间（`PORT`、`HOST`、`API_TOKEN`、`DATA_DIR`、`SSRF_ALLOW`、`CORS_ORIGIN`、`DISABLED_MODULES`），只监听本机回环；供应商与加密 Key 保存在 `server/.data/`（不入库）。仅运行前端、用浏览器 mock 验证时可跳过后端。桌面专属行为还需要外部 Electron 主进程提供桥接口。详见 [后端计划](docs/BACKEND_PLAN.md)。
+开发服务器默认把 `/api` 请求代理到 `http://127.0.0.1:3000`，即 `npm run dev:server` 启动的后端。后端默认允许 `127.0.0.1`／`localhost` 的 Vite 默认端口 `5173`、预览端口 `4173` 和本文开发端口 `5188`；其他前端来源须通过 `AI_CHATBOX_CORS_ORIGIN` 以英文逗号分隔配置。后端未运行时前端显示连接不可用；能打开前端不代表已经连通真实模型——需要先在设置中配置供应商与 API Key。后端环境变量使用 `AI_CHATBOX_*` 命名空间（`PORT`、`HOST`、`API_TOKEN`、`DATA_DIR`、`SSRF_ALLOW`、`CORS_ORIGIN`、`DISABLED_MODULES`），只监听本机回环；供应商与加密 Key 保存在 `server/.data/`（不入库）。仅运行前端、用浏览器 mock 验证时可跳过后端。桌面专属行为还需要外部 Electron 主进程提供桥接口。详见 [后端计划](docs/BACKEND_PLAN.md)。
 
 ```bash
 npm run build
